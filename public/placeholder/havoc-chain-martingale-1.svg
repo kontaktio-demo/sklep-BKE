@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  
+  <defs>
+    <radialGradient id="bg-havoc-chain-martingale-1" cx="50%" cy="42%" r="75%">
+      <stop offset="0%" stop-color="#232323"/>
+      <stop offset="60%" stop-color="#181818"/>
+      <stop offset="100%" stop-color="#0e0e0e"/>
+    </radialGradient>
+    <radialGradient id="floor-havoc-chain-martingale-1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain-havoc-chain-martingale-1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0"/>
+    </filter>
+    <linearGradient id="sheen-havoc-chain-martingale-1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.25"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg-havoc-chain-martingale-1)"/>
+  <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-havoc-chain-martingale-1)"/>
+  
+  <g transform="translate(600 720) scale(1) rotate(-1)">
+    <ellipse rx="370" ry="287" fill="none" stroke="#5f6265" stroke-width="8" opacity="0.6"/>
+    <ellipse cx="370.0" cy="0.0" rx="52" ry="34"
+      transform="rotate(90.0 370.0 0.0)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="359.2" cy="68.7" rx="52" ry="34"
+      transform="rotate(72.4 359.2 68.7)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="327.6" cy="133.4" rx="52" ry="34"
+      transform="rotate(55.9 327.6 133.4)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="276.9" cy="190.3" rx="52" ry="34"
+      transform="rotate(41.2 276.9 190.3)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="210.2" cy="236.2" rx="52" ry="34"
+      transform="rotate(28.2 210.2 236.2)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="131.2" cy="268.3" rx="52" ry="34"
+      transform="rotate(16.4 131.2 268.3)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="44.6" cy="284.9" rx="52" ry="34"
+      transform="rotate(5.4 44.6 284.9)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-44.6" cy="284.9" rx="52" ry="34"
+      transform="rotate(-5.4 -44.6 284.9)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="-131.2" cy="268.3" rx="52" ry="34"
+      transform="rotate(-16.4 -131.2 268.3)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-210.2" cy="236.2" rx="52" ry="34"
+      transform="rotate(-28.2 -210.2 236.2)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="-276.9" cy="190.3" rx="52" ry="34"
+      transform="rotate(-41.2 -276.9 190.3)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-327.6" cy="133.4" rx="52" ry="34"
+      transform="rotate(-55.9 -327.6 133.4)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="-359.2" cy="68.7" rx="52" ry="34"
+      transform="rotate(-72.4 -359.2 68.7)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-370.0" cy="0.0" rx="52" ry="34"
+      transform="rotate(-90.0 -370.0 0.0)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="-359.2" cy="-68.7" rx="52" ry="34"
+      transform="rotate(252.4 -359.2 -68.7)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-327.6" cy="-133.4" rx="52" ry="34"
+      transform="rotate(235.9 -327.6 -133.4)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="-276.9" cy="-190.3" rx="52" ry="34"
+      transform="rotate(221.2 -276.9 -190.3)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-210.2" cy="-236.2" rx="52" ry="34"
+      transform="rotate(208.2 -210.2 -236.2)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="-131.2" cy="-268.3" rx="52" ry="34"
+      transform="rotate(196.4 -131.2 -268.3)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-44.6" cy="-284.9" rx="52" ry="34"
+      transform="rotate(185.4 -44.6 -284.9)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="44.6" cy="-284.9" rx="52" ry="34"
+      transform="rotate(174.6 44.6 -284.9)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="131.2" cy="-268.3" rx="52" ry="34"
+      transform="rotate(163.6 131.2 -268.3)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="210.2" cy="-236.2" rx="52" ry="34"
+      transform="rotate(151.8 210.2 -236.2)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="276.9" cy="-190.3" rx="52" ry="34"
+      transform="rotate(138.8 276.9 -190.3)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="327.6" cy="-133.4" rx="52" ry="34"
+      transform="rotate(124.1 327.6 -133.4)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="359.2" cy="-68.7" rx="52" ry="34"
+      transform="rotate(107.6 359.2 -68.7)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/>
+    <g transform="translate(0 -287)">
+      <circle r="72" fill="none" stroke="#c0c3c6" stroke-width="20"/>
+      <circle r="40" fill="none" stroke="#9EA3A8" stroke-width="16"/>
+    </g>
+  </g>
+  <rect width="1200" height="1500" fill="url(#sheen-havoc-chain-martingale-1)" opacity="0.5"/>
+  <rect width="1200" height="1500" filter="url(#grain-havoc-chain-martingale-1)"/>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  
+  <defs>
+    <radialGradient id="bg-meadow-soft-collar-1" cx="50%" cy="42%" r="75%">
+      <stop offset="0%" stop-color="#232323"/>
+      <stop offset="60%" stop-color="#181818"/>
+      <stop offset="100%" stop-color="#0e0e0e"/>
+    </radialGradient>
+    <radialGradient id="floor-meadow-soft-collar-1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain-meadow-soft-collar-1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0"/>
+    </filter>
+    <linearGradient id="sheen-meadow-soft-collar-1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.25"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg-meadow-soft-collar-1)"/>
+  <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-meadow-soft-collar-1)"/>
+  
+  <g transform="translate(600 720) scale(1) rotate(-8)">
+    <ellipse rx="388" ry="308" fill="none" stroke="#6d6254" stroke-width="116"/>
+    <ellipse rx="388" ry="308" fill="none" stroke="#C7B299" stroke-width="102"/>
+    <ellipse rx="388" ry="308" fill="none" stroke="#d3c3af" stroke-width="31"
+      stroke-dasharray="582 1552" stroke-dashoffset="155" opacity="0.5"/>
+    <ellipse rx="388" ry="308" fill="none" stroke="#6d6254" stroke-width="3"
+      stroke-dasharray="10 26" opacity="0.85" transform="scale(0.9158762886597939 0.8940259740259741)"/>
+    <ellipse rx="388" ry="308" fill="none" stroke="#6d6254" stroke-width="3"
+      stroke-dasharray="10 26" opacity="0.85" transform="scale(1.0841237113402062 1.1059740259740258)"/>
+    <g transform="rotate(-25) translate(0 -308)">
+      <rect x="-95" y="-67" width="190" height="134" rx="18" fill="#2b2d30" stroke="#54575c" stroke-width="5"/>
+      <rect x="-58" y="-47" width="116" height="78" rx="10" fill="#1a1b1d" stroke="#45484d" stroke-width="4"/>
+      <circle cx="72" cy="0" r="9" fill="#54575c"/>
+      <circle cx="-72" cy="0" r="9" fill="#54575c"/>
+    </g>
+    <g transform="rotate(155) translate(0 -308)">
+      <circle r="63.24" fill="none" stroke="#8f9399" stroke-width="16"/>
+      <circle r="63.24" fill="none" stroke="#c6cad0" stroke-width="6" stroke-dasharray="40 90"/>
+      <rect x="-56.1" y="-20" width="112.2" height="40" rx="12" fill="#6d6254" stroke="#50473d" stroke-width="4"/>
+    </g>
+  </g>
+  <rect width="1200" height="1500" fill="url(#sheen-meadow-soft-collar-1)" opacity="0.5"/>
+  <rect width="1200" height="1500" filter="url(#grain-meadow-soft-collar-1)"/>
+</svg>

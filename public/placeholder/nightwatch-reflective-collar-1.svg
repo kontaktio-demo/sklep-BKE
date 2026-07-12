@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  
+  <defs>
+    <radialGradient id="bg-nightwatch-reflective-collar-1" cx="50%" cy="42%" r="75%">
+      <stop offset="0%" stop-color="#232323"/>
+      <stop offset="60%" stop-color="#181818"/>
+      <stop offset="100%" stop-color="#0e0e0e"/>
+    </radialGradient>
+    <radialGradient id="floor-nightwatch-reflective-collar-1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain-nightwatch-reflective-collar-1">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0"/>
+    </filter>
+    <linearGradient id="sheen-nightwatch-reflective-collar-1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.25"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg-nightwatch-reflective-collar-1)"/>
+  <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-nightwatch-reflective-collar-1)"/>
+  
+  <g transform="translate(600 720) scale(1) rotate(5)">
+    <ellipse rx="397" ry="261" fill="none" stroke="#6d2c00" stroke-width="124"/>
+    <ellipse rx="397" ry="261" fill="none" stroke="#C75000" stroke-width="110"/>
+    <ellipse rx="397" ry="261" fill="none" stroke="#d37738" stroke-width="33"
+      stroke-dasharray="596 1588" stroke-dashoffset="159" opacity="0.5"/>
+    <ellipse rx="397" ry="261" fill="none" stroke="#6d2c00" stroke-width="3"
+      stroke-dasharray="10 26" opacity="0.85" transform="scale(0.9113350125944585 0.8651340996168583)"/>
+    <ellipse rx="397" ry="261" fill="none" stroke="#6d2c00" stroke-width="3"
+      stroke-dasharray="10 26" opacity="0.85" transform="scale(1.0886649874055416 1.1348659003831416)"/>
+    <g transform="rotate(-31) translate(0 -261)">
+      <rect x="-95" y="-71" width="190" height="142" rx="18" fill="#2b2d30" stroke="#54575c" stroke-width="5"/>
+      <rect x="-58" y="-51" width="116" height="86" rx="10" fill="#1a1b1d" stroke="#45484d" stroke-width="4"/>
+      <circle cx="72" cy="0" r="9" fill="#54575c"/>
+      <circle cx="-72" cy="0" r="9" fill="#54575c"/>
+    </g>
+    <g transform="rotate(149) translate(0 -261)">
+      <circle r="68.2" fill="none" stroke="#8f9399" stroke-width="16"/>
+      <circle r="68.2" fill="none" stroke="#c6cad0" stroke-width="6" stroke-dasharray="40 90"/>
+      <rect x="-60.50000000000001" y="-20" width="121.00000000000001" height="40" rx="12" fill="#6d2c00" stroke="#502000" stroke-width="4"/>
+    </g>
+  </g>
+  <rect width="1200" height="1500" fill="url(#sheen-nightwatch-reflective-collar-1)" opacity="0.5"/>
+  <rect width="1200" height="1500" filter="url(#grain-nightwatch-reflective-collar-1)"/>
+</svg>

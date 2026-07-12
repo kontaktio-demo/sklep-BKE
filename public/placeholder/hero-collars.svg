@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1200" viewBox="0 0 2400 1200">
+  <defs>
+    <radialGradient id="hero-bg" cx="72%" cy="40%" r="85%">
+      <stop offset="0%" stop-color="#2a2a2a"/>
+      <stop offset="55%" stop-color="#171717"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+    <linearGradient id="hero-streak" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e50914" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#e50914" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#e50914" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="hero-blur"><feGaussianBlur stdDeviation="26"/></filter>
+    <filter id="hero-grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.035 0"/>
+    </filter>
+  </defs>
+  <rect width="2400" height="1200" fill="url(#hero-bg)"/>
+  <rect x="900" y="-200" width="1800" height="900" fill="url(#hero-streak)" transform="rotate(18 1800 250)" filter="url(#hero-blur)"/>
+  <g transform="translate(1130 -120) scale(1.55)">
+    <ellipse cx="600" cy="720" rx="430" ry="310" fill="none" stroke="#e50914" stroke-width="4" opacity="0.5" filter="url(#hero-blur)"/>
+    
+  <g transform="translate(600 720) scale(1) rotate(4)">
+    <ellipse rx="378" ry="306" fill="none" stroke="#293325" stroke-width="115"/>
+    <ellipse rx="378" ry="306" fill="none" stroke="#4A5D43" stroke-width="101"/>
+    <ellipse rx="378" ry="306" fill="none" stroke="#72816c" stroke-width="30"
+      stroke-dasharray="567 1512" stroke-dashoffset="151" opacity="0.5"/>
+    <ellipse rx="378" ry="306" fill="none" stroke="#293325" stroke-width="3"
+      stroke-dasharray="10 26" opacity="0.85" transform="scale(0.9144973544973545 0.8943790849673203)"/>
+    <ellipse rx="378" ry="306" fill="none" stroke="#293325" stroke-width="3"
+      stroke-dasharray="10 26" opacity="0.85" transform="scale(1.0855026455026455 1.1056209150326797)"/>
+    <g transform="rotate(-33) translate(0 -306)">
+      <rect x="-95" y="-66.5" width="190" height="133" rx="18" fill="#2b2d30" stroke="#54575c" stroke-width="5"/>
+      <rect x="-58" y="-46.5" width="116" height="77" rx="10" fill="#1a1b1d" stroke="#45484d" stroke-width="4"/>
+      <circle cx="72" cy="0" r="9" fill="#54575c"/>
+      <circle cx="-72" cy="0" r="9" fill="#54575c"/>
+    </g>
+    <g transform="rotate(147) translate(0 -306)">
+      <circle r="62.62" fill="none" stroke="#8f9399" stroke-width="16"/>
+      <circle r="62.62" fill="none" stroke="#c6cad0" stroke-width="6" stroke-dasharray="40 90"/>
+      <rect x="-55.550000000000004" y="-20" width="111.10000000000001" height="40" rx="12" fill="#293325" stroke="#1e251b" stroke-width="4"/>
+    </g>
+  </g>
+  </g>
+  <ellipse cx="1720" cy="1080" rx="700" ry="140" fill="#000000" opacity="0.5" filter="url(#hero-blur)"/>
+  <rect width="2400" height="1200" filter="url(#hero-grain)"/>
+</svg>

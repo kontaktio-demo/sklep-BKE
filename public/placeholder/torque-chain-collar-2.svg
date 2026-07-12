@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  
+  <defs>
+    <radialGradient id="bg-torque-chain-collar-2" cx="50%" cy="42%" r="75%">
+      <stop offset="0%" stop-color="#232323"/>
+      <stop offset="60%" stop-color="#181818"/>
+      <stop offset="100%" stop-color="#0e0e0e"/>
+    </radialGradient>
+    <radialGradient id="floor-torque-chain-collar-2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain-torque-chain-collar-2">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0"/>
+    </filter>
+    <linearGradient id="sheen-torque-chain-collar-2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.25"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg-torque-chain-collar-2)"/>
+  <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-torque-chain-collar-2)"/>
+  
+  <g transform="translate(600 640) scale(1.5) rotate(9)">
+    <ellipse rx="392" ry="309" fill="none" stroke="#5f6265" stroke-width="8" opacity="0.6"/>
+    <ellipse cx="392.0" cy="0.0" rx="52" ry="34"
+      transform="rotate(90.0 392.0 0.0)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="380.6" cy="73.9" rx="52" ry="34"
+      transform="rotate(72.6 380.6 73.9)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="347.1" cy="143.6" rx="52" ry="34"
+      transform="rotate(56.3 347.1 143.6)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="293.4" cy="204.9" rx="52" ry="34"
+      transform="rotate(41.7 293.4 204.9)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="222.7" cy="254.3" rx="52" ry="34"
+      transform="rotate(28.6 222.7 254.3)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="139.0" cy="288.9" rx="52" ry="34"
+      transform="rotate(16.6 139.0 288.9)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="47.3" cy="306.7" rx="52" ry="34"
+      transform="rotate(5.5 47.3 306.7)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-47.3" cy="306.7" rx="52" ry="34"
+      transform="rotate(-5.5 -47.3 306.7)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="-139.0" cy="288.9" rx="52" ry="34"
+      transform="rotate(-16.6 -139.0 288.9)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-222.7" cy="254.3" rx="52" ry="34"
+      transform="rotate(-28.6 -222.7 254.3)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="-293.4" cy="204.9" rx="52" ry="34"
+      transform="rotate(-41.7 -293.4 204.9)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-347.1" cy="143.6" rx="52" ry="34"
+      transform="rotate(-56.3 -347.1 143.6)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="-380.6" cy="73.9" rx="52" ry="34"
+      transform="rotate(-72.6 -380.6 73.9)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-392.0" cy="0.0" rx="52" ry="34"
+      transform="rotate(-90.0 -392.0 0.0)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="-380.6" cy="-73.9" rx="52" ry="34"
+      transform="rotate(252.6 -380.6 -73.9)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-347.1" cy="-143.6" rx="52" ry="34"
+      transform="rotate(236.3 -347.1 -143.6)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="-293.4" cy="-204.9" rx="52" ry="34"
+      transform="rotate(221.7 -293.4 -204.9)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-222.7" cy="-254.3" rx="52" ry="34"
+      transform="rotate(208.6 -222.7 -254.3)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="-139.0" cy="-288.9" rx="52" ry="34"
+      transform="rotate(196.6 -139.0 -288.9)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="-47.3" cy="-306.7" rx="52" ry="34"
+      transform="rotate(185.5 -47.3 -306.7)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="47.3" cy="-306.7" rx="52" ry="34"
+      transform="rotate(174.5 47.3 -306.7)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="139.0" cy="-288.9" rx="52" ry="34"
+      transform="rotate(163.4 139.0 -288.9)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="222.7" cy="-254.3" rx="52" ry="34"
+      transform="rotate(151.4 222.7 -254.3)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="293.4" cy="-204.9" rx="52" ry="34"
+      transform="rotate(138.3 293.4 -204.9)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/><ellipse cx="347.1" cy="-143.6" rx="52" ry="34"
+      transform="rotate(123.7 347.1 -143.6)"
+      fill="none" stroke="#c0c3c6" stroke-width="17" opacity="0.97"/><ellipse cx="380.6" cy="-73.9" rx="52" ry="34"
+      transform="rotate(107.4 380.6 -73.9)"
+      fill="none" stroke="#9EA3A8" stroke-width="17" opacity="0.97"/>
+    <g transform="translate(0 -309)">
+      <circle r="72" fill="none" stroke="#c0c3c6" stroke-width="20"/>
+      <circle r="40" fill="none" stroke="#9EA3A8" stroke-width="16"/>
+    </g>
+  </g>
+  <rect width="1200" height="1500" fill="url(#sheen-torque-chain-collar-2)" opacity="0.5"/>
+  <rect width="1200" height="1500" filter="url(#grain-torque-chain-collar-2)"/>
+</svg>

@@ -1,0 +1,80 @@
+"use client";
+
+// §8-A [COMBINE: K9TG rotating message + NSDW trust triad]
+
+import { useEffect, useState } from "react";
+import { ANNOUNCEMENTS, TRUST_TRIAD } from "@/lib/nav";
+import { cn } from "@/lib/utils";
+
+const ROTATE_MS = 4500;
+const FADE_MS = 250;
+
+function Highlighted({ text, highlight }: { text: string; highlight: string }) {
+  const at = text.indexOf(highlight);
+  if (at === -1) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, at)}
+      <span className="font-semibold text-nf-red-bright">{highlight}</span>
+      {text.slice(at + highlight.length)}
+    </>
+  );
+}
+
+export function AnnouncementBar() {
+  const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    if (ANNOUNCEMENTS.length < 2) return;
+    // reduced motion → first message shown statically, no rotation
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let fadeTimer: number | undefined;
+    const interval = window.setInterval(() => {
+      setVisible(false);
+      fadeTimer = window.setTimeout(() => {
+        setIndex((i) => (i + 1) % ANNOUNCEMENTS.length);
+        setVisible(true);
+      }, FADE_MS);
+    }, ROTATE_MS);
+    return () => {
+      window.clearInterval(interval);
+      if (fadeTimer !== undefined) window.clearTimeout(fadeTimer);
+    };
+  }, []);
+
+  return (
+    <div className="relative flex h-9 items-center justify-center bg-nf-black px-4 text-[11px] uppercase tracking-wide text-nf-muted">
+      <p
+        aria-hidden="true"
+        className={cn(
+          "transition-opacity duration-250 ease-nf",
+          visible ? "opacity-100" : "opacity-0"
+        )}
+      >
+        <Highlighted
+          text={ANNOUNCEMENTS[index].text}
+          highlight={ANNOUNCEMENTS[index].highlight}
+        />
+      </p>
+      {/* static equivalent so screen readers aren't spammed by the rotation */}
+      <ul className="sr-only">
+        {ANNOUNCEMENTS.map((a) => (
+          <li key={a.text}>{a.text}</li>
+        ))}
+      </ul>
+      <p className="absolute right-4 hidden items-center gap-2 lg:flex lg:right-6">
+        {TRUST_TRIAD.map((item, i) => (
+          <span key={item} className="flex items-center gap-2">
+            {i > 0 && (
+              <span aria-hidden="true" className="text-nf-dim">
+                ·
+              </span>
+            )}
+            {item}
+          </span>
+        ))}
+      </p>
+    </div>
+  );
+}

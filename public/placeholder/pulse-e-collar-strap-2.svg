@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  
+  <defs>
+    <radialGradient id="bg-pulse-e-collar-strap-2" cx="50%" cy="42%" r="75%">
+      <stop offset="0%" stop-color="#232323"/>
+      <stop offset="60%" stop-color="#181818"/>
+      <stop offset="100%" stop-color="#0e0e0e"/>
+    </radialGradient>
+    <radialGradient id="floor-pulse-e-collar-strap-2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain-pulse-e-collar-strap-2">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0"/>
+    </filter>
+    <linearGradient id="sheen-pulse-e-collar-strap-2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.25"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg-pulse-e-collar-strap-2)"/>
+  <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-pulse-e-collar-strap-2)"/>
+  
+  <g transform="translate(600 640) scale(1.45) rotate(-4)">
+    <ellipse rx="387" ry="274" fill="none" stroke="#62000f" stroke-width="124"/>
+    <ellipse rx="387" ry="274" fill="none" stroke="#B3001B" stroke-width="110"/>
+    <ellipse rx="387" ry="274" fill="none" stroke="#c4384d" stroke-width="33"
+      stroke-dasharray="581 1548" stroke-dashoffset="155" opacity="0.5"/>
+    <ellipse rx="387" ry="274" fill="none" stroke="#62000f" stroke-width="3"
+      stroke-dasharray="10 26" opacity="0.85" transform="scale(0.9090439276485789 0.8715328467153285)"/>
+    <ellipse rx="387" ry="274" fill="none" stroke="#62000f" stroke-width="3"
+      stroke-dasharray="10 26" opacity="0.85" transform="scale(1.0909560723514211 1.1284671532846715)"/>
+    <g transform="rotate(-23) translate(0 -274)">
+      <rect x="-95" y="-71" width="190" height="142" rx="18" fill="#2b2d30" stroke="#54575c" stroke-width="5"/>
+      <rect x="-58" y="-51" width="116" height="86" rx="10" fill="#1a1b1d" stroke="#45484d" stroke-width="4"/>
+      <circle cx="72" cy="0" r="9" fill="#54575c"/>
+      <circle cx="-72" cy="0" r="9" fill="#54575c"/>
+    </g>
+    <g transform="rotate(157) translate(0 -274)">
+      <circle r="68.2" fill="none" stroke="#8f9399" stroke-width="16"/>
+      <circle r="68.2" fill="none" stroke="#c6cad0" stroke-width="6" stroke-dasharray="40 90"/>
+      <rect x="-60.50000000000001" y="-20" width="121.00000000000001" height="40" rx="12" fill="#62000f" stroke="#48000b" stroke-width="4"/>
+    </g>
+  </g>
+  <rect width="1200" height="1500" fill="url(#sheen-pulse-e-collar-strap-2)" opacity="0.5"/>
+  <rect width="1200" height="1500" filter="url(#grain-pulse-e-collar-strap-2)"/>
+</svg>
