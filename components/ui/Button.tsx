@@ -54,7 +54,7 @@ export function Button({
   const classes = buttonClasses(variant, size, className);
 
   if (href) {
-    // anchor-compatible handlers are forwarded; button-only attrs (type, disabled…) are dropped
+    // anchor-compatible handlers are forwarded; button-only attrs (type, disabled...) are dropped
     const { onClick, onMouseEnter, onMouseLeave, onFocus, onBlur } = rest;
     return (
       <Link

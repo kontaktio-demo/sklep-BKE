@@ -37,8 +37,8 @@ export const filterGroups: FilterGroup[] = [
     id: "size",
     label: "Rozmiar",
     options: [
-      { value: "small", label: "Mały (28–36 cm)", count: count((p) => p.size === "small") },
-      { value: "medium", label: "Średni (38–46 cm)", count: count((p) => p.size === "medium") },
+      { value: "small", label: "Mały (28-36 cm)", count: count((p) => p.size === "small") },
+      { value: "medium", label: "Średni (38-46 cm)", count: count((p) => p.size === "medium") },
       { value: "large", label: "Duży (48 cm+)", count: count((p) => p.size === "large") },
     ],
   },

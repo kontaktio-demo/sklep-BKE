@@ -35,8 +35,8 @@ export type SortOption =
 export const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: "featured", label: "Polecane" },
   { value: "best-selling", label: "Bestsellery" },
-  { value: "az", label: "Nazwa: A–Z" },
-  { value: "za", label: "Nazwa: Z–A" },
+  { value: "az", label: "Nazwa: A-Z" },
+  { value: "za", label: "Nazwa: Z-A" },
   { value: "price-asc", label: "Cena: rosnąco" },
   { value: "price-desc", label: "Cena: malejąco" },
   { value: "date-desc", label: "Najnowsze" },
@@ -66,7 +66,7 @@ export function sortProducts(products: Product[], sort: SortOption): Product[] {
     case "featured":
       return sorted;
     case "best-selling":
-      // finite sentinel — Infinity - Infinity would be NaN and break comparator consistency
+      // finite sentinel - Infinity - Infinity would be NaN and break comparator consistency
       return sorted.sort(
         (a, b) =>
           (a.bestsellerRank ?? Number.MAX_SAFE_INTEGER) -

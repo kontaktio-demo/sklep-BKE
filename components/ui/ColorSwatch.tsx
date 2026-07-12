@@ -23,7 +23,7 @@ export function ColorSwatch({
           ? "ring-2 ring-white ring-offset-2 ring-offset-nf-bg"
           : "ring-1 ring-nf-border-strong"
       )}
-      // hex comes from product data — the one sanctioned inline color source
+      // hex comes from product data - the one sanctioned inline color source
       style={{ backgroundColor: color.hex }}
     />
   );

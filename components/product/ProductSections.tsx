@@ -1,0 +1,152 @@
+import { SectionNav } from "@/components/product/SectionNav";
+import { CheckIcon } from "@/components/ui/icons";
+import type { CollarSize, Product } from "@/lib/types";
+import { cn, formatPrice } from "@/lib/utils";
+
+const SIZE_ROWS: { size: CollarSize; label: string; neck: string; weight: string }[] = [
+  { size: "small", label: "Mały", neck: "28-36 cm", weight: "8-15 kg" },
+  { size: "medium", label: "Średni", neck: "38-46 cm", weight: "15-30 kg" },
+  { size: "large", label: "Duży", neck: "48-60 cm", weight: "30 kg i więcej" },
+];
+
+const FREE_SHIPPING_THRESHOLD = 299;
+
+const SECTION = "border-t border-nf-border pt-8 mt-8";
+const HEADING = "font-display text-xl font-bold text-white";
+const CELL = "px-4 py-3 text-left";
+
+export function ProductSections({ product }: { product: Product }) {
+  return (
+    <div className="grid gap-10 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-16">
+      <SectionNav />
+      <div className="min-w-0">
+      <section id="opis" className="scroll-mt-28" aria-labelledby="opis-heading">
+        <h2 id="opis-heading" className={HEADING}>
+          Opis
+        </h2>
+        <p className="mt-4 max-w-3xl leading-relaxed text-nf-text">{product.description}</p>
+        <ul className="mt-6 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
+          {product.highlights.map((highlight) => (
+            <li key={highlight} className="flex items-start gap-2 text-nf-text">
+              <CheckIcon
+                width={16}
+                height={16}
+                className="mt-0.5 shrink-0 text-nf-red-bright"
+              />
+              {highlight}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section id="specyfikacja" className={cn(SECTION, "scroll-mt-28")} aria-labelledby="specyfikacja-heading">
+        <h2 id="specyfikacja-heading" className={HEADING}>
+          Specyfikacja
+        </h2>
+        <dl className="mt-4 max-w-3xl">
+          {product.specs.map((spec) => (
+            <div
+              key={spec.label}
+              className="grid grid-cols-[minmax(0,180px)_1fr] gap-4 border-b border-nf-border py-3"
+            >
+              <dt className="text-sm text-nf-dim">{spec.label}</dt>
+              <dd className="text-sm text-nf-text">{spec.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section id="rozmiary" className={cn(SECTION, "scroll-mt-28")} aria-labelledby="rozmiary-heading">
+        <h2 id="rozmiary-heading" className={HEADING}>
+          Rozmiary
+        </h2>
+        <p className="mt-4 max-w-3xl leading-relaxed text-nf-text">
+          Zmierz obwód szyi w najszerszym miejscu i dodaj 2-3 cm luzu. Waga psa jest tylko
+          orientacyjna, decyduje pomiar.
+        </p>
+        {/* focusable so the scroll container is reachable from the keyboard (WCAG 2.1.1) */}
+        <div
+          tabIndex={0}
+          role="region"
+          aria-label="Tabela rozmiarów"
+          className="mt-6 max-w-3xl overflow-x-auto"
+        >
+          <table className="w-full min-w-[420px] text-sm">
+            <thead>
+              <tr className="border-b border-nf-border-strong">
+                <th scope="col" className={cn(CELL, "font-medium text-nf-dim")}>
+                  Rozmiar
+                </th>
+                <th scope="col" className={cn(CELL, "font-medium text-nf-dim")}>
+                  Obwód szyi
+                </th>
+                <th scope="col" className={cn(CELL, "font-medium text-nf-dim")}>
+                  Waga psa (orientacyjnie)
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {SIZE_ROWS.map((row) => {
+                const current = row.size === product.size;
+                return (
+                  <tr
+                    key={row.size}
+                    className={cn(
+                      "border-b border-nf-border",
+                      current && "bg-nf-elevated"
+                    )}
+                  >
+                    <th
+                      scope="row"
+                      className={cn(
+                        CELL,
+                        "font-medium text-nf-text",
+                        // the tinted background alone would carry the meaning - the rule and
+                        // the sr-only note keep it perceivable without color
+                        current && "border-l-2 border-nf-red"
+                      )}
+                    >
+                      {row.label}
+                      {current && <span className="sr-only"> (rozmiar tego produktu)</span>}
+                    </th>
+                    <td className={cn(CELL, "text-nf-text")}>{row.neck}</td>
+                    <td className={cn(CELL, "text-nf-muted")}>{row.weight}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="dostawa" className={cn(SECTION, "scroll-mt-28")} aria-labelledby="dostawa-heading">
+        <h2 id="dostawa-heading" className={HEADING}>
+          Dostawa i zwroty
+        </h2>
+        <div className="mt-4 grid max-w-4xl gap-6 sm:grid-cols-3">
+          <div className="space-y-1">
+            <h3 className="text-sm font-semibold text-nf-text">Wysyłka</h3>
+            <p className="text-sm leading-relaxed text-nf-muted">
+              Wysyłka w 24 h w dni robocze. Do wyboru kurier lub paczkomat, sposób dostawy
+              wskazujesz w koszyku.
+            </p>
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-sm font-semibold text-nf-text">Koszt dostawy</h3>
+            <p className="text-sm leading-relaxed text-nf-muted">
+              Darmowa dostawa od {formatPrice(FREE_SHIPPING_THRESHOLD)}. Poniżej tej kwoty koszt
+              zależy od przewoźnika i widać go w koszyku.
+            </p>
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-sm font-semibold text-nf-text">Zwroty i gwarancja</h3>
+            <p className="text-sm leading-relaxed text-nf-muted">
+              60 dni na zwrot lub wymianę rozmiaru. Na szwy i okucia udzielamy 2 lat gwarancji.
+            </p>
+          </div>
+        </div>
+      </section>
+      </div>
+    </div>
+  );
+}

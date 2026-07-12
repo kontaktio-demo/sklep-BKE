@@ -24,7 +24,7 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-// in-memory only for phase 1 — no localStorage (§12)
+// in-memory only for phase 1 - no localStorage (§12)
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +34,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addLine = useCallback((product: Product, color?: ProductColor) => {
     const chosen: ProductColor | undefined = color ?? product.colors[0];
-    // colors may legitimately be empty once the backend lands — key on id alone then
+    // colors may legitimately be empty once the backend lands - key on id alone then
     const key = chosen ? `${product.id}:${chosen.name}` : product.id;
     setLines((prev) => {
       const existing = prev.find((l) => l.key === key);

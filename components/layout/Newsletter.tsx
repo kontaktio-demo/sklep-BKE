@@ -1,6 +1,6 @@
 "use client";
 
-// §8-J [VERDICT: NSDW] — dark band, uppercase heading, email capture stub
+// §8-J [VERDICT: NSDW] - dark band, uppercase heading, email capture stub
 
 import { useId, useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -30,7 +30,7 @@ export function Newsletter() {
             className="mt-6 flex items-center justify-center gap-2 text-nf-text"
           >
             <CheckIcon className="shrink-0 text-nf-red" />
-            Sprawdź skrzynkę — witamy w stadzie.
+            Sprawdź skrzynkę. Kod rabatowy jest już w drodze.
           </p>
         ) : (
           <form

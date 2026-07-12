@@ -36,7 +36,7 @@ export default async function CollectionPage({
         <CollectionView products={products} groups={groups} />
       </div>
 
-      {/* Netflix rows — secondary discovery under the primary grid (§7-2/3, §8-H) */}
+      {/* Netflix rows - secondary discovery under the primary grid (§7-2/3, §8-H) */}
       <div className="space-y-12 pb-20 pt-4">
         <TopTenRow products={products} title="Top 10 bestsellerów" />
         <NetflixRow

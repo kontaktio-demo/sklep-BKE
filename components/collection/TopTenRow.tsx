@@ -12,7 +12,7 @@ import {
 const CARD_SIZES = "(min-width:1024px) 230px, (min-width:640px) 210px, 42vw";
 const CARD_WIDTH_CLASS = "w-[42vw] sm:w-[210px] lg:w-[230px]";
 
-// §8-H / §7-3 [VERDICT: NEW, sanctioned Netflix layer — Top 10 ranked row]
+// §8-H / §7-3 [VERDICT: NEW, sanctioned Netflix layer - Top 10 ranked row]
 export function TopTenRow({
   products,
   title = "Top 10 bestsellerów",

@@ -193,7 +193,7 @@ function PriceSection({
   const fromId = useId();
   const toId = useId();
   const [lo, hi] = value;
-  // typed input is a local draft committed on blur/Enter — clamping per keystroke
+  // typed input is a local draft committed on blur/Enter - clamping per keystroke
   // made values like "150" untypeable (the "1" clamped to the lower bound instantly)
   const [drafts, setDrafts] = useState<[string, string]>([String(lo), String(hi)]);
 

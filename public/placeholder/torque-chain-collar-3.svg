@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  
+  <defs>
+    <radialGradient id="bg-torque-chain-collar-3" cx="50%" cy="42%" r="75%">
+      <stop offset="0%" stop-color="#232323"/>
+      <stop offset="60%" stop-color="#181818"/>
+      <stop offset="100%" stop-color="#0e0e0e"/>
+    </radialGradient>
+    <radialGradient id="floor-torque-chain-collar-3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain-torque-chain-collar-3">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0"/>
+    </filter>
+    <linearGradient id="sheen-torque-chain-collar-3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.25"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg-torque-chain-collar-3)"/>
+  <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-torque-chain-collar-3)"/>
+  
+  <g transform="translate(600 760) rotate(2)">
+    <ellipse cx="-190" cy="0" rx="150" ry="96" fill="none" stroke="#575a5c" stroke-width="46"/>
+    <ellipse cx="-190" cy="0" rx="150" ry="96" fill="none" stroke="#9EA3A8" stroke-width="34"/>
+    <ellipse cx="10" cy="0" rx="150" ry="96" fill="none" stroke="#4f5254" stroke-width="46" transform="rotate(90 10 0)"/>
+    <ellipse cx="10" cy="0" rx="150" ry="96" fill="none" stroke="#b3b7bb" stroke-width="34" transform="rotate(90 10 0)"/>
+    <ellipse cx="210" cy="0" rx="150" ry="96" fill="none" stroke="#575a5c" stroke-width="46"/>
+    <ellipse cx="210" cy="0" rx="150" ry="96" fill="none" stroke="#9EA3A8" stroke-width="34"/>
+  </g>
+  <rect width="1200" height="1500" fill="url(#sheen-torque-chain-collar-3)" opacity="0.5"/>
+  <rect width="1200" height="1500" filter="url(#grain-torque-chain-collar-3)"/>
+</svg>

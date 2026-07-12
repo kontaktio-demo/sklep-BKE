@@ -1,6 +1,6 @@
 "use client";
 
-// §8-G grid + §11 columns (2 → 3 md → 4 xl). No pagination at 26 items (§10 allows).
+// §8-G grid + §11 columns (2 -> 3 md -> 4 xl). No pagination at 26 items (§10 allows).
 
 import { ProductCard } from "@/components/collection/ProductCard";
 import { Reveal } from "@/components/motion/Reveal";
@@ -17,7 +17,7 @@ export function ProductGrid({
   return (
     <div id="product-grid" className="scroll-mt-24">
       {/* Reveal stays mounted across filter changes: its effect runs once on mount
-          (ScrollTrigger once + clearProps), so only the initial grid staggers in —
+          (ScrollTrigger once + clearProps), so only the initial grid staggers in -
           filtered re-renders paint instantly. */}
       <Reveal selector="[data-card]" stagger={0.04}>
         {products.length === 0 ? (

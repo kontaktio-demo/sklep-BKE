@@ -15,7 +15,7 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     const start = () => {
       if (lenis) return;
       gsap.registerPlugin(ScrollTrigger);
-      // allowNestedScroll — otherwise Lenis preventDefaults wheel events over the
+      // allowNestedScroll - otherwise Lenis preventDefaults wheel events over the
       // drawers/dialog/sidebar scroll areas, making them wheel-unscrollable
       const instance = new Lenis({ allowNestedScroll: true });
       lenis = instance;

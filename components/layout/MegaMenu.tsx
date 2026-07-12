@@ -2,7 +2,7 @@
 
 // §8-B [BASE: NSDW column structure, DEPTH: K9TG dropdowns]
 // Accessible standard per spec: top-level label is a link; panel opens on hover/focus-within.
-// The panel is positioned against the sticky <header> (nearest positioned ancestor) —
+// The panel is positioned against the sticky <header> (nearest positioned ancestor) -
 // no ancestor between here and the header may be `relative`.
 
 import Link from "next/link";

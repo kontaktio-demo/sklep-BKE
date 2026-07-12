@@ -1,6 +1,6 @@
 "use client";
 
-// §8-B [NSDW structure; Netflix transparent→solid over the hero]
+// §8-B [NSDW structure; Netflix transparent->solid over the hero]
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -15,8 +15,9 @@ import {
   UserIcon,
 } from "@/components/ui/icons";
 import { useCart } from "@/lib/cart";
-import { BRAND, NAV_ITEMS, TRUST_TRIAD } from "@/lib/nav";
+import { NAV_ITEMS, TRUST_TRIAD } from "@/lib/nav";
 import { cn } from "@/lib/utils";
+import { Logo } from "./Logo";
 import { MegaMenu } from "./MegaMenu";
 
 const POPULAR_SEARCHES = ["Obroże robocze", "Odblaskowe", "Łańcuszkowe", "Panele ID"];
@@ -208,7 +209,7 @@ export function Header() {
             solid ? "opacity-0" : "opacity-100"
           )}
         />
-        {/* no `relative` here — the mega panel positions against the header */}
+        {/* no `relative` here - the mega panel positions against the header */}
         <div className="container mx-auto flex h-16 items-center gap-2 px-4 lg:h-[72px] lg:px-6">
           <button
             type="button"
@@ -218,12 +219,8 @@ export function Header() {
           >
             <MenuIcon />
           </button>
-          <Link
-            href="/"
-            className="font-display text-2xl font-black uppercase tracking-tight text-nf-red"
-          >
-            {BRAND}
-          </Link>
+          <Logo />
+
           <div className="hidden flex-1 justify-center lg:flex">
             <MegaMenu />
           </div>

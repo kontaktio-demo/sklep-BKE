@@ -1,9 +1,10 @@
 "use client";
 
-// §8-I Quick View — [VERDICT: K9TG pattern → Netflix styled]
+// §8-I Quick View - [VERDICT: K9TG pattern -> Netflix styled]
 
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
@@ -21,8 +22,8 @@ const WIDTH_LABELS: Record<Product["width"], string> = {
 };
 
 const SIZE_LABELS: Record<Product["size"], string> = {
-  small: "Mały (28–36 cm)",
-  medium: "Średni (38–46 cm)",
+  small: "Mały (28-36 cm)",
+  medium: "Średni (38-46 cm)",
   large: "Duży (48 cm+)",
 };
 
@@ -208,13 +209,13 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
               Wyprzedane
             </Button>
           )}
-          <a
-            href="#"
-            title="Strona produktu dostępna wkrótce"
+          <Link
+            href={`/products/${product.slug}`}
+            onClick={onClose}
             className="self-center text-sm text-nf-muted underline underline-offset-2 transition-colors duration-250 ease-nf hover:text-white"
           >
-            Zobacz szczegóły produktu
-          </a>
+            Zobacz pełny opis
+          </Link>
         </div>
       </div>
     </div>

@@ -96,9 +96,9 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 export const ANNOUNCEMENTS = [
-  { text: "CZAS REALIZACJI: 4–10 DNI ROBOCZYCH", highlight: "4–10 DNI ROBOCZYCH" },
-  { text: "LIMITOWANY DROP JUŻ DOSTĘPNY — NIGHTWATCH", highlight: "JUŻ DOSTĘPNY" },
+  { text: "WYSYŁKA W 24 H W DNI ROBOCZE", highlight: "24 H" },
   { text: "DARMOWA DOSTAWA OD 299 ZŁ", highlight: "299 ZŁ" },
+  { text: "60 DNI NA ZWROT I DOBÓR ROZMIARU", highlight: "60 DNI" },
 ];
 
 export const TRUST_TRIAD = ["2 lata gwarancji", "Wysyłka w 24 h", "60 dni na zwrot"];

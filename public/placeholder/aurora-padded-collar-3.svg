@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  
+  <defs>
+    <radialGradient id="bg-aurora-padded-collar-3" cx="50%" cy="42%" r="75%">
+      <stop offset="0%" stop-color="#232323"/>
+      <stop offset="60%" stop-color="#181818"/>
+      <stop offset="100%" stop-color="#0e0e0e"/>
+    </radialGradient>
+    <radialGradient id="floor-aurora-padded-collar-3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain-aurora-padded-collar-3">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0"/>
+    </filter>
+    <linearGradient id="sheen-aurora-padded-collar-3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.25"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg-aurora-padded-collar-3)"/>
+  <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-aurora-padded-collar-3)"/>
+  
+  <g transform="translate(600 760) rotate(1)">
+    <rect x="-420" y="-105" width="420" height="210" rx="16" fill="#6d6254"/>
+    <rect x="-420" y="-92" width="420" height="184" rx="10" fill="#C7B299"/>
+    <rect x="-420" y="-92" width="420" height="26" fill="#d3c3af" opacity="0.35"/>
+    <g stroke="#4c443a" stroke-width="5" stroke-dasharray="16 20" opacity="0.9">
+      <path d="M-420 -60 H0"/>
+      <path d="M-420 60 H0"/>
+    </g>
+    <rect x="-30" y="-150" width="330" height="300" rx="34" fill="#2b2d30" stroke="#5b5f66" stroke-width="8"/>
+    <rect x="30" y="-92" width="210" height="184" rx="20" fill="#141517" stroke="#4a4d53" stroke-width="6"/>
+    <circle cx="255" cy="-105" r="14" fill="#6c7076"/>
+    <circle cx="255" cy="105" r="14" fill="#6c7076"/>
+    <rect x="300" y="-92" width="140" height="184" rx="14" fill="#6d6254"/>
+    <rect x="300" y="-92" width="140" height="184" rx="14" fill="#C7B299" opacity="0.85"/>
+  </g>
+  <rect width="1200" height="1500" fill="url(#sheen-aurora-padded-collar-3)" opacity="0.5"/>
+  <rect width="1200" height="1500" filter="url(#grain-aurora-padded-collar-3)"/>
+</svg>

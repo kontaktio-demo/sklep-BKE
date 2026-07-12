@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import type { Collection } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 
-// R3F chunk never loads for reduced-motion users; Billboard3D self-guards too —
+// R3F chunk never loads for reduced-motion users; Billboard3D self-guards too -
 // double-gating is intended (§10).
 const Billboard3D = dynamic(() => import("@/components/motion/Billboard3D"), {
   ssr: false,
@@ -24,7 +24,7 @@ function useMotionOk(): boolean {
   return ok;
 }
 
-// §8-D [VERDICT: NSDW hero content model → Netflix billboard per §7-1]
+// §8-D [VERDICT: NSDW hero content model -> Netflix billboard per §7-1]
 export function CollectionHero({ collection }: { collection: Collection }) {
   const motionOk = useMotionOk();
 

@@ -298,7 +298,7 @@ export function RowScroller({
   );
 }
 
-// §8-H [VERDICT: NEW, sanctioned Netflix layer §7-2] — horizontal category row.
+// §8-H [VERDICT: NEW, sanctioned Netflix layer §7-2] - horizontal category row.
 export function NetflixRow({
   title,
   products,

@@ -27,7 +27,7 @@ export function AnnouncementBar() {
 
   useEffect(() => {
     if (ANNOUNCEMENTS.length < 2) return;
-    // reduced motion → first message shown statically, no rotation
+    // reduced motion -> first message shown statically, no rotation
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let fadeTimer: number | undefined;
     const interval = window.setInterval(() => {

@@ -10,14 +10,14 @@
   --color-nf-red: #e50914;
   --color-nf-red-hover: #f40612;
   --color-nf-red-dark: #b20710;
-  /* nf-red fails WCAG AA (<4.5:1) as SMALL text on the dark surfaces — use
+  /* nf-red fails WCAG AA (<4.5:1) as SMALL text on the dark surfaces - use
      red-bright for small red type (badges, eyebrows, highlights); §10 sanctions the bump */
   --color-nf-red-bright: #ff4d55;
   /* text */
   --color-nf-white: #ffffff;
   --color-nf-text: #e5e5e5;
   --color-nf-muted: #b3b3b3;
-  /* 8a8a8a (not 808080): keeps ≥4.5:1 AA on the elevated #181818/#232323 surfaces */
+  /* 8a8a8a (not 808080): keeps >=4.5:1 AA on the elevated #181818/#232323 surfaces */
   --color-nf-dim: #8a8a8a;
   /* lines */
   --color-nf-border: rgba(255, 255, 255, 0.1);

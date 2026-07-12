@@ -21,10 +21,24 @@ const inter = Inter({
   subsets: ["latin", "latin-ext"],
 });
 
+const DESCRIPTION =
+  "Obroże klasy służbowej z nylonu i łańcuszka. Miejsce na panel ID, kompatybilność z e-obrożą, testy w terenie. Wysyłka w 24 h, 60 dni na zwrot.";
+
 export const metadata: Metadata = {
-  title: "PAKT — obroże i sprzęt dla psów pracujących",
-  description:
-    "Obroże klasy służbowej z nylonu i łańcuszka. Miejsce na panel ID, kompatybilność z e-obrożą, testy w terenie. Wysyłka w 24 h, 60 dni na zwrot.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  title: {
+    default: "PAKT | Obroże i sprzęt dla psów pracujących",
+    template: "%s | PAKT",
+  },
+  description: DESCRIPTION,
+  openGraph: {
+    type: "website",
+    locale: "pl_PL",
+    siteName: "PAKT",
+    title: "PAKT | Obroże i sprzęt dla psów pracujących",
+    description: DESCRIPTION,
+    images: [{ url: "/brand/og.png", width: 1200, height: 630, alt: "PAKT" }],
+  },
 };
 
 export const viewport: Viewport = {
@@ -36,7 +50,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // cross-sell candidates for the cart drawer (§8-C) — fetched through the seam
+  // cross-sell candidates for the cart drawer (§8-C) - fetched through the seam
   const crossSell = (await getProducts("collars"))
     .filter((p) => p.inStock && p.bestsellerRank != null)
     .sort((a, b) => (a.bestsellerRank ?? 99) - (b.bestsellerRank ?? 99))

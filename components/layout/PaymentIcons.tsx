@@ -1,4 +1,4 @@
-// neutral text badges — no trademark artwork (§12)
+// neutral text badges - no trademark artwork (§12)
 
 import { PAYMENT_METHODS } from "@/lib/nav";
 import { cn } from "@/lib/utils";

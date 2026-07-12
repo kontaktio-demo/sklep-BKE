@@ -1,4 +1,5 @@
-import type { Product, ProductColor } from "../types";
+import type { Product, ProductColor, ProductSpec } from "../types";
+import { productCopy } from "./copy.pl";
 
 const C: Record<string, ProductColor> = {
   czarny: { name: "Czarny", hex: "#1F1F1F" },
@@ -14,20 +15,88 @@ const C: Record<string, ProductColor> = {
   grafitowy: { name: "Grafitowy", hex: "#4B4F55" },
 };
 
-type Spec = Omit<Product, "id" | "images" | "currency" | "productType"> & {
-  id?: string;
+type Spec = Omit<
+  Product,
+  | "id"
+  | "images"
+  | "gallery"
+  | "currency"
+  | "productType"
+  | "tagline"
+  | "description"
+  | "highlights"
+  | "specs"
+  | "sku"
+> & { id?: string };
+
+const WIDTH_CM: Record<Product["width"], string> = {
+  "1": "2,5 cm",
+  "1.5": "4 cm",
+  "1.75": "4,5 cm",
 };
 
+const NECK_CM: Record<Product["size"], string> = {
+  small: "28-36 cm",
+  medium: "38-46 cm",
+  large: "48-60 cm",
+};
+
+const SIZE_CODE: Record<Product["size"], string> = { small: "S", medium: "M", large: "L" };
+
+// specs are derived from the facets so the table can never contradict the filters
+function buildSpecs(spec: Spec): ProductSpec[] {
+  const nylon = spec.type === "nylon";
+  const gramsPerCm = nylon ? 1.6 : 4.2;
+  const base = spec.width === "1.75" ? 78 : spec.width === "1.5" ? 64 : 46;
+  const weight = Math.round(base + gramsPerCm * (spec.size === "large" ? 18 : spec.size === "medium" ? 12 : 6));
+
+  return [
+    {
+      label: "Materiał",
+      value: nylon
+        ? "Nylon 1000D, wyściółka z neoprenu"
+        : "Stal nierdzewna, polerowana",
+    },
+    {
+      label: "Okucia",
+      value: nylon
+        ? "Klamra zatrzaskowa i D-ring ze stopu cynku"
+        : "Ogniwa spawane, D-ring ze stali",
+    },
+    { label: "Szerokość", value: WIDTH_CM[spec.width] },
+    { label: "Obwód szyi", value: NECK_CM[spec.size] },
+    { label: "Waga", value: `${weight} g` },
+    { label: "Panel ID", value: spec.idPanelCompatible ? "Tak, rzep na całej długości" : "Brak" },
+    {
+      label: "E-obroża",
+      value: spec.category === "e-collar" ? "Zgodna z modułami do 45 mm" : "Niezalecana",
+    },
+    { label: "Produkcja", value: nylon ? "Szyte w Polsce" : "Montowane w Polsce" },
+    { label: "Gwarancja", value: "2 lata" },
+  ];
+}
+
+function skuFor(spec: Spec): string {
+  // trzon SKU = pierwszy człon nazwy modelu (ranger-duty-collar -> RAN)
+  const model = (spec.slug.split("-")[0] ?? "").slice(0, 3).toUpperCase();
+  const widthCode = spec.width.replace(".", "");
+  return `PAKT-${model}-${widthCode}-${SIZE_CODE[spec.size]}`;
+}
+
 function collar(spec: Spec): Product {
+  const copy = productCopy[spec.slug];
+  if (!copy) throw new Error(`Brak polskiej treści dla produktu: ${spec.slug}`);
+
   return {
     ...spec,
+    ...copy,
     id: spec.id ?? `col_${spec.slug}`,
     currency: "PLN",
     productType: "Obroża",
-    images: [
-      `/placeholder/${spec.slug}-1.svg`,
-      `/placeholder/${spec.slug}-2.svg`,
-    ],
+    sku: skuFor(spec),
+    specs: buildSpecs(spec),
+    images: [`/placeholder/${spec.slug}-1.svg`, `/placeholder/${spec.slug}-2.svg`],
+    gallery: [1, 2, 3, 4].map((n) => `/placeholder/${spec.slug}-${n}.svg`),
   };
 }
 

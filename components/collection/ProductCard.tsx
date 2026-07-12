@@ -1,8 +1,9 @@
 "use client";
 
-// §8-G card — [BASE: NSDW two-image hover-swap card, ACTIONS: K9TG quick view + type label, MOTION: Netflix §7-4]
+// §8-G card - [BASE: NSDW two-image hover-swap card, ACTIONS: K9TG quick view + type label, MOTION: Netflix §7-4]
 
 import Image from "next/image";
+import Link from "next/link";
 import { useQuickView } from "@/components/collection/QuickViewModal";
 import { Badge } from "@/components/ui/Badge";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
@@ -12,8 +13,8 @@ import { useCart } from "@/lib/cart";
 import type { Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-// accounts for the lg+ filter sidebar and the 1600px container cap — 25vw/33vw
-// over-requested 1.5–2.2× once real photography replaces the SVG placeholders
+// accounts for the lg+ filter sidebar and the 1600px container cap - 25vw/33vw
+// over-requested 1.5-2.2x once real photography replaces the SVG placeholders
 const DEFAULT_SIZES =
   "(min-width:1600px) 300px, (min-width:1280px) calc((100vw - 390px) / 4), (min-width:1024px) calc((100vw - 340px) / 3), (min-width:768px) 33vw, 50vw";
 const MAX_SWATCHES = 4;
@@ -94,7 +95,14 @@ export function ProductCard({
         </div>
 
         <div className="space-y-1 pt-3">
-          <h3 className="text-[15px] font-medium leading-snug text-nf-text">{product.name}</h3>
+          <h3 className="text-[15px] font-medium leading-snug">
+            <Link
+              href={`/products/${product.slug}`}
+              className="relative z-[3] rounded-[2px] text-nf-text transition-colors duration-250 ease-nf hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              {product.name}
+            </Link>
+          </h3>
           <div className="flex items-baseline gap-2">
             <PriceTag
               price={product.price}

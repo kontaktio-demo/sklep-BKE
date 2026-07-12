@@ -1,6 +1,6 @@
 "use client";
 
-// §8-C [VERDICT: NSDW] — right drawer, cross-sell strip, trust + payment rows
+// §8-C [VERDICT: NSDW] - right drawer, cross-sell strip, trust + payment rows
 
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
@@ -33,7 +33,7 @@ function EmptyState({ onShop }: { onShop: () => void }) {
       <p className="font-display text-xl font-bold uppercase text-nf-white">
         Twój koszyk jest pusty
       </p>
-      {/* Button renders a Link when href is set and drops onClick — the wrapper
+      {/* Button renders a Link when href is set and drops onClick - the wrapper
           catches the bubbled click (mouse and keyboard) to close the drawer */}
       <span onClick={onShop}>
         <Button href="/collections/collars">Zobacz obroże</Button>

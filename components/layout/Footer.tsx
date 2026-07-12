@@ -1,14 +1,28 @@
-// §8-K [VERDICT: NSDW mega-footer] — server component (uncontrolled select)
+// §8-K [VERDICT: NSDW mega-footer] - server component (uncontrolled select)
 
 import Link from "next/link";
 import { GlobeIcon } from "@/components/ui/icons";
 import { BRAND, FOOTER_COLUMNS, LEGAL_LINKS, REGIONS } from "@/lib/nav";
+import { Logo } from "./Logo";
 import { PaymentIcons } from "./PaymentIcons";
 
 export function Footer() {
   return (
     <footer className="border-t border-nf-border bg-nf-black">
       <div className="container mx-auto px-4 py-14 lg:px-6">
+        <div className="mb-12 flex flex-col gap-4 border-b border-nf-border pb-10 md:flex-row md:items-end md:justify-between">
+          <Logo
+            variant="lockup"
+            onDark
+            markClassName="h-24 w-auto"
+            wordmarkClassName="h-8 w-auto"
+            className="gap-4"
+          />
+          <p className="max-w-sm text-sm leading-relaxed text-nf-muted">
+            Obroże i sprzęt dla psów pracujących. Projektujemy i szyjemy w Polsce,
+            testujemy z przewodnikami.
+          </p>
+        </div>
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
           {FOOTER_COLUMNS.map((col) => (
             <nav key={col.title} aria-label={col.title}>
@@ -48,7 +62,7 @@ export function Footer() {
           <PaymentIcons />
         </div>
         <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-nf-dim">
-          <p>© 2026 {BRAND}. Wersja demo — wszystkie produkty są przykładowe.</p>
+          <p>© 2026 {BRAND}. Wszystkie prawa zastrzeżone.</p>
           <ul className="flex flex-wrap gap-x-4">
             {LEGAL_LINKS.map((link) => (
               <li key={link.label}>

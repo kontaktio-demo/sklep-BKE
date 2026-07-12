@@ -19,7 +19,7 @@ export function formatPrice(price: number, currency = "PLN"): string {
   return fmt.format(price);
 }
 
-// Polish plural forms: plural(1, "produkt", "produkty", "produktów") → "produkt"
+// Polish plural forms: plural(1, "produkt", "produkty", "produktów") -> "produkt"
 export function plural(n: number, one: string, few: string, many: string): string {
   if (n === 1) return one;
   const mod10 = n % 10;

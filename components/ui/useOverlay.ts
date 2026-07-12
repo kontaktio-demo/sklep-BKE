@@ -50,7 +50,7 @@ export function useOverlayA11y(
       const active = document.activeElement;
       const inside = active instanceof HTMLElement && node.contains(active);
       if (e.shiftKey) {
-        // `active === node`: the panel itself (tabIndex=-1) — wrap instead of escaping the trap
+        // `active === node`: the panel itself (tabIndex=-1) - wrap instead of escaping the trap
         if (!inside || active === firstItem || active === node) {
           e.preventDefault();
           lastItem.focus();

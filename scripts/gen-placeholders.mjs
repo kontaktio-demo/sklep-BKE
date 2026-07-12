@@ -1,5 +1,5 @@
 // One-shot generator for phase-1 placeholder imagery (public/placeholder/*.svg).
-// Deterministic: same input → same files. Real photography replaces these in phase 2.
+// Deterministic: same input -> same files. Real photography replaces these in phase 2.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -149,11 +149,80 @@ function chainCollar(hex, rnd, zoomed) {
   </g>`;
 }
 
+// gallery shot 3 - hardware macro (buckle / chain link close-up)
+function hardwareShot(hex, chain, rnd) {
+  const dark = shade(hex, -0.45);
+  const light = shade(hex, 0.22);
+  const tilt = Math.round((rnd() - 0.5) * 14);
+
+  if (chain) {
+    return `
+  <g transform="translate(600 760) rotate(${tilt})">
+    <ellipse cx="-190" cy="0" rx="150" ry="96" fill="none" stroke="${dark}" stroke-width="46"/>
+    <ellipse cx="-190" cy="0" rx="150" ry="96" fill="none" stroke="${hex}" stroke-width="34"/>
+    <ellipse cx="10" cy="0" rx="150" ry="96" fill="none" stroke="${shade(hex, -0.5)}" stroke-width="46" transform="rotate(90 10 0)"/>
+    <ellipse cx="10" cy="0" rx="150" ry="96" fill="none" stroke="${light}" stroke-width="34" transform="rotate(90 10 0)"/>
+    <ellipse cx="210" cy="0" rx="150" ry="96" fill="none" stroke="${dark}" stroke-width="46"/>
+    <ellipse cx="210" cy="0" rx="150" ry="96" fill="none" stroke="${hex}" stroke-width="34"/>
+  </g>`;
+  }
+
+  return `
+  <g transform="translate(600 760) rotate(${tilt})">
+    <rect x="-420" y="-105" width="420" height="210" rx="16" fill="${dark}"/>
+    <rect x="-420" y="-92" width="420" height="184" rx="10" fill="${hex}"/>
+    <rect x="-420" y="-92" width="420" height="26" fill="${light}" opacity="0.35"/>
+    <g stroke="${shade(hex, -0.62)}" stroke-width="5" stroke-dasharray="16 20" opacity="0.9">
+      <path d="M-420 -60 H0"/>
+      <path d="M-420 60 H0"/>
+    </g>
+    <rect x="-30" y="-150" width="330" height="300" rx="34" fill="#2b2d30" stroke="#5b5f66" stroke-width="8"/>
+    <rect x="30" y="-92" width="210" height="184" rx="20" fill="#141517" stroke="#4a4d53" stroke-width="6"/>
+    <circle cx="255" cy="-105" r="14" fill="#6c7076"/>
+    <circle cx="255" cy="105" r="14" fill="#6c7076"/>
+    <rect x="300" y="-92" width="140" height="184" rx="14" fill="${dark}"/>
+    <rect x="300" y="-92" width="140" height="184" rx="14" fill="${hex}" opacity="0.85"/>
+  </g>`;
+}
+
+// gallery shot 4 - coiled flat-lay
+function coiledShot(hex, chain, rnd) {
+  const dark = shade(hex, -0.45);
+  const light = shade(hex, 0.2);
+  const rot = Math.round((rnd() - 0.5) * 24);
+  const sw = chain ? 26 : 74;
+  let loops = "";
+  for (let i = 0; i < 3; i++) {
+    const r = 330 - i * 96;
+    const dash = chain ? `stroke-dasharray="46 26"` : "";
+    loops += `<circle r="${r}" fill="none" stroke="${dark}" stroke-width="${sw + 12}" ${dash}/>
+      <circle r="${r}" fill="none" stroke="${i % 2 ? light : hex}" stroke-width="${sw}" ${dash}/>`;
+  }
+  return `
+  <g transform="translate(600 750) rotate(${rot})">
+    ${loops}
+    ${
+      chain
+        ? `<circle r="70" fill="none" stroke="${light}" stroke-width="20"/>`
+        : `<g transform="translate(0 -330)">
+             <rect x="-90" y="-46" width="180" height="92" rx="16" fill="#2b2d30" stroke="#54575c" stroke-width="5"/>
+             <rect x="-52" y="-24" width="104" height="48" rx="9" fill="#1a1b1d" stroke="#45484d" stroke-width="4"/>
+           </g>`
+    }
+  </g>`;
+}
+
 function productSvg(slug, hex, chain, variant) {
   const id = `${slug}-${variant}`;
   const rnd = mulberry32(hashCode(id));
-  const zoomed = variant === 2;
-  const body = chain ? chainCollar(hex, rnd, zoomed) : nylonCollar(hex, rnd, zoomed);
+  const body =
+    variant === 3
+      ? hardwareShot(hex, chain, rnd)
+      : variant === 4
+        ? coiledShot(hex, chain, rnd)
+        : chain
+          ? chainCollar(hex, rnd, variant === 2)
+          : nylonCollar(hex, rnd, variant === 2);
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
   ${DEFS(id)}
   <rect width="1200" height="1500" fill="url(#bg-${id})"/>
@@ -198,7 +267,7 @@ function heroSvg() {
 
 let written = 0;
 for (const p of PRODUCTS) {
-  for (const variant of [1, 2]) {
+  for (const variant of [1, 2, 3, 4]) {
     writeFileSync(join(OUT, `${p.slug}-${variant}.svg`), productSvg(p.slug, p.hex, p.chain, variant));
     written++;
   }
