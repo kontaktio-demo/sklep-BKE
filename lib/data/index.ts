@@ -18,7 +18,7 @@ const collections: Record<string, Omit<Collection, "productCount">> = {
     handle: "collars",
     title: "Obroże dla psów",
     description:
-      "Projektowane dla psów pracujących, noszone przez wszystkie. Nylon i łańcuszek klasy służbowej, miejsce na panel ID, kompatybilność z e-obrożą. Testowane w terenie, nie na wybiegu.",
+      "Projektowane dla psów pracujących, noszone przez wszystkie. Nylon i łańcuszek klasy roboczej, miejsce na panel ID, kompatybilność z e-obrożą. Testowane w terenie, nie na wybiegu.",
     heroImage: "/placeholder/hero-collars.svg",
   },
 };

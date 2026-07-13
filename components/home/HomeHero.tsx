@@ -10,7 +10,7 @@ export function HomeHero() {
   return (
     <section className="relative min-h-[92svh] overflow-hidden bg-pk-paper pt-24">
       <div className="mx-auto flex min-h-[calc(92svh-6rem)] max-w-[1600px] flex-col justify-between px-4 pb-10 md:px-6">
-        <div className="flex items-center justify-between border-b border-pk-line pb-4 font-mono text-[11px] uppercase tracking-[0.25em] text-pk-ink-muted">
+        <div className="type-meta flex items-center justify-between border-b border-pk-line pb-4 text-pk-ink-muted">
           <span>PAKT</span>
           <span className="hidden sm:block">Obroże dla psów pracujących</span>
           <span>PL / 2026</span>
@@ -22,7 +22,7 @@ export function HomeHero() {
               immediate
               as="h1"
               lines={["SPRZĘT,", "KTÓRY", "WRACA"]}
-              className="font-display text-[clamp(3rem,11vw,9rem)] font-black uppercase leading-[0.86] tracking-[-0.02em] text-pk-ink"
+              className="type-display text-pk-ink"
             />
           </div>
 
@@ -35,7 +35,7 @@ export function HomeHero() {
             </p>
             <Link
               href="/collections/collars"
-              className="group mt-6 inline-flex min-h-11 items-center gap-3 border-b border-pk-ink pb-1 font-mono text-[11px] uppercase tracking-[0.25em] text-pk-ink transition-colors duration-300 ease-nf hover:border-pk-red hover:text-pk-red"
+              className="type-meta group mt-6 inline-flex min-h-11 items-center gap-3 border-b border-pk-ink pb-1 text-pk-ink transition-colors duration-300 ease-nf hover:border-pk-red hover:text-pk-red motion-reduce:transition-none"
             >
               Zobacz obroże
               <ArrowRightIcon
@@ -47,7 +47,7 @@ export function HomeHero() {
           </div>
         </div>
 
-        <div className="flex items-end justify-between border-t border-pk-line pt-4 font-mono text-[11px] uppercase tracking-[0.25em] text-pk-ink-muted">
+        <div className="type-meta flex items-end justify-between border-t border-pk-line pt-4 text-pk-ink-muted">
           <span>Przewiń</span>
           <span className="hidden md:block">Szyte w Polsce</span>
           <span>26 pozycji w sklepie</span>

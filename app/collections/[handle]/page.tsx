@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import { getCollection, getFilters, getProducts } from "@/lib/data";
 import { CollectionHero } from "@/components/collection/CollectionHero";
 import { CollectionView } from "@/components/collection/CollectionView";
-import { NetflixRow } from "@/components/collection/NetflixRow";
-import { TopTenRow } from "@/components/collection/TopTenRow";
+import { ProductRow } from "@/components/collection/ProductRow";
+import { BestsellerRow } from "@/components/collection/BestsellerRow";
 import { QuickViewProvider } from "@/components/collection/QuickViewModal";
 
 export function generateStaticParams() {
@@ -36,22 +36,22 @@ export default async function CollectionPage({
         <CollectionView products={products} groups={groups} />
       </div>
 
-      {/* Netflix rows - secondary discovery under the primary grid (§7-2/3, §8-H) */}
+      {/* Rzedy produktow - wtorna sciezka odkrywania pod glowna siatka (§8-H) */}
       <div className="space-y-12 pb-20 pt-4">
-        <TopTenRow products={products} title="Top 10 bestsellerów" />
-        <NetflixRow
+        <BestsellerRow products={products} title="Top 10 bestsellerów" />
+        <ProductRow
           id="row-working"
           title="Obroże robocze"
           products={working}
           exploreHref="/collections/collars"
         />
-        <NetflixRow
+        <ProductRow
           id="row-everyday"
           title="Na co dzień"
           products={everyday}
           exploreHref="/collections/collars"
         />
-        <NetflixRow
+        <ProductRow
           id="row-e-collar"
           title="Kompatybilne z e-obrożą"
           products={eCollar}

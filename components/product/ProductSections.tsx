@@ -1,18 +1,14 @@
 import { SectionNav } from "@/components/product/SectionNav";
 import { CheckIcon } from "@/components/ui/icons";
-import type { CollarSize, Product } from "@/lib/types";
+import { SIZE_NAME, SIZE_NECK, SIZE_ORDER, SIZE_WEIGHT } from "@/lib/sizes";
+import type { Product } from "@/lib/types";
 import { cn, formatPrice } from "@/lib/utils";
 
-const SIZE_ROWS: { size: CollarSize; label: string; neck: string; weight: string }[] = [
-  { size: "small", label: "Mały", neck: "28-36 cm", weight: "8-15 kg" },
-  { size: "medium", label: "Średni", neck: "38-46 cm", weight: "15-30 kg" },
-  { size: "large", label: "Duży", neck: "48-60 cm", weight: "30 kg i więcej" },
-];
-
+// tabela czyta zakresy z lib/sizes - ten sam slownik, ktory zasila filtry i BuyBox
 const FREE_SHIPPING_THRESHOLD = 299;
 
 const SECTION = "border-t border-nf-border pt-10 mt-12";
-const HEADING = "font-display text-lg font-bold uppercase tracking-wide text-white";
+const HEADING = "type-h2 text-white";
 const CELL = "px-4 py-3.5 text-left";
 
 export function ProductSections({ product }: { product: Product }) {
@@ -91,10 +87,10 @@ export function ProductSections({ product }: { product: Product }) {
                 </tr>
               </thead>
               <tbody>
-                {SIZE_ROWS.map((row) => {
-                  const current = row.size === product.size;
+                {SIZE_ORDER.map((size) => {
+                  const current = size === product.size;
                   return (
-                    <tr key={row.size} className="border-b border-nf-border">
+                    <tr key={size} className="border-b border-nf-border">
                       <th
                         scope="row"
                         className={cn(
@@ -107,14 +103,14 @@ export function ProductSections({ product }: { product: Product }) {
                             : "text-nf-muted"
                         )}
                       >
-                        {row.label}
+                        {SIZE_NAME[size]}
                         {current && <span className="sr-only"> (rozmiar tego produktu)</span>}
                       </th>
                       <td className={cn(CELL, current ? "text-white" : "text-nf-muted")}>
-                        {row.neck}
+                        {SIZE_NECK[size]}
                       </td>
                       <td className={cn(CELL, current ? "text-white" : "text-nf-muted")}>
-                        {row.weight}
+                        {SIZE_WEIGHT[size]}
                       </td>
                     </tr>
                   );

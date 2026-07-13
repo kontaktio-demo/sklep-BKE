@@ -29,15 +29,9 @@ export function CollectionHero({ collection }: { collection: Collection }) {
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-16">
           <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-nf-red-bright">
-              Kolekcja
-            </p>
-            <h1
-              className="mt-4 font-display font-black uppercase leading-[0.95] tracking-tight text-white"
-              style={{ fontSize: "clamp(2.25rem, 5vw, 4rem)" }}
-            >
-              {collection.title}
-            </h1>
+            {/* eyebrow jest oznaczeniem, nie akcja - czerwien zostaje dla CTA i stanu aktywnego */}
+            <p className="type-meta text-nf-dim">Kolekcja</p>
+            <h1 className="type-h1 mt-4 text-white">{collection.title}</h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-nf-muted">
               {collection.description}
             </p>
@@ -47,7 +41,7 @@ export function CollectionHero({ collection }: { collection: Collection }) {
             <Button size="lg" href="#product-grid">
               Przeglądaj
             </Button>
-            <Button size="lg" variant="ghost" href="#top-ten">
+            <Button size="lg" variant="ghost" href="#bestsellery">
               Bestsellery
             </Button>
           </div>

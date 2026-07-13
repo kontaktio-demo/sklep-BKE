@@ -4,14 +4,42 @@
 
 import { usePathname } from "next/navigation";
 import { useId, useState } from "react";
-import { isLightRoute } from "@/components/layout/ThemeSync";
 import { Button } from "@/components/ui/Button";
 import { CheckIcon } from "@/components/ui/icons";
+import { isK9Route } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
+interface NewsletterCopy {
+  eyebrow: string;
+  heading: [string, string];
+  lead?: string;
+  note: string;
+  done: string;
+}
+
+// Sklep cywilny sprzedaje rabatem, linia K9 nie. Przewodnik nie zapisuje sie po -10%,
+// tylko po informacje, co weszlo do katalogu i co wyszlo z testow.
+const SHOP_COPY: NewsletterCopy = {
+  eyebrow: "Newsletter",
+  heading: ["Nowe modele trafiają", "najpierw do subskrybentów"],
+  note: "Odbierz -10% na pierwsze zamówienie. Wypisujesz się jednym kliknięciem.",
+  done: "Sprawdź skrzynkę. Kod rabatowy jest już w drodze.",
+};
+
+const K9_COPY: NewsletterCopy = {
+  eyebrow: "PAKT-K9",
+  heading: ["Nowe pozycje", "w katalogu K9"],
+  lead: "Wiadomość wychodzi, gdy do katalogu wchodzi nowa pozycja albo gdy zmieniamy konstrukcję istniejącej. Do tego wyniki testów: obciążenia statyczne, ścieranie taśmy, zachowanie okuć po sezonie pracy.",
+  note: "Bez ofert i bez rabatów. Wypisujesz się jednym kliknięciem.",
+  done: "Adres zapisany. Damy znać, gdy katalog się zmieni.",
+};
+
 export function Newsletter() {
+  // Ciemny na kazdej trasie: na stronie glownej lezy pod panelem PAKT-K9, wiec powrot
+  // do papieru rozbijalby zejscie z jasnego swiata w ciemny.
+  const light = false;
   const pathname = usePathname();
-  const light = isLightRoute(pathname);
+  const copy = isK9Route(pathname) ? K9_COPY : SHOP_COPY;
   const [submitted, setSubmitted] = useState(false);
   const emailId = useId();
   const headingId = useId();
@@ -19,6 +47,7 @@ export function Newsletter() {
   return (
     <section
       aria-labelledby={headingId}
+      data-surface="dark"
       className={cn(
         "border-y py-16 md:py-20",
         light ? "border-pk-line bg-pk-paper-2" : "border-nf-border bg-nf-black"
@@ -32,7 +61,7 @@ export function Newsletter() {
               light ? "text-pk-ink-muted" : "text-nf-dim"
             )}
           >
-            Newsletter
+            {copy.eyebrow}
           </p>
           <h2
             id={headingId}
@@ -41,10 +70,20 @@ export function Newsletter() {
               light ? "text-pk-ink" : "text-white"
             )}
           >
-            Nowe modele trafiają
+            {copy.heading[0]}
             <br />
-            najpierw do subskrybentów
+            {copy.heading[1]}
           </h2>
+          {copy.lead && (
+            <p
+              className={cn(
+                "mt-5 max-w-md text-sm leading-relaxed",
+                light ? "text-pk-ink-2" : "text-nf-muted"
+              )}
+            >
+              {copy.lead}
+            </p>
+          )}
         </div>
 
         <div className="lg:col-span-7">
@@ -59,7 +98,7 @@ export function Newsletter() {
               <CheckIcon
                 className={cn("shrink-0", light ? "text-pk-red" : "text-nf-red-bright")}
               />
-              Sprawdź skrzynkę. Kod rabatowy jest już w drodze.
+              {copy.done}
             </p>
           ) : (
             <form
@@ -104,7 +143,7 @@ export function Newsletter() {
               light ? "text-pk-ink-muted" : "text-nf-dim"
             )}
           >
-            Odbierz -10% na pierwsze zamówienie. Wypisujesz się jednym kliknięciem.
+            {copy.note}
           </p>
         </div>
       </div>

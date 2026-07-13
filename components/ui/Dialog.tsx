@@ -9,17 +9,19 @@ import { useOverlayA11y } from "./useOverlay";
 const NF_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
 
 // Domyślnie ciemny (sklep). "light" obsługuje jasną stronę główną - patrz components/layout/theme.ts.
+// Panel odcina się od tła mocniejszą krawędzią, a nie cieniem: shadow-2xl/shadow-xl
+// dawały rozmytą poświatę pod modalem, czego język PAKT nie używa.
 const SURFACE = {
   dark: {
     scrim: "bg-black/60",
-    panel: "border-nf-border bg-nf-elevated shadow-2xl",
+    panel: "border-nf-border-strong bg-nf-elevated",
     line: "border-nf-border",
     title: "text-nf-white",
     close: "text-nf-muted hover:text-nf-white",
   },
   light: {
     scrim: "bg-pk-ink/40",
-    panel: "border-pk-line bg-pk-paper shadow-xl",
+    panel: "border-pk-line-strong bg-pk-paper",
     line: "border-pk-line",
     title: "text-pk-ink",
     close: "text-pk-ink-muted hover:text-pk-ink",
@@ -97,7 +99,7 @@ export function Dialog({
               aria-labelledby={titleId}
               tabIndex={-1}
               className={cn(
-                "pointer-events-auto relative mx-4 max-h-[90dvh] w-full overflow-y-auto rounded-md border",
+                "pointer-events-auto relative mx-4 max-h-[90dvh] w-full overflow-y-auto rounded-[2px] border",
                 surface.panel,
                 maxWidthClassName ?? "max-w-lg"
               )}
@@ -118,13 +120,7 @@ export function Dialog({
                     surface.line
                   )}
                 >
-                  <h2
-                    id={titleId}
-                    className={cn(
-                      "font-display text-lg font-bold uppercase tracking-wide",
-                      surface.title
-                    )}
-                  >
+                  <h2 id={titleId} className={cn("type-h3", surface.title)}>
                     {title}
                   </h2>
                   {closeButton}

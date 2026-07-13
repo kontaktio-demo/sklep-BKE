@@ -22,7 +22,8 @@ export function ProductGrid({
       <Reveal selector="[data-card]" stagger={0.04}>
         {products.length === 0 ? (
           <div className="py-24 text-center">
-            <p className="font-display text-lg font-bold text-white">
+            {/* komunikat, nie naglowek: zostaje w kroju tekstowym, bez skali naglowkowej */}
+            <p className="text-lg font-semibold text-white">
               Nic nie pasuje do wybranych filtrów.
             </p>
             <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-nf-muted">

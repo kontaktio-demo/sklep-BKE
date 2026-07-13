@@ -3,6 +3,7 @@
 // §8-C [VERDICT: NSDW] - right drawer, cross-sell strip, trust + payment rows
 
 import Image from "next/image";
+import { FreeShippingBar } from "@/components/cart/FreeShippingBar";
 import { Button } from "@/components/ui/Button";
 import { Drawer } from "@/components/ui/Drawer";
 import {
@@ -42,7 +43,7 @@ function EmptyState({ onShop }: { onShop: () => void }) {
   );
 }
 
-function CartFooter({ subtotal }: { subtotal: number }) {
+function CartFooter({ subtotal, onCheckout }: { subtotal: number; onCheckout: () => void }) {
   return (
     <div className="space-y-4 px-5 py-4">
       <ul className="flex items-center justify-between gap-2 text-[10px] text-nf-muted">
@@ -57,14 +58,17 @@ function CartFooter({ subtotal }: { subtotal: number }) {
         })}
       </ul>
       <PaymentIcons />
+      <FreeShippingBar subtotal={subtotal} />
       <div className="flex items-center justify-between text-sm font-semibold text-nf-white">
         <span>Razem</span>
         <span>{formatPrice(subtotal)}</span>
       </div>
       <p className="text-xs text-nf-dim">
-        Cena zawiera VAT. Koszt dostawy naliczany przy kasie.
+        Cena zawiera VAT. Koszt dostawy naliczany przy zamówieniu.
       </p>
-      <Button type="button" className="w-full">
+      {/* Button z href renderuje Link i przekazuje onClick - szuflada zamyka sie przy
+          przejsciu na /koszyk, zeby nie zostac otwarta nad strona koszyka */}
+      <Button href="/koszyk" onClick={onCheckout} className="w-full">
         Do kasy
       </Button>
     </div>
@@ -84,7 +88,9 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
       onClose={closeCart}
       side="right"
       title="Twój koszyk"
-      footer={isEmpty ? undefined : <CartFooter subtotal={subtotal} />}
+      footer={
+        isEmpty ? undefined : <CartFooter subtotal={subtotal} onCheckout={closeCart} />
+      }
     >
       {isEmpty ? (
         <EmptyState onShop={closeCart} />

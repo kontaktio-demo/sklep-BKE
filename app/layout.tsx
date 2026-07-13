@@ -30,7 +30,7 @@ const mono = JetBrains_Mono({
 });
 
 const DESCRIPTION =
-  "Obroże klasy służbowej z nylonu i łańcuszka. Miejsce na panel ID, kompatybilność z e-obrożą, testy w terenie. Wysyłka w 24 h, 60 dni na zwrot.";
+  "Obroże klasy roboczej z nylonu i łańcuszka. Miejsce na panel ID, kompatybilność z e-obrożą, testy w terenie. Wysyłka w 24 h, 60 dni na zwrot.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
@@ -66,15 +66,31 @@ export default async function RootLayout({
 
   return (
     <html lang="pl">
+      <head>
+        {/* motyw ustawiany przed pierwszym malowaniem: inaczej jasna strona glowna
+            mignie grafitem, bo body startuje z ciemnym tlem sklepu */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "if(location.pathname==='/'){document.documentElement.dataset.theme='light'}",
+          }}
+        />
+      </head>
       <body
         className={`${archivo.variable} ${inter.variable} ${mono.variable} antialiased`}
       >
+        <a
+          href="#tresc"
+          className="sr-only z-50 focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-[2px] focus:bg-nf-bg focus:px-4 focus:py-3 focus:text-sm focus:text-white"
+        >
+          Przejdź do treści
+        </a>
         <ThemeSync />
         <LenisProvider>
           <CartProvider>
             <AnnouncementBar />
             <Header />
-            <main>{children}</main>
+            <main id="tresc">{children}</main>
             <Newsletter />
             <Footer />
             <CartDrawer crossSell={crossSell} />

@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "PAKT | Obroże i sprzęt dla psów pracujących",
     short_name: "PAKT",
     description:
-      "Obroże klasy służbowej z nylonu i łańcuszka. Panel ID, zgodność z e-obrożą, wysyłka w 24 h.",
+      "Obroże klasy roboczej z nylonu i łańcuszka. Panel ID, zgodność z e-obrożą, wysyłka w 24 h.",
     lang: "pl",
     start_url: "/",
     display: "standalone",

@@ -1,6 +1,6 @@
 "use client";
 
-// §8-I Quick View - [VERDICT: K9TG pattern -> Netflix styled]
+// §8-I Szybki podglad produktu
 
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import Image from "next/image";
@@ -12,20 +12,14 @@ import { Dialog } from "@/components/ui/Dialog";
 import { PriceTag } from "@/components/ui/PriceTag";
 import { MinusIcon, PlusIcon } from "@/components/ui/icons";
 import { useCart } from "@/lib/cart";
+import { SIZE_LABEL, WIDTH_LABEL } from "@/lib/sizes";
 import type { Product, ProductColor } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-const WIDTH_LABELS: Record<Product["width"], string> = {
-  "1": "2,5 cm",
-  "1.5": "4 cm",
-  "1.75": "4,5 cm",
-};
-
-const SIZE_LABELS: Record<Product["size"], string> = {
-  small: "Mały (28-36 cm)",
-  medium: "Średni (38-46 cm)",
-  large: "Duży (48 cm+)",
-};
+// wspolny rytm etykiet i pol - ten sam co w BuyBox (karta produktu)
+const LABEL = "block type-meta text-nf-dim";
+const PILL =
+  "mt-2 inline-flex items-center rounded-[2px] border border-nf-border-strong px-3 py-2 text-sm text-nf-text";
 
 interface QuickViewContextValue {
   openQuickView: (product: Product) => void;
@@ -87,7 +81,7 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
   return (
     <div className="grid gap-6 p-5 md:grid-cols-2 md:p-6">
       <div>
-        <div className="relative aspect-[4/5] overflow-hidden rounded-[4px] bg-nf-elevated">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] bg-nf-elevated">
           <Image
             src={product.images[imageIndex]}
             alt={product.name}
@@ -105,7 +99,7 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
               aria-pressed={imageIndex === i}
               onClick={() => setImageIndex(i)}
               className={cn(
-                "relative aspect-[4/5] w-16 overflow-hidden rounded-[4px] bg-nf-elevated transition-opacity duration-250 ease-nf",
+                "relative aspect-[4/5] w-16 overflow-hidden rounded-[2px] bg-nf-elevated transition-opacity duration-250 ease-nf",
                 imageIndex === i
                   ? "ring-2 ring-white ring-offset-2 ring-offset-nf-elevated"
                   : "opacity-60 hover:opacity-100"
@@ -128,8 +122,8 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
         )}
 
         <div>
-          <p className="text-xl font-semibold text-nf-white">{product.name}</p>
-          <p className="mt-1 text-xs uppercase tracking-widest text-nf-dim">{product.productType}</p>
+          <p className="type-h3 text-nf-white">{product.name}</p>
+          <p className={cn("mt-2", LABEL)}>{product.productType}</p>
         </div>
 
         <PriceTag
@@ -142,7 +136,7 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
         {product.colors.length > 0 && (
           <div>
             <div className="flex items-baseline justify-between">
-              <span className="text-xs uppercase tracking-wide text-nf-dim">Kolor</span>
+              <span className={LABEL}>Kolor</span>
               {selectedColor && <span className="text-sm text-nf-muted">{selectedColor.name}</span>}
             </div>
             <div className="mt-2 flex flex-wrap gap-1">
@@ -161,21 +155,17 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
 
         {/* single-variant products: the one value renders as a selected, non-interactive pill */}
         <div>
-          <span className="block text-xs uppercase tracking-wide text-nf-dim">Szerokość</span>
-          <span className="mt-2 inline-flex items-center rounded-[4px] border border-nf-white bg-nf-elevated-2 px-3 py-2 text-sm font-medium text-nf-white">
-            {WIDTH_LABELS[product.width]}
-          </span>
+          <span className={LABEL}>Szerokość</span>
+          <span className={PILL}>{WIDTH_LABEL[product.width]}</span>
         </div>
         <div>
-          <span className="block text-xs uppercase tracking-wide text-nf-dim">Rozmiar</span>
-          <span className="mt-2 inline-flex items-center rounded-[4px] border border-nf-white bg-nf-elevated-2 px-3 py-2 text-sm font-medium text-nf-white">
-            {SIZE_LABELS[product.size]}
-          </span>
+          <span className={LABEL}>Rozmiar</span>
+          <span className={PILL}>{SIZE_LABEL[product.size]}</span>
         </div>
 
         <div>
-          <span className="block text-xs uppercase tracking-wide text-nf-dim">Ilość</span>
-          <div className="mt-2 inline-flex items-center rounded-[4px] border border-nf-border-strong">
+          <span className={LABEL}>Ilość</span>
+          <div className="mt-2 inline-flex items-center rounded-[2px] border border-nf-border-strong">
             <button
               type="button"
               aria-label="Zmniejsz ilość"
@@ -205,8 +195,10 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
               Dodaj do koszyka
             </Button>
           ) : (
+            // slot CTA mowi "Chwilowo niedostepna" tak samo jak na karcie produktu;
+            // "Wyprzedane" zostaje na plakietce i w filtrze (stan katalogu)
             <Button variant="primary" size="lg" className="w-full" disabled>
-              Wyprzedane
+              Chwilowo niedostępna
             </Button>
           )}
           <Link

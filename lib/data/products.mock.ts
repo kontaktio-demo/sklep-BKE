@@ -107,7 +107,10 @@ function collar(spec: Spec): Product {
 export const products: Product[] = [
   collar({
     slug: "ranger-duty-collar",
-    name: "Obroża służbowa Ranger",
+    // Slowa SLUZBOWA / K9 / KLASA ROBOCZA sa zarezerwowane dla linii PAKT-K9. Sklep cywilny
+    // nazywa rzeczy po swojemu, inaczej obietnica "tych pozycji nie znajdziesz w sklepie
+    // cywilnym" rozjezdza sie z polka. Slugi zostaja - wisza na nich pliki w /public.
+    name: "Obroża robocza Ranger",
     price: 239,
     fromPrice: true,
     colors: [C.coyote, C.oliwkowy, C.czarny],
@@ -171,7 +174,7 @@ export const products: Product[] = [
   }),
   collar({
     slug: "vanguard-k9-collar",
-    name: "Obroża Vanguard K9",
+    name: "Obroża uniwersalna Vanguard",
     price: 319,
     fromPrice: true,
     colors: [C.coyote, C.czarny],
@@ -357,7 +360,7 @@ export const products: Product[] = [
   }),
   collar({
     slug: "cipher-tactical-collar",
-    name: "Obroża taktyczna Cipher",
+    name: "Obroża niskoprofilowa Cipher",
     price: 299,
     fromPrice: false,
     colors: [C.czarny, C.oliwkowy, C.coyote],
@@ -432,7 +435,7 @@ export const products: Product[] = [
   }),
   collar({
     slug: "kodiak-duty-collar",
-    name: "Obroża służbowa Kodiak",
+    name: "Obroża całodzienna Kodiak",
     price: 379,
     fromPrice: false,
     colors: [C.czarny, C.oliwkowy],
@@ -492,7 +495,7 @@ export const products: Product[] = [
   }),
   collar({
     slug: "raptor-e-fit-field-collar",
-    name: "Obroża terenowa Raptor E-Fit",
+    name: "Obroża tropiąca Raptor E-Fit",
     price: 249,
     fromPrice: false,
     colors: [C.oliwkowy, C.czarny],

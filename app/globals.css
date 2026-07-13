@@ -28,7 +28,8 @@
   --color-pk-paper-2: #e8e6e1;
   --color-pk-ink: #14140f;
   --color-pk-ink-2: #3d3d38;
-  --color-pk-ink-muted: #6b6b64;
+  /* 64645d (nie 6b6b64): na pk-paper-2 stary odcien dawal 4.30:1, ponizej progu AA */
+  --color-pk-ink-muted: #64645d;
   --color-pk-line: rgba(20, 20, 15, 0.12);
   --color-pk-line-strong: rgba(20, 20, 15, 0.28);
   /* czerwien czytelna jako drobny tekst na papierze (nf-red ma za maly kontrast) */
@@ -74,40 +75,87 @@ html[data-theme="light"] ::selection {
   color: var(--color-pk-paper);
 }
 
-html[data-theme="light"] :focus-visible {
-  outline-color: var(--color-pk-ink);
-}
-
 ::selection {
   background-color: var(--color-nf-red);
   color: var(--color-nf-white);
 }
 
+/* Obwodka fokusu jest dwutonowa: biale kolo w czarnej otoczce. Dzieki temu ma >=3:1
+   i na papierze, i na graficie - a strona glowna miesza jedno z drugim (ciemny panel K9,
+   ciemna stopka), wiec kolor zalezny od TRASY zostawal niewidoczny na ciemnych wyspach. */
 :focus-visible {
   outline: 2px solid var(--color-nf-white);
   outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.85);
 }
 
-/* Netflix scrim gradients (§6) */
-@utility scrim-bottom {
-  background: linear-gradient(
-    to top,
-    #141414 0%,
-    rgba(20, 20, 20, 0.6) 30%,
-    transparent 65%
-  );
+html[data-theme="light"] :focus-visible {
+  outline-color: var(--color-pk-ink);
+  box-shadow: 0 0 0 4px rgba(242, 241, 238, 0.9);
 }
 
-@utility scrim-left {
-  background: linear-gradient(
-    to right,
-    rgba(20, 20, 20, 0.85) 0%,
-    rgba(20, 20, 20, 0.35) 45%,
-    transparent 75%
-  );
+/* ciemne wyspy na jasnej trasie (panel K9, newsletter, stopka) wracaja do bialej obwodki */
+html[data-theme="light"] [data-shell="dark"] :focus-visible,
+html[data-theme="light"] footer :focus-visible,
+html[data-theme="light"] section[data-surface="dark"] :focus-visible {
+  outline-color: var(--color-nf-white);
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.85);
 }
 
-/* horizontal edge fade for Netflix rows */
+/* ---- skala typograficzna: jedyne zrodlo rozmiarow naglowkow ----
+   Cztery stopnie plus oznaczenie techniczne. Komponenty NIE definiuja wlasnych
+   clampow ani rozmiarow - inaczej wracamy do piatki roznych H1.
+   Wagi sa czescia tokenu, bo Archivo jest ladowane tylko w 500/700/800/900:
+   naglowek bez klasy wagi spadal do 400 i renderowal sie za lekko. */
+
+/* hero strony glownej i sekcji K9 - jedyne dwa miejsca */
+@utility type-display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(3rem, 9vw, 7.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+}
+
+/* tytuly stron: kolekcja, karta produktu, kategoria K9, panele wejsciowe */
+@utility type-h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+
+/* naglowki sekcji */
+@utility type-h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+/* karty i naglowki w kaflach */
+@utility type-h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.125rem;
+  line-height: 1.2;
+}
+
+/* oznaczenia techniczne: kody, SKU, etykiety pol, paski meta */
+@utility type-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+/* wygaszenie krawedzi toru przewijanego w poziomie */
 @utility edge-fade-x {
   mask-image: linear-gradient(
     to right,
@@ -123,13 +171,6 @@ html[data-theme="light"] :focus-visible {
   &::-webkit-scrollbar {
     display: none;
   }
-}
-
-/* Top 10 outlined rank numbers */
-@utility text-stroke-rank {
-  color: transparent;
-  -webkit-text-stroke: 3px var(--color-nf-dim);
-  paint-order: stroke fill;
 }
 
 /* ---- warstwa taktyczna (K9): plaskie wzory techniczne, zero poswiat ---- */

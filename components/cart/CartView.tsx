@@ -1,0 +1,243 @@
+"use client";
+
+// Pelna strona koszyka. Szuflada (CartDrawer) jest skrotem przy dodawaniu do koszyka,
+// ta strona jest miejscem, w ktorym sie zamowienie sprawdza: pelne pozycje, SKU, kolor,
+// wartosc pozycji i podsumowanie, ktore nie ucieka przy przewijaniu.
+
+import Image from "next/image";
+import Link from "next/link";
+import { FreeShippingBar } from "@/components/cart/FreeShippingBar";
+import { Button } from "@/components/ui/Button";
+import { CartIcon, MinusIcon, PlusIcon, TrashIcon } from "@/components/ui/icons";
+import { useCart } from "@/lib/cart";
+import { COMPANY, FREE_SHIPPING_THRESHOLD, SHIPPING_FROM } from "@/lib/nav";
+import { formatPrice, plural } from "@/lib/utils";
+
+const STEPPER_BUTTON =
+  "flex h-11 w-11 items-center justify-center text-nf-muted transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none";
+
+const SUMMARY_ROW = "flex items-baseline justify-between gap-4 text-sm";
+
+function EmptyCart() {
+  return (
+    <div className="border border-nf-border px-6 py-16 text-center">
+      <CartIcon width={40} height={40} className="mx-auto text-nf-dim" />
+      <h2 className="mt-6 font-display text-xl font-bold uppercase tracking-tight text-nf-white">
+        Koszyk jest pusty
+      </h2>
+      <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-nf-muted">
+        Nic tu jeszcze nie trafiło. Obroże i smycze znajdziesz w sklepie, sprzęt służbowy
+        w sekcji PAKT-K9.
+      </p>
+      <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <Button href="/collections/collars" className="rounded-[2px]">
+          Zobacz obroże
+        </Button>
+        <Button href="/k9" variant="ghost" className="rounded-[2px]">
+          Sprzęt PAKT-K9
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export function CartView() {
+  const { lines, count, subtotal, removeLine, setQty } = useCart();
+
+  if (lines.length === 0) return <EmptyCart />;
+
+  const freeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
+  const total = freeShipping ? subtotal : subtotal + SHIPPING_FROM;
+
+  return (
+    <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+      <section aria-label="Pozycje w koszyku" className="lg:col-span-7 xl:col-span-8">
+        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-nf-dim">
+          {count} {plural(count, "pozycja", "pozycje", "pozycji")}
+        </p>
+
+        <ul className="mt-4 border-t border-nf-border">
+          {lines.map((line) => (
+            <li
+              key={line.key}
+              className="flex flex-col gap-4 border-b border-nf-border py-6 sm:flex-row"
+            >
+              <Link
+                href={`/products/${line.product.slug}`}
+                className="relative h-32 w-24 shrink-0 overflow-hidden rounded-[2px] bg-nf-elevated"
+              >
+                <Image
+                  src={line.product.images[0]}
+                  alt={line.product.name}
+                  fill
+                  sizes="96px"
+                  className="object-cover"
+                />
+              </Link>
+
+              <div className="flex min-w-0 flex-1 flex-col">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <h2 className="text-sm font-medium text-nf-text">
+                      <Link
+                        href={`/products/${line.product.slug}`}
+                        className="transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
+                      >
+                        {line.product.name}
+                      </Link>
+                    </h2>
+                    {line.color && (
+                      <p className="mt-1 text-xs text-nf-muted">Kolor: {line.color.name}</p>
+                    )}
+                    <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.15em] text-nf-dim">
+                      SKU {line.product.sku}
+                    </p>
+                    <p className="mt-2 text-xs text-nf-dim">
+                      {formatPrice(line.product.price, line.product.currency)} za sztukę
+                    </p>
+                  </div>
+
+                  <p className="shrink-0 text-sm font-semibold text-nf-white">
+                    {formatPrice(line.product.price * line.qty, line.product.currency)}
+                  </p>
+                </div>
+
+                <div className="mt-4 flex items-center justify-between gap-4">
+                  <div className="flex items-center rounded-[2px] border border-nf-border">
+                    <button
+                      type="button"
+                      aria-label={`Zmniejsz ilość: ${line.product.name}`}
+                      onClick={() => setQty(line.key, line.qty - 1)}
+                      className={STEPPER_BUTTON}
+                    >
+                      <MinusIcon width={16} height={16} />
+                    </button>
+                    <span
+                      aria-live="polite"
+                      className="min-w-8 text-center text-sm text-nf-text"
+                    >
+                      {line.qty}
+                    </span>
+                    <button
+                      type="button"
+                      aria-label={`Zwiększ ilość: ${line.product.name}`}
+                      onClick={() => setQty(line.key, line.qty + 1)}
+                      className={STEPPER_BUTTON}
+                    >
+                      <PlusIcon width={16} height={16} />
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => removeLine(line.key)}
+                    className="flex h-11 items-center gap-2 px-2 text-xs text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
+                  >
+                    <TrashIcon width={16} height={16} aria-hidden="true" />
+                    <span>Usuń</span>
+                    <span className="sr-only">{line.product.name}</span>
+                  </button>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-6">
+          <Link
+            href="/collections/collars"
+            className="inline-flex min-h-11 items-center text-sm text-nf-muted underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
+          >
+            Kontynuuj zakupy
+          </Link>
+        </div>
+      </section>
+
+      <aside aria-label="Podsumowanie zamówienia" className="lg:col-span-5 xl:col-span-4">
+        <div className="border border-nf-border bg-nf-elevated p-6 lg:sticky lg:top-24">
+          <h2 className="font-display text-lg font-bold uppercase tracking-tight text-nf-white">
+            Podsumowanie
+          </h2>
+
+          <dl className="mt-6 space-y-3">
+            <div className={SUMMARY_ROW}>
+              <dt className="text-nf-muted">Suma częściowa</dt>
+              <dd className="font-medium text-nf-text">{formatPrice(subtotal)}</dd>
+            </div>
+            <div className={SUMMARY_ROW}>
+              <dt className="text-nf-muted">Dostawa</dt>
+              <dd className="font-medium text-nf-text">
+                {freeShipping ? "Gratis" : `od ${formatPrice(SHIPPING_FROM)}`}
+              </dd>
+            </div>
+          </dl>
+
+          <FreeShippingBar subtotal={subtotal} className="mt-5" />
+
+          <div className="mt-6 flex items-baseline justify-between gap-4 border-t border-nf-border pt-4">
+            <span className="font-display text-sm font-bold uppercase tracking-wide text-nf-white">
+              Razem
+            </span>
+            <span className="text-lg font-semibold text-nf-white">{formatPrice(total)}</span>
+          </div>
+          <p className="mt-2 text-xs leading-relaxed text-nf-dim">
+            Cena zawiera VAT.{" "}
+            {freeShipping
+              ? "Dostawa w tym zamówieniu jest bezpłatna."
+              : "Kwota zawiera najtańszą dostawę (paczkomat). Ostateczny koszt zależy od przewoźnika wybranego przy zamówieniu."}
+          </p>
+
+          <div className="mt-6 space-y-3">
+            <Button
+              type="button"
+              size="lg"
+              className="w-full rounded-[2px]"
+              disabled
+              aria-describedby="checkout-status"
+            >
+              Do kasy
+            </Button>
+            <p id="checkout-status" className="text-xs leading-relaxed text-nf-muted">
+              Płatności uruchamiamy wraz z integracją operatora. Do tego czasu zamówienie
+              złożysz mailem:{" "}
+              <a
+                href={`mailto:${COMPANY.shopEmail}`}
+                className="text-nf-text underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
+              >
+                {COMPANY.shopEmail}
+              </a>
+              .
+            </p>
+          </div>
+
+          <ul className="mt-6 space-y-2 border-t border-nf-border pt-4 text-xs text-nf-dim">
+            <li>
+              <Link
+                href="/dostawa-i-platnosci"
+                className="inline-flex min-h-11 items-center transition-colors duration-250 ease-nf hover:text-nf-text motion-reduce:transition-none"
+              >
+                Koszty i czasy dostawy
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/zwroty-i-reklamacje"
+                className="inline-flex min-h-11 items-center transition-colors duration-250 ease-nf hover:text-nf-text motion-reduce:transition-none"
+              >
+                60 dni na zwrot i wymianę rozmiaru
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/tabela-rozmiarow"
+                className="inline-flex min-h-11 items-center transition-colors duration-250 ease-nf hover:text-nf-text motion-reduce:transition-none"
+              >
+                Tabela rozmiarów
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  );
+}

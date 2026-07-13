@@ -16,24 +16,13 @@ import type { Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/ui/icons";
+import { usePrefersReducedMotion } from "@/components/motion/useReducedMotion";
 import { ProductCard } from "@/components/collection/ProductCard";
 
 const DEFAULT_ITEM_CLASS = "w-[46vw] sm:w-[240px] lg:w-[270px]";
 const CARD_SIZES = "(min-width:1024px) 270px, (min-width:640px) 240px, 46vw";
 
-function usePrefersReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setReduced(mql.matches);
-    sync();
-    mql.addEventListener("change", sync);
-    return () => mql.removeEventListener("change", sync);
-  }, []);
-  return reduced;
-}
-
-// Lazy-mount below the fold (§10). Shared by NetflixRow and TopTenRow.
+// Lazy-mount below the fold (§10). Shared by ProductRow and BestsellerRow.
 export function useLazyMount<T extends HTMLElement>(ref: RefObject<T | null>): boolean {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -56,7 +45,7 @@ export function useLazyMount<T extends HTMLElement>(ref: RefObject<T | null>): b
   return mounted;
 }
 
-// Same li widths + paddings as the live track so row height is reserved (CLS ≈ 0).
+// Same li widths + paddings as the live track so row height is reserved (CLS ~ 0).
 export function RowSkeletonTrack({ itemClassName }: { itemClassName?: string }) {
   return (
     <div aria-hidden="true" className="flex gap-4 overflow-hidden px-4 py-4 md:px-6">
@@ -85,7 +74,7 @@ interface DragState {
 }
 
 // Shared horizontal track: native touch scroll + snap, mouse drag with inertia,
-// hover arrows on lg+. Reused by TopTenRow.
+// hover arrows on lg+. Reused by BestsellerRow.
 export function RowScroller({
   children,
   itemClassName,
@@ -253,7 +242,7 @@ export function RowScroller({
 
   return (
     <div className="group relative">
-      {/* py-4 keeps card hover-scale from clipping */}
+      {/* py-4 keeps the card's image hover-scale from clipping */}
       <ul
         ref={trackRef}
         className="edge-fade-x no-scrollbar flex select-none snap-x snap-mandatory gap-4 overflow-x-auto px-4 py-4 md:px-6 lg:cursor-grab"
@@ -294,8 +283,8 @@ export function RowScroller({
   );
 }
 
-// §8-H [VERDICT: NEW, sanctioned Netflix layer §7-2] - horizontal category row.
-export function NetflixRow({
+// §8-H - poziomy rzad produktow (wtorna sciezka odkrywania pod glowna siatka).
+export function ProductRow({
   title,
   products,
   id,
@@ -315,13 +304,11 @@ export function NetflixRow({
     <section ref={sectionRef} id={id} className="scroll-mt-24 space-y-3">
       <div className="mx-auto max-w-[1600px]">
         <div className="flex items-center justify-between gap-4 px-4 md:px-6">
-          <h2 className="font-display text-lg font-bold uppercase tracking-wide text-white">
-            {title}
-          </h2>
+          <h2 className="type-h2 text-white">{title}</h2>
           {exploreHref && (
             <Link
               href={exploreHref}
-              className="inline-flex min-h-11 items-center text-xs uppercase tracking-widest text-nf-dim transition-colors duration-250 ease-nf hover:text-white"
+              className="type-meta inline-flex min-h-11 items-center text-nf-dim transition-colors duration-250 ease-nf hover:text-white motion-reduce:transition-none"
             >
               Zobacz wszystkie
             </Link>

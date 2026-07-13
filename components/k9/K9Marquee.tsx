@@ -18,10 +18,9 @@ function Strip() {
     <div className="flex shrink-0 items-center">
       {ITEMS.map((item) => (
         <Fragment key={item}>
-          <span className="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.2em] text-nf-muted">
-            {item}
-          </span>
-          <span className="mx-6 size-1 shrink-0 bg-nf-red" />
+          <span className="type-meta whitespace-nowrap text-nf-muted">{item}</span>
+          {/* separator, nie akcent: czerwona kropka co kilka slow tapetowala pas czerwienia */}
+          <span className="mx-6 size-1 shrink-0 bg-nf-border-strong" />
         </Fragment>
       ))}
     </div>

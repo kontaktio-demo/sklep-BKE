@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useId, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
@@ -13,29 +14,21 @@ import {
 } from "@/components/ui/icons";
 import { useCart } from "@/lib/cart";
 import { TRUST_TRIAD } from "@/lib/nav";
-import type { CollarSize, CollarWidth, Product, ProductColor } from "@/lib/types";
+import { SIZE_LABEL, WIDTH_LABEL } from "@/lib/sizes";
+import type { Product, ProductColor } from "@/lib/types";
 import { cn } from "@/lib/utils";
-
-const WIDTH_LABEL: Record<CollarWidth, string> = {
-  "1": "2,5 cm",
-  "1.5": "4 cm",
-  "1.75": "4,5 cm",
-};
-
-const SIZE_LABEL: Record<CollarSize, string> = {
-  small: "Mały (obwód 28-36 cm)",
-  medium: "Średni (38-46 cm)",
-  large: "Duży (48-60 cm)",
-};
 
 const TRUST_ICONS = [ShieldIcon, TruckIcon, ReturnIcon] as const;
 
 const MAX_QTY = 10;
 
 // jeden rytm dla wszystkich etykiet wyboru (Kolor / Rozmiar / Szerokość / Ilość)
-const LABEL = "text-[10px] uppercase tracking-[0.2em] text-nf-dim";
+const LABEL = "type-meta text-nf-dim";
 const PILL =
   "inline-flex rounded-[2px] border border-nf-border-strong px-3 py-2 text-sm text-nf-text";
+
+/** Zapytania jednostek nie ida przez koszyk - strona zapytania zyje w sekcji K9. */
+const K9_INQUIRY_HREF = "/k9/zapytanie";
 
 export function BuyBox({ product }: { product: Product }) {
   const { addLine, openCart } = useCart();
@@ -46,6 +39,8 @@ export function BuyBox({ product }: { product: Product }) {
   const colorLabelId = useId();
   const notifyId = useId();
 
+  const k9 = product.line === "k9";
+
   function handleAdd() {
     // addLine increments by one per call - the cart has no bulk API
     for (let i = 0; i < qty; i += 1) addLine(product, color);
@@ -55,12 +50,28 @@ export function BuyBox({ product }: { product: Product }) {
   return (
     <div>
       <header>
-        <p className={LABEL}>
-          {product.productType} / {product.sku}
-        </p>
-        <h1 className="mt-3 font-display text-3xl font-bold leading-[1.05] tracking-tight text-white lg:text-[2.5rem]">
-          {product.name}
-        </h1>
+        {/* K9: pasek techniczny zamiast etykiety sklepowej. SKU i oznaczenie klasy to
+            pierwsze, czego szuka przewodnik - "Obroża służbowa / K9-PAT-175-L" nie niesie
+            nic, czego nie ma w nazwie i tabeli */}
+        {k9 ? (
+          <p className={LABEL}>
+            {product.sku}
+            {product.k9Standard && (
+              <>
+                <span aria-hidden="true" className="px-2 text-nf-border-strong">
+                  /
+                </span>
+                {product.k9Standard}
+              </>
+            )}
+          </p>
+        ) : (
+          <p className={LABEL}>
+            {product.productType} / {product.sku}
+          </p>
+        )}
+        {/* text-balance: nazwa lamie sie w kolumnie 440 px, wiec wiersze maja byc rowne */}
+        <h1 className="type-h1 mt-3 text-balance text-white">{product.name}</h1>
         <p className="mt-3 text-sm text-nf-muted">{product.tagline}</p>
       </header>
 
@@ -172,17 +183,12 @@ export function BuyBox({ product }: { product: Product }) {
 
       <div className="mt-8">
         {product.inStock ? (
-          <Button
-            variant="primary"
-            size="lg"
-            className="w-full rounded-[2px]"
-            onClick={handleAdd}
-          >
+          <Button variant="primary" size="lg" className="w-full" onClick={handleAdd}>
             Dodaj do koszyka
           </Button>
         ) : (
           <div className="space-y-4">
-            <Button variant="primary" size="lg" className="w-full rounded-[2px]" disabled>
+            <Button variant="primary" size="lg" className="w-full" disabled>
               Chwilowo niedostępna
             </Button>
             <form
@@ -203,12 +209,7 @@ export function BuyBox({ product }: { product: Product }) {
                   autoComplete="email"
                   className="h-11 flex-1 rounded-[2px] border border-nf-border-strong bg-transparent px-3 text-sm text-white"
                 />
-                <Button
-                  type="submit"
-                  variant="ghost"
-                  size="md"
-                  className="h-11 shrink-0 rounded-[2px]"
-                >
+                <Button type="submit" variant="ghost" size="md" className="h-11 shrink-0">
                   Powiadom o dostępności
                 </Button>
               </div>
@@ -217,6 +218,18 @@ export function BuyBox({ product }: { product: Product }) {
               </p>
             </form>
           </div>
+        )}
+
+        {/* Jednostka nie kupuje sprzetu przez koszyk - kupuje na zapytanie. Link stoi pod
+            CTA (nie obok), zeby nie rozbijac hierarchii, i dziala takze przy braku
+            dostepnosci: wtedy zapytanie jest jedyna sensowna sciezka */}
+        {k9 && (
+          <Link
+            href={K9_INQUIRY_HREF}
+            className="type-meta mt-3 flex min-h-11 items-center justify-center rounded-[2px] text-nf-muted underline decoration-nf-border-strong underline-offset-4 transition-colors duration-250 ease-nf hover:text-white hover:decoration-nf-text motion-reduce:transition-none"
+          >
+            Zapytanie dla jednostki
+          </Link>
         )}
       </div>
 

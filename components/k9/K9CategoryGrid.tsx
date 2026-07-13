@@ -19,12 +19,9 @@ export function K9CategoryGrid({ categories }: { categories: K9CategoryInfo[] })
     <section id="kategorie" className="bg-nf-bg">
       <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-24">
         <div className="flex items-center gap-4">
-          <span className="font-mono text-[11px] tracking-[0.25em] text-nf-red-bright">
-            01
-          </span>
-          <h2 className="font-display text-2xl font-black uppercase tracking-tight text-white md:text-3xl">
-            Kategorie
-          </h2>
+          {/* numer sekcji to oznaczenie porzadkowe, nie alarm - stad nf-dim zamiast czerwieni */}
+          <span className="type-meta text-nf-dim">01</span>
+          <h2 className="type-h2 text-white">Kategorie</h2>
           <span aria-hidden="true" className="hatch h-px flex-1" />
         </div>
 
@@ -50,18 +47,14 @@ export function K9CategoryGrid({ categories }: { categories: K9CategoryInfo[] })
                 style={{ "--grid-size": "32px" } as CSSProperties}
               />
 
-              <span className="relative font-mono text-[11px] tracking-[0.2em] text-nf-dim">
-                {cat.code}
-              </span>
-              <h3 className="relative mt-4 font-display text-2xl uppercase tracking-tight text-white">
-                {cat.title}
-              </h3>
+              <span className="type-meta relative text-nf-dim">{cat.code}</span>
+              <h3 className="type-h3 relative mt-4 text-white">{cat.title}</h3>
               <p className="relative mt-3 line-clamp-2 max-w-md text-sm leading-relaxed text-nf-muted">
                 {cat.description}
               </p>
 
               <span className="relative mt-auto flex items-center justify-between pt-8">
-                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-nf-dim">
+                <span className="type-meta text-nf-dim">
                   {cat.productCount}{" "}
                   {plural(cat.productCount, "pozycja", "pozycje", "pozycji")}
                 </span>

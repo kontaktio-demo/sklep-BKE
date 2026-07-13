@@ -32,9 +32,10 @@ const SIZE_CLASSES: Record<ButtonSize, string> = {
 
 function buttonClasses(variant: ButtonVariant, size: ButtonSize, className?: string): string {
   return cn(
-    "inline-flex select-none items-center justify-center gap-2 rounded-[4px] font-semibold transition-[background-color,transform] duration-250 ease-nf",
-    // hover scale gated by prefers-reduced-motion via motion-safe
-    "motion-safe:hover:scale-[1.02]",
+    // jeden promien uzytkowy w calym serwisie: rounded-[2px].
+    // Bez skalowania na hover - odbijajace sie CTA to slad poprzedniego kierunku,
+    // przycisk reaguje wylacznie kolorem.
+    "inline-flex select-none items-center justify-center gap-2 rounded-[2px] font-semibold transition-colors duration-250 ease-nf motion-reduce:transition-none",
     "disabled:pointer-events-none disabled:opacity-50",
     VARIANT_CLASSES[variant],
     SIZE_CLASSES[size],

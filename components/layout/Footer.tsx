@@ -1,24 +1,19 @@
-"use client";
-
-// §8-K [VERDICT: NSDW mega-footer]
-// Client component wyłącznie po to, żeby poznać ścieżkę: stopka chodzi w dwóch motywach
-// ("/" = papier, reszta = czerń). Layout nie zna ścieżki, więc czytamy ją usePathname.
-// Select regionu zostaje niekontrolowany (defaultValue) - bez stanu, bez zmiany zachowania.
+// §8-K [VERDICT: NSDW mega-footer] - server component (select regionu niekontrolowany)
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { GlobeIcon } from "@/components/ui/icons";
 import { BRAND, FOOTER_COLUMNS, LEGAL_LINKS, REGIONS } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
 import { PaymentIcons } from "./PaymentIcons";
 import { FOOTER, type Theme } from "./theme";
-import { isLightRoute } from "./ThemeSync";
 
+// Stopka jest zawsze ciemna, takze na jasnej stronie glownej: strona schodzi z papieru
+// w grafit przy wejsciu w PAKT-K9 i tam zostaje. Powrot do bieli tuz pod ciemnym panelem
+// K9 wygladal jak przypadek, nie jak decyzja. Wariant jasny zostaje w theme.ts na wypadek
+// osobnych stron informacyjnych w motywie jasnym.
 export function Footer() {
-  const pathname = usePathname();
-  const light = isLightRoute(pathname);
-  const theme: Theme = light ? "light" : "dark";
+  const theme: Theme = "dark";
   const t = FOOTER[theme];
 
   return (
@@ -32,7 +27,7 @@ export function Footer() {
         >
           <Logo
             variant="lockup"
-            onDark={!light}
+            onDark
             markClassName="h-24 w-auto"
             wordmarkClassName="h-8 w-auto"
             className="gap-4"
@@ -42,7 +37,9 @@ export function Footer() {
             testujemy z przewodnikami.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
+        {/* 5 kolumn od lg: doszla kolumna PAKT-K9 (FOOTER_COLUMNS). Przy grid-cols-4
+            piata kolumna spadala do drugiego wiersza i wygladala jak dopisek */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-5">
           {FOOTER_COLUMNS.map((col) => (
             <nav key={col.title} aria-label={col.title}>
               <h3 className={cn("mb-4 text-[11px] uppercase tracking-widest", t.heading)}>

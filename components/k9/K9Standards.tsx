@@ -24,12 +24,9 @@ export function K9Standards() {
     <section className="border-t border-nf-border bg-nf-bg">
       <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-24">
         <div className="flex items-center gap-4">
-          <span className="font-mono text-[11px] tracking-[0.25em] text-nf-red-bright">
-            02
-          </span>
-          <h2 className="font-display text-2xl font-black uppercase tracking-tight text-white md:text-3xl">
-            Standard
-          </h2>
+          {/* numer sekcji to oznaczenie porzadkowe, nie alarm - stad nf-dim zamiast czerwieni */}
+          <span className="type-meta text-nf-dim">02</span>
+          <h2 className="type-h2 text-white">Standard</h2>
           <span aria-hidden="true" className="hatch h-px flex-1" />
         </div>
 
@@ -42,19 +39,15 @@ export function K9Standards() {
                 i === 0 ? "md:pl-0" : "md:border-l md:border-nf-border"
               )}
             >
-              <span className="font-mono text-[11px] tracking-[0.25em] text-nf-dim">
-                {item.no}
-              </span>
-              <h3 className="mt-4 font-display text-xl uppercase tracking-tight text-white">
-                {item.title}
-              </h3>
+              <span className="type-meta text-nf-dim">{item.no}</span>
+              <h3 className="type-h3 mt-4 text-white">{item.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-nf-muted">{item.body}</p>
             </li>
           ))}
         </ul>
 
         <div className="mt-16 flex flex-col gap-6 md:flex-row md:items-center md:gap-8">
-          <Button size="lg" href="/k9/patrol" className="shrink-0 rounded-[2px]">
+          <Button size="lg" href="/k9/patrol" className="shrink-0">
             Przejdź do patrolu
           </Button>
           <span

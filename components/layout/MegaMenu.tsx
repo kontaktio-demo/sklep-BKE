@@ -8,7 +8,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDownIcon } from "@/components/ui/icons";
-import { NAV_ITEMS } from "@/lib/nav";
+import { K9_NAV_LABEL, NAV_ITEMS } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { SHELL, type Theme } from "./theme";
 
@@ -17,9 +17,14 @@ const CLOSE_DELAY_MS = 150;
 const LINK_BASE =
   "flex h-11 items-center gap-1 px-3 text-[13px] font-semibold uppercase tracking-wide transition-colors duration-250 ease-nf";
 
+// PAKT-K9 to nie kolejna zakladka sklepu: mono i szeroki tracking odcinaja ja od reszty
+// nawigacji, tak samo jak oznaczenia techniczne w samej sekcji.
+const K9_LINK = "font-mono text-[12px] font-medium tracking-[0.2em]";
+
 export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
   const t = SHELL[theme];
-  const linkClasses = cn(LINK_BASE, t.navLink);
+  const linkFor = (label: string) =>
+    cn(LINK_BASE, t.navLink, label === K9_NAV_LABEL && K9_LINK);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const closeTimer = useRef<number | null>(null);
   const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -50,7 +55,7 @@ export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
                   setOpenIndex(null);
                 }}
               >
-                <Link href={item.href} className={linkClasses}>
+                <Link href={item.href} className={linkFor(item.label)}>
                   {item.label}
                 </Link>
               </li>
@@ -89,7 +94,7 @@ export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
                 href={item.href}
                 aria-haspopup="true"
                 aria-expanded={open}
-                className={linkClasses}
+                className={linkFor(item.label)}
               >
                 {item.label}
                 <ChevronDownIcon

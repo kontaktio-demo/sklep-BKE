@@ -25,7 +25,7 @@ export function PaymentIcons({
         <li
           key={method}
           className={cn(
-            "flex h-6 items-center rounded-[3px] border px-2 text-[9px] font-bold uppercase tracking-wide",
+            "flex h-6 items-center rounded-[2px] border px-2 text-[9px] font-bold uppercase tracking-wide",
             BADGE[theme]
           )}
         >

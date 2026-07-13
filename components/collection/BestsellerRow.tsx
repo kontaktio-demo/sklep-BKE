@@ -7,16 +7,17 @@ import {
   RowScroller,
   RowSkeletonTrack,
   useLazyMount,
-} from "@/components/collection/NetflixRow";
+} from "@/components/collection/ProductRow";
 
 const CARD_SIZES = "(min-width:1024px) 230px, (min-width:640px) 210px, 42vw";
 const CARD_WIDTH_CLASS = "w-[42vw] sm:w-[210px] lg:w-[230px]";
+const MAX_ITEMS = 10;
 
-// §8-H / §7-3 [VERDICT: NEW, sanctioned Netflix layer - Top 10 ranked row]
-export function TopTenRow({
+// §8-H - rzad bestsellerow z numeracja miejsc, sortowany po bestsellerRank.
+export function BestsellerRow({
   products,
   title = "Top 10 bestsellerów",
-  id = "top-ten",
+  id = "bestsellery",
 }: {
   products: Product[];
   title?: string;
@@ -30,7 +31,7 @@ export function TopTenRow({
       products
         .filter((p) => p.bestsellerRank != null)
         .sort((a, b) => (a.bestsellerRank ?? 0) - (b.bestsellerRank ?? 0))
-        .slice(0, 10),
+        .slice(0, MAX_ITEMS),
     [products]
   );
 
@@ -40,9 +41,7 @@ export function TopTenRow({
     <section ref={sectionRef} id={id} className="scroll-mt-24 space-y-3">
       <div className="mx-auto max-w-[1600px]">
         <div className="px-4 md:px-6">
-          <h2 className="font-display text-lg font-bold uppercase tracking-wide text-white">
-            {title}
-          </h2>
+          <h2 className="type-h2 text-white">{title}</h2>
         </div>
 
         {mounted ? (
@@ -52,11 +51,11 @@ export function TopTenRow({
               // above the hovered card without also painting over the row arrows
               <div key={p.id} className="relative z-0">
                 <span className="sr-only">Miejsce {i + 1}</span>
-                {/* rank chip sits top-right: ProductCard renders its badge column at
-                    top-left, and ranks 1-6 carry a badge */}
+                {/* licznik miejsca w prawym gornym rogu: ProductCard trzyma plakietki
+                    w lewej kolumnie, a miejsca 1-6 maja plakietke */}
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute right-2 top-2 z-20 flex size-7 items-center justify-center border border-nf-border-strong bg-nf-bg/85 text-xs font-semibold text-nf-text backdrop-blur-sm"
+                  className="pointer-events-none absolute right-2 top-2 z-20 flex size-7 items-center justify-center rounded-full border border-nf-border-strong bg-nf-bg/85 text-xs font-semibold tabular-nums text-nf-text backdrop-blur-sm"
                 >
                   {i + 1}
                 </span>

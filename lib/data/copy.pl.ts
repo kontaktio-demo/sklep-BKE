@@ -4,11 +4,13 @@ export interface ProductCopy {
   highlights: string[];
 }
 
+// Sklep cywilny nie uzywa slow SLUZBOWA / K9 / KLASA ROBOCZA - te sa zarezerwowane dla
+// linii PAKT-K9 (lib/data/k9.mock.ts). Tutaj: robocza, calodzienna, wzmocniona, terenowa.
 export const productCopy: Record<string, ProductCopy> = {
   "ranger-duty-collar": {
     tagline: "Taśma 1000D, panel ID, praca w terenie",
     description:
-      "Podstawowa obroża do pracy z psem służbowym. Taśma nylonowa 1000D o szerokości 4,5 cm rozkłada nacisk przy silnym ciągnięciu, a wyściółka z neoprenu chroni sierść na karku. Rzep biegnie przez całą długość i przyjmuje panele identyfikacyjne oraz naszywki.",
+      "Podstawowa obroża robocza do pracy w terenie. Taśma nylonowa 1000D o szerokości 4,5 cm rozkłada nacisk przy silnym ciągnięciu, a wyściółka z neoprenu chroni sierść na karku. Rzep biegnie przez całą długość i przyjmuje panele identyfikacyjne oraz naszywki.",
     highlights: [
       "Taśma 1000D, szerokość 4,5 cm",
       "Rzep na panel ID i naszywki",
@@ -53,15 +55,17 @@ export const productCopy: Record<string, ProductCopy> = {
     ],
   },
 
+  // nazwa mowi "wzmocniona", wiec tekst musi pokazac, czym: samo "szeroka tasma" tego
+  // nie unosi, a dwie warstwy sa juz znakiem rozpoznawczym Bastionu
   "vanguard-k9-collar": {
-    tagline: "Szeroka taśma robocza z panelem ID",
+    tagline: "Przeszycia krzyżowe w punktach obciążenia",
     description:
-      "Obroża do szkolenia i pracy z dużym psem. Taśma 1000D o szerokości 4,5 cm oraz obwód 48-60 cm dają zapas regulacji na zimową okrywę. Okucia ze stopu cynku, klamra zatrzaskowa zapinana jedną ręką, także w rękawicy. Rzep pod panele identyfikacyjne biegnie przez całą taśmę.",
+      "Obroża do szkolenia i pracy z dużym psem. Taśma 1000D o szerokości 4,5 cm, przeszycie krzyżowe przy klamrze i przy D-ringu, czyli w punktach, które puszczają pierwsze. Obwód 48-60 cm daje zapas regulacji na zimową okrywę, a klamra zatrzaskowa zapina się jedną ręką, także w rękawicy. Rzep pod panele identyfikacyjne biegnie przez całą taśmę.",
     highlights: [
+      "Przeszycie krzyżowe przy klamrze i D-ringu",
       "Taśma 1000D, szerokość 4,5 cm",
       "Obwód 48-60 cm",
       "Rzep na panele identyfikacyjne",
-      "Okucia ze stopu cynku",
     ],
   },
 
@@ -258,7 +262,7 @@ export const productCopy: Record<string, ProductCopy> = {
   },
 
   "kodiak-duty-collar": {
-    tagline: "Obroża służbowa do pracy całodziennej",
+    tagline: "Szeroka taśma na pracę przez cały dzień",
     description:
       "Dla przewodników, którzy pracują z psem po kilka godzin dziennie. Taśma 1000D o szerokości 4,5 cm, wyściółka z neoprenu na całej długości, okucia ze stopu cynku. Rzep mieści panel ID i oznaczenia funkcyjne, obwód 48-60 cm.",
     highlights: [

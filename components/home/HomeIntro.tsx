@@ -25,10 +25,9 @@ export function HomeIntro() {
       <div className="mx-auto max-w-[1600px] px-4 py-24 md:px-6 lg:py-32">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-pk-red">
-              Jak pracujemy
-            </p>
-            <h2 className="mt-6 font-display text-[clamp(1.75rem,3.2vw,2.75rem)] font-bold uppercase leading-[1.05] tracking-tight text-pk-ink">
+            {/* eyebrow: oznaczenie sekcji, nie akcja - czerwien schodzi do tuszu */}
+            <p className="type-meta text-pk-ink-muted">Jak pracujemy</p>
+            <h2 className="type-h2 mt-6 text-pk-ink">
               Sprzęt oceniamy
               <br />
               po tym, co z niego
@@ -46,13 +45,9 @@ export function HomeIntro() {
             {POINTS.map((point) => (
               <li key={point.code} data-point className="bg-pk-paper py-8 first:pt-0">
                 <div className="grid gap-4 sm:grid-cols-[auto_1fr] sm:gap-8">
-                  <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-pk-ink-muted">
-                    {point.code}
-                  </span>
+                  <span className="type-meta text-pk-ink-muted">{point.code}</span>
                   <div>
-                    <h3 className="font-display text-lg font-bold uppercase tracking-wide text-pk-ink">
-                      {point.title}
-                    </h3>
+                    <h3 className="type-h3 text-pk-ink">{point.title}</h3>
                     <p className="mt-2 max-w-xl text-sm leading-relaxed text-pk-ink-2">
                       {point.body}
                     </p>

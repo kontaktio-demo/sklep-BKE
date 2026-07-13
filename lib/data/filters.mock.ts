@@ -1,3 +1,4 @@
+import { SIZE_LABEL, SIZE_ORDER, WIDTH_LABEL, WIDTH_ORDER } from "../sizes";
 import type { FilterGroup, Product } from "../types";
 import { products } from "./products.mock";
 
@@ -25,22 +26,23 @@ export const filterGroups: FilterGroup[] = [
     ],
   },
   {
+    // etykiety ida z lib/sizes - filtr nie moze mowic czegos innego niz karta produktu
     id: "width",
     label: "Szerokość",
-    options: [
-      { value: "1", label: "2,5 cm", count: count((p) => p.width === "1") },
-      { value: "1.5", label: "4 cm", count: count((p) => p.width === "1.5") },
-      { value: "1.75", label: "4,5 cm", count: count((p) => p.width === "1.75") },
-    ],
+    options: WIDTH_ORDER.map((width) => ({
+      value: width,
+      label: WIDTH_LABEL[width],
+      count: count((p) => p.width === width),
+    })),
   },
   {
     id: "size",
     label: "Rozmiar",
-    options: [
-      { value: "small", label: "Mały (28-36 cm)", count: count((p) => p.size === "small") },
-      { value: "medium", label: "Średni (38-46 cm)", count: count((p) => p.size === "medium") },
-      { value: "large", label: "Duży (48 cm+)", count: count((p) => p.size === "large") },
-    ],
+    options: SIZE_ORDER.map((size) => ({
+      value: size,
+      label: SIZE_LABEL[size],
+      count: count((p) => p.size === size),
+    })),
   },
   {
     id: "idPanel",
