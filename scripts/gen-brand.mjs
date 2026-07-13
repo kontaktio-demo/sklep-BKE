@@ -133,8 +133,14 @@ for (let i = 0; i < lifted.length; i += 4) {
 }
 const liftedPng = () => sharp(lifted, { raw: { width, height, channels: 4 } }).png();
 
+// sama głowa (bez popiersia): kadr prawie kwadratowy, czyta się w pasku nawigacyjnym,
+// gdzie pełna pionowa sylwetka robi się wąskim, nieczytelnym paskiem
+const headBottom = firstRow + Math.round((gapStart - firstRow) * 0.6);
+
 await keyedPng().extract(bbox(firstRow, lastRow)).toFile(join(BRAND_DIR, "pakt-logo.png"));
 await keyedPng().extract(bbox(firstRow, gapStart - 1)).toFile(join(BRAND_DIR, "pakt-mark.png"));
+await keyedPng().extract(bbox(firstRow, headBottom)).toFile(join(BRAND_DIR, "pakt-head.png"));
+await liftedPng().extract(bbox(firstRow, headBottom)).toFile(join(BRAND_DIR, "pakt-head-dark.png"));
 await keyedPng().extract(bbox(gapEnd, lastRow)).toFile(join(BRAND_DIR, "pakt-wordmark.png"));
 await liftedPng()
   .extract(bbox(firstRow, gapStart - 1))
@@ -142,7 +148,7 @@ await liftedPng()
 await liftedPng().extract(bbox(firstRow, lastRow)).toFile(join(BRAND_DIR, "pakt-logo-dark.png"));
 
 // favicon / ikona aplikacji - sygnet na kwadracie w kolorze tła strony
-const markBuf = await sharp(join(BRAND_DIR, "pakt-mark-dark.png"))
+const markBuf = await sharp(join(BRAND_DIR, "pakt-head-dark.png"))
   .resize(400, 400, { fit: "contain", background: { ...BG, alpha: 0 } })
   .toBuffer();
 
@@ -158,7 +164,7 @@ await sharp({
 })
   .composite([
     {
-      input: await sharp(join(BRAND_DIR, "pakt-mark-dark.png"))
+      input: await sharp(join(BRAND_DIR, "pakt-head-dark.png"))
         .resize(140, 140, { fit: "contain", background: { ...BG, alpha: 0 } })
         .toBuffer(),
       gravity: "center",
