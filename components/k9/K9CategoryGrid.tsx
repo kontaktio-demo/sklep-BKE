@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import type { K9CategoryInfo } from "@/lib/types";
-import { Reveal } from "@/components/motion/Reveal";
 import { ArrowRightIcon } from "@/components/ui/icons";
 import { cn, plural } from "@/lib/utils";
 
@@ -27,15 +26,12 @@ export function K9CategoryGrid({ categories }: { categories: K9CategoryInfo[] })
           <span aria-hidden="true" className="hatch h-px flex-1" />
         </div>
 
-        {/* lista, nie zbior kafli: czytnik ma zapowiedziec liczbe kategorii i pozycje w niej */}
-        <Reveal
-          as="ul"
-          selector="[data-tile]"
-          stagger={0.06}
-          className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-6"
-        >
+        {/* lista, nie zbior kafli: czytnik ma zapowiedziec liczbe kategorii i pozycje w niej.
+            Bez animacji wjazdu: kafle byly niewidoczne (opacity 0), dopoki nie doszedl do nich
+            scroll, a przy zaciecym JS zostawaly niewidoczne na zawsze */}
+        <ul className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-6">
           {categories.map((cat, i) => (
-            <li key={cat.slug} data-tile className={cn("flex", SPANS[i % SPANS.length])}>
+            <li key={cat.slug} className={cn("flex", SPANS[i % SPANS.length])}>
               {/* overflow-hidden na kaflu przycina siatke techniczna w srodku, ale NIE tnie
                   wlasnej obwodki fokusu kafla: element nie przycina sam siebie, wiec pierscien
                   wychodzi na zewnatrz i jest w calosci widoczny w 16px odstepie siatki.
@@ -71,7 +67,7 @@ export function K9CategoryGrid({ categories }: { categories: K9CategoryInfo[] })
               </Link>
             </li>
           ))}
-        </Reveal>
+        </ul>
       </div>
     </section>
   );

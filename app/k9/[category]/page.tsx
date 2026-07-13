@@ -3,8 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { K9CategoryNav } from "@/components/k9/K9CategoryNav";
 import { K9ProductCard } from "@/components/k9/K9ProductCard";
-import { Reveal } from "@/components/motion/Reveal";
-import { SplitLines } from "@/components/motion/SplitLines";
 import { getK9Categories, getK9Category, getK9Products } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
@@ -26,19 +24,6 @@ function fillerCells(count: number): { sm: boolean; xl: boolean }[] {
   const sm = (SM_COLS - (count % SM_COLS)) % SM_COLS;
   const xl = (XL_COLS - (count % XL_COLS)) % XL_COLS;
   return Array.from({ length: Math.max(sm, xl) }, (_, i) => ({ sm: i < sm, xl: i < xl }));
-}
-
-const MARK = "pointer-events-none absolute h-3 w-3 border-nf-border-strong";
-
-function CornerMarks() {
-  return (
-    <>
-      <span aria-hidden="true" className={cn(MARK, "left-0 top-0 border-l border-t")} />
-      <span aria-hidden="true" className={cn(MARK, "right-0 top-0 border-r border-t")} />
-      <span aria-hidden="true" className={cn(MARK, "bottom-0 left-0 border-b border-l")} />
-      <span aria-hidden="true" className={cn(MARK, "bottom-0 right-0 border-b border-r")} />
-    </>
-  );
 }
 
 export async function generateStaticParams(): Promise<{ category: string }[]> {
@@ -112,9 +97,9 @@ export default async function K9CategoryPage({
             </ol>
           </nav>
 
-          <div className="relative mt-8 px-6 py-8 md:px-8">
-            <CornerMarks />
-
+          {/* bez znacznikow naroznikowych i bez maskowanego wjazdu naglowka: to byly
+              ozdobniki, ktore nie niosly zadnej informacji */}
+          <div className="mt-8">
             {/* pas ostrzegawczy - jedyne uzycie szrafury na stronie */}
             <div aria-hidden="true" className="hatch-red h-1.5 w-24" />
 
@@ -126,14 +111,7 @@ export default async function K9CategoryPage({
               Sprzęt służbowy
             </p>
 
-            {/* pb w wierszu: maska SplitLines obcina ogonek "Ę" w "PRACA WĘCHOWA" */}
-            <SplitLines
-              lines={[category.title]}
-              as="h1"
-              className="type-h1 mt-4 text-nf-white"
-              lineClassName="pb-[0.06em]"
-              immediate
-            />
+            <h1 className="type-h1 mt-4 text-nf-white">{category.title}</h1>
 
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-nf-muted md:text-base">
               {category.description}
@@ -166,32 +144,30 @@ export default async function K9CategoryPage({
               Pozycje w kategorii {category.title}
             </h2>
 
-            {/* Reveal na calej siatce, nie na kaflach: stagger przesuwalby kafle w pionie,
-                a to na chwile odslanialoby tlo siatki miedzy nimi */}
-            <Reveal>
-              <ul
-                aria-labelledby="k9-pozycje"
-                className="grid grid-cols-1 gap-px border border-nf-border bg-nf-border sm:grid-cols-2 xl:grid-cols-3"
-              >
-                {products.map((product) => (
-                  <li key={product.id} className="flex">
-                    <K9ProductCard product={product} className="w-full" />
-                  </li>
-                ))}
+            {/* katalog renderuje sie od razu: animacja wjazdu trzymala kafle na opacity 0
+                do momentu przewiniecia, a bez JS zostawialaby je niewidoczne */}
+            <ul
+              aria-labelledby="k9-pozycje"
+              className="grid grid-cols-1 gap-px border border-nf-border bg-nf-border sm:grid-cols-2 xl:grid-cols-3"
+            >
+              {products.map((product) => (
+                <li key={product.id} className="flex">
+                  <K9ProductCard product={product} className="w-full" />
+                </li>
+              ))}
 
-                {fillerCells(products.length).map((filler, i) => (
-                  <li
-                    key={`filler-${i}`}
-                    aria-hidden="true"
-                    className={cn(
-                      "hidden bg-nf-bg",
-                      filler.sm ? "sm:block" : "sm:hidden",
-                      filler.xl ? "xl:block" : "xl:hidden"
-                    )}
-                  />
-                ))}
-              </ul>
-            </Reveal>
+              {fillerCells(products.length).map((filler, i) => (
+                <li
+                  key={`filler-${i}`}
+                  aria-hidden="true"
+                  className={cn(
+                    "hidden bg-nf-bg",
+                    filler.sm ? "sm:block" : "sm:hidden",
+                    filler.xl ? "xl:block" : "xl:hidden"
+                  )}
+                />
+              ))}
+            </ul>
 
             <div className="type-meta mt-4 flex items-center justify-between text-nf-dim">
               <span>Pozycji: {products.length}</span>

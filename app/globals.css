@@ -278,31 +278,11 @@ body {
   );
 }
 
-/* maskowanie wierszy tytulu przy wjezdzie (GSAP animuje translate w srodku) */
-@utility mask-line {
-  overflow: hidden;
-  display: block;
-}
-
-@keyframes pk-marquee {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
-/* Wlasciwosci rozpisane, NIE skrot: skrot "animation" resetuje animation-play-state,
-   wiec klasa pauzy ([animation-play-state:paused]) nie miala szans zadzialac
-   i przycisk zatrzymania byl atrapa. */
-@utility marquee-track {
-  animation-name: pk-marquee;
-  animation-duration: 42s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  will-change: transform;
-}
+/* Bylo tu jeszcze maskowanie wierszy naglowka (wjazd liter) i tor przewijanego pasa
+   parametrow (marquee). Oba znikly razem z komponentami, ktore ich uzywaly: napis
+   w nieskonczonej petli nie daje sie przeczytac ani zaznaczyc, a wjezdzajace litery to
+   ruch dla ruchu. Interfejs ma byc spokojny, wiec ruch zostal tylko tam, gdzie jest
+   odpowiedzia na dzialanie uzytkownika (hover, otwarcie szuflady). */
 
 @media (prefers-reduced-motion: reduce) {
   *,
