@@ -1,37 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
   
   <defs>
-    <radialGradient id="bg-willow-heritage-collar-2" cx="50%" cy="42%" r="75%">
-      <stop offset="0%" stop-color="#232323"/>
-      <stop offset="60%" stop-color="#181818"/>
-      <stop offset="100%" stop-color="#0e0e0e"/>
-    </radialGradient>
+    <linearGradient id="bg-willow-heritage-collar-2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c1c1c"/>
+      <stop offset="100%" stop-color="#151515"/>
+    </linearGradient>
     <radialGradient id="floor-willow-heritage-collar-2" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>
       <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
     </radialGradient>
     <filter id="grain-willow-heritage-collar-2">
-      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.012 0"/>
     </filter>
     <linearGradient id="sheen-willow-heritage-collar-2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
-      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.25"/>
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.08"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="1500" fill="url(#bg-willow-heritage-collar-2)"/>
   <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-willow-heritage-collar-2)"/>
   
   <g transform="translate(600 640) scale(1.45) rotate(1)">
-    <ellipse rx="365" ry="293" fill="none" stroke="#6d6254" stroke-width="127"/>
+    <ellipse rx="365" ry="293" fill="none" stroke="#6d6254" stroke-width="123"/>
     <ellipse rx="365" ry="293" fill="none" stroke="#C7B299" stroke-width="113"/>
-    <ellipse rx="365" ry="293" fill="none" stroke="#d3c3af" stroke-width="34"
-      stroke-dasharray="548 1460" stroke-dashoffset="146" opacity="0.5"/>
-    <ellipse rx="365" ry="293" fill="none" stroke="#6d6254" stroke-width="3"
-      stroke-dasharray="10 26" opacity="0.85" transform="scale(0.900931506849315 0.8765870307167235)"/>
-    <ellipse rx="365" ry="293" fill="none" stroke="#6d6254" stroke-width="3"
-      stroke-dasharray="10 26" opacity="0.85" transform="scale(1.099068493150685 1.1234129692832766)"/>
+    <ellipse rx="365" ry="293" fill="none" stroke="#d3c3af" stroke-width="20"
+      stroke-dasharray="438 1825" stroke-dashoffset="146" opacity="0.18"/>
+    <ellipse rx="365" ry="293" fill="none" stroke="#6d6254" stroke-width="2"
+      stroke-dasharray="8 22" opacity="0.5" transform="scale(0.8978356164383561 0.8727303754266212)"/>
+    <ellipse rx="365" ry="293" fill="none" stroke="#6d6254" stroke-width="2"
+      stroke-dasharray="8 22" opacity="0.5" transform="scale(1.102164383561644 1.1272696245733789)"/>
     <g transform="rotate(-13) translate(0 -293)">
       <rect x="-95" y="-72.5" width="190" height="145" rx="18" fill="#2b2d30" stroke="#54575c" stroke-width="5"/>
       <rect x="-58" y="-52.5" width="116" height="89" rx="10" fill="#1a1b1d" stroke="#45484d" stroke-width="4"/>

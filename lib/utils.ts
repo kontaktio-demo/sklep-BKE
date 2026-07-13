@@ -1,5 +1,10 @@
-export function cn(...classes: (string | false | null | undefined)[]): string {
-  return classes.filter(Boolean).join(" ");
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+// twMerge, a nie zwykly join: przy sklejaniu klas wygrywa ta przekazana pozniej,
+// a nie ta, ktora Tailwind wygenerowal nizej w arkuszu (np. rounded-[2px] nad rounded-[4px])
+export function cn(...classes: ClassValue[]): string {
+  return twMerge(clsx(classes));
 }
 
 const formatters = new Map<string, Intl.NumberFormat>();

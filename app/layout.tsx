@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Inter } from "next/font/google";
+import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LenisProvider } from "@/components/motion/LenisProvider";
 import { CartProvider } from "@/lib/cart";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
+import { ThemeSync } from "@/components/layout/ThemeSync";
 import { Header } from "@/components/layout/Header";
 import { CartDrawer } from "@/components/layout/CartDrawer";
 import { Newsletter } from "@/components/layout/Newsletter";
@@ -19,6 +20,13 @@ const archivo = Archivo({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin", "latin-ext"],
+});
+
+// oznaczenia techniczne (kody kategorii, SKU, dane) - sekcja K9 i meta na stronie głównej
+const mono = JetBrains_Mono({
+  variable: "--font-mono-tech",
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500"],
 });
 
 const DESCRIPTION =
@@ -58,7 +66,10 @@ export default async function RootLayout({
 
   return (
     <html lang="pl">
-      <body className={`${archivo.variable} ${inter.variable} antialiased`}>
+      <body
+        className={`${archivo.variable} ${inter.variable} ${mono.variable} antialiased`}
+      >
+        <ThemeSync />
         <LenisProvider>
           <CartProvider>
             <AnnouncementBar />

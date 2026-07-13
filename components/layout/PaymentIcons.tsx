@@ -2,8 +2,20 @@
 
 import { PAYMENT_METHODS } from "@/lib/nav";
 import { cn } from "@/lib/utils";
+import type { Theme } from "./theme";
 
-export function PaymentIcons({ className }: { className?: string }) {
+const BADGE: Record<Theme, string> = {
+  dark: "border-nf-border bg-white/5 text-nf-muted",
+  light: "border-pk-line bg-pk-paper text-pk-ink-muted",
+};
+
+export function PaymentIcons({
+  className,
+  theme = "dark",
+}: {
+  className?: string;
+  theme?: Theme;
+}) {
   return (
     <ul
       aria-label="Akceptowane metody płatności"
@@ -12,7 +24,10 @@ export function PaymentIcons({ className }: { className?: string }) {
       {PAYMENT_METHODS.map((method) => (
         <li
           key={method}
-          className="flex h-6 items-center rounded-[3px] border border-nf-border bg-white/5 px-2 text-[9px] font-bold uppercase tracking-wide text-nf-muted"
+          className={cn(
+            "flex h-6 items-center rounded-[3px] border px-2 text-[9px] font-bold uppercase tracking-wide",
+            BADGE[theme]
+          )}
         >
           {method}
         </li>

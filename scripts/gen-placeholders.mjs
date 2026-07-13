@@ -34,6 +34,19 @@ const PRODUCTS = [
   { slug: "breeze-mesh-collar", hex: "#8E9193", chain: false },
   { slug: "surge-e-fit-collar", hex: "#1F1F1F", chain: false },
   { slug: "raptor-e-fit-field-collar", hex: "#4A5D43", chain: false },
+  // linia PAKT-K9 (sprzet sluzbowy, niedostepny w zwyklym sklepie)
+  { slug: "k9-patrol-duty-collar", hex: "#1F1F1F", chain: false },
+  { slug: "k9-grip-handle-collar", hex: "#1F1F1F", chain: false },
+  { slug: "k9-breach-handle-collar", hex: "#4B4F55", chain: false },
+  { slug: "k9-mount-e-collar", hex: "#3E4634", chain: false },
+  { slug: "k9-relay-e-collar", hex: "#4A5D43", chain: false },
+  { slug: "k9-drill-training-collar", hex: "#3E4634", chain: false },
+  { slug: "k9-check-training-chain", hex: "#4B4F55", chain: true },
+  { slug: "k9-scent-detection-collar", hex: "#7A5C3E", chain: false },
+  { slug: "k9-track-detection-collar", hex: "#3E4634", chain: false },
+  { slug: "k9-sentry-patrol-collar", hex: "#1F1F1F", chain: false },
+  { slug: "k9-anchor-patrol-collar", hex: "#7A5C3E", chain: false },
+  { slug: "k9-cadet-training-collar", hex: "#3E4634", chain: false },
 ];
 
 function mulberry32(seed) {
@@ -63,25 +76,26 @@ function shade(hex, f) {
   return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
 }
 
+// Spokojne, studyjne tło: płaski grafit, delikatny cień pod produktem.
+// Bez połysku na całym kadrze i bez mocnego ziarna - to wygladalo tanio.
 const DEFS = (id) => `
   <defs>
-    <radialGradient id="bg-${id}" cx="50%" cy="42%" r="75%">
-      <stop offset="0%" stop-color="#232323"/>
-      <stop offset="60%" stop-color="#181818"/>
-      <stop offset="100%" stop-color="#0e0e0e"/>
-    </radialGradient>
+    <linearGradient id="bg-${id}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c1c1c"/>
+      <stop offset="100%" stop-color="#151515"/>
+    </linearGradient>
     <radialGradient id="floor-${id}" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>
       <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
     </radialGradient>
     <filter id="grain-${id}">
-      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.012 0"/>
     </filter>
     <linearGradient id="sheen-${id}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
-      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.25"/>
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.08"/>
     </linearGradient>
   </defs>`;
 
@@ -97,14 +111,14 @@ function nylonCollar(hex, rnd, zoomed) {
   const cy = zoomed ? 640 : 720;
   return `
   <g transform="translate(600 ${cy}) scale(${scale}) rotate(${rot})">
-    <ellipse rx="${rx}" ry="${ry}" fill="none" stroke="${dark}" stroke-width="${sw + 14}"/>
+    <ellipse rx="${rx}" ry="${ry}" fill="none" stroke="${dark}" stroke-width="${sw + 10}"/>
     <ellipse rx="${rx}" ry="${ry}" fill="none" stroke="${hex}" stroke-width="${sw}"/>
-    <ellipse rx="${rx}" ry="${ry}" fill="none" stroke="${light}" stroke-width="${Math.round(sw * 0.3)}"
-      stroke-dasharray="${Math.round(rx * 1.5)} ${Math.round(rx * 4)}" stroke-dashoffset="${Math.round(rx * 0.4)}" opacity="0.5"/>
-    <ellipse rx="${rx}" ry="${ry}" fill="none" stroke="${dark}" stroke-width="3"
-      stroke-dasharray="10 26" opacity="0.85" transform="scale(${(rx - sw * 0.32) / rx} ${(ry - sw * 0.32) / ry})"/>
-    <ellipse rx="${rx}" ry="${ry}" fill="none" stroke="${dark}" stroke-width="3"
-      stroke-dasharray="10 26" opacity="0.85" transform="scale(${(rx + sw * 0.32) / rx} ${(ry + sw * 0.32) / ry})"/>
+    <ellipse rx="${rx}" ry="${ry}" fill="none" stroke="${light}" stroke-width="${Math.round(sw * 0.18)}"
+      stroke-dasharray="${Math.round(rx * 1.2)} ${Math.round(rx * 5)}" stroke-dashoffset="${Math.round(rx * 0.4)}" opacity="0.18"/>
+    <ellipse rx="${rx}" ry="${ry}" fill="none" stroke="${dark}" stroke-width="2"
+      stroke-dasharray="8 22" opacity="0.5" transform="scale(${(rx - sw * 0.33) / rx} ${(ry - sw * 0.33) / ry})"/>
+    <ellipse rx="${rx}" ry="${ry}" fill="none" stroke="${dark}" stroke-width="2"
+      stroke-dasharray="8 22" opacity="0.5" transform="scale(${(rx + sw * 0.33) / rx} ${(ry + sw * 0.33) / ry})"/>
     <g transform="rotate(${buckleAngle}) translate(0 ${-ry})">
       <rect x="-95" y="-${sw / 2 + 16}" width="190" height="${sw + 32}" rx="18" fill="#2b2d30" stroke="#54575c" stroke-width="5"/>
       <rect x="-58" y="-${sw / 2 - 4}" width="116" height="${sw - 24}" rx="10" fill="#1a1b1d" stroke="#45484d" stroke-width="4"/>
@@ -185,30 +199,39 @@ function hardwareShot(hex, chain, rnd) {
   </g>`;
 }
 
-// gallery shot 4 - coiled flat-lay
-function coiledShot(hex, chain, rnd) {
+// gallery shot 4 - taśma ułożona płasko (poprzednio zwoje wyglądały jak tarcza)
+function flatLayShot(hex, chain, rnd) {
   const dark = shade(hex, -0.45);
-  const light = shade(hex, 0.2);
-  const rot = Math.round((rnd() - 0.5) * 24);
-  const sw = chain ? 26 : 74;
-  let loops = "";
-  for (let i = 0; i < 3; i++) {
-    const r = 330 - i * 96;
-    const dash = chain ? `stroke-dasharray="46 26"` : "";
-    loops += `<circle r="${r}" fill="none" stroke="${dark}" stroke-width="${sw + 12}" ${dash}/>
-      <circle r="${r}" fill="none" stroke="${i % 2 ? light : hex}" stroke-width="${sw}" ${dash}/>`;
-  }
-  return `
-  <g transform="translate(600 750) rotate(${rot})">
-    ${loops}
+  const light = shade(hex, 0.18);
+  const rot = Math.round((rnd() - 0.5) * 8);
+  const sw = chain ? 34 : 92;
+  const y1 = -130;
+  const y2 = 90;
+
+  const strap = (y, w) => `
+    <rect x="${-w / 2}" y="${y - sw / 2 - 6}" width="${w}" height="${sw + 12}" rx="${sw / 2}" fill="${dark}"/>
+    <rect x="${-w / 2}" y="${y - sw / 2}" width="${w}" height="${sw}" rx="${sw / 2}" fill="${hex}"/>
+    <rect x="${-w / 2 + 20}" y="${y - sw / 2 + 6}" width="${w - 40}" height="${Math.round(sw * 0.16)}" rx="6" fill="${light}" opacity="0.16"/>
     ${
       chain
-        ? `<circle r="70" fill="none" stroke="${light}" stroke-width="20"/>`
-        : `<g transform="translate(0 -330)">
-             <rect x="-90" y="-46" width="180" height="92" rx="16" fill="#2b2d30" stroke="#54575c" stroke-width="5"/>
-             <rect x="-52" y="-24" width="104" height="48" rx="9" fill="#1a1b1d" stroke="#45484d" stroke-width="4"/>
+        ? ""
+        : `<g stroke="${shade(hex, -0.6)}" stroke-width="2" stroke-dasharray="8 20" opacity="0.5">
+             <path d="M${-w / 2 + 16} ${y - sw * 0.3} H${w / 2 - 16}"/>
+             <path d="M${-w / 2 + 16} ${y + sw * 0.3} H${w / 2 - 16}"/>
            </g>`
-    }
+    }`;
+
+  return `
+  <g transform="translate(600 760) rotate(${rot})">
+    ${strap(y1, 720)}
+    ${strap(y2, 620)}
+    <g transform="translate(-300 ${y1})">
+      <circle r="${sw * 0.55}" fill="none" stroke="#8f9399" stroke-width="12"/>
+    </g>
+    <g transform="translate(280 ${y2})">
+      <rect x="-70" y="-${sw / 2 + 8}" width="140" height="${sw + 16}" rx="14" fill="#2b2d30" stroke="#54575c" stroke-width="4"/>
+      <rect x="-42" y="-${sw / 2 + 2}" width="84" height="${sw + 4}" rx="8" fill="#1a1b1d" stroke="#45484d" stroke-width="3"/>
+    </g>
   </g>`;
 }
 
@@ -219,7 +242,7 @@ function productSvg(slug, hex, chain, variant) {
     variant === 3
       ? hardwareShot(hex, chain, rnd)
       : variant === 4
-        ? coiledShot(hex, chain, rnd)
+        ? flatLayShot(hex, chain, rnd)
         : chain
           ? chainCollar(hex, rnd, variant === 2)
           : nylonCollar(hex, rnd, variant === 2);

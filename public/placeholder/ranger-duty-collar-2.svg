@@ -1,37 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
   
   <defs>
-    <radialGradient id="bg-ranger-duty-collar-2" cx="50%" cy="42%" r="75%">
-      <stop offset="0%" stop-color="#232323"/>
-      <stop offset="60%" stop-color="#181818"/>
-      <stop offset="100%" stop-color="#0e0e0e"/>
-    </radialGradient>
+    <linearGradient id="bg-ranger-duty-collar-2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c1c1c"/>
+      <stop offset="100%" stop-color="#151515"/>
+    </linearGradient>
     <radialGradient id="floor-ranger-duty-collar-2" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>
       <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
     </radialGradient>
     <filter id="grain-ranger-duty-collar-2">
-      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.012 0"/>
     </filter>
     <linearGradient id="sheen-ranger-duty-collar-2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
-      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.25"/>
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.08"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="1500" fill="url(#bg-ranger-duty-collar-2)"/>
   <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-ranger-duty-collar-2)"/>
   
   <g transform="translate(600 640) scale(1.45) rotate(4)">
-    <ellipse rx="372" ry="304" fill="none" stroke="#433322" stroke-width="126"/>
+    <ellipse rx="372" ry="304" fill="none" stroke="#433322" stroke-width="122"/>
     <ellipse rx="372" ry="304" fill="none" stroke="#7A5C3E" stroke-width="112"/>
-    <ellipse rx="372" ry="304" fill="none" stroke="#978068" stroke-width="34"
-      stroke-dasharray="558 1488" stroke-dashoffset="149" opacity="0.5"/>
-    <ellipse rx="372" ry="304" fill="none" stroke="#433322" stroke-width="3"
-      stroke-dasharray="10 26" opacity="0.85" transform="scale(0.9036559139784945 0.8821052631578946)"/>
-    <ellipse rx="372" ry="304" fill="none" stroke="#433322" stroke-width="3"
-      stroke-dasharray="10 26" opacity="0.85" transform="scale(1.0963440860215055 1.1178947368421053)"/>
+    <ellipse rx="372" ry="304" fill="none" stroke="#978068" stroke-width="20"
+      stroke-dasharray="446 1860" stroke-dashoffset="149" opacity="0.18"/>
+    <ellipse rx="372" ry="304" fill="none" stroke="#433322" stroke-width="2"
+      stroke-dasharray="8 22" opacity="0.5" transform="scale(0.9006451612903227 0.878421052631579)"/>
+    <ellipse rx="372" ry="304" fill="none" stroke="#433322" stroke-width="2"
+      stroke-dasharray="8 22" opacity="0.5" transform="scale(1.0993548387096774 1.121578947368421)"/>
     <g transform="rotate(-26) translate(0 -304)">
       <rect x="-95" y="-72" width="190" height="144" rx="18" fill="#2b2d30" stroke="#54575c" stroke-width="5"/>
       <rect x="-58" y="-52" width="116" height="88" rx="10" fill="#1a1b1d" stroke="#45484d" stroke-width="4"/>

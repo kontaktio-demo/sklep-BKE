@@ -8,6 +8,24 @@ import { useOverlayA11y } from "./useOverlay";
 
 const NF_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
 
+// Domyślnie ciemny (sklep). "light" obsługuje jasną stronę główną - patrz components/layout/theme.ts.
+const SURFACE = {
+  dark: {
+    scrim: "bg-black/60",
+    panel: "border-nf-border bg-nf-elevated shadow-2xl",
+    line: "border-nf-border",
+    title: "text-nf-white",
+    close: "text-nf-muted hover:text-nf-white",
+  },
+  light: {
+    scrim: "bg-pk-ink/40",
+    panel: "border-pk-line bg-pk-paper shadow-xl",
+    line: "border-pk-line",
+    title: "text-pk-ink",
+    close: "text-pk-ink-muted hover:text-pk-ink",
+  },
+} as const;
+
 export function Dialog({
   open,
   onClose,
@@ -15,6 +33,7 @@ export function Dialog({
   children,
   maxWidthClassName,
   hideTitle = false,
+  theme = "dark",
 }: {
   open: boolean;
   onClose: () => void;
@@ -22,10 +41,12 @@ export function Dialog({
   children: React.ReactNode;
   maxWidthClassName?: string;
   hideTitle?: boolean;
+  theme?: "light" | "dark";
 }) {
   const panelRef = useRef<HTMLDivElement | null>(null);
   const reduced = useReducedMotion();
   const titleId = useId();
+  const surface = SURFACE[theme];
   useOverlayA11y(open, onClose, panelRef);
 
   const panelMotion = reduced
@@ -46,7 +67,8 @@ export function Dialog({
       aria-label="Zamknij"
       onClick={onClose}
       className={cn(
-        "flex h-11 w-11 items-center justify-center text-nf-muted transition-colors duration-250 ease-nf hover:text-nf-white",
+        "flex h-11 w-11 items-center justify-center transition-colors duration-250 ease-nf",
+        surface.close,
         hideTitle && "absolute right-2 top-2 z-10"
       )}
     >
@@ -60,7 +82,7 @@ export function Dialog({
         <>
           <motion.div
             aria-hidden="true"
-            className="fixed inset-0 z-50 bg-black/60"
+            className={cn("fixed inset-0 z-50", surface.scrim)}
             initial={{ opacity: reduced ? 1 : 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: reduced ? 1 : 0 }}
@@ -75,7 +97,8 @@ export function Dialog({
               aria-labelledby={titleId}
               tabIndex={-1}
               className={cn(
-                "pointer-events-auto relative mx-4 max-h-[90dvh] w-full overflow-y-auto rounded-md border border-nf-border bg-nf-elevated shadow-2xl",
+                "pointer-events-auto relative mx-4 max-h-[90dvh] w-full overflow-y-auto rounded-md border",
+                surface.panel,
                 maxWidthClassName ?? "max-w-lg"
               )}
               transition={{ duration: reduced ? 0 : 0.25, ease: NF_EASE }}
@@ -89,10 +112,18 @@ export function Dialog({
                   {closeButton}
                 </>
               ) : (
-                <div className="flex items-center justify-between border-b border-nf-border py-3 pl-5 pr-3">
+                <div
+                  className={cn(
+                    "flex items-center justify-between border-b py-3 pl-5 pr-3",
+                    surface.line
+                  )}
+                >
                   <h2
                     id={titleId}
-                    className="font-display text-lg font-bold uppercase tracking-wide text-nf-white"
+                    className={cn(
+                      "font-display text-lg font-bold uppercase tracking-wide",
+                      surface.title
+                    )}
                   >
                     {title}
                   </h2>

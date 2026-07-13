@@ -15,11 +15,7 @@ import {
 import type { Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/Skeleton";
-import {
-  ArrowRightIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@/components/ui/icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@/components/ui/icons";
 import { ProductCard } from "@/components/collection/ProductCard";
 
 const DEFAULT_ITEM_CLASS = "w-[46vw] sm:w-[240px] lg:w-[270px]";
@@ -63,7 +59,7 @@ export function useLazyMount<T extends HTMLElement>(ref: RefObject<T | null>): b
 // Same li widths + paddings as the live track so row height is reserved (CLS ≈ 0).
 export function RowSkeletonTrack({ itemClassName }: { itemClassName?: string }) {
   return (
-    <div aria-hidden="true" className="flex gap-3 overflow-hidden px-4 py-4 md:px-6">
+    <div aria-hidden="true" className="flex gap-4 overflow-hidden px-4 py-4 md:px-6">
       {Array.from({ length: 5 }, (_, i) => (
         <div key={i} className={cn("shrink-0", itemClassName ?? DEFAULT_ITEM_CLASS)}>
           <Skeleton className="aspect-[4/5] w-full" />
@@ -248,7 +244,7 @@ export function RowScroller({
 
   const arrowClass = (enabled: boolean, side: "left" | "right") =>
     cn(
-      "absolute inset-y-4 z-10 hidden w-12 items-center justify-center bg-nf-bg/60 text-white backdrop-blur-sm transition-opacity duration-250 ease-nf hover:bg-nf-bg/80 lg:flex",
+      "absolute inset-y-4 z-10 hidden w-10 items-center justify-center border border-nf-border bg-nf-bg/80 text-white transition-opacity duration-250 ease-nf hover:bg-nf-bg lg:flex",
       side === "left" ? "left-0" : "right-0",
       enabled
         ? "opacity-0 focus-visible:opacity-100 group-hover:opacity-100"
@@ -260,7 +256,7 @@ export function RowScroller({
       {/* py-4 keeps card hover-scale from clipping */}
       <ul
         ref={trackRef}
-        className="edge-fade-x no-scrollbar flex select-none snap-x snap-mandatory gap-3 overflow-x-auto px-4 py-4 md:px-6 lg:cursor-grab"
+        className="edge-fade-x no-scrollbar flex select-none snap-x snap-mandatory gap-4 overflow-x-auto px-4 py-4 md:px-6 lg:cursor-grab"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={(e) => endDrag(e, true)}
@@ -283,7 +279,7 @@ export function RowScroller({
         onClick={() => scrollByAmount(-1)}
         className={arrowClass(canLeft, "left")}
       >
-        <ChevronLeftIcon width={24} height={24} />
+        <ChevronLeftIcon width={20} height={20} />
       </button>
       <button
         type="button"
@@ -292,7 +288,7 @@ export function RowScroller({
         onClick={() => scrollByAmount(1)}
         className={arrowClass(canRight, "right")}
       >
-        <ChevronRightIcon width={24} height={24} />
+        <ChevronRightIcon width={20} height={20} />
       </button>
     </div>
   );
@@ -318,17 +314,16 @@ export function NetflixRow({
   return (
     <section ref={sectionRef} id={id} className="scroll-mt-24 space-y-3">
       <div className="mx-auto max-w-[1600px]">
-        <div className="flex items-baseline justify-between gap-4 px-4 md:px-6">
-          <h2 className="font-display text-xl font-bold tracking-tight text-white md:text-2xl">
+        <div className="flex items-center justify-between gap-4 px-4 md:px-6">
+          <h2 className="font-display text-lg font-bold uppercase tracking-wide text-white">
             {title}
           </h2>
           {exploreHref && (
             <Link
               href={exploreHref}
-              className="inline-flex items-center gap-1 text-sm text-nf-muted transition-colors duration-250 ease-nf hover:text-white"
+              className="inline-flex min-h-11 items-center text-xs uppercase tracking-widest text-nf-dim transition-colors duration-250 ease-nf hover:text-white"
             >
               Zobacz wszystkie
-              <ArrowRightIcon width={16} height={16} />
             </Link>
           )}
         </div>

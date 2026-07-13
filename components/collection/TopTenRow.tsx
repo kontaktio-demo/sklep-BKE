@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import type { Product } from "@/lib/types";
 import { ProductCard } from "@/components/collection/ProductCard";
 import {
@@ -40,30 +40,28 @@ export function TopTenRow({
     <section ref={sectionRef} id={id} className="scroll-mt-24 space-y-3">
       <div className="mx-auto max-w-[1600px]">
         <div className="px-4 md:px-6">
-          <h2 className="font-display text-xl font-bold tracking-tight text-white md:text-2xl">
+          <h2 className="font-display text-lg font-bold uppercase tracking-wide text-white">
             {title}
           </h2>
         </div>
 
         {mounted ? (
-          // li must be `relative`: the sr-only rank spans are absolutely positioned and
-          // would otherwise anchor to the row wrapper outside the scroll container,
-          // leaking horizontal overflow onto the page
-          <RowScroller itemClassName="relative flex items-end">
+          <RowScroller itemClassName={CARD_WIDTH_CLASS}>
             {ranked.map((p, i) => (
-              <Fragment key={p.id}>
+              // z-0 scopes the card's hover:z-10 to this slot, so the rank chip can sit
+              // above the hovered card without also painting over the row arrows
+              <div key={p.id} className="relative z-0">
                 <span className="sr-only">Miejsce {i + 1}</span>
-                {/* giant outlined rank bleeding behind the card, Netflix Top 10 style */}
+                {/* rank chip sits top-right: ProductCard renders its badge column at
+                    top-left, and ranks 1-6 carry a badge */}
                 <span
                   aria-hidden="true"
-                  className="text-stroke-rank relative z-0 -mr-6 select-none font-display text-[7rem] font-black leading-[0.8] sm:-mr-8 sm:text-[9rem] lg:text-[11rem]"
+                  className="pointer-events-none absolute right-2 top-2 z-20 flex size-7 items-center justify-center border border-nf-border-strong bg-nf-bg/85 text-xs font-semibold text-nf-text backdrop-blur-sm"
                 >
                   {i + 1}
                 </span>
-                <div className={`relative z-[1] ${CARD_WIDTH_CLASS}`}>
-                  <ProductCard product={p} sizes={CARD_SIZES} />
-                </div>
-              </Fragment>
+                <ProductCard product={p} sizes={CARD_SIZES} />
+              </div>
             ))}
           </RowScroller>
         ) : (

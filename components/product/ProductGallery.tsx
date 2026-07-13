@@ -60,10 +60,12 @@ export function ProductGallery({
                 aria-label={`Zdjęcie ${i + 1} z ${count}`}
                 aria-pressed={isActive}
                 className={cn(
-                  "relative aspect-[4/5] w-16 shrink-0 overflow-hidden rounded border bg-nf-elevated transition-colors duration-200 ease-nf motion-reduce:transition-none lg:w-20",
+                  // nieaktywna miniatura jest wygaszona w całości (ramka + zdjęcie),
+                  // nie samym obrazkiem - dzięki temu kadr nie "miga" kontrastem
+                  "relative aspect-[4/5] w-16 shrink-0 overflow-hidden rounded-[2px] border bg-nf-elevated transition-[opacity,border-color] duration-200 ease-nf hover:opacity-100 focus-visible:opacity-100 motion-reduce:transition-none lg:w-20",
                   isActive
-                    ? "border-nf-white"
-                    : "border-nf-border hover:border-nf-border-strong",
+                    ? "border-nf-white opacity-100"
+                    : "border-nf-border opacity-60"
                 )}
               >
                 <Image
@@ -72,10 +74,7 @@ export function ProductGallery({
                   aria-hidden="true"
                   fill
                   sizes={THUMB_SIZES}
-                  className={cn(
-                    "object-cover transition-opacity duration-200 ease-nf motion-reduce:transition-none",
-                    isActive ? "opacity-100" : "opacity-70",
-                  )}
+                  className="object-cover"
                 />
               </button>
             );
@@ -83,42 +82,42 @@ export function ProductGallery({
         </div>
       )}
 
-      <div className="relative order-1 aspect-[4/5] w-full min-w-0 overflow-hidden rounded-md border border-nf-border bg-nf-elevated lg:order-2 lg:flex-1">
-        {images.map((src, i) => {
-          const isActive = i === active;
-          return (
-            <Image
-              key={src}
-              src={src}
-              alt={isActive ? alt : ""}
-              aria-hidden={isActive ? undefined : "true"}
-              fill
-              // all frames stay mounted so the swap is a crossfade, not a reload;
-              // only the first one is the LCP candidate
-              priority={i === 0}
-              sizes={MAIN_SIZES}
-              className={cn(
-                "object-cover transition-opacity duration-200 ease-nf motion-reduce:transition-none",
-                isActive ? "opacity-100" : "opacity-0",
-              )}
-            />
-          );
-        })}
+      <div className="order-1 flex min-w-0 flex-col gap-2 lg:order-2 lg:flex-1">
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2px] border border-nf-border bg-nf-elevated">
+          {images.map((src, i) => {
+            const isActive = i === active;
+            return (
+              <Image
+                key={src}
+                src={src}
+                alt={isActive ? alt : ""}
+                aria-hidden={isActive ? undefined : "true"}
+                fill
+                // all frames stay mounted so the swap is a crossfade, not a reload;
+                // only the first one is the LCP candidate
+                priority={i === 0}
+                sizes={MAIN_SIZES}
+                className={cn(
+                  "object-cover transition-opacity duration-200 ease-nf motion-reduce:transition-none",
+                  isActive ? "opacity-100" : "opacity-0"
+                )}
+              />
+            );
+          })}
 
-        {badges && (
-          <div className="pointer-events-none absolute left-3 top-3 z-10 flex flex-col items-start gap-1.5">
-            {badges}
-          </div>
-        )}
+          {badges && (
+            <div className="pointer-events-none absolute left-3 top-3 z-10 flex flex-col items-start gap-1.5">
+              {badges}
+            </div>
+          )}
+        </div>
 
         {hasThumbs && (
-          // miniatury już ogłaszają "Zdjęcie 2 z 4" - to tylko wizualne echo
-          <div
-            aria-hidden="true"
-            className="absolute bottom-3 right-3 z-10 rounded bg-nf-bg/70 px-2 py-1 text-xs text-nf-muted backdrop-blur"
-          >
+          // licznik siedzi pod kadrem, nie na zdjęciu - miniatury i tak ogłaszają
+          // "Zdjęcie 2 z 4", więc dla czytnika ekranu to tylko wizualne echo
+          <p aria-hidden="true" className="text-right text-xs tabular-nums text-nf-dim">
             {active + 1} / {count}
-          </div>
+          </p>
         )}
       </div>
     </div>

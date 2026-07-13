@@ -1,34 +1,45 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
   
   <defs>
-    <radialGradient id="bg-onyx-slip-chain-4" cx="50%" cy="42%" r="75%">
-      <stop offset="0%" stop-color="#232323"/>
-      <stop offset="60%" stop-color="#181818"/>
-      <stop offset="100%" stop-color="#0e0e0e"/>
-    </radialGradient>
+    <linearGradient id="bg-onyx-slip-chain-4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c1c1c"/>
+      <stop offset="100%" stop-color="#151515"/>
+    </linearGradient>
     <radialGradient id="floor-onyx-slip-chain-4" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>
       <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
     </radialGradient>
     <filter id="grain-onyx-slip-chain-4">
-      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.012 0"/>
     </filter>
     <linearGradient id="sheen-onyx-slip-chain-4" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
-      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.25"/>
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.08"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="1500" fill="url(#bg-onyx-slip-chain-4)"/>
   <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-onyx-slip-chain-4)"/>
   
-  <g transform="translate(600 750) rotate(-6)">
-    <circle r="330" fill="none" stroke="#292b2f" stroke-width="38" stroke-dasharray="46 26"/>
-      <circle r="330" fill="none" stroke="#4B4F55" stroke-width="26" stroke-dasharray="46 26"/><circle r="234" fill="none" stroke="#292b2f" stroke-width="38" stroke-dasharray="46 26"/>
-      <circle r="234" fill="none" stroke="#6f7277" stroke-width="26" stroke-dasharray="46 26"/><circle r="138" fill="none" stroke="#292b2f" stroke-width="38" stroke-dasharray="46 26"/>
-      <circle r="138" fill="none" stroke="#4B4F55" stroke-width="26" stroke-dasharray="46 26"/>
-    <circle r="70" fill="none" stroke="#6f7277" stroke-width="20"/>
+  <g transform="translate(600 760) rotate(-2)">
+    
+    <rect x="-360" y="-153" width="720" height="46" rx="17" fill="#292b2f"/>
+    <rect x="-360" y="-147" width="720" height="34" rx="17" fill="#4B4F55"/>
+    <rect x="-340" y="-141" width="680" height="5" rx="6" fill="#6b6f74" opacity="0.16"/>
+    
+    
+    <rect x="-310" y="67" width="620" height="46" rx="17" fill="#292b2f"/>
+    <rect x="-310" y="73" width="620" height="34" rx="17" fill="#4B4F55"/>
+    <rect x="-290" y="79" width="580" height="5" rx="6" fill="#6b6f74" opacity="0.16"/>
+    
+    <g transform="translate(-300 -130)">
+      <circle r="18.700000000000003" fill="none" stroke="#8f9399" stroke-width="12"/>
+    </g>
+    <g transform="translate(280 90)">
+      <rect x="-70" y="-25" width="140" height="50" rx="14" fill="#2b2d30" stroke="#54575c" stroke-width="4"/>
+      <rect x="-42" y="-19" width="84" height="38" rx="8" fill="#1a1b1d" stroke="#45484d" stroke-width="3"/>
+    </g>
   </g>
   <rect width="1200" height="1500" fill="url(#sheen-onyx-slip-chain-4)" opacity="0.5"/>
   <rect width="1200" height="1500" filter="url(#grain-onyx-slip-chain-4)"/>

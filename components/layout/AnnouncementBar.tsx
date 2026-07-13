@@ -2,7 +2,9 @@
 
 // §8-A [COMBINE: K9TG rotating message + NSDW trust triad]
 
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { Fragment, useEffect, useState } from "react";
+import { isLightRoute } from "@/components/layout/ThemeSync";
 import { ANNOUNCEMENTS, TRUST_TRIAD } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
@@ -15,13 +17,15 @@ function Highlighted({ text, highlight }: { text: string; highlight: string }) {
   return (
     <>
       {text.slice(0, at)}
-      <span className="font-semibold text-nf-red-bright">{highlight}</span>
+      {/* red stays reserved for the CTA; the bar highlights with weight, not color */}
+      <span className="font-semibold text-white">{highlight}</span>
       {text.slice(at + highlight.length)}
     </>
   );
 }
 
 export function AnnouncementBar() {
+  const pathname = usePathname();
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(true);
 
@@ -43,12 +47,16 @@ export function AnnouncementBar() {
     };
   }, []);
 
+  // Strona główna jest landingiem marki, nie sklepem: czarny pasek użytkowy nad
+  // jasnym hero psuł kadr i nie niósł treści potrzebnej w tym miejscu.
+  if (isLightRoute(pathname)) return null;
+
   return (
-    <div className="relative flex h-9 items-center justify-center bg-nf-black px-4 text-[11px] uppercase tracking-wide text-nf-muted">
+    <div className="relative flex h-9 items-center justify-center bg-nf-black px-4 text-[11px] uppercase tracking-[0.15em] text-nf-muted">
       <p
         aria-hidden="true"
         className={cn(
-          "transition-opacity duration-250 ease-nf",
+          "transition-opacity duration-250 ease-nf motion-reduce:transition-none",
           visible ? "opacity-100" : "opacity-0"
         )}
       >
@@ -63,16 +71,12 @@ export function AnnouncementBar() {
           <li key={a.text}>{a.text}</li>
         ))}
       </ul>
-      <p className="absolute right-4 hidden items-center gap-2 lg:flex lg:right-6">
+      <p className="absolute right-4 hidden items-center gap-3 text-nf-dim lg:flex lg:right-6">
         {TRUST_TRIAD.map((item, i) => (
-          <span key={item} className="flex items-center gap-2">
-            {i > 0 && (
-              <span aria-hidden="true" className="text-nf-dim">
-                ·
-              </span>
-            )}
-            {item}
-          </span>
+          <Fragment key={item}>
+            {i > 0 && <span aria-hidden="true" className="h-3 border-l border-nf-border" />}
+            <span>{item}</span>
+          </Fragment>
         ))}
       </p>
     </div>

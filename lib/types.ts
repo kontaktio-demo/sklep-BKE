@@ -1,3 +1,9 @@
+/** Linia produktowa: zwykly sklep vs dedykowana sekcja PAKT-K9 (sprzet sluzbowy). */
+export type ProductLine = "shop" | "k9";
+
+/** Kategorie w sekcji K9 (produkty z tej linii nie trafiaja do zwyklego sklepu). */
+export type K9Category = "patrol" | "handle" | "e-collar" | "training" | "detection";
+
 export type CollarCategory = "working" | "non-working" | "e-collar";
 export type CollarType = "nylon" | "chain";
 export type CollarWidth = "1" | "1.5" | "1.75";
@@ -39,6 +45,20 @@ export interface Product {
   bestsellerRank?: number; // for Top 10 row
   productType: string; // "Collar" label shown under price (K9TG pattern)
   createdAt: string; // ISO date - required by the Date new->old / old->new sorts (§8-E)
+  /** "shop" = zwykly sklep, "k9" = sprzet sluzbowy dostepny tylko w sekcji PAKT-K9 */
+  line: ProductLine;
+  /** wypelniane wylacznie dla line === "k9" */
+  k9Category?: K9Category;
+  /** oznaczenie zgodnosci / normy pokazywane w sekcji K9 */
+  k9Standard?: string;
+}
+
+export interface K9CategoryInfo {
+  slug: K9Category;
+  code: string; // oznaczenie w stylu technicznym, np. "K9-01"
+  title: string;
+  description: string;
+  productCount: number;
 }
 
 export interface FilterGroup {

@@ -62,12 +62,12 @@ function Section({
           aria-expanded={open}
           aria-controls={bodyId}
           onClick={() => setOpen((o) => !o)}
-          className="flex min-h-11 w-full items-center justify-between gap-2 py-3 text-left"
+          className="flex min-h-11 w-full items-center justify-between gap-2 py-5 text-left"
         >
-          <span className="text-sm font-semibold text-nf-white">{label}</span>
+          <span className="text-xs uppercase tracking-widest text-nf-dim">{label}</span>
           <ChevronDownIcon
             className={cn(
-              "shrink-0 text-nf-muted transition-transform duration-250 ease-nf",
+              "shrink-0 text-nf-dim transition-transform duration-250 ease-nf motion-reduce:transition-none",
               open && "rotate-180"
             )}
           />
@@ -83,13 +83,13 @@ function Section({
               exit={reduced ? undefined : { height: 0, opacity: 0 }}
               transition={{ duration: reduced ? 0 : 0.25, ease: NF_EASE }}
             >
-              <div className="pb-4">
+              <div className="pb-5">
                 {children}
                 {active && (
                   <button
                     type="button"
                     onClick={onClear}
-                    className="mt-2 text-xs text-nf-muted underline underline-offset-2 transition-colors duration-250 ease-nf hover:text-white"
+                    className="mt-1 inline-flex min-h-11 items-center text-xs uppercase tracking-widest text-nf-dim transition-colors duration-250 ease-nf hover:text-white"
                   >
                     Wyczyść
                   </button>
@@ -114,28 +114,38 @@ function CheckboxGroup({
 }) {
   return (
     <ul>
-      {options.map((opt) => (
-        <li key={opt.value}>
-          <label className="flex min-h-11 cursor-pointer items-center gap-3">
-            <span className="relative flex size-[18px] shrink-0 items-center justify-center">
-              <input
-                type="checkbox"
-                checked={selected.includes(opt.value)}
-                onChange={() => onToggle(opt.value)}
-                className="peer size-[18px] appearance-none rounded-[3px] border border-nf-border-strong transition-colors duration-250 ease-nf checked:border-nf-red checked:bg-nf-red"
-              />
-              <CheckIcon
-                width={12}
-                height={12}
-                strokeWidth={3}
-                className="pointer-events-none absolute inset-0 m-auto text-white opacity-0 transition-opacity duration-250 ease-nf peer-checked:opacity-100"
-              />
-            </span>
-            <span className="text-sm text-nf-text">{opt.label}</span>
-            <span className="text-xs text-nf-dim">({opt.count})</span>
-          </label>
-        </li>
-      ))}
+      {options.map((opt) => {
+        const isChecked = selected.includes(opt.value);
+        return (
+          <li key={opt.value}>
+            <label className="flex min-h-11 cursor-pointer items-center gap-3">
+              <span className="relative flex size-[18px] shrink-0 items-center justify-center">
+                <input
+                  type="checkbox"
+                  checked={isChecked}
+                  onChange={() => onToggle(opt.value)}
+                  className="peer size-[18px] appearance-none rounded-[2px] border border-nf-border-strong transition-colors duration-250 ease-nf checked:border-nf-red checked:bg-nf-red motion-reduce:transition-none"
+                />
+                <CheckIcon
+                  width={12}
+                  height={12}
+                  strokeWidth={3}
+                  className="pointer-events-none absolute inset-0 m-auto text-white opacity-0 transition-opacity duration-250 ease-nf peer-checked:opacity-100 motion-reduce:transition-none"
+                />
+              </span>
+              <span
+                className={cn(
+                  "text-sm transition-colors duration-250 ease-nf motion-reduce:transition-none",
+                  isChecked ? "text-white" : "text-nf-muted"
+                )}
+              >
+                {opt.label}
+              </span>
+              <span className="ml-auto text-xs tabular-nums text-nf-dim">{opt.count}</span>
+            </label>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -157,22 +167,31 @@ function SwitchRow({
       role="switch"
       aria-checked={checked}
       onClick={onToggle}
-      className="flex min-h-11 w-full items-center justify-between gap-3 text-left"
+      className="flex min-h-11 w-full items-center gap-3 text-left"
     >
-      <span className="text-sm text-nf-text">
+      <span
+        className={cn(
+          "text-sm transition-colors duration-250 ease-nf motion-reduce:transition-none",
+          checked ? "text-white" : "text-nf-muted"
+        )}
+      >
         {label}
-        {count !== undefined && <span className="ml-2 text-xs text-nf-dim">({count})</span>}
       </span>
+      {count !== undefined && (
+        <span className="ml-auto text-xs tabular-nums text-nf-dim">{count}</span>
+      )}
       <span
         aria-hidden="true"
         className={cn(
-          "relative h-6 w-11 shrink-0 rounded-full transition-colors duration-250 ease-nf",
+          "relative h-6 w-11 shrink-0 rounded-full transition-colors duration-250 ease-nf motion-reduce:transition-none",
+          // the count already carries ml-auto; without it the switch does the pushing
+          count === undefined && "ml-auto",
           checked ? "bg-nf-red" : "bg-nf-elevated-2"
         )}
       >
         <span
           className={cn(
-            "absolute left-[3px] top-[3px] size-[18px] rounded-full bg-white transition-transform duration-250 ease-nf",
+            "absolute left-[3px] top-[3px] size-[18px] rounded-full bg-white transition-transform duration-250 ease-nf motion-reduce:transition-none",
             checked && "translate-x-5"
           )}
         />
@@ -219,7 +238,7 @@ function PriceSection({
   };
 
   const inputClasses =
-    "h-11 w-full rounded-[4px] border border-nf-border bg-nf-elevated px-3 text-sm text-nf-text";
+    "h-11 w-full rounded-[2px] border border-nf-border bg-nf-elevated px-3 text-sm text-nf-text";
 
   return (
     <div>
@@ -230,9 +249,12 @@ function PriceSection({
         onChange={(v) => onPriceInput(v[0], v[1])}
         formatValue={(n) => formatPrice(n)}
       />
-      <div className="mt-3 flex gap-3">
+      <div className="mt-4 flex gap-3">
         <div className="flex-1">
-          <label htmlFor={fromId} className="mb-1 block text-xs text-nf-muted">
+          <label
+            htmlFor={fromId}
+            className="mb-1.5 block text-xs uppercase tracking-widest text-nf-dim"
+          >
             Od
           </label>
           <input
@@ -249,7 +271,10 @@ function PriceSection({
           />
         </div>
         <div className="flex-1">
-          <label htmlFor={toId} className="mb-1 block text-xs text-nf-muted">
+          <label
+            htmlFor={toId}
+            className="mb-1.5 block text-xs uppercase tracking-widest text-nf-dim"
+          >
             Do
           </label>
           <input
@@ -282,12 +307,12 @@ function ColorGrid({
   onToggle: (value: string) => void;
 }) {
   return (
-    <ul className="grid grid-cols-5 gap-1">
+    <ul className="grid grid-cols-5 gap-2">
       {options.map((opt) => (
         <li
           key={opt.value}
           title={`${opt.label} (${opt.count})`}
-          className="flex flex-col items-center"
+          className="flex flex-col items-center gap-1"
         >
           <ColorSwatch
             size="md"
@@ -299,7 +324,7 @@ function ColorGrid({
             onSelect={() => onToggle(opt.value)}
           />
           {/* §8-F: every option shows its count visibly, not only in the aria-label */}
-          <span aria-hidden="true" className="text-[10px] leading-none text-nf-dim">
+          <span aria-hidden="true" className="text-[10px] leading-none tabular-nums text-nf-dim">
             {opt.count}
           </span>
         </li>

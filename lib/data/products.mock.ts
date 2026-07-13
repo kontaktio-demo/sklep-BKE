@@ -27,6 +27,9 @@ type Spec = Omit<
   | "highlights"
   | "specs"
   | "sku"
+  | "line"
+  | "k9Category"
+  | "k9Standard"
 > & { id?: string };
 
 const WIDTH_CM: Record<Product["width"], string> = {
@@ -90,6 +93,7 @@ function collar(spec: Spec): Product {
   return {
     ...spec,
     ...copy,
+    line: "shop",
     id: spec.id ?? `col_${spec.slug}`,
     currency: "PLN",
     productType: "Obroża",

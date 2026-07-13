@@ -22,13 +22,27 @@
   /* lines */
   --color-nf-border: rgba(255, 255, 255, 0.1);
   --color-nf-border-strong: rgba(255, 255, 255, 0.2);
+
+  /* ---- warstwa jasna (strona glowna): papier, tusz, cienkie linie ---- */
+  --color-pk-paper: #f2f1ee;
+  --color-pk-paper-2: #e8e6e1;
+  --color-pk-ink: #14140f;
+  --color-pk-ink-2: #3d3d38;
+  --color-pk-ink-muted: #6b6b64;
+  --color-pk-line: rgba(20, 20, 15, 0.12);
+  --color-pk-line-strong: rgba(20, 20, 15, 0.28);
+  /* czerwien czytelna jako drobny tekst na papierze (nf-red ma za maly kontrast) */
+  --color-pk-red: #c20812;
+
   /* motion */
   --ease-nf: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
   --font-display: var(--font-archivo);
   --font-sans: var(--font-inter);
+  --font-mono: var(--font-mono-tech);
 }
 
 html {
@@ -41,6 +55,27 @@ body {
   color: var(--color-nf-text);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Motyw jasny (strona glowna). Klasa ustawiana na <html> po stronie klienta,
+   zeby przy przewijaniu za krawedz nie przebijalo ciemne tlo sklepu. */
+html[data-theme="light"] {
+  color-scheme: light;
+  background-color: var(--color-pk-paper);
+}
+
+html[data-theme="light"] body {
+  background-color: var(--color-pk-paper);
+  color: var(--color-pk-ink);
+}
+
+html[data-theme="light"] ::selection {
+  background-color: var(--color-pk-ink);
+  color: var(--color-pk-paper);
+}
+
+html[data-theme="light"] :focus-visible {
+  outline-color: var(--color-pk-ink);
 }
 
 ::selection {
@@ -95,6 +130,54 @@ body {
   color: transparent;
   -webkit-text-stroke: 3px var(--color-nf-dim);
   paint-order: stroke fill;
+}
+
+/* ---- warstwa taktyczna (K9): plaskie wzory techniczne, zero poswiat ---- */
+
+/* siatka milimetrowa; gestosc sterowana --grid-size */
+@utility grid-tech {
+  --grid-size: 64px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+}
+
+/* szrafura pod pasy ostrzegawcze i naroznikowe znaczniki */
+@utility hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.07) 0 2px,
+    transparent 2px 9px
+  );
+}
+
+@utility hatch-red {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(229, 9, 20, 0.55) 0 3px,
+    transparent 3px 10px
+  );
+}
+
+/* maskowanie wierszy tytulu przy wjezdzie (GSAP animuje translate w srodku) */
+@utility mask-line {
+  overflow: hidden;
+  display: block;
+}
+
+@keyframes pk-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@utility marquee-track {
+  animation: pk-marquee 42s linear infinite;
+  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {

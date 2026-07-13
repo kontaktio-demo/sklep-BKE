@@ -10,13 +10,16 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDownIcon } from "@/components/ui/icons";
 import { NAV_ITEMS } from "@/lib/nav";
 import { cn } from "@/lib/utils";
+import { SHELL, type Theme } from "./theme";
 
 const CLOSE_DELAY_MS = 150;
 
-const LINK_CLASSES =
-  "flex h-11 items-center gap-1 px-3 text-[13px] font-semibold uppercase tracking-wide text-nf-text transition-colors duration-250 ease-nf hover:text-white";
+const LINK_BASE =
+  "flex h-11 items-center gap-1 px-3 text-[13px] font-semibold uppercase tracking-wide transition-colors duration-250 ease-nf";
 
-export function MegaMenu() {
+export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
+  const t = SHELL[theme];
+  const linkClasses = cn(LINK_BASE, t.navLink);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const closeTimer = useRef<number | null>(null);
   const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -47,7 +50,7 @@ export function MegaMenu() {
                   setOpenIndex(null);
                 }}
               >
-                <Link href={item.href} className={LINK_CLASSES}>
+                <Link href={item.href} className={linkClasses}>
                   {item.label}
                 </Link>
               </li>
@@ -86,20 +89,21 @@ export function MegaMenu() {
                 href={item.href}
                 aria-haspopup="true"
                 aria-expanded={open}
-                className={LINK_CLASSES}
+                className={linkClasses}
               >
                 {item.label}
                 <ChevronDownIcon
                   width={14}
                   height={14}
                   className={cn(
-                    "text-nf-dim transition-transform duration-250 ease-nf",
+                    "transition-transform duration-250 ease-nf",
+                    t.navChevron,
                     open && "rotate-180"
                   )}
                 />
               </Link>
               {open && (
-                <div className="absolute inset-x-0 top-full border-b border-nf-border bg-nf-bg/98 backdrop-blur">
+                <div className={cn("absolute inset-x-0 top-full border-b", t.panel)}>
                   <div
                     className="container mx-auto grid gap-10 px-4 py-10 lg:px-6"
                     style={{
@@ -108,7 +112,12 @@ export function MegaMenu() {
                   >
                     {columns.map((col) => (
                       <div key={col.title}>
-                        <h3 className="mb-3 text-[11px] uppercase tracking-widest text-nf-dim">
+                        <h3
+                          className={cn(
+                            "mb-3 text-[11px] uppercase tracking-widest",
+                            t.panelHeading
+                          )}
+                        >
                           {col.title}
                         </h3>
                         <ul>
@@ -117,7 +126,10 @@ export function MegaMenu() {
                               <Link
                                 href={link.href}
                                 onClick={() => setOpenIndex(null)}
-                                className="block py-1.5 text-sm text-nf-muted transition-colors duration-250 ease-nf hover:text-white"
+                                className={cn(
+                                  "block py-1.5 text-sm transition-colors duration-250 ease-nf",
+                                  t.panelLink
+                                )}
                               >
                                 {link.label}
                               </Link>

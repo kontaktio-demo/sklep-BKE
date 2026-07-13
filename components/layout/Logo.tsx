@@ -4,12 +4,25 @@ import { BRAND } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
 // Assety wycinane z brand/logo.png przez scripts/gen-brand.mjs.
-// Wariant "-dark": czarna sylwetka psa podniesiona do grafitu, żeby nie znikała na czerni.
+// Dwa warianty sygnetu, dobierane przez `onDark`:
+//   light -> czarna sylwetka psa (na papierze, strona główna)
+//   dark  -> ta sama sylwetka podniesiona do grafitu, żeby nie znikała na czerni
+// Wordmark jest czerwony i czyta się na obu tłach - ma jeden plik.
 const ASSETS = {
   // pełna sylwetka (głowa + popiersie z zawieszką) - tam, gdzie jest miejsce: stopka
-  mark: { src: "/brand/pakt-mark.png", dark: "/brand/pakt-mark-dark.png", w: 238, h: 445 },
+  mark: {
+    light: "/brand/pakt-mark.png",
+    dark: "/brand/pakt-mark-dark.png",
+    w: 238,
+    h: 445,
+  },
   // sam kadr głowy - pasek nawigacyjny, gdzie pionowa sylwetka robi się wąskim paskiem
-  head: { src: "/brand/pakt-head.png", dark: "/brand/pakt-head-dark.png", w: 216, h: 270 },
+  head: {
+    light: "/brand/pakt-head.png",
+    dark: "/brand/pakt-head-dark.png",
+    w: 224,
+    h: 305,
+  },
 };
 const WORDMARK = "/brand/pakt-wordmark.png";
 
@@ -27,7 +40,7 @@ interface LogoProps {
   variant?: LogoVariant;
   markClassName?: string;
   wordmarkClassName?: string;
-  /** sygnet na czarnym tle */
+  /** true = sygnet leży na ciemnym tle (grafitowa sylwetka); false = na papierze (czarna) */
   onDark?: boolean;
 }
 
@@ -51,7 +64,7 @@ export function Logo({
     >
       {variant !== "wordmark" && (
         <Image
-          src={onDark ? asset.dark : asset.src}
+          src={onDark ? asset.dark : asset.light}
           alt=""
           width={asset.w}
           height={asset.h}

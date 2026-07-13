@@ -21,7 +21,7 @@ export function Toolbar({
   const sortId = useId();
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-y border-nf-border py-3">
+    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-nf-border py-4">
       <p aria-live="polite" className="text-sm text-nf-muted">
         {count} {plural(count, "produkt", "produkty", "produktów")}
       </p>
@@ -46,14 +46,17 @@ export function Toolbar({
         </Button>
 
         <div className="flex items-center gap-2">
-          <label htmlFor={sortId} className="whitespace-nowrap text-sm text-nf-muted">
+          <label
+            htmlFor={sortId}
+            className="whitespace-nowrap text-xs uppercase tracking-widest text-nf-dim"
+          >
             Sortuj
           </label>
           <select
             id={sortId}
             value={sort}
             onChange={(e) => onSortChange(e.target.value as SortOption)}
-            className="h-11 max-w-48 rounded-[4px] border border-nf-border bg-nf-elevated px-3 text-sm text-nf-text"
+            className="h-11 max-w-48 rounded-[4px] border border-nf-border bg-transparent px-3 text-sm text-nf-text"
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>

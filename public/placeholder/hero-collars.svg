@@ -22,14 +22,14 @@
     <ellipse cx="600" cy="720" rx="430" ry="310" fill="none" stroke="#e50914" stroke-width="4" opacity="0.5" filter="url(#hero-blur)"/>
     
   <g transform="translate(600 720) scale(1) rotate(4)">
-    <ellipse rx="378" ry="306" fill="none" stroke="#293325" stroke-width="115"/>
+    <ellipse rx="378" ry="306" fill="none" stroke="#293325" stroke-width="111"/>
     <ellipse rx="378" ry="306" fill="none" stroke="#4A5D43" stroke-width="101"/>
-    <ellipse rx="378" ry="306" fill="none" stroke="#72816c" stroke-width="30"
-      stroke-dasharray="567 1512" stroke-dashoffset="151" opacity="0.5"/>
-    <ellipse rx="378" ry="306" fill="none" stroke="#293325" stroke-width="3"
-      stroke-dasharray="10 26" opacity="0.85" transform="scale(0.9144973544973545 0.8943790849673203)"/>
-    <ellipse rx="378" ry="306" fill="none" stroke="#293325" stroke-width="3"
-      stroke-dasharray="10 26" opacity="0.85" transform="scale(1.0855026455026455 1.1056209150326797)"/>
+    <ellipse rx="378" ry="306" fill="none" stroke="#72816c" stroke-width="18"
+      stroke-dasharray="454 1890" stroke-dashoffset="151" opacity="0.18"/>
+    <ellipse rx="378" ry="306" fill="none" stroke="#293325" stroke-width="2"
+      stroke-dasharray="8 22" opacity="0.5" transform="scale(0.9118253968253969 0.891078431372549)"/>
+    <ellipse rx="378" ry="306" fill="none" stroke="#293325" stroke-width="2"
+      stroke-dasharray="8 22" opacity="0.5" transform="scale(1.0881746031746031 1.108921568627451)"/>
     <g transform="rotate(-33) translate(0 -306)">
       <rect x="-95" y="-66.5" width="190" height="133" rx="18" fill="#2b2d30" stroke="#54575c" stroke-width="5"/>
       <rect x="-58" y="-46.5" width="116" height="77" rx="10" fill="#1a1b1d" stroke="#45484d" stroke-width="4"/>

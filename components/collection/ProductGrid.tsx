@@ -22,20 +22,20 @@ export function ProductGrid({
       <Reveal selector="[data-card]" stagger={0.04}>
         {products.length === 0 ? (
           <div className="py-24 text-center">
-            <p className="font-display text-lg font-bold text-nf-white">
+            <p className="font-display text-lg font-bold text-white">
               Nic nie pasuje do wybranych filtrów.
             </p>
-            <p className="mt-2 text-sm text-nf-muted">
+            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-nf-muted">
               Usuń jeden z filtrów lub wyczyść wszystkie, aby zobaczyć całą kolekcję.
             </p>
             {onClearFilters && (
-              <Button variant="ghost" className="mt-6" onClick={onClearFilters}>
+              <Button variant="ghost" className="mt-8" onClick={onClearFilters}>
                 Wyczyść filtry
               </Button>
             )}
           </div>
         ) : (
-          <ul className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-4 md:grid-cols-3 xl:grid-cols-4">
+          <ul className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 xl:grid-cols-4">
             {products.map((product) => (
               <li key={product.id} data-card>
                 <ProductCard product={product} />

@@ -1,37 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
   
   <defs>
-    <radialGradient id="bg-strike-e-fit-pro-collar-1" cx="50%" cy="42%" r="75%">
-      <stop offset="0%" stop-color="#232323"/>
-      <stop offset="60%" stop-color="#181818"/>
-      <stop offset="100%" stop-color="#0e0e0e"/>
-    </radialGradient>
+    <linearGradient id="bg-strike-e-fit-pro-collar-1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c1c1c"/>
+      <stop offset="100%" stop-color="#151515"/>
+    </linearGradient>
     <radialGradient id="floor-strike-e-fit-pro-collar-1" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#000000" stop-opacity="0.55"/>
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>
       <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
     </radialGradient>
     <filter id="grain-strike-e-fit-pro-collar-1">
-      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.03 0"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.012 0"/>
     </filter>
     <linearGradient id="sheen-strike-e-fit-pro-collar-1" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.28"/>
-      <stop offset="55%" stop-color="#ffffff" stop-opacity="0.02"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.25"/>
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.08"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="1500" fill="url(#bg-strike-e-fit-pro-collar-1)"/>
   <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-strike-e-fit-pro-collar-1)"/>
   
   <g transform="translate(600 720) scale(1) rotate(11)">
-    <ellipse rx="391" ry="291" fill="none" stroke="#111111" stroke-width="115"/>
+    <ellipse rx="391" ry="291" fill="none" stroke="#111111" stroke-width="111"/>
     <ellipse rx="391" ry="291" fill="none" stroke="#1F1F1F" stroke-width="101"/>
-    <ellipse rx="391" ry="291" fill="none" stroke="#505050" stroke-width="30"
-      stroke-dasharray="587 1564" stroke-dashoffset="156" opacity="0.5"/>
-    <ellipse rx="391" ry="291" fill="none" stroke="#111111" stroke-width="3"
-      stroke-dasharray="10 26" opacity="0.85" transform="scale(0.9173401534526855 0.88893470790378)"/>
-    <ellipse rx="391" ry="291" fill="none" stroke="#111111" stroke-width="3"
-      stroke-dasharray="10 26" opacity="0.85" transform="scale(1.0826598465473145 1.1110652920962198)"/>
+    <ellipse rx="391" ry="291" fill="none" stroke="#505050" stroke-width="18"
+      stroke-dasharray="469 1955" stroke-dashoffset="156" opacity="0.18"/>
+    <ellipse rx="391" ry="291" fill="none" stroke="#111111" stroke-width="2"
+      stroke-dasharray="8 22" opacity="0.5" transform="scale(0.9147570332480819 0.8854639175257732)"/>
+    <ellipse rx="391" ry="291" fill="none" stroke="#111111" stroke-width="2"
+      stroke-dasharray="8 22" opacity="0.5" transform="scale(1.0852429667519181 1.1145360824742268)"/>
     <g transform="rotate(-20) translate(0 -291)">
       <rect x="-95" y="-66.5" width="190" height="133" rx="18" fill="#2b2d30" stroke="#54575c" stroke-width="5"/>
       <rect x="-58" y="-46.5" width="116" height="77" rx="10" fill="#1a1b1d" stroke="#45484d" stroke-width="4"/>

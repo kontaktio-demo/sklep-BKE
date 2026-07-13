@@ -57,10 +57,11 @@ export function SectionNav() {
                 href={`#${section.id}`}
                 aria-current={isActive ? "true" : undefined}
                 className={cn(
-                  "-ml-px flex min-h-11 items-center border-l-2 pl-4 text-sm transition-colors duration-250 ease-nf",
+                  // min-h-11 trzyma cel dotykowy na 44px mimo drobnego kroju
+                  "-ml-px flex min-h-11 items-center border-l-2 pl-4 text-xs uppercase tracking-widest transition-colors duration-250 ease-nf motion-reduce:transition-none",
                   isActive
                     ? "border-nf-red text-white"
-                    : "border-transparent text-nf-muted hover:border-nf-border-strong hover:text-nf-text"
+                    : "border-transparent text-nf-dim hover:text-nf-text"
                 )}
               >
                 {section.label}

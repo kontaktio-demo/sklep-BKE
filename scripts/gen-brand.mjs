@@ -1,7 +1,7 @@
 // Rozbija logo.png na assety marki: sygnet (głowa psa), wordmark (PAKT),
 // pełny lockup, favicon i obrazek OG. Uruchamiane ręcznie po podmianie logo:
 //   node scripts/gen-brand.mjs
-import { mkdirSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
@@ -135,7 +135,8 @@ const liftedPng = () => sharp(lifted, { raw: { width, height, channels: 4 } }).p
 
 // sama głowa (bez popiersia): kadr prawie kwadratowy, czyta się w pasku nawigacyjnym,
 // gdzie pełna pionowa sylwetka robi się wąskim, nieczytelnym paskiem
-const headBottom = firstRow + Math.round((gapStart - firstRow) * 0.6);
+// 0.68: pełna głowa z pyskiem i żuchwą, cięcie wypada na szyi. Mniej (0.6) ucinało pysk.
+const headBottom = firstRow + Math.round((gapStart - firstRow) * 0.68);
 
 await keyedPng().extract(bbox(firstRow, lastRow)).toFile(join(BRAND_DIR, "pakt-logo.png"));
 await keyedPng().extract(bbox(firstRow, gapStart - 1)).toFile(join(BRAND_DIR, "pakt-mark.png"));
@@ -147,31 +148,53 @@ await liftedPng()
   .toFile(join(BRAND_DIR, "pakt-mark-dark.png"));
 await liftedPng().extract(bbox(firstRow, lastRow)).toFile(join(BRAND_DIR, "pakt-logo-dark.png"));
 
-// favicon / ikona aplikacji - sygnet na kwadracie w kolorze tła strony
-const markBuf = await sharp(join(BRAND_DIR, "pakt-head-dark.png"))
-  .resize(400, 400, { fit: "contain", background: { ...BG, alpha: 0 } })
-  .toBuffer();
+// Ikony: głowa psa na kwadracie w kolorze tła strony.
+// Margines ~14% (w małych rozmiarach pełny kadr klei się do krawędzi).
+async function squareIcon(size, out) {
+  const inner = Math.round(size * 0.72);
+  const head = await sharp(join(BRAND_DIR, "pakt-head-dark.png"))
+    .resize(inner, inner, { fit: "contain", background: { ...BG, alpha: 0 } })
+    .toBuffer();
+  const buf = await sharp({
+    create: { width: size, height: size, channels: 4, background: { ...BG, alpha: 1 } },
+  })
+    .composite([{ input: head, gravity: "center" }])
+    .png()
+    .toBuffer();
+  if (out) await sharp(buf).toFile(out);
+  return buf;
+}
 
-await sharp({
-  create: { width: 512, height: 512, channels: 4, background: { ...BG, alpha: 1 } },
-})
-  .composite([{ input: markBuf, gravity: "center" }])
-  .png()
-  .toFile(join(APP_DIR, "icon.png"));
+await squareIcon(512, join(APP_DIR, "icon.png"));
+await squareIcon(180, join(APP_DIR, "apple-icon.png"));
+await squareIcon(192, join(BRAND_DIR, "icon-192.png"));
+await squareIcon(512, join(BRAND_DIR, "icon-512.png"));
 
-await sharp({
-  create: { width: 180, height: 180, channels: 4, background: { ...BG, alpha: 1 } },
-})
-  .composite([
-    {
-      input: await sharp(join(BRAND_DIR, "pakt-head-dark.png"))
-        .resize(140, 140, { fit: "contain", background: { ...BG, alpha: 0 } })
-        .toBuffer(),
-      gravity: "center",
-    },
-  ])
-  .png()
-  .toFile(join(APP_DIR, "apple-icon.png"));
+// favicon.ico: 16/32/48 px w jednym pliku (ICO z osadzonymi PNG-ami).
+// sharp nie zapisuje ICO, więc składamy kontener ręcznie.
+const icoSizes = [16, 32, 48];
+const icoImages = await Promise.all(icoSizes.map((s) => squareIcon(s)));
+const header = Buffer.alloc(6);
+header.writeUInt16LE(0, 0); // reserved
+header.writeUInt16LE(1, 2); // typ 1 = ikona
+header.writeUInt16LE(icoSizes.length, 4);
+
+let offset = 6 + icoSizes.length * 16;
+const entries = [];
+icoImages.forEach((img, i) => {
+  const e = Buffer.alloc(16);
+  e.writeUInt8(icoSizes[i] === 256 ? 0 : icoSizes[i], 0); // szerokość
+  e.writeUInt8(icoSizes[i] === 256 ? 0 : icoSizes[i], 1); // wysokość
+  e.writeUInt8(0, 2); // paleta
+  e.writeUInt8(0, 3); // reserved
+  e.writeUInt16LE(1, 4); // płaszczyzny
+  e.writeUInt16LE(32, 6); // bity na piksel
+  e.writeUInt32LE(img.length, 8);
+  e.writeUInt32LE(offset, 12);
+  offset += img.length;
+  entries.push(e);
+});
+writeFileSync(join(APP_DIR, "favicon.ico"), Buffer.concat([header, ...entries, ...icoImages]));
 
 // obrazek Open Graph 1200x630
 await sharp({
