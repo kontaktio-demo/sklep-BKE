@@ -28,8 +28,13 @@ const TRUST_ICONS = [ShieldIcon, TruckIcon, ReturnIcon] as const;
 
 const MAX_QTY = 10;
 
-// jeden rytm dla wszystkich etykiet wyboru (Kolor / Rozmiar / Szerokość / Ilość)
-const LABEL = "type-meta text-nf-dim";
+// Jeden rytm dla wszystkich etykiet wyboru (Kolor / Rozmiar / Szerokość / Ilość), ale
+// krojem rozstrzyga linia produktu: ten sam BuyBox stoi na karcie sklepu i na karcie K9.
+// Monospace jest oznaczeniem technicznym sprzetu sluzbowego - w sklepie cywilnym etykieta
+// pola ma byc etykieta pola (grotesk), a nie panelem katalogowym.
+const LABEL_K9 = "type-meta text-nf-dim";
+const LABEL_SHOP = "type-label text-nf-dim";
+// pigulka szerokosci to ODCZYT, nie kontrolka - zostaje na linii dekoracyjnej
 const PILL =
   "inline-flex rounded-[2px] border border-nf-border-strong px-3 py-2 text-sm text-nf-text";
 
@@ -47,6 +52,7 @@ export function BuyBox({ product }: { product: Product }) {
   const colorLabelId = useId();
 
   const k9 = product.line === "k9";
+  const label = k9 ? LABEL_K9 : LABEL_SHOP;
 
   // Zapytanie o dostepnosc idzie na skrzynke, ktora obsluguje dana linie, i dotyczy
   // wybranego rozmiaru - inaczej odpowiedz nie mowilaby o tym, o co pytal klient
@@ -69,7 +75,7 @@ export function BuyBox({ product }: { product: Product }) {
             pierwsze, czego szuka przewodnik - "Obroża służbowa / K9-PAT-175-L" nie niesie
             nic, czego nie ma w nazwie i tabeli */}
         {k9 ? (
-          <p className={LABEL}>
+          <p className={label}>
             {variant.sku}
             {product.k9Standard && (
               <>
@@ -81,12 +87,12 @@ export function BuyBox({ product }: { product: Product }) {
             )}
           </p>
         ) : (
-          <p className={LABEL}>
+          <p className={label}>
             {product.productType} / {variant.sku}
           </p>
         )}
         {/* text-balance: nazwa lamie sie w kolumnie 440 px, wiec wiersze maja byc rowne */}
-        <h1 className="type-h1 mt-3 text-balance text-white">{product.name}</h1>
+        <h1 className="type-h1 mt-3 text-balance text-nf-white">{product.name}</h1>
         <p className="mt-3 text-sm text-nf-muted">{product.tagline}</p>
       </header>
 
@@ -122,8 +128,13 @@ export function BuyBox({ product }: { product: Product }) {
         </p>
 
         {/* dane wybranego rozmiaru: po zmianie wariantu zmienia sie cena i SKU, wiec obwod
-            i waga tez musza byc widoczne w tym samym miejscu, a nie dopiero w tabeli nizej */}
-        <p aria-live="polite" className="type-meta text-nf-dim">
+            i waga tez musza byc widoczne w tym samym miejscu, a nie dopiero w tabeli nizej.
+            To ODCZYT, nie etykieta, wiec w sklepie idzie zwyklym tekstem: type-label
+            wykrzyczalby "OBWÓD 30-38 CM" wersalikami bez powodu */}
+        <p
+          aria-live="polite"
+          className={cn("text-nf-dim", k9 ? "type-meta" : "text-xs")}
+        >
           Obwód {variant.neck} / waga {variant.weightGrams} g
         </p>
       </div>
@@ -132,7 +143,7 @@ export function BuyBox({ product }: { product: Product }) {
         {product.colors.length > 0 && (
           <div>
             <div className="flex items-baseline gap-3">
-              <span id={colorLabelId} className={LABEL}>
+              <span id={colorLabelId} className={label}>
                 Kolor
               </span>
               <span className="text-sm text-nf-text">{color?.name}</span>
@@ -160,35 +171,38 @@ export function BuyBox({ product }: { product: Product }) {
             variants={product.variants}
             selected={variant}
             onSelect={setVariant}
+            mono={k9}
           />
           <a
             href="#rozmiary"
-            className="mt-3 inline-flex min-h-11 items-center text-xs text-nf-muted underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-white motion-reduce:transition-none"
+            className="mt-3 inline-flex min-h-11 items-center text-xs text-nf-muted underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
           >
             Tabela rozmiarów
           </a>
         </div>
 
         <div>
-          <span className={cn("block", LABEL)}>Szerokość</span>
+          <span className={cn("block", label)}>Szerokość</span>
           <span className={cn("mt-2", PILL)}>{WIDTH_LABEL[product.width]}</span>
         </div>
 
         <div>
-          <span className={cn("block", LABEL)}>Ilość</span>
-          <div className="mt-2 inline-flex items-center rounded-[2px] border border-nf-border-strong">
+          <span className={cn("block", label)}>Ilość</span>
+          {/* nf-control, nie nf-border-strong: ta ramka jest JEDYNYM sygnalem, ze stepper
+              jest kontrolka, wiec musi miec 3:1 (WCAG 1.4.11). Linie dekoracyjne zostaja ciche */}
+          <div className="mt-2 inline-flex items-center rounded-[2px] border border-nf-control">
             <button
               type="button"
               aria-label="Zmniejsz ilość"
               onClick={() => setQty((n) => Math.max(1, n - 1))}
               disabled={qty <= 1}
-              className="flex size-11 items-center justify-center text-nf-text transition-colors duration-250 ease-nf hover:text-white disabled:opacity-40 motion-reduce:transition-none"
+              className="flex size-11 items-center justify-center text-nf-text transition-colors duration-250 ease-nf hover:text-nf-white disabled:opacity-40 motion-reduce:transition-none"
             >
               <MinusIcon width={16} height={16} />
             </button>
             <span
               aria-live="polite"
-              className="min-w-10 text-center text-sm font-medium tabular-nums text-white"
+              className="min-w-10 text-center text-sm font-medium tabular-nums text-nf-white"
             >
               {qty}
             </span>
@@ -197,7 +211,7 @@ export function BuyBox({ product }: { product: Product }) {
               aria-label="Zwiększ ilość"
               onClick={() => setQty((n) => Math.min(MAX_QTY, n + 1))}
               disabled={qty >= MAX_QTY}
-              className="flex size-11 items-center justify-center text-nf-text transition-colors duration-250 ease-nf hover:text-white disabled:opacity-40 motion-reduce:transition-none"
+              className="flex size-11 items-center justify-center text-nf-text transition-colors duration-250 ease-nf hover:text-nf-white disabled:opacity-40 motion-reduce:transition-none"
             >
               <PlusIcon width={16} height={16} />
             </button>
@@ -207,7 +221,9 @@ export function BuyBox({ product }: { product: Product }) {
 
       <div className="mt-8">
         {variant.inStock ? (
-          <Button variant="primary" size="lg" className="w-full" onClick={handleAdd}>
+          // danger, nie primary: czerwien jest akcentem marki i zostaje na jednym
+          // przycisku pieniedzy w calym widoku
+          <Button variant="danger" size="lg" className="w-full" onClick={handleAdd}>
             Dodaj do koszyka
           </Button>
         ) : (
@@ -215,7 +231,7 @@ export function BuyBox({ product }: { product: Product }) {
           // Pole e-mail bylo atrapa: adres nigdzie nie szedl, a komunikat obiecywal
           // wiadomosc. Zostaje sciezka, ktora dziala: mail ze SKU wariantu w temacie.
           <div className="space-y-4">
-            <Button variant="primary" size="lg" className="w-full" disabled>
+            <Button variant="danger" size="lg" className="w-full" disabled>
               {modelSoldOut
                 ? "Chwilowo niedostępna"
                 : `Rozmiar ${SIZE_SHORT[variant.size]} niedostępny`}
@@ -244,7 +260,7 @@ export function BuyBox({ product }: { product: Product }) {
         {k9 && (
           <Link
             href={K9_INQUIRY_HREF}
-            className="type-meta mt-3 flex min-h-11 items-center justify-center rounded-[2px] text-nf-muted underline decoration-nf-border-strong underline-offset-4 transition-colors duration-250 ease-nf hover:text-white hover:decoration-nf-text motion-reduce:transition-none"
+            className="type-meta mt-3 flex min-h-11 items-center justify-center rounded-[2px] text-nf-muted underline decoration-nf-border-strong underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white hover:decoration-nf-text motion-reduce:transition-none"
           >
             Zapytanie dla jednostki
           </Link>

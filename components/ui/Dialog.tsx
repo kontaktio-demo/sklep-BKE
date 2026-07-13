@@ -9,23 +9,25 @@ import { useOverlayA11y } from "./useOverlay";
 // Czas wyjscia = przejscie panelu i przycienienia. Po nim zdejmujemy je z drzewa.
 const EXIT_MS = 250;
 
-// Domyślnie ciemny (sklep). "light" obsługuje jasną stronę główną - patrz components/layout/theme.ts.
+// Powierzchnia panelu stoi na tokenach semantycznych, wiec sama odwraca sie razem ze swiatem:
+// na jasnej trasie karta jest biala z tuszem, w K9 grafitowa z biela. Rozni sie welon: czarny
+// w obu swiatach, ale nad papierem wystarczy 40% - 60% robi z jasnej strony noc.
 // Panel odcina się od tła mocniejszą krawędzią, a nie cieniem: shadow-2xl/shadow-xl
 // dawały rozmytą poświatę pod modalem, czego język PAKT nie używa.
 const SURFACE = {
   dark: {
-    scrim: "bg-black/60",
+    scrim: "bg-nf-black/60",
     panel: "border-nf-border-strong bg-nf-elevated",
     line: "border-nf-border",
     title: "text-nf-white",
     close: "text-nf-muted hover:text-nf-white",
   },
   light: {
-    scrim: "bg-pk-ink/40",
-    panel: "border-pk-line-strong bg-pk-paper",
-    line: "border-pk-line",
-    title: "text-pk-ink",
-    close: "text-pk-ink-muted hover:text-pk-ink",
+    scrim: "bg-nf-black/40",
+    panel: "border-nf-border-strong bg-nf-elevated",
+    line: "border-nf-border",
+    title: "text-nf-white",
+    close: "text-nf-muted hover:text-nf-white",
   },
 } as const;
 
@@ -84,7 +86,9 @@ export function Dialog({
   children,
   maxWidthClassName,
   hideTitle = false,
-  theme = "dark",
+  // Domyslny swiat to sklep cywilny, nie K9 - patrz Drawer. Szybki podglad w kolekcji jest
+  // jedynym wywolaniem bez jawnego theme i przy "dark" wychodzil grafitowy na jasnej trasie.
+  theme = "light",
 }: {
   open: boolean;
   onClose: () => void;

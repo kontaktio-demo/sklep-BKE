@@ -2,21 +2,21 @@
   
   <defs>
     <linearGradient id="bg-torque-chain-collar-2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1c1c1c"/>
-      <stop offset="100%" stop-color="#151515"/>
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#ececea"/>
     </linearGradient>
     <radialGradient id="floor-torque-chain-collar-2" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#16161a" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#16161a" stop-opacity="0"/>
     </radialGradient>
     <filter id="grain-torque-chain-collar-2">
       <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" stitchTiles="stitch"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.012 0"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.016 0"/>
     </filter>
     <linearGradient id="sheen-torque-chain-collar-2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
       <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#16161a" stop-opacity="0.05"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="1500" fill="url(#bg-torque-chain-collar-2)"/>

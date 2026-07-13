@@ -22,6 +22,7 @@ import {
 import { PriceTag } from "@/components/ui/PriceTag";
 import { useCart } from "@/lib/cart";
 import { COMPANY, TRUST_TRIAD } from "@/lib/nav";
+import { productHref } from "@/lib/routes";
 import { SIZE_SHORT } from "@/lib/sizes";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
@@ -29,15 +30,15 @@ import { formatPrice } from "@/lib/utils";
 const TRUST_ICONS = [ShieldIcon, TruckIcon, ReturnIcon];
 
 const STEPPER_BUTTON_CLASSES =
-  "flex h-11 w-11 items-center justify-center text-nf-muted transition-colors duration-250 ease-nf hover:text-white";
+  "flex h-11 w-11 items-center justify-center text-nf-muted transition-colors duration-250 ease-nf hover:text-nf-white";
 
 function EmptyState({ onShop }: { onShop: () => void }) {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
       <CartIcon width={48} height={48} className="text-nf-dim" />
-      <p className="font-display text-xl font-bold uppercase text-nf-white">
-        Twój koszyk jest pusty
-      </p>
+      {/* bez font-bold: Fjalla One ma jedna wage, wiec przegladarka robila tu sztuczne
+          pogrubienie (rozmyty, rozlazly krój) */}
+      <p className="font-display text-xl uppercase text-nf-white">Twój koszyk jest pusty</p>
       {/* Button renders a Link when href is set and drops onClick - the wrapper
           catches the bubbled click (mouse and keyboard) to close the drawer */}
       <span onClick={onShop}>
@@ -126,7 +127,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                           {SIZE_SHORT[line.variant.size]} ({line.variant.neck})
                           {line.color ? `, ${line.color.name}` : ""}
                         </p>
-                        <p className="type-meta mt-1 truncate text-nf-dim">
+                        <p className="type-label mt-1 truncate text-nf-dim">
                           {line.variant.sku}
                         </p>
                         {!line.variant.inStock && (
@@ -143,7 +144,8 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                       />
                     </div>
                     <div className="mt-2 flex items-center justify-between">
-                      <div className="flex items-center rounded-[2px] border border-nf-border">
+                      {/* nf-control: ramka steppera jest jedynym sygnalem kontrolki (WCAG 1.4.11) */}
+                      <div className="flex items-center rounded-[2px] border border-nf-control">
                         <button
                           type="button"
                           aria-label={`Zmniejsz ilość: ${name}`}
@@ -168,7 +170,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                         type="button"
                         aria-label={`Usuń ${name}`}
                         onClick={() => removeLine(line.key)}
-                        className="flex h-11 w-11 items-center justify-center text-nf-dim transition-colors duration-250 ease-nf hover:text-white"
+                        className="flex h-11 w-11 items-center justify-center text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white"
                       >
                         <TrashIcon width={18} height={18} />
                       </button>
@@ -180,9 +182,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
           </ul>
           {suggestions.length > 0 && (
             <section aria-label="Do kompletu" className="mt-2 border-t border-nf-border pt-5">
-              <h3 className="text-xs uppercase tracking-widest text-nf-dim">
-                Do kompletu
-              </h3>
+              <h3 className="type-label text-nf-dim">Do kompletu</h3>
               <ul className="no-scrollbar mt-3 flex gap-3 overflow-x-auto">
                 {suggestions.map((product) => (
                   <li key={product.id} className="w-32 shrink-0">
@@ -203,11 +203,15 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                     />
                     {/* Wczesniej byl tu przycisk "Dodaj", ktory wrzucal produkt bez rozmiaru.
                         Kazda pozycja koszyka to konkretny wariant, wiec podpowiedz prowadzi
-                        na karte produktu, gdzie rozmiar wybiera klient, a nie sklep za niego */}
+                        na karte produktu, gdzie rozmiar wybiera klient, a nie sklep za niego.
+                        productHref, nie sklejanie /products/<slug>: pozycja z linii K9 zyje
+                        pod /k9/produkt/<slug>, wiec reczny adres prowadzil w 404.
+                        nf-control: to przycisk konturowy, jego ramka jest jedynym sygnalem
+                        kontrolki (WCAG 1.4.11) */}
                     <Link
-                      href={`/products/${product.slug}`}
+                      href={productHref(product)}
                       onClick={closeCart}
-                      className="mt-2 flex h-11 w-full items-center justify-center rounded-[2px] border border-nf-border-strong text-xs font-semibold text-white transition-colors duration-250 ease-nf hover:bg-white/10 motion-reduce:transition-none"
+                      className="mt-2 flex h-11 w-full items-center justify-center rounded-[2px] border border-nf-control text-xs font-semibold text-nf-white transition-colors duration-250 ease-nf hover:border-nf-control-hover hover:bg-nf-elevated-2 motion-reduce:transition-none"
                     >
                       Wybierz rozmiar
                     </Link>

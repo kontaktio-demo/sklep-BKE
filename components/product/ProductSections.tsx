@@ -9,7 +9,7 @@ import { cn, formatPrice } from "@/lib/utils";
 const FREE_SHIPPING_THRESHOLD = 299;
 
 const SECTION = "border-t border-nf-border pt-10 mt-12";
-const HEADING = "type-h2 text-white";
+const HEADING = "type-h2 text-nf-white";
 const CELL = "px-4 py-3.5 text-left";
 
 /** Zgodnosc rozstrzyga sie na szerokosci obudowy modulu, nie na marce nadajnika:
@@ -34,6 +34,11 @@ export function ProductSections({ product }: { product: Product }) {
   const showCompatibility = product.category === "e-collar" || product.k9Category === "e-collar";
   const faq = getProductFaq(product);
 
+  // Sekcje opisowe stoja pod obiema kartami. Monospace jest oznaczeniem technicznym sprzetu
+  // sluzbowego, wiec kod rozmiaru i numer kroku pielegnacji biora go tylko w K9.
+  const k9 = product.line === "k9";
+  const META = k9 ? "type-meta" : "type-label";
+
   // tabela rozmiarow pokazuje pelna skale, ale mowi wprost, ktore rozmiary ma TEN model.
   // Obwodu szyi i wagi nie ma juz w specyfikacji: obie wartosci naleza do wariantu,
   // wiec stoja w wierszu swojego rozmiaru, a nie jako jedna liczba dla calego modelu
@@ -41,7 +46,7 @@ export function ProductSections({ product }: { product: Product }) {
 
   return (
     <div className="grid gap-10 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-16">
-      <SectionNav />
+      <SectionNav mono={k9} />
       <div className="min-w-0">
         <section id="opis"
           data-section-label="Opis" className="scroll-mt-28" aria-labelledby="opis-heading">
@@ -84,7 +89,7 @@ export function ProductSections({ product }: { product: Product }) {
             Obwód szyi i waga zależą od rozmiaru.{" "}
             <a
               href="#rozmiary"
-              className="text-nf-text underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-white motion-reduce:transition-none"
+              className="text-nf-text underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
             >
               Sprawdź je w tabeli rozmiarów
             </a>
@@ -141,13 +146,14 @@ export function ProductSections({ product }: { product: Product }) {
                         className={cn(
                           CELL,
                           "font-medium",
-                          // rozmiar z oferty znaczy czerwona krawędź i biel tekstu, nie tło;
-                          // sam kolor nie niesie znaczenia - stan dopowiada tekst i kolumna wagi
-                          offered ? "border-l-2 border-nf-red text-white" : "text-nf-muted"
+                          // rozmiar z oferty znaczy czerwoną krawędź i maksymalny kontrast tekstu,
+                          // nie tło; sam kolor nie niesie znaczenia - stan dopowiada tekst
+                          // i kolumna wagi
+                          offered ? "border-l-2 border-nf-red text-nf-white" : "text-nf-muted"
                         )}
                       >
                         {SIZE_NAME[size]}
-                        <span className="type-meta ml-2 text-nf-dim">{SIZE_SHORT[size]}</span>
+                        <span className={cn(META, "ml-2 text-nf-dim")}>{SIZE_SHORT[size]}</span>
                         {variant && !variant.inStock && (
                           <span className="mt-1 block text-xs font-normal text-nf-muted">
                             chwilowo niedostępny
@@ -157,13 +163,13 @@ export function ProductSections({ product }: { product: Product }) {
                       </th>
                       {/* obwod bierzemy z wariantu - model moze miec wlasne zakresy, a nie
                           zawsze te ze slownika */}
-                      <td className={cn(CELL, offered ? "text-white" : "text-nf-muted")}>
+                      <td className={cn(CELL, offered ? "text-nf-white" : "text-nf-muted")}>
                         {variant?.neck ?? SIZE_NECK[size]}
                       </td>
-                      <td className={cn(CELL, offered ? "text-white" : "text-nf-muted")}>
+                      <td className={cn(CELL, offered ? "text-nf-white" : "text-nf-muted")}>
                         {SIZE_WEIGHT[size]}
                       </td>
-                      <td className={cn(CELL, offered ? "text-white" : "text-nf-dim")}>
+                      <td className={cn(CELL, offered ? "text-nf-white" : "text-nf-dim")}>
                         {variant ? `${variant.weightGrams} g` : "brak w tym modelu"}
                       </td>
                     </tr>
@@ -249,7 +255,7 @@ export function ProductSections({ product }: { product: Product }) {
                         {row.width}
                       </th>
                       {/* czerwien zostaje dla CTA i alarmu - odpowiedz niesie samo slowo */}
-                      <td className={cn(CELL, row.fits ? "text-white" : "text-nf-dim")}>
+                      <td className={cn(CELL, row.fits ? "text-nf-white" : "text-nf-dim")}>
                         {row.fits ? "Tak" : "Nie"}
                       </td>
                     </tr>
@@ -278,7 +284,7 @@ export function ProductSections({ product }: { product: Product }) {
                 key={step}
                 className="flex items-baseline gap-4 border-b border-nf-border py-3.5"
               >
-                <span aria-hidden="true" className="type-meta shrink-0 text-nf-dim">
+                <span aria-hidden="true" className={cn(META, "shrink-0 tabular-nums text-nf-dim")}>
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="text-sm leading-relaxed text-nf-text">{step}</span>
@@ -307,11 +313,11 @@ export function ProductSections({ product }: { product: Product }) {
               >
                 {/* py-4 przy type-h3 daje cel dotykowy ~53px, wiec summary spelnia 44px
                     bez sztucznej min-h */}
-                <summary className="type-h3 flex cursor-pointer list-none items-center justify-between gap-6 py-4 text-white [&::-webkit-details-marker]:hidden">
+                <summary className="type-h3 flex cursor-pointer list-none items-center justify-between gap-6 py-4 text-nf-white [&::-webkit-details-marker]:hidden">
                   <span>{item.question}</span>
                   <span
                     aria-hidden="true"
-                    className="grid h-6 w-6 shrink-0 place-items-center border border-nf-border font-mono text-sm leading-none text-nf-dim transition-colors duration-250 ease-nf group-hover:border-nf-border-strong group-hover:text-white motion-reduce:transition-none"
+                    className="grid h-6 w-6 shrink-0 place-items-center border border-nf-border text-sm leading-none text-nf-dim transition-colors duration-250 ease-nf group-hover:border-nf-border-strong group-hover:text-nf-white motion-reduce:transition-none"
                   >
                     <span className="group-open:hidden">+</span>
                     <span className="hidden group-open:block">-</span>

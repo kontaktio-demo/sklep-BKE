@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { Button } from "@/components/ui/Button";
 import { PriceTag } from "@/components/ui/PriceTag";
+import { productHref } from "@/lib/routes";
 import { SIZE_NAME, SIZE_SHORT } from "@/lib/sizes";
 import type { Product, ProductSpec } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -49,7 +50,7 @@ export function K9ProductCard({
 }) {
   const specs = catalogSpecs(product.specs);
   const isNew = product.badges.includes("new");
-  const href = `/products/${product.slug}`;
+  const href = productHref(product);
 
   return (
     <article
@@ -58,8 +59,11 @@ export function K9ProductCard({
         className
       )}
     >
-      {/* naglowek techniczny kafla: oznaczenie po lewej, klasyfikacja po prawej */}
-      <div className="flex items-baseline gap-4 font-mono text-[11px] uppercase tracking-[0.2em] text-nf-dim">
+      {/* naglowek techniczny kafla: oznaczenie po lewej, klasyfikacja po prawej.
+          type-meta, nie wlasny font-mono z trackingiem 0.2em: swiat K9 mial trzy rozne
+          wersje tego samego napisu (0.2em, 0.1em, tracking-widest), wiec kody nie stały
+          w jednej linii optycznej */}
+      <div className="type-meta flex items-baseline gap-4 text-nf-dim">
         <span className="shrink-0">{product.sku}</span>
         {product.k9Standard && (
           // line-clamp-2 zamiast truncate: dluga klasyfikacja (np. "Zgodna z modułami do
@@ -85,13 +89,13 @@ export function K9ProductCard({
         {(!product.inStock || isNew) && (
           <div className="absolute left-2 top-2 flex flex-col items-start gap-1">
             {!product.inStock && (
-              <span className="border border-nf-border-strong bg-nf-bg/90 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-nf-muted">
+              <span className="type-meta border border-nf-border-strong bg-nf-bg/90 px-2 py-1 text-nf-muted">
                 Brak
               </span>
             )}
             {isNew && (
               // czerwien wylacznie jako znacznik, nie jako wypelnienie
-              <span className="border border-nf-red bg-nf-bg/90 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-nf-red-bright">
+              <span className="type-meta border border-nf-red bg-nf-bg/90 px-2 py-1 text-nf-red-bright">
                 Nowość
               </span>
             )}
@@ -99,7 +103,9 @@ export function K9ProductCard({
         )}
       </div>
 
-      <h3 className="mt-4 font-display text-lg font-bold uppercase leading-tight tracking-tight text-nf-white">
+      {/* type-h3, nie wlasny font-display + font-bold: Fjalla One ma jedna wage, wiec
+          font-bold kazal przegladarce rysowac sztuczny pogrubiony */}
+      <h3 className="type-h3 mt-4 text-nf-white">
         <Link
           href={href}
           className="underline-offset-[6px] transition-colors duration-250 ease-nf hover:underline hover:decoration-nf-red hover:decoration-2 motion-reduce:transition-none"
@@ -116,7 +122,7 @@ export function K9ProductCard({
             key={spec.label}
             className="flex items-baseline justify-between gap-4 border-t border-nf-border py-2"
           >
-            <dt className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-nf-dim">
+            <dt className="type-meta shrink-0 text-nf-dim">
               {spec.label}
             </dt>
             <dd className="text-right text-sm text-nf-text">{spec.value}</dd>
@@ -125,7 +131,7 @@ export function K9ProductCard({
 
         {product.variants.length > 0 && (
           <div className="flex items-baseline justify-between gap-4 border-t border-nf-border py-2">
-            <dt className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-nf-dim">
+            <dt className="type-meta shrink-0 text-nf-dim">
               Rozmiary
             </dt>
             {/* Wartosc jest tekstem plynacym, nie flexem: przy trzech wariantach lamie sie

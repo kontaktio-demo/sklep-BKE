@@ -4,7 +4,6 @@
 
 import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
-import { isLightRoute } from "@/components/layout/ThemeSync";
 import { ANNOUNCEMENTS, K9_STATUS, TRUST_TRIAD, isK9Route } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
@@ -12,7 +11,7 @@ const ROTATE_MS = 4500;
 const FADE_MS = 250;
 
 // h-11: pasek musi pomiescic przycisk pauzy o celu dotykowym 44 px
-const BAR = "flex h-11 items-center justify-center bg-nf-black px-4";
+const BAR = "flex h-11 items-center justify-center px-4";
 
 function Highlighted({ text, highlight }: { text: string; highlight: string }) {
   const at = text.indexOf(highlight);
@@ -20,7 +19,7 @@ function Highlighted({ text, highlight }: { text: string; highlight: string }) {
   return (
     <>
       {text.slice(0, at)}
-      {/* red stays reserved for the CTA; the bar highlights with weight, not color */}
+      {/* pasek jest juz czerwony, wiec wyroznienie idzie grubosci, nie kolorem */}
       <span className="font-semibold text-white">{highlight}</span>
       {text.slice(at + highlight.length)}
     </>
@@ -39,8 +38,9 @@ function Sep({ className }: { className?: string }) {
 // bez rotacji: to naglowek katalogu, nie karuzela promocji.
 function K9StatusBar() {
   // type-meta = mono 11px uppercase 0.2em (globals.css)
+  // Czern na graficie: pasek jest juz w swiecie K9, wiec tokeny nf-* czytaja sie jasno
   return (
-    <div className={cn(BAR, "type-meta text-nf-dim")}>
+    <div className={cn(BAR, "type-meta bg-nf-black text-nf-dim")}>
       {/* czerwien = stan aktywny: jestes w linii K9, nie w sklepie cywilnym */}
       <span className="text-nf-red-bright">{K9_STATUS.line}</span>
       <Sep />
@@ -62,12 +62,10 @@ export function AnnouncementBar() {
   const [paused, setPaused] = useState(false);
 
   const k9 = isK9Route(pathname);
-  const hidden = isLightRoute(pathname);
 
   useEffect(() => {
-    // pasek K9 jest statyczny, a na jasnej trasie paska nie ma - w obu razach zegar
-    // tylko przemielalby stan bez odbiorcy
-    if (k9 || hidden) return;
+    // pasek K9 jest statyczny - zegar tylko przemielalby stan bez odbiorcy
+    if (k9) return;
     if (ANNOUNCEMENTS.length < 2) return;
     // WCAG 2.2.2: uzytkownik zatrzymal rotacje - komunikat zostaje na aktualnym
     if (paused) return;
@@ -85,7 +83,7 @@ export function AnnouncementBar() {
       window.clearInterval(interval);
       if (fadeTimer !== undefined) window.clearTimeout(fadeTimer);
     };
-  }, [k9, hidden, paused]);
+  }, [k9, paused]);
 
   // pauza w trakcie wygaszania zabralaby zegar, ktory przywraca widocznosc - komunikat
   // zostalby przezroczysty, dlatego kazde przelaczenie odsłania biezacy tekst
@@ -94,19 +92,13 @@ export function AnnouncementBar() {
     setVisible(true);
   };
 
-  // Strona główna jest landingiem marki, nie sklepem: czarny pasek użytkowy nad
-  // jasnym hero psuł kadr i nie niósł treści potrzebnej w tym miejscu.
-  if (hidden) return null;
-
   if (k9) return <K9StatusBar />;
 
+  // Pasek uzytkowy w kolorze marki, na kazdej trasie sklepu lacznie ze strona glowna:
+  // niesie darmowa dostawe i triade zaufania, czyli dokladnie to, po co klient patrzy
+  // na gore strony. Biel na plaskiej czerwieni ma 5.9:1, wiec drobny tekst trzyma AA.
   return (
-    <div
-      className={cn(
-        BAR,
-        "relative text-[11px] uppercase tracking-[0.15em] text-nf-muted"
-      )}
-    >
+    <div className={cn(BAR, "relative bg-nf-red text-[13px] text-white/90")}>
       {/* px-11: tekst jest wysrodkowany w calym pasku, wiec musi trzymac dystans
           od przycisku pauzy przyklejonego do prawej krawedzi */}
       <p
@@ -127,10 +119,12 @@ export function AnnouncementBar() {
           <li key={a.text}>{a.text}</li>
         ))}
       </ul>
-      <p className="absolute right-12 hidden items-center gap-3 text-nf-dim lg:flex lg:right-14">
+      {/* text-white/90, nie /75: przy 13 px na #c20812 biel z 75% dawala 3,93:1, czyli
+          ponizej AA. Pelna biel ma 5,9:1, biel z 90% okolo 5,2:1 - z zapasem. */}
+      <p className="absolute right-12 hidden items-center gap-3 text-white/90 lg:flex lg:right-14">
         {TRUST_TRIAD.map((item, i) => (
           <Fragment key={item}>
-            {i > 0 && <span aria-hidden="true" className="h-3 border-l border-nf-border" />}
+            {i > 0 && <span aria-hidden="true" className="h-3 border-l border-white/30" />}
             <span>{item}</span>
           </Fragment>
         ))}
@@ -145,7 +139,7 @@ export function AnnouncementBar() {
           aria-label={
             paused ? "Wznów rotację komunikatów" : "Zatrzymaj rotację komunikatów"
           }
-          className="absolute right-0 top-0 flex size-11 items-center justify-center font-mono text-[11px] tracking-[0.1em] text-nf-dim transition-colors duration-250 ease-nf hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white motion-reduce:hidden motion-reduce:transition-none"
+          className="absolute right-0 top-0 flex size-11 items-center justify-center text-[12px] font-semibold text-white/90 transition-colors duration-250 ease-nf hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white motion-reduce:hidden motion-reduce:transition-none"
         >
           <span aria-hidden="true">{paused ? ">" : "II"}</span>
         </button>

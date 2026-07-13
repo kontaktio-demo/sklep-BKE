@@ -18,12 +18,12 @@ export function FilterSidebar({
           z ukladu, wiec kolumna filtrow stoi tam, gdzie stała. */}
       <div className="sticky top-24 -m-2 max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain p-2 [scrollbar-width:thin]">
         <div className="flex min-h-11 items-center justify-between gap-3 border-b border-nf-border">
-          <h2 className="type-h3 text-white">Filtry</h2>
+          <h2 className="type-h3 text-nf-white">Filtry</h2>
           {activeCount > 0 && (
             <button
               type="button"
               onClick={onClearAll}
-              className="inline-flex min-h-11 items-center text-xs uppercase tracking-widest text-nf-dim transition-colors duration-250 ease-nf hover:text-white"
+              className="type-label inline-flex min-h-11 items-center text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white"
             >
               Wyczyść wszystko
             </button>

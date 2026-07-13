@@ -52,12 +52,16 @@ export function VariantPicker({
   selected,
   onSelect,
   density = "md",
+  mono = false,
   className,
 }: {
   variants: ProductVariant[];
   selected: ProductVariant;
   onSelect: (variant: ProductVariant) => void;
   density?: "sm" | "md";
+  /** mono = rytm PAKT-K9 (oznaczenia techniczne). Ta sama kontrolka stoi na karcie sklepu
+   *  i na karcie sprzetu, a monospace nalezy wylacznie do K9. */
+  mono?: boolean;
   className?: string;
 }) {
   // grupa radio potrzebuje wlasnej nazwy - dwie kontrolki na jednej stronie
@@ -66,7 +70,9 @@ export function VariantPicker({
 
   return (
     <fieldset className={cn("min-w-0", className)}>
-      <legend className="type-meta p-0 text-nf-dim">Rozmiar</legend>
+      <legend className={cn("p-0 text-nf-dim", mono ? "type-meta" : "type-label")}>
+        Rozmiar
+      </legend>
       <div className="mt-2 flex flex-wrap gap-2">
         {variants.map((variant) => {
           const checked = variant.sku === selected.sku;
@@ -80,15 +86,22 @@ export function VariantPicker({
                 density === "sm"
                   ? "min-h-11 min-w-16 px-2.5 py-1.5"
                   : "min-h-11 min-w-[4.75rem] px-3 py-2",
-                // obwodka fokusu siada na etykiecie, bo sam input jest przyciety przez sr-only
-                "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-white",
+                // obwodka fokusu siada na etykiecie, bo sam input jest przyciety przez sr-only.
+                // Token maksymalnego kontrastu, wiec obwodka odwraca sie razem ze swiatem
+                "has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-nf-white",
+                // niedostepny rozmiar gasnie samym tekstem (nf-dim + przekreslenie), bez opacity
+                // na calej kontrolce: na jasnym tle przezroczysta ramka rozplywa sie w tle.
+                // Kafel dostepny to KONTROLKA, wiec jego krawedz idzie na nf-control (3:1,
+                // WCAG 1.4.11). Kafel niedostepny zostaje na cichym nf-border - kontrolka
+                // wylaczona jest z tego wymagania zwolniona, a scisniecie kontrastu na niej
+                // podpowiadaloby, ze da sie ja kupic
                 variant.inStock
-                  ? "cursor-pointer border-nf-border-strong text-nf-text hover:border-white"
+                  ? "cursor-pointer border-nf-control text-nf-text hover:border-nf-control-hover"
                   : "cursor-not-allowed border-nf-border text-nf-dim line-through",
                 // czerwona krawedz = stan aktywny; przy wybranym niedostepnym zostaje
                 // przekreslenie, wiec wybor nie udaje dostepnosci
                 checked && "border-nf-red",
-                checked && variant.inStock && "text-white"
+                checked && variant.inStock && "text-nf-white"
               )}
             >
               {/* Wyprzedany rozmiar zostaje WYBIERALNY (aria-disabled, nie disabled).

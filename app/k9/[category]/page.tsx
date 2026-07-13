@@ -92,7 +92,9 @@ export default async function K9CategoryPage({
 
         <div className={cn(CONTAINER, "relative pb-10 pt-8 lg:pb-14")}>
           <nav aria-label="Ścieżka nawigacji">
-            <ol className="flex flex-wrap items-center gap-x-2 font-mono text-[11px] uppercase tracking-[0.2em] text-nf-dim">
+            {/* type-meta: jedno zrodlo dla oznaczen technicznych w K9. Recznie skladany
+                font-mono z innym trackingiem rozjezdzal sie z kodami na kaflach */}
+            <ol className="type-meta flex flex-wrap items-center gap-x-2 text-nf-dim">
               <li>
                 <Link
                   href="/k9"
@@ -116,7 +118,7 @@ export default async function K9CategoryPage({
             {/* pas ostrzegawczy - jedyne uzycie szrafury na stronie */}
             <div aria-hidden="true" className="hatch-red h-1.5 w-24" />
 
-            <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.2em] text-nf-dim">
+            <p className="type-meta mt-5 text-nf-dim">
               {category.code}
               <span aria-hidden="true" className="px-2 text-nf-border-strong">
                 /
@@ -128,7 +130,7 @@ export default async function K9CategoryPage({
             <SplitLines
               lines={[category.title]}
               as="h1"
-              className="mt-4 font-display text-4xl font-bold uppercase leading-[1.05] tracking-tight text-nf-white md:text-5xl"
+              className="type-h1 mt-4 text-nf-white"
               lineClassName="pb-[0.06em]"
               immediate
             />
@@ -149,7 +151,7 @@ export default async function K9CategoryPage({
       <div className={cn(CONTAINER, "pb-20 pt-10")}>
         {products.length === 0 ? (
           <div className="border border-nf-border p-10 text-center">
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-nf-dim">
+            <p className="type-meta text-nf-dim">
               Brak pozycji w tej kategorii
             </p>
             <p className="mt-3 text-sm text-nf-muted">
@@ -191,7 +193,7 @@ export default async function K9CategoryPage({
               </ul>
             </Reveal>
 
-            <div className="mt-4 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.2em] text-nf-dim">
+            <div className="type-meta mt-4 flex items-center justify-between text-nf-dim">
               <span>Pozycji: {products.length}</span>
               <span aria-hidden="true">{category.code}</span>
             </div>

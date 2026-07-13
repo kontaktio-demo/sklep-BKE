@@ -1,12 +1,12 @@
 "use client";
 
-// §8-J [VERDICT: NSDW] - pas z zapisem na newsletter, w motywie strony
+// Pas z zapisem na newsletter. Grafitowa wyspa nad stopka: razem z nia tworzy blok
+// domykajacy strone, i to samo dzieje sie w obu sklepach.
 
 import { usePathname } from "next/navigation";
 import { useId } from "react";
 import { Button } from "@/components/ui/Button";
 import { COMPANY, isK9Route } from "@/lib/nav";
-import { cn } from "@/lib/utils";
 
 interface NewsletterCopy {
   eyebrow: string;
@@ -45,67 +45,44 @@ const K9_COPY: NewsletterCopy = {
 };
 
 export function Newsletter() {
-  // Ciemny na kazdej trasie: na stronie glownej lezy pod panelem PAKT-K9, wiec powrot
-  // do papieru rozbijalby zejscie z jasnego swiata w ciemny.
-  const light = false;
   const pathname = usePathname();
-  const copy = isK9Route(pathname) ? K9_COPY : SHOP_COPY;
+  const k9 = isK9Route(pathname);
+  const copy = k9 ? K9_COPY : SHOP_COPY;
   const headingId = useId();
 
   return (
+    // data-shell="dark" odwraca tokeny w calym poddrzewie: te same klasy nf-* stoja
+    // tu ciemno takze wtedy, gdy strona wokol jest jasna.
     <section
       aria-labelledby={headingId}
+      data-shell="dark"
       data-surface="dark"
-      className={cn(
-        "border-y py-16 md:py-24",
-        light ? "border-pk-line bg-pk-paper-2" : "border-nf-border bg-nf-black"
-      )}
+      className="border-y border-nf-border bg-nf-bg py-16 md:py-24"
     >
       <div className="mx-auto grid max-w-[1600px] gap-8 px-4 md:px-6 lg:grid-cols-12 lg:items-end">
         <div className="lg:col-span-5">
-          <p className={cn("type-meta", light ? "text-pk-ink-muted" : "text-nf-dim")}>
+          {/* monospace zostaje na oznaczenia techniczne w K9; w sklepie zwykla etykieta */}
+          <p className={k9 ? "type-meta text-nf-dim" : "type-label text-nf-dim"}>
             {copy.eyebrow}
           </p>
-          <h2
-            id={headingId}
-            className={cn("type-h2 mt-4", light ? "text-pk-ink" : "text-white")}
-          >
+          <h2 id={headingId} className="type-h2 mt-4 text-nf-white">
             {copy.heading[0]}
             <br />
             {copy.heading[1]}
           </h2>
           {copy.lead && (
-            <p
-              className={cn(
-                "mt-5 max-w-md text-sm leading-relaxed",
-                light ? "text-pk-ink-2" : "text-nf-muted"
-              )}
-            >
-              {copy.lead}
-            </p>
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-nf-muted">{copy.lead}</p>
           )}
         </div>
 
         <div className="lg:col-span-7">
-          <div
-            className={cn(
-              "flex flex-col items-start gap-4 border-t pt-6 sm:flex-row sm:items-center",
-              light ? "border-pk-line" : "border-nf-border"
-            )}
-          >
-            <Button
-              href={copy.mailto}
-              className={cn("h-12", light && "bg-pk-ink text-pk-paper hover:bg-pk-red")}
-            >
+          <div className="flex flex-col items-start gap-4 border-t border-nf-border pt-6 sm:flex-row sm:items-center">
+            <Button href={copy.mailto} className="h-12">
               {copy.cta}
             </Button>
-            <p className={cn("text-sm", light ? "text-pk-ink-2" : "text-nf-muted")}>
-              {copy.email}
-            </p>
+            <p className="text-sm text-nf-muted">{copy.email}</p>
           </div>
-          <p className={cn("mt-3 text-xs", light ? "text-pk-ink-muted" : "text-nf-dim")}>
-            {copy.note}
-          </p>
+          <p className="mt-3 text-xs text-nf-dim">{copy.note}</p>
         </div>
       </div>
     </section>

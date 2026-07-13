@@ -13,7 +13,9 @@ const FIELD = "w-full rounded-[2px] border bg-nf-elevated text-sm text-nf-text p
 const LINE = "h-11 px-3";
 const BORDER_OK = "border-nf-border";
 const BORDER_BAD = "border-nf-red-bright";
-const LABEL = "type-meta block text-nf-dim";
+// type-label, nie type-meta: monospace niesie oznaczenia techniczne sekcji PAKT-K9.
+// Etykieta pola w formularzu sklepu cywilnego jedzie zwykla etykieta sklepu.
+const LABEL = "type-label block text-nf-dim";
 const ERROR = "mt-2 text-sm text-nf-red-bright";
 
 const OTHER_SUBJECT = "Inna sprawa";
@@ -150,12 +152,19 @@ export function ContactForm() {
           </p>
         </div>
 
-        <pre className="mt-5 overflow-x-auto whitespace-pre-wrap rounded-[2px] border border-nf-border bg-nf-black p-4 font-mono text-xs leading-relaxed text-nf-text">
+        {/* tresc do skopiowania siedzi w polu wglebionym (nf-elevated-2), nie na czerni:
+            karta panelu jest juz jasna, wiec czarny blok gubilby tekst w obu swiatach.
+
+            Monospace zostaje TYLKO tutaj: to podglad gotowego maila, wiec staly krok znaku
+            pokazuje dokladnie ten tekst, ktory trafi do skrzynki. Reszta stron informacyjnych
+            nie ma prawa uzywac kroju maszynowego - on nalezy do sekcji PAKT-K9. */}
+        <pre className="mt-5 overflow-x-auto whitespace-pre-wrap rounded-[2px] border border-nf-border bg-nf-elevated-2 p-4 font-mono text-xs leading-relaxed text-nf-text">
           {body}
         </pre>
 
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button href={href} size="md" className="rounded-[2px]">
+          {/* promien przycisku nalezy do Button (4 px), nie do wywolania */}
+          <Button href={href} size="md">
             Otwórz w programie pocztowym
           </Button>
           <button
@@ -301,7 +310,7 @@ export function ContactForm() {
         )}
       </div>
 
-      <Button type="submit" size="lg" className="rounded-[2px]">
+      <Button type="submit" size="lg">
         Przygotuj wiadomość
       </Button>
       <p className="text-xs leading-relaxed text-nf-dim">

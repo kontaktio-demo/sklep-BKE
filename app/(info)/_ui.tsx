@@ -6,6 +6,12 @@ import { cn } from "@/lib/utils";
 // Typografia stron informacyjnych. Zamiast klasy "prose" z wtyczki: kilka malych
 // komponentow, ktore trzymaja jeden rytm (naglowki, akapity, listy z myslnikiem)
 // i nie pozwalaja stronom rozjechac sie miedzy soba.
+//
+// ZERO MONOSPACE. Kroj maszynowy (type-meta) niesie oznaczenia techniczne sekcji PAKT-K9:
+// SKU, kody kategorii, klasyfikacje. Strony informacyjne naleza do sklepu cywilnego, wiec
+// etykiety jada zwykla etykieta sklepu (type-label), a teksty pomocnicze zwyklym tekstem.
+// Jedyny wyjatek w tym katalogu to blok <pre> z gotowa trescia maila w formularzu kontaktowym:
+// tam monospace jest podgladem tekstu do skopiowania, a nie ozdobnikiem.
 
 /** Klasa dla linkow wplecionych w tekst. */
 export const INFO_LINK =
@@ -28,7 +34,7 @@ export function InfoHeader({
 
       {lead && <p className="mt-6 max-w-2xl text-base leading-relaxed text-nf-muted">{lead}</p>}
 
-      {updated && <p className="type-meta mt-6 text-nf-dim">{updated}</p>}
+      {updated && <p className="mt-6 text-xs text-nf-dim">{updated}</p>}
     </header>
   );
 }
@@ -75,13 +81,14 @@ export function Bullets({ items }: { items: ReactNode[] }) {
   );
 }
 
-/** Numerowana procedura. Numery w mono, bo to instrukcja, a nie tekst ciagly. */
+/** Numerowana procedura. Numer jest znacznikiem kroku, nie oznaczeniem technicznym:
+ *  tabular-nums trzyma kolumne rowno bez siegania po kroj maszynowy. */
 export function Steps({ items }: { items: ReactNode[] }) {
   return (
     <ol className="mt-4 space-y-3">
       {items.map((item, i) => (
         <li key={i} className="flex gap-3 text-sm leading-relaxed text-nf-muted">
-          <span aria-hidden="true" className="type-meta mt-1 shrink-0 text-nf-dim">
+          <span aria-hidden="true" className="type-label mt-0.5 shrink-0 tabular-nums text-nf-dim">
             {String(i + 1).padStart(2, "0")}
           </span>
           <span className="min-w-0">{item}</span>
@@ -97,7 +104,7 @@ export function Facts({ rows }: { rows: { label: string; value: ReactNode }[] })
     <dl className="mt-4 divide-y divide-nf-border border-y border-nf-border">
       {rows.map((row) => (
         <div key={row.label} className="grid gap-1 py-3 sm:grid-cols-[200px_1fr] sm:gap-4">
-          <dt className="type-meta text-nf-dim">{row.label}</dt>
+          <dt className="type-label pt-0.5 text-nf-dim">{row.label}</dt>
           <dd className="text-sm leading-relaxed text-nf-text">{row.value}</dd>
         </div>
       ))}

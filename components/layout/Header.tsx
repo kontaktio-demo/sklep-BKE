@@ -14,7 +14,6 @@ import {
   ChevronDownIcon,
   MenuIcon,
   SearchIcon,
-  UserIcon,
 } from "@/components/ui/icons";
 import { useCart } from "@/lib/cart";
 import { NAV_ITEMS, TRUST_TRIAD } from "@/lib/nav";
@@ -24,10 +23,14 @@ import { Button } from "@/components/ui/Button";
 import { Logo } from "./Logo";
 import { MegaMenu } from "./MegaMenu";
 import { SHELL, type Theme } from "./theme";
-import { isLightRoute } from "./ThemeSync";
+import { isDarkRoute } from "./ThemeSync";
 
 const ICON_BUTTON_BASE =
   "flex h-11 w-11 items-center justify-center transition-colors duration-250 ease-nf";
+
+// Monospace nalezy do swiata K9. Nakladki shellu (wyszukiwarka, menu mobilne) niosa
+// nawigacje sklepu cywilnego, wiec drobne naglowki ida groteskiem.
+const PANEL_HEADING = "type-label";
 
 function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) {
   const t = SHELL[theme];
@@ -78,7 +81,7 @@ function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) 
         </Button>
       </form>
       <div className="mt-5">
-        <h3 className={cn("type-meta", t.meta)}>Popularne wyszukiwania</h3>
+        <h3 className={cn(PANEL_HEADING, t.meta)}>Popularne wyszukiwania</h3>
         <ul className="mt-2 flex flex-wrap gap-2">
           {POPULAR_SEARCHES.map((term) => (
             <li key={term}>
@@ -124,7 +127,7 @@ function MobileNav({
         /* §8-B: K9TG mobile nav is full-screen; cap the width only from sm upward */
         "max-w-none sm:max-w-sm"
       }
-      footer={<p className={cn("type-meta px-5 py-4", t.meta)}>{TRUST_TRIAD.join(" · ")}</p>}
+      footer={<p className={cn("px-5 py-4 text-xs", t.meta)}>{TRUST_TRIAD.join(" · ")}</p>}
     >
       <nav aria-label="Nawigacja główna">
         <ul>
@@ -171,7 +174,7 @@ function MobileNav({
                   <div className="space-y-5 px-5 pb-5">
                     {columns.map((col) => (
                       <div key={col.title}>
-                        <h3 className={cn("type-meta mb-1", t.panelHeading)}>{col.title}</h3>
+                        <h3 className={cn(PANEL_HEADING, "mb-1", t.panelHeading)}>{col.title}</h3>
                         <ul>
                           {col.links.map((link) => (
                             <li key={link.label}>
@@ -209,24 +212,33 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Na jasnej trasie ciemna sekcja (panel K9) potrafi wjechac pod pasek. Probkujemy,
-  // co faktycznie lezy pod headerem, i przelaczamy motyw - inaczej jasny pasek zostaje
-  // na czarnym tle i wyglada jak bug.
+  // Ciemna wyspa (kafel wejsciowy K9) potrafi wjechac pod pasek na jasnej trasie.
+  // Probkujemy, co faktycznie lezy pod headerem, i przelaczamy motyw - inaczej jasny
+  // pasek zostaje na graficie i wyglada jak bug.
   const [overDark, setOverDark] = useState(false);
-  const routeLight = isLightRoute(pathname);
+  const inK9 = isDarkRoute(pathname);
+  const routeLight = !inK9;
   const light = routeLight && !overDark;
   const theme: Theme = light ? "light" : "dark";
   const t = SHELL[theme];
-  const inK9 = pathname === "/k9" || pathname.startsWith("/k9/");
+
+  // Nakladki (wyszukiwarka, menu mobilne) otwieraja sie na srodku ekranu, a nie na tresci
+  // pod paskiem - ich motyw ma wynikac z TRASY, nie z tego, co akurat wjechalo pod header.
+  // Inaczej przewiniecie do ciemnej wyspy na jasnym sklepie robilo z nich grafit bez powodu.
+  const overlayTheme: Theme = inK9 ? "dark" : "light";
 
   useEffect(() => {
-    // pages with a billboard hero mark it with data-hero-sentinel
+    // strony z pelnoekranowym hero oznaczaja go przez data-hero-sentinel
     const sentinel = document.querySelector("[data-hero-sentinel]");
     const hero = sentinel !== null;
     setHasHero(hero);
-    // strona główna startuje przezroczysta niezależnie od sentinela - leży na papierze,
-    // więc pasek bez tła nie ma czego przesłonić; w sklepie (ciemno) bez hero od razu solid
-    if (!hero && !isLightRoute(pathname)) {
+    // Sklep cywilny: pasek jest zawsze pelny i jasny, jak w sklepie z referencji.
+    // Przezroczysty pasek nad zdjeciem zostaje wylacznie w K9.
+    if (!isDarkRoute(pathname)) {
+      setScrolled(false);
+      return;
+    }
+    if (!hero) {
       setScrolled(false);
       return;
     }
@@ -251,7 +263,15 @@ export function Header() {
       const dark = xs.some((x) =>
         document
           .elementsFromPoint(x, y)
-          .some((el) => el instanceof HTMLElement && el.dataset.shell === "dark")
+          .some(
+            (el) =>
+              el instanceof HTMLElement &&
+              el.dataset.shell === "dark" &&
+              // pasek sam nosi teraz data-shell="dark" (zakres tokenow), a przy niezwinietym
+              // pasku ogloszen probka wypada w jego wnetrzu. Bez tego wykluczenia header
+              // wykrywalby samego siebie i juz nigdy nie wrocilby do jasnego.
+              !header?.contains(el)
+          )
       );
       setOverDark(dark);
     };
@@ -270,11 +290,18 @@ export function Header() {
     };
   }, [routeLight, pathname]);
 
-  const solid = light ? scrolled : overDark || !hasHero || scrolled;
+  // jasne trasy: zawsze pelny pasek. K9: przezroczysty nad hero, pelny po przewinieciu.
+  const solid = routeLight ? true : !hasHero || scrolled;
 
   return (
     <>
       <header
+        // Bez tego pasek nakladal klasy ciemnego shellu (nf-*), lezac POZA jakimkolwiek
+        // zakresem odwracajacym tokeny: nad ciemna wyspa zostawal jasny, a hover na
+        // nf-white dawal tusz na tusz. data-shell="dark" otwiera ten zakres.
+        // Regula [data-shell="dark"] siedzi w @layer base, wiec klasy uzytkowe
+        // (bg-transparent nad hero K9) nadal ja przebijaja.
+        data-shell={theme === "dark" ? "dark" : undefined}
         className={cn(
           "sticky top-0 z-40 border-b transition-[background-color,border-color] duration-300 ease-nf",
           solid ? t.shellSolid : t.shellTop
@@ -324,13 +351,8 @@ export function Header() {
             >
               <SearchIcon />
             </button>
-            <button
-              type="button"
-              aria-label="Konto"
-              className={cn(ICON_BUTTON_BASE, t.iconButton)}
-            >
-              <UserIcon />
-            </button>
+            {/* Ikony konta tu nie ma: w sklepie nie ma logowania ani strony konta, wiec
+                przycisk obiecywalby funkcje, ktora nie istnieje. Wroci razem z kontami. */}
             <button
               type="button"
               aria-label={count > 0 ? `Otwórz koszyk, ${count} szt.` : "Otwórz koszyk"}
@@ -360,14 +382,14 @@ export function Header() {
         open={searchOpen}
         onClose={() => setSearchOpen(false)}
         title="Szukaj"
-        theme={theme}
+        theme={overlayTheme}
       >
-        <SearchPanel theme={theme} onClose={() => setSearchOpen(false)} />
+        <SearchPanel theme={overlayTheme} onClose={() => setSearchOpen(false)} />
       </Dialog>
 
       <MobileNav
         open={mobileOpen}
-        theme={theme}
+        theme={overlayTheme}
         onClose={() => setMobileOpen(false)}
       />
     </>

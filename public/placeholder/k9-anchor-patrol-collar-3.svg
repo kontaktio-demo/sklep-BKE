@@ -2,8 +2,8 @@
   
   <defs>
     <linearGradient id="bg-k9-anchor-patrol-collar-3" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1c1c1c"/>
-      <stop offset="100%" stop-color="#151515"/>
+      <stop offset="0%" stop-color="#24282c"/>
+      <stop offset="100%" stop-color="#1a1d20"/>
     </linearGradient>
     <radialGradient id="floor-k9-anchor-patrol-collar-3" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>

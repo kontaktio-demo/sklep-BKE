@@ -18,9 +18,14 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/ui/icons";
 import { usePrefersReducedMotion } from "@/components/motion/useReducedMotion";
 import { ProductCard } from "@/components/collection/ProductCard";
+import { K9ProductCard } from "@/components/k9/K9ProductCard";
 
 const DEFAULT_ITEM_CLASS = "w-[46vw] sm:w-[240px] lg:w-[270px]";
 const CARD_SIZES = "(min-width:1024px) 270px, (min-width:640px) 240px, 46vw";
+
+// Kafel katalogowy K9 niesie tabele specyfikacji, wiec potrzebuje szerszego toru niz
+// kafel sklepowy - w kolumnie 270px tabela lamalaby sie na kazdym wierszu.
+const K9_ITEM_CLASS = "w-[78vw] sm:w-[340px] lg:w-[380px]";
 
 // Lazy-mount below the fold (§10). Shared by ProductRow and BestsellerRow.
 export function useLazyMount<T extends HTMLElement>(ref: RefObject<T | null>): boolean {
@@ -234,7 +239,7 @@ export function RowScroller({
   const arrowClass = (enabled: boolean, side: "left" | "right") =>
     cn(
       // w-11, nie w-10: cel dotykowy/klikniecia ma miec 44px w obu osiach
-      "absolute inset-y-4 z-10 hidden w-11 items-center justify-center border border-nf-border bg-nf-bg/80 text-white transition-opacity duration-250 ease-nf hover:bg-nf-bg lg:flex",
+      "absolute inset-y-4 z-10 hidden w-11 items-center justify-center border border-nf-border bg-nf-bg/80 text-nf-white transition-opacity duration-250 ease-nf hover:bg-nf-bg lg:flex",
       side === "left" ? "left-0" : "right-0",
       enabled
         ? "opacity-0 focus-visible:opacity-100 group-hover:opacity-100"
@@ -295,19 +300,28 @@ export function RowScroller({
 }
 
 // §8-H - poziomy rzad produktow (wtorna sciezka odkrywania pod glowna siatka).
+//
+// variant wybiera UBRANIE kafla, nie dane. Rzad w sklepie cywilnym jedzie karta sklepowa
+// (szybki podglad, swatche, cywilna typografia), rzad w sekcji sluzbowej karta katalogowa
+// K9 (oznaczenie, tabela specyfikacji, bez szybkiego podgladu). Wczesniej sprzet K9 dostawal
+// kafel sklepu, czyli sluzbowa pozycja w cywilnym ubraniu.
 export function ProductRow({
   title,
   products,
   id,
   exploreHref,
+  variant = "shop",
 }: {
   title: string;
   products: Product[];
   id?: string;
   exploreHref?: string;
+  variant?: "shop" | "k9";
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const mounted = useLazyMount(sectionRef);
+  const k9 = variant === "k9";
+  const itemClass = k9 ? K9_ITEM_CLASS : undefined;
 
   if (products.length === 0) return null;
 
@@ -315,11 +329,16 @@ export function ProductRow({
     <section ref={sectionRef} id={id} className="scroll-mt-24 space-y-3">
       <div className="mx-auto max-w-[1600px]">
         <div className="flex items-center justify-between gap-4 px-4 md:px-6">
-          <h2 className="type-h2 text-white">{title}</h2>
+          <h2 className="type-h2 text-nf-white">{title}</h2>
           {exploreHref && (
+            // monospace (type-meta) niesie oznaczenia techniczne i nalezy do swiata K9;
+            // w sklepie cywilnym ten sam link jedzie zwykla etykieta
             <Link
               href={exploreHref}
-              className="type-meta inline-flex min-h-11 items-center text-nf-dim transition-colors duration-250 ease-nf hover:text-white motion-reduce:transition-none"
+              className={cn(
+                "inline-flex min-h-11 items-center text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none",
+                k9 ? "type-meta" : "type-label"
+              )}
             >
               Zobacz wszystkie
             </Link>
@@ -327,13 +346,17 @@ export function ProductRow({
         </div>
 
         {mounted ? (
-          <RowScroller>
-            {products.map((p) => (
-              <ProductCard key={p.id} product={p} sizes={CARD_SIZES} />
-            ))}
+          <RowScroller itemClassName={itemClass}>
+            {products.map((p) =>
+              k9 ? (
+                <K9ProductCard key={p.id} product={p} />
+              ) : (
+                <ProductCard key={p.id} product={p} sizes={CARD_SIZES} />
+              )
+            )}
           </RowScroller>
         ) : (
-          <RowSkeletonTrack />
+          <RowSkeletonTrack itemClassName={itemClass} />
         )}
       </div>
     </section>

@@ -35,79 +35,41 @@ export const K9_LINKS: NavLink[] = [
   { label: "Praca węchowa", href: `${K9_ROOT}/detection` },
 ];
 
-/** Etykieta pozycji K9 w nawigacji - MegaMenu i Header lamia po niej typografie na mono. */
+/** Etykieta pozycji K9 w nawigacji - MegaMenu wyroznia ja po niej kolorem linii K9. */
 export const K9_NAV_LABEL = "PAKT-K9";
 
-// mega-menu: NSDW's For Dogs / For Humans / Activities columns,
-// with K9TG's category depth inside "Dla psa" (§8-B)
+// Menu opisuje sklep, ktory istnieje: katalog cywilny to wylacznie obroze, wiec nie ma tu
+// szelek, smyczy ani odziezy. Kazda pozycja prowadzi albo na strone, albo na filtr listy
+// (parametry z components/collection/CollectionView.tsx: kategoria, rodzaj, panel, sort).
+// Zakladka obiecujaca kategorie, ktorej nie ma, kosztuje wiecej niz jej brak.
 export const NAV_ITEMS: NavItem[] = [
   {
-    label: "Dla psa",
+    label: "Obroże",
     href: PLP,
     columns: [
       {
         title: "Kategorie",
         links: [
-          { label: "Obroże", href: PLP },
-          { label: "Szelki", href: "#" },
-          { label: "Smycze", href: "#" },
-          { label: "E-obroże", href: "#" },
-          { label: "Panele ID", href: "#" },
-          { label: "Trening", href: "#" },
+          { label: "Wszystkie obroże", href: PLP },
+          { label: "Obroże robocze", href: `${PLP}?kategoria=working` },
+          { label: "Obroże codzienne", href: `${PLP}?kategoria=non-working` },
+          { label: "Kompatybilne z e-obrożą", href: `${PLP}?kategoria=e-collar` },
         ],
       },
       {
-        title: "Obroże",
+        title: "Rodzaj",
         links: [
-          { label: "Wszystkie obroże", href: PLP },
-          { label: "Obroże robocze", href: PLP },
-          { label: "Obroże codzienne", href: PLP },
-          { label: "Kompatybilne z e-obrożą", href: PLP },
-          { label: "Obroże łańcuszkowe", href: PLP },
+          { label: "Nylonowe", href: `${PLP}?rodzaj=nylon` },
+          { label: "Łańcuszkowe", href: `${PLP}?rodzaj=chain` },
         ],
       },
       {
         title: "Wyróżnione",
         links: [
-          { label: "Bestsellery", href: PLP },
-          { label: "Nowości", href: PLP },
-          { label: "Ostatnia szansa", href: PLP },
-        ],
-      },
-    ],
-  },
-  {
-    label: "Dla przewodnika",
-    href: "#",
-    columns: [
-      {
-        title: "Wyposażenie",
-        links: [
-          { label: "Saszetki na przysmaki", href: "#" },
-          { label: "Pasy", href: "#" },
-          { label: "Odzież", href: "#" },
-        ],
-      },
-      {
-        title: "W terenie",
-        links: [
-          { label: "Akcesoria do smyczy", href: "#" },
-          { label: "Plecaki terenowe", href: "#" },
-        ],
-      },
-    ],
-  },
-  {
-    label: "Aktywności",
-    href: "#",
-    columns: [
-      {
-        title: "Według aktywności",
-        links: [
-          { label: "Pies pracujący", href: PLP },
-          { label: "Na co dzień", href: PLP },
-          { label: "Wędrówki", href: "#" },
-          { label: "Widoczność nocą", href: PLP },
+          { label: "Bestsellery", href: `${PLP}?sort=best-selling` },
+          { label: "Nowości", href: `${PLP}?sort=date-desc` },
+          { label: "Z miejscem na panel ID", href: `${PLP}?panel=1` },
+          { label: "Dostępne od ręki", href: `${PLP}?dostepnosc=in-stock` },
         ],
       },
     ],
@@ -120,7 +82,7 @@ export const NAV_ITEMS: NavItem[] = [
       { title: "Linia K9", links: [{ label: "O linii", href: K9_ROOT }] },
     ],
   },
-  { label: "O nas", href: "#" },
+  { label: "O nas", href: "/o-nas" },
 ];
 
 export const ANNOUNCEMENTS = [
@@ -196,13 +158,9 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
 // ktore dzialaja: przelew i pobranie. Karty i BLIK wchodza tu razem z kasa online.
 export const PAYMENT_METHODS = ["Przelew bankowy", "Za pobraniem"];
 
-export const REGIONS = [
-  "Polska (PLN zł)",
-  "Unia Europejska (EUR €)",
-  "Wielka Brytania (GBP £)",
-  "Stany Zjednoczone (USD $)",
-  "Czechy (CZK Kč)",
-];
+// REGIONS usuniete razem z selektorem regionu w stopce: wszystkie ceny sa w zlotowkach,
+// a wysylka idzie tylko do Polski i Unii (SHIPPING_OPTIONS). Lista walut obiecywala
+// przeliczanie, ktorego nie ma.
 
 export const LEGAL_LINKS: NavLink[] = [
   { label: "Polityka prywatności", href: "/polityka-prywatnosci" },

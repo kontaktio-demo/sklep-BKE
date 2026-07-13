@@ -26,9 +26,12 @@ export function RangeSlider({
   return (
     <div>
       <div className="relative h-11">
-        <div className="absolute inset-x-0 top-1/2 h-1 -translate-y-1/2 rounded-full bg-nf-elevated-2" />
+        {/* Tor ma obwodke, nie tylko wypelnienie: samo bg-nf-elevated-2 na tle strony daje
+            1.11:1, czyli kontrolka jest praktycznie niewidoczna. Obwodka nf-control trzyma
+            3.14:1 na papierze i 3.83:1 na graficie (WCAG 1.4.11). */}
+        <div className="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full border border-nf-control bg-nf-elevated-2" />
         <div
-          className="absolute top-1/2 h-1 -translate-y-1/2 rounded-full bg-nf-red"
+          className="absolute top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-nf-red"
           style={{ left: `${loPct}%`, right: `${100 - hiPct}%` }}
         />
         <input
@@ -67,7 +70,14 @@ export function RangeSlider({
           background: transparent;
           pointer-events: none;
         }
-        /* 44px hit target (§11) drawn as a 20px circle via background-clip */
+        /* Cel dotykowy 44 px (§11) rysowany jako krazek 20 px przez background-clip.
+           Galka jest budowana KONTRASTEM, nie cieniem: drop-shadow rgba(0,0,0,0.5) byl
+           policzony pod czern i na papierze zostawial brudna plame. Zamiast niego trzy
+           strefy w gradiencie (twarde stopy, wiec bez rozmycia):
+             rdzen  nf-white  - maksymalny kontrast, sam sie odwraca (15.8:1 na papierze),
+             halo   nf-bg     - odcina rdzen od czerwonego wypelnienia toru; sam tusz na
+                                czerwieni ma 2.87:1, z halo granica jest czysta,
+             obwodka nf-control - domyka krazek na tle strony (3.14:1). */
         .nf-range::-webkit-slider-thumb {
           -webkit-appearance: none;
           appearance: none;
@@ -76,10 +86,16 @@ export function RangeSlider({
           height: 44px;
           border: 12px solid transparent;
           border-radius: 9999px;
-          background: var(--color-nf-white);
+          background-color: var(--color-nf-bg);
+          background-image: radial-gradient(
+            circle,
+            var(--color-nf-white) 0 6px,
+            transparent 6px 8px,
+            var(--color-nf-control) 8px
+          );
           background-clip: content-box;
           box-shadow: none;
-          filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+          filter: none;
           cursor: pointer;
         }
         .nf-range::-moz-range-thumb {
@@ -88,10 +104,16 @@ export function RangeSlider({
           height: 44px;
           border: 12px solid transparent;
           border-radius: 9999px;
-          background: var(--color-nf-white);
+          background-color: var(--color-nf-bg);
+          background-image: radial-gradient(
+            circle,
+            var(--color-nf-white) 0 6px,
+            transparent 6px 8px,
+            var(--color-nf-control) 8px
+          );
           background-clip: content-box;
           box-shadow: none;
-          filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+          filter: none;
           cursor: pointer;
         }
       `}</style>

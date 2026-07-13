@@ -4,9 +4,12 @@ import { PAYMENT_METHODS } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import type { Theme } from "./theme";
 
+// Plakietki stoja na tokenach semantycznych, wiec obie strony sa tym samym zestawem klas:
+// biala pigulka z tuszem na papierze, grafitowa z biela w K9. Slownik zostaje, bo motyw
+// nadal moze byc narzucony z zewnatrz (ciemna wyspa na jasnej trasie).
 const BADGE: Record<Theme, string> = {
-  dark: "border-nf-border bg-white/5 text-nf-muted",
-  light: "border-pk-line bg-pk-paper text-pk-ink-muted",
+  dark: "border-nf-border bg-nf-elevated text-nf-muted",
+  light: "border-nf-border bg-nf-elevated text-nf-muted",
 };
 
 export function PaymentIcons({

@@ -1,23 +1,21 @@
-// §8-K [VERDICT: NSDW mega-footer] - server component (select regionu niekontrolowany)
+// §8-K [VERDICT: NSDW mega-footer] - komponent serwerowy
 
 import Link from "next/link";
-import { GlobeIcon } from "@/components/ui/icons";
-import { BRAND, FOOTER_COLUMNS, LEGAL_LINKS, REGIONS } from "@/lib/nav";
+import { BRAND, FOOTER_COLUMNS, LEGAL_LINKS } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
 import { PaymentIcons } from "./PaymentIcons";
 import { FOOTER, type Theme } from "./theme";
 
-// Stopka jest zawsze ciemna, takze na jasnej stronie glownej: strona schodzi z papieru
-// w grafit przy wejsciu w PAKT-K9 i tam zostaje. Powrot do bieli tuz pod ciemnym panelem
-// K9 wygladal jak przypadek, nie jak decyzja. Wariant jasny zostaje w theme.ts na wypadek
-// osobnych stron informacyjnych w motywie jasnym.
+// Stopka jest zawsze grafitowa, takze pod jasnym sklepem: to blok domykajacy strone,
+// nie kolejna sekcja tresci. data-shell="dark" przelacza tokeny w calym poddrzewie,
+// wiec te same klasy (nf-*) renderuja sie tu ciemno niezaleznie od trasy.
 export function Footer() {
   const theme: Theme = "dark";
   const t = FOOTER[theme];
 
   return (
-    <footer className={cn("border-t", t.shell)}>
+    <footer data-shell="dark" className={cn("border-t", t.shell)}>
       {/* ta sama siatka co naglowek i tresc stron - kolumny stopki nie moga sie
           rozjezdzac z trescia powyzej na szerokich ekranach */}
       <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-24">
@@ -44,7 +42,9 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-5">
           {FOOTER_COLUMNS.map((col) => (
             <nav key={col.title} aria-label={col.title}>
-              <h3 className={cn("type-meta mb-4", t.heading)}>{col.title}</h3>
+              {/* type-label, nie type-meta: monospace zostaje wylacznie na oznaczenia
+                  techniczne w sekcji K9 */}
+              <h3 className={cn("type-label mb-4", t.heading)}>{col.title}</h3>
               <ul>
                 {col.links.map((link) => (
                   <li key={link.label}>
@@ -69,20 +69,10 @@ export function Footer() {
             t.line
           )}
         >
-          <div className="flex items-center gap-2">
-            <GlobeIcon aria-hidden="true" className={cn("shrink-0", t.globe)} />
-            <select
-              aria-label="Region i waluta"
-              defaultValue={REGIONS[0]}
-              className={cn("h-11 rounded-[2px] border px-3 text-sm", t.select)}
-            >
-              {REGIONS.map((region) => (
-                <option key={region} value={region}>
-                  {region}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* Byl tu selektor regionu i waluty z EUR, USD i GBP - martwy (bez stanu, bez
+              obslugi) i klamliwy: sklep liczy w zlotowkach i wysyla do Polski oraz Unii.
+              Zostaje sama informacja, bo tyle jest prawda. */}
+          <p className={cn("text-sm", t.lead)}>Polska (PLN)</p>
           <PaymentIcons theme={theme} />
         </div>
         <div
@@ -95,10 +85,12 @@ export function Footer() {
           <ul className="flex flex-wrap gap-x-4">
             {LEGAL_LINKS.map((link) => (
               <li key={link.label}>
+                {/* min-h-11 jak w kolumnach wyzej: 16 px wysokosci tekstu to nie jest cel,
+                    w ktory da sie trafic kciukiem */}
                 <Link
                   href={link.href}
                   className={cn(
-                    "transition-colors duration-250 ease-nf",
+                    "flex min-h-11 items-center transition-colors duration-250 ease-nf",
                     t.legalLink
                   )}
                 >

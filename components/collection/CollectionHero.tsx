@@ -2,8 +2,9 @@ import Link from "next/link";
 import type { Collection } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 
-// Nagłówek kolekcji: czysty, typograficzny, na grafitowym tle.
-// Bez zdjęcia w tle i bez WebGL - rozmyta grafika z poświatą wyglądała tanio.
+// Naglowek kolekcji: czysty, typograficzny, na tle strony (nf-bg - papier w swiecie
+// cywilnym, grafit w K9). Bez zdjecia w tle i bez WebGL - rozmyta grafika z poswiata
+// wygladala tanio.
 export function CollectionHero({ collection }: { collection: Collection }) {
   return (
     <section className="border-b border-nf-border bg-nf-bg">
@@ -13,7 +14,7 @@ export function CollectionHero({ collection }: { collection: Collection }) {
             <li>
               <Link
                 href="/"
-                className="transition-colors duration-250 ease-nf hover:text-white"
+                className="transition-colors duration-250 ease-nf hover:text-nf-white"
               >
                 Strona główna
               </Link>
@@ -29,9 +30,11 @@ export function CollectionHero({ collection }: { collection: Collection }) {
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-16">
           <div className="max-w-3xl">
-            {/* eyebrow jest oznaczeniem, nie akcja - czerwien zostaje dla CTA i stanu aktywnego */}
-            <p className="type-meta text-nf-dim">Kolekcja</p>
-            <h1 className="type-h1 mt-4 text-white">{collection.title}</h1>
+            {/* eyebrow jest oznaczeniem, nie akcja - czerwien zostaje dla CTA i stanu aktywnego.
+                type-label, nie type-meta: kolekcja zyje w sklepie cywilnym, a monospace jest
+                jezykiem katalogu PAKT-K9 */}
+            <p className="type-label text-nf-dim">Kolekcja</p>
+            <h1 className="type-h1 mt-4 text-nf-white">{collection.title}</h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-nf-muted">
               {collection.description}
             </p>

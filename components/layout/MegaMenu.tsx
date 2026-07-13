@@ -17,9 +17,9 @@ const CLOSE_DELAY_MS = 150;
 const LINK_BASE =
   "flex h-11 items-center gap-1 px-3 text-[13px] font-semibold uppercase tracking-wide transition-colors duration-250 ease-nf";
 
-// PAKT-K9 to nie kolejna zakladka sklepu: mono i szeroki tracking odcinaja ja od reszty
-// nawigacji, tak samo jak oznaczenia techniczne w samej sekcji.
-const K9_LINK = "font-mono text-[12px] font-medium tracking-[0.2em]";
+// PAKT-K9 to nie kolejna zakladka sklepu, ale pasek nawigacji stoi w sklepie cywilnym,
+// gdzie monospace nie ma czego oznaczac. Odcinamy ja kolorem linii K9 zamiast krojem.
+const K9_LINK = "text-nf-red-bright";
 
 export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
   const t = SHELL[theme];
@@ -119,7 +119,8 @@ export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
                   >
                     {columns.map((col) => (
                       <div key={col.title}>
-                        <h3 className={cn("type-meta mb-3", t.panelHeading)}>{col.title}</h3>
+                        {/* type-label, nie type-meta: mono zostaje w swiecie K9 */}
+                        <h3 className={cn("type-label mb-3", t.panelHeading)}>{col.title}</h3>
                         <ul>
                           {col.links.map((link) => (
                             <li key={link.label}>

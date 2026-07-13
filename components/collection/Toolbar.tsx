@@ -31,9 +31,12 @@ export function Toolbar({
           Filtruj
           {activeFilterCount > 0 && (
             <>
+              {/* Licznik dziedziczyl kolor liter po przycisku. Na jasnym tle przycisk ma
+                  ciemne litery, a ciemne litery na czerwonym kraku sie nie czytaja - pastylka
+                  pilnuje wiec wlasnego koloru. Biel na plaskiej czerwieni dziala w obu swiatach. */}
               <span
                 aria-hidden="true"
-                className="flex size-5 items-center justify-center rounded-full bg-nf-red text-xs font-bold leading-none"
+                className="flex size-5 items-center justify-center rounded-full bg-nf-red text-xs font-bold leading-none text-white"
               >
                 {activeFilterCount}
               </span>
@@ -46,17 +49,17 @@ export function Toolbar({
         </Button>
 
         <div className="flex items-center gap-2">
-          <label
-            htmlFor={sortId}
-            className="whitespace-nowrap text-xs uppercase tracking-widest text-nf-dim"
-          >
+          {/* type-label zamiast rozstrzelonego uppercase 0.1em: pasek narzedzi sklepu
+              cywilnego przestaje udawac panel techniczny */}
+          <label htmlFor={sortId} className="type-label whitespace-nowrap text-nf-dim">
             Sortuj
           </label>
+          {/* nf-control: krawedz jest jedynym sygnalem, ze to lista wyboru (WCAG 1.4.11) */}
           <select
             id={sortId}
             value={sort}
             onChange={(e) => onSortChange(e.target.value as SortOption)}
-            className="h-11 max-w-48 rounded-[2px] border border-nf-border bg-transparent px-3 text-sm text-nf-text"
+            className="h-11 max-w-48 rounded-[2px] border border-nf-control bg-transparent px-3 text-sm text-nf-text"
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>

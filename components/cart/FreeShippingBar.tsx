@@ -35,7 +35,11 @@ export function FreeShippingBar({
         aria-valuetext={
           reached ? "Dostawa gratis" : `Brakuje ${formatPrice(remaining)} do darmowej dostawy`
         }
-        className="mt-2 h-1 w-full overflow-hidden rounded-[2px] bg-nf-elevated-2"
+        // Tor na nf-elevated-2 daje na jasnym tle karty 1.11:1, czyli paska po prostu nie
+        // widac, dopoki nie ma postepu. Obwodka na nf-control (3:1) rysuje jego pelna dlugosc,
+        // wiec widac tez, ile jeszcze zostalo. Ring, nie border: tor ma 4px, border zjadlby
+        // polowe wypelnienia. Wypelnienie (bg-nf-red) bez zmian.
+        className="mt-2 h-1 w-full overflow-hidden rounded-[2px] bg-nf-elevated-2 ring-1 ring-nf-control"
       >
         <div
           className="h-full bg-nf-red transition-[width] duration-250 ease-nf motion-reduce:transition-none"

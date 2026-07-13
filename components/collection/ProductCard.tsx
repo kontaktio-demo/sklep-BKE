@@ -12,6 +12,7 @@ import { useQuickView } from "@/components/collection/QuickViewModal";
 import { Badge } from "@/components/ui/Badge";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
 import { PriceTag } from "@/components/ui/PriceTag";
+import { productHref } from "@/lib/routes";
 import { SIZE_NAME, SIZE_SHORT } from "@/lib/sizes";
 import type { Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -54,12 +55,15 @@ export function ProductCard({
       <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] border border-nf-border bg-nf-elevated transition-colors duration-300 ease-nf group-hover/card:border-nf-border-strong group-focus-within/card:border-nf-border-strong motion-reduce:transition-none">
         {/* rusza sie tylko warstwa ze zdjeciami - ramka, plakietki i pasek stoja w miejscu */}
         <div className="absolute inset-0 transition-transform duration-500 ease-out motion-safe:group-hover/card:scale-[1.03] motion-safe:group-focus-within/card:scale-[1.03] motion-reduce:transition-none">
+          {/* Wyprzedane: odbarwienie + wygaszenie. Samo przyciemnienie (brightness) na jasnym
+              tle robilo ze zdjecia tylko odrobine ciemniejsze zdjecie, a nie stan "niedostepne".
+              Szarosc czyta sie jako brak w obu swiatach. */}
           <Image
             src={product.images[0]}
             alt={product.name}
             fill
             sizes={sizes}
-            className={cn("object-cover", !product.inStock && "brightness-75")}
+            className={cn("object-cover", !product.inStock && "grayscale opacity-60")}
           />
           {hoverLayer && hasSecondImage && (
             <Image
@@ -81,7 +85,7 @@ export function ProductCard({
           // obwodka wcieta do srodka: przycisk pokrywa caly kadr, a kadr ma overflow-hidden,
           // wiec zwykly pierscien na zewnatrz byl w calosci przycinany i fokus znikal.
           // outline-2, bo samo "outline" daje 1px - za cienko na tle zdjecia
-          className="absolute inset-0 z-[1] w-full cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white focus-visible:shadow-none"
+          className="absolute inset-0 z-[1] w-full cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nf-white focus-visible:shadow-none"
         />
 
         {product.badges.length > 0 && (
@@ -99,7 +103,7 @@ export function ProductCard({
           onClick={() => openQuickView(product)}
           // ten sam powod co wyzej: pasek siedzi przy krawedzi kadru z overflow-hidden,
           // wiec obwodka musi isc do srodka, inaczej fokus na nim jest niewidoczny
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-11 w-full translate-y-1 border-t border-nf-border bg-nf-bg/90 text-sm text-nf-text opacity-0 backdrop-blur-sm transition duration-300 ease-nf hover:text-white focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white focus-visible:shadow-none group-hover/card:pointer-events-auto group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100 motion-reduce:transition-none"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-11 w-full translate-y-1 border-t border-nf-border bg-nf-bg/90 text-sm text-nf-text opacity-0 backdrop-blur-sm transition duration-300 ease-nf hover:text-nf-white focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nf-white focus-visible:shadow-none group-hover/card:pointer-events-auto group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100 motion-reduce:transition-none"
         >
           Szybki podgląd
         </button>
@@ -108,8 +112,8 @@ export function ProductCard({
       <div className="space-y-1.5 pt-4">
         <h3 className="text-[15px] font-medium leading-snug">
           <Link
-            href={`/products/${product.slug}`}
-            className="rounded-[2px] text-nf-text transition-colors duration-250 ease-nf hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            href={productHref(product)}
+            className="rounded-[2px] text-nf-text transition-colors duration-250 ease-nf hover:text-nf-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nf-white"
           >
             {product.name}
           </Link>
@@ -121,9 +125,9 @@ export function ProductCard({
             currency={product.currency}
             className="font-semibold"
           />
-          <span className="text-[10px] uppercase tracking-[0.2em] text-nf-dim">
-            {product.productType}
-          </span>
+          {/* type-label (zwykly grotesk), nie rozstrzelony 0.2em: takie napisy w sklepie
+              cywilnym czytaly sie jak panel techniczny, a nie jak metka produktu */}
+          <span className="type-label text-nf-dim">{product.productType}</span>
         </div>
 
         {/* Rozmiary stoja pod cena, bo tlumacza cene "od": pokazuja, miedzy iloma wariantami
@@ -137,7 +141,7 @@ export function ProductCard({
               <li
                 key={variant.size}
                 className={cn(
-                  "type-meta",
+                  "type-label",
                   variant.inStock ? "text-nf-muted" : "text-nf-dim line-through"
                 )}
               >

@@ -49,9 +49,12 @@ export async function getProduct(slug: string): Promise<Product | null> {
   return allProducts.find((p) => p.slug === slug) ?? null;
 }
 
-export async function getProductSlugs(): Promise<string[]> {
-  return allProducts.map((p) => p.slug);
-}
+// getProductSlugs() zostal usuniety. Zwracal slugi OBU linii i nie mial juz zadnego
+// odbiorcy (obie trasy buduja generateStaticParams z wlasnego zrodla: sklep z getProducts,
+// K9 z getK9Products). Jako jedyna funkcja seamu mieszajaca linie byl gotowa pulapka:
+// pierwsze uzycie do budowy tras sklepu wygenerowaloby karty K9 pod adresem /products/<slug>,
+// czyli sprzet sluzbowy w cywilnym motywie. Potrzebna lista slugow jednej linii? Bierz ja
+// z getProducts("collars") albo getK9Products() - te funkcje nie potrafia skrzyzowac swiatow.
 
 /** Powiazane produkty zawsze z tej samej linii: sklep nie podsuwa sprzetu K9 i odwrotnie. */
 export async function getRelatedProducts(slug: string, limit = 8): Promise<Product[]> {

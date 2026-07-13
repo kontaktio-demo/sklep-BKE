@@ -1,25 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1200" viewBox="0 0 2400 1200">
   <defs>
-    <radialGradient id="hero-bg" cx="72%" cy="40%" r="85%">
-      <stop offset="0%" stop-color="#2a2a2a"/>
-      <stop offset="55%" stop-color="#171717"/>
-      <stop offset="100%" stop-color="#0a0a0a"/>
-    </radialGradient>
-    <linearGradient id="hero-streak" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#e50914" stop-opacity="0"/>
-      <stop offset="50%" stop-color="#e50914" stop-opacity="0.22"/>
-      <stop offset="100%" stop-color="#e50914" stop-opacity="0"/>
+    <linearGradient id="hero-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e7e7e4"/>
     </linearGradient>
     <filter id="hero-blur"><feGaussianBlur stdDeviation="26"/></filter>
     <filter id="hero-grain">
       <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.035 0"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.02 0"/>
     </filter>
   </defs>
   <rect width="2400" height="1200" fill="url(#hero-bg)"/>
-  <rect x="900" y="-200" width="1800" height="900" fill="url(#hero-streak)" transform="rotate(18 1800 250)" filter="url(#hero-blur)"/>
   <g transform="translate(1130 -120) scale(1.55)">
-    <ellipse cx="600" cy="720" rx="430" ry="310" fill="none" stroke="#e50914" stroke-width="4" opacity="0.5" filter="url(#hero-blur)"/>
     
   <g transform="translate(600 720) scale(1) rotate(4)">
     <ellipse rx="378" ry="306" fill="none" stroke="#293325" stroke-width="111"/>
@@ -43,6 +35,6 @@
     </g>
   </g>
   </g>
-  <ellipse cx="1720" cy="1080" rx="700" ry="140" fill="#000000" opacity="0.5" filter="url(#hero-blur)"/>
+  <ellipse cx="1720" cy="1090" rx="640" ry="120" fill="#16161a" opacity="0.14" filter="url(#hero-blur)"/>
   <rect width="2400" height="1200" filter="url(#hero-grain)"/>
 </svg>

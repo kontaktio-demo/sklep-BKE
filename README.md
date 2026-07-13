@@ -1,14 +1,49 @@
 # PAKT - sklep z obrożami (frontend, bez backendu)
 
-Polskojęzyczny sklep dla marki sprzętu dla psów pracujących. Dwa światy:
+Polskojęzyczny sklep dla marki sprzętu dla psów pracujących. To **dwa osobne sklepy**,
+nie dwa warianty jednego:
 
-- **`/`** - jasna, neutralna strona główna (papier i tusz). Prowadzi do dwóch wejść.
-- **Sklep cywilny** - `/collections/collars` (26 modeli), karty produktów, filtry, koszyk.
-- **`PAKT-K9`** - `/k9` - ciemna, techniczna sekcja sprzętu służbowego: własne kategorie,
-  własne 12 modeli (niedostępnych w zwykłym sklepie), katalog i zapytanie ofertowe.
+| | PAKT (cywilny) | PAKT-K9 (służbowy) |
+|---|---|---|
+| adresy | `/`, `/collections/collars`, `/products/<slug>`, `/koszyk`, `/szukaj`, strony informacyjne | `/k9`, `/k9/<kategoria>`, `/k9/produkt/<slug>`, `/k9/zapytanie` |
+| katalog | 26 modeli (`line: "shop"`) | 12 modeli (`line: "k9"`), niedostępnych w sklepie cywilnym |
+| wygląd | jasny szary papier, białe kadry, czerwień jako akcent | grafit, ciemna czerwień, siatka techniczna, monospace na kody |
+
+Sprzęt z jednej linii nie pojawia się w drugiej: pilnuje tego seam (`lib/data/index.ts`),
+osobna przestrzeń adresów (`lib/routes.ts`) i `notFound()` na obu trasach kart produktu.
 
 Ceny w PLN, formatowanie `pl-PL`. Backendu nie ma: formularze nie udają wysyłki, tylko
 przygotowują treść i otwierają program pocztowy. Koszyk żyje w `localStorage`.
+
+## Dwa światy w jednym zestawie nazw (`app/globals.css`)
+
+Tokeny `nf-*` są **semantyczne i odwracają się same** w zależności od zakresu:
+
+| token | sklep cywilny | PAKT-K9 |
+|---|---|---|
+| `nf-bg` | `#f0f0ee` (tło strony) | grafit `#1c1f22` |
+| `nf-elevated` | biel (kadr, karta) | ciemniejszy grafit |
+| `nf-white` | tusz `#16161a` | biel |
+| `nf-red` | `#c20812` | ciemna czerwień `#8f1d14` |
+
+`nf-white` to **maksymalny kontrast**, a nie "biel". Dzięki temu ten sam komponent działa
+w obu światach bez rozgałęzień w kodzie.
+
+Ciemny motyw włącza się z **trasy** (`ThemeSync` ustawia `data-theme="dark"` na `/k9/*`).
+Ciemna wyspa na jasnej stronie (stopka, newsletter, kafel wejściowy K9) dostaje
+`data-shell="dark"` i odwraca tokeny w swoim poddrzewie.
+
+Nagłówki: Fjalla One (kondensowany, uppercase) przez klasy `type-display` / `type-h1` /
+`type-h2` / `type-h3`. **Komponenty nie definiują własnych rozmiarów nagłówków.**
+Monospace (`type-meta`) należy wyłącznie do sekcji K9.
+
+## Zdjęcia (`public/foto/`)
+
+Fotografii jeszcze nie ma i nie są generowane. Kafle i baner mają sloty: wystarczy wrzucić
+plik do `public/foto/`, żeby wypełnił kadr (`lib/photos.ts` sprawdza, czy plik istnieje).
+Rozpoznawane nazwy: `hero.jpg`, `sklep.jpg`, `k9.jpg`, `robocze.jpg`, `codzienne.jpg`,
+`e-obroza.jpg`. Bez pliku kafel zostaje płaską płaszczyzną z materiału sekcji, a nie atrapą
+udającą zdjęcie.
 
 ## Uruchomienie
 
@@ -32,12 +67,16 @@ getCollection(handle): Promise<Collection>
 getProducts(handle): Promise<Product[]>          // tylko linia "shop"
 getFilters(handle): Promise<FilterGroup[]>
 getProduct(slug): Promise<Product | null>        // null -> notFound()
-getProductSlugs(): Promise<string[]>             // generateStaticParams
 getRelatedProducts(slug, limit?): Promise<Product[]>   // nie miesza linii shop i k9
 getK9Categories(): Promise<K9CategoryInfo[]>
 getK9Category(slug): Promise<K9CategoryInfo | null>
 getK9Products(category?): Promise<Product[]>
 ```
+
+**Żadna funkcja seamu nie zwraca obu linii naraz** i tak ma zostać. `generateStaticParams`
+buduje trasy sklepu z `getProducts("collars")`, a trasy K9 z `getK9Products()` - dzięki temu
+nie da się wygenerować karty sprzętu służbowego pod cywilnym adresem `/products/<slug>`.
+(Poprzednie `getProductSlugs()` sklejało slugi obu linii i zostało usunięte właśnie dlatego.)
 
 ### Kontrakt danych ([`lib/types.ts`](./lib/types.ts))
 

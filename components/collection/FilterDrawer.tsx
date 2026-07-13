@@ -30,7 +30,7 @@ export function FilterDrawer({
           <button
             type="button"
             onClick={onClearAll}
-            className="inline-flex min-h-11 shrink-0 items-center px-1 text-xs uppercase tracking-widest text-nf-dim transition-colors duration-250 ease-nf hover:text-white"
+            className="type-label inline-flex min-h-11 shrink-0 items-center px-1 text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white"
           >
             Wyczyść wszystko
           </button>

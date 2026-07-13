@@ -3,20 +3,24 @@
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
-/** Trasy w motywie jasnym. Reszta sklepu (kolekcja, produkty, K9) zostaje ciemna. */
-export function isLightRoute(pathname: string): boolean {
-  return pathname === "/";
+/**
+ * Ciemny jest WYLACZNIE swiat K9. Sklep cywilny, strona glowna, koszyk, wyszukiwarka
+ * i strony informacyjne stoja na jasnym szarym - to dwie osobne kategorie sklepu,
+ * nie dwa warianty tego samego.
+ */
+export function isDarkRoute(pathname: string): boolean {
+  return pathname === "/k9" || pathname.startsWith("/k9/");
 }
 
-// Ustawia data-theme na <html>, zeby tlo za trescia (overscroll, obszar pod stopka)
-// zgadzalo sie z motywem strony. Bez tego przy przewijaniu za krawedz przebija grafit.
+// Ustawia data-theme na <html>, zeby tlo POZA trescia (overscroll, obszar pod stopka)
+// zgadzalo sie ze swiatem. Bez tego przy przewijaniu za krawedz przebija drugi motyw.
 export function ThemeSync() {
   const pathname = usePathname();
 
   useEffect(() => {
     const root = document.documentElement;
-    if (isLightRoute(pathname)) {
-      root.dataset.theme = "light";
+    if (isDarkRoute(pathname)) {
+      root.dataset.theme = "dark";
     } else {
       delete root.dataset.theme;
     }

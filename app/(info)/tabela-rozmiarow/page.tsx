@@ -41,8 +41,9 @@ const WIDTHS: { width: string; use: string }[] = [
   },
 ];
 
-const TH =
-  "px-4 py-3 text-left font-mono text-[11px] uppercase tracking-[0.15em] text-nf-dim";
+// type-label, nie monospace: kroj maszynowy nalezy do sekcji PAKT-K9, a to jest strona sklepu.
+// Liczby w komorkach trzyma tabular-nums, wiec kolumna stoi rowno bez krojow technicznych.
+const TH = "type-label px-4 py-3 text-left text-nf-dim";
 const TD = "px-4 py-3 text-sm text-nf-text";
 
 export default function SizingPage() {
@@ -93,7 +94,7 @@ export default function SizingPage() {
                   <th scope="row" className={`${TD} font-medium`}>
                     {size.name}
                   </th>
-                  <td className={`${TD} font-mono`}>{size.neck}</td>
+                  <td className={`${TD} tabular-nums`}>{size.neck}</td>
                   <td className={`${TD} text-nf-muted`}>{size.weight}</td>
                   <td className={`${TD} text-nf-muted`}>{size.dogs}</td>
                 </tr>
@@ -129,7 +130,10 @@ export default function SizingPage() {
             <tbody>
               {WIDTHS.map((item) => (
                 <tr key={item.width} className="border-b border-nf-border last:border-b-0">
-                  <th scope="row" className={`${TD} whitespace-nowrap font-mono font-medium`}>
+                  <th
+                    scope="row"
+                    className={`${TD} whitespace-nowrap font-medium tabular-nums`}
+                  >
                     {item.width}
                   </th>
                   <td className={`${TD} text-nf-muted`}>{item.use}</td>

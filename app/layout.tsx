@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Inter, JetBrains_Mono } from "next/font/google";
+import { Fjalla_One, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LenisProvider } from "@/components/motion/LenisProvider";
 import { CartProvider } from "@/lib/cart";
@@ -11,10 +11,12 @@ import { Newsletter } from "@/components/layout/Newsletter";
 import { Footer } from "@/components/layout/Footer";
 import { getProducts } from "@/lib/data";
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+// Naglowki: kondensowany grotesk w jednej wadze. Archivo Black w rozmiarze bilbordu
+// bylo najmocniejszym sygnalem "prezentacja, nie sklep".
+const display = Fjalla_One({
+  variable: "--font-display-condensed",
   subsets: ["latin", "latin-ext"],
-  weight: ["500", "700", "800", "900"],
+  weight: "400",
 });
 
 const inter = Inter({
@@ -50,7 +52,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#141414",
+  themeColor: "#f0f0ee",
 };
 
 export default async function RootLayout({
@@ -65,23 +67,28 @@ export default async function RootLayout({
     .slice(0, 6);
 
   return (
-    <html lang="pl">
+    // suppressHydrationWarning: skrypt ponizej dopisuje data-theme do <html> PRZED
+    // hydracja (inaczej sekcja K9 mignelaby bielą sklepu). Serwer tego atrybutu nie zna,
+    // wiec React zglaszal rozjazd. Tlumimy go na tym jednym wezle - i tylko tu.
+    <html lang="pl" suppressHydrationWarning>
       <head>
-        {/* motyw ustawiany przed pierwszym malowaniem: inaczej jasna strona glowna
-            mignie grafitem, bo body startuje z ciemnym tlem sklepu */}
+        {/* motyw ustawiany przed pierwszym malowaniem: inaczej sekcja K9 mignie
+            jasnym tlem sklepu cywilnego, zanim React zdazy sie uruchomic */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "if(location.pathname==='/'){document.documentElement.dataset.theme='light'}",
+              "if(/^\\/k9(\\/|$)/.test(location.pathname)){document.documentElement.dataset.theme='dark'}",
           }}
         />
       </head>
       <body
-        className={`${archivo.variable} ${inter.variable} ${mono.variable} antialiased`}
+        className={`${display.variable} ${inter.variable} ${mono.variable} antialiased`}
       >
         <a
           href="#tresc"
-          className="sr-only z-50 focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-[2px] focus:bg-nf-bg focus:px-4 focus:py-3 focus:text-sm focus:text-white"
+          // kolory z tokenow kontrastu, nie literalne: ten sam link laduje i na jasnym
+          // sklepie, i na graficie K9
+          className="sr-only z-50 focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-[2px] focus:bg-nf-white focus:px-4 focus:py-3 focus:text-sm focus:text-nf-bg"
         >
           Przejdź do treści
         </a>

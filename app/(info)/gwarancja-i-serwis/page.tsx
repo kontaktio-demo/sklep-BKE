@@ -18,8 +18,8 @@ const REPAIRS: { job: string; price: number; note: string }[] = [
   { job: "Skrócenie taśmy", price: 30, note: "Cięcie, zgrzanie krawędzi, nowe przeszycie" },
 ];
 
-const TH =
-  "px-4 py-3 text-left font-mono text-[11px] uppercase tracking-[0.15em] text-nf-dim";
+// type-label, nie monospace: kroj maszynowy nalezy do sekcji PAKT-K9, a to jest strona sklepu
+const TH = "type-label px-4 py-3 text-left text-nf-dim";
 const TD = "px-4 py-3 text-sm text-nf-text";
 
 export default function WarrantyPage() {

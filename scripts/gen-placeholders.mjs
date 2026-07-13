@@ -76,26 +76,53 @@ function shade(hex, f) {
   return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
 }
 
-// Spokojne, studyjne tło: płaski grafit, delikatny cień pod produktem.
-// Bez połysku na całym kadrze i bez mocnego ziarna - to wygladalo tanio.
-const DEFS = (id) => `
+// Dwa swiaty, dwa studia. Sklep cywilny stoi na jasnym tle (produkt na bieli, jak
+// w kazdym sklepie), sekcja K9 na graficie. O tym, ktore studio dostaje produkt,
+// decyduje jego linia - nie osobna lista, tylko prefiks slug "k9-".
+const STUDIO = {
+  light: {
+    bgTop: "#ffffff",
+    bgBottom: "#ececea",
+    floor: "#16161a",
+    floorOpacity: 0.16,
+    // ziarno na bieli musi byc CIEMNE, inaczej jest niewidoczne
+    grain: "0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.016 0",
+    sheenTop: "#ffffff",
+    sheenTopOpacity: 0.0,
+    sheenBottom: "#16161a",
+    sheenBottomOpacity: 0.05,
+  },
+  dark: {
+    bgTop: "#24282c",
+    bgBottom: "#1a1d20",
+    floor: "#000000",
+    floorOpacity: 0.4,
+    grain: "0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.012 0",
+    sheenTop: "#ffffff",
+    sheenTopOpacity: 0.05,
+    sheenBottom: "#000000",
+    sheenBottomOpacity: 0.08,
+  },
+};
+
+const DEFS = (id, s) => `
   <defs>
     <linearGradient id="bg-${id}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1c1c1c"/>
-      <stop offset="100%" stop-color="#151515"/>
+      <stop offset="0%" stop-color="${s.bgTop}"/>
+      <stop offset="100%" stop-color="${s.bgBottom}"/>
     </linearGradient>
     <radialGradient id="floor-${id}" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="0%" stop-color="${s.floor}" stop-opacity="${s.floorOpacity}"/>
+      <stop offset="100%" stop-color="${s.floor}" stop-opacity="0"/>
     </radialGradient>
     <filter id="grain-${id}">
       <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" stitchTiles="stitch"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.012 0"/>
+      <feColorMatrix type="matrix" values="${s.grain}"/>
     </filter>
     <linearGradient id="sheen-${id}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.05"/>
-      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.08"/>
+      <stop offset="0%" stop-color="${s.sheenTop}" stop-opacity="${s.sheenTopOpacity}"/>
+      <stop offset="60%" stop-color="${s.sheenTop}" stop-opacity="0"/>
+      <stop offset="100%" stop-color="${s.sheenBottom}" stop-opacity="${s.sheenBottomOpacity}"/>
     </linearGradient>
   </defs>`;
 
@@ -238,6 +265,7 @@ function flatLayShot(hex, chain, rnd) {
 function productSvg(slug, hex, chain, variant) {
   const id = `${slug}-${variant}`;
   const rnd = mulberry32(hashCode(id));
+  const studio = slug.startsWith("k9-") ? STUDIO.dark : STUDIO.light;
   const body =
     variant === 3
       ? hardwareShot(hex, chain, rnd)
@@ -247,7 +275,7 @@ function productSvg(slug, hex, chain, variant) {
           ? chainCollar(hex, rnd, variant === 2)
           : nylonCollar(hex, rnd, variant === 2);
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
-  ${DEFS(id)}
+  ${DEFS(id, studio)}
   <rect width="1200" height="1500" fill="url(#bg-${id})"/>
   <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-${id})"/>
   ${body}
@@ -256,34 +284,29 @@ function productSvg(slug, hex, chain, variant) {
 </svg>`;
 }
 
+// Baner kolekcji: sklep cywilny stoi na jasnym, wiec i baner jest jasny. Czerwona
+// poswiata i rozmyta smuga poszly precz - to byl efekt sam dla siebie, i to w kolorze,
+// ktory nalezal do serwisu filmowego, a nie do marki.
 function heroSvg() {
   const rnd = mulberry32(hashCode("hero-collars"));
   const ring = nylonCollar("#4A5D43", rnd, false);
   return `<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1200" viewBox="0 0 2400 1200">
   <defs>
-    <radialGradient id="hero-bg" cx="72%" cy="40%" r="85%">
-      <stop offset="0%" stop-color="#2a2a2a"/>
-      <stop offset="55%" stop-color="#171717"/>
-      <stop offset="100%" stop-color="#0a0a0a"/>
-    </radialGradient>
-    <linearGradient id="hero-streak" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#e50914" stop-opacity="0"/>
-      <stop offset="50%" stop-color="#e50914" stop-opacity="0.22"/>
-      <stop offset="100%" stop-color="#e50914" stop-opacity="0"/>
+    <linearGradient id="hero-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e7e7e4"/>
     </linearGradient>
     <filter id="hero-blur"><feGaussianBlur stdDeviation="26"/></filter>
     <filter id="hero-grain">
       <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.035 0"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.02 0"/>
     </filter>
   </defs>
   <rect width="2400" height="1200" fill="url(#hero-bg)"/>
-  <rect x="900" y="-200" width="1800" height="900" fill="url(#hero-streak)" transform="rotate(18 1800 250)" filter="url(#hero-blur)"/>
   <g transform="translate(1130 -120) scale(1.55)">
-    <ellipse cx="600" cy="720" rx="430" ry="310" fill="none" stroke="#e50914" stroke-width="4" opacity="0.5" filter="url(#hero-blur)"/>
     ${ring}
   </g>
-  <ellipse cx="1720" cy="1080" rx="700" ry="140" fill="#000000" opacity="0.5" filter="url(#hero-blur)"/>
+  <ellipse cx="1720" cy="1090" rx="640" ry="120" fill="#16161a" opacity="0.14" filter="url(#hero-blur)"/>
   <rect width="2400" height="1200" filter="url(#hero-grain)"/>
 </svg>`;
 }

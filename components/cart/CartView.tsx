@@ -12,6 +12,7 @@ import { CartIcon, MinusIcon, PlusIcon, TrashIcon } from "@/components/ui/icons"
 import type { CartLine } from "@/lib/cart";
 import { useCart } from "@/lib/cart";
 import { COMPANY, FREE_SHIPPING_THRESHOLD, SHIPPING_FROM } from "@/lib/nav";
+import { productHref } from "@/lib/routes";
 import { SIZE_SHORT } from "@/lib/sizes";
 import { formatPrice, plural } from "@/lib/utils";
 
@@ -63,15 +64,18 @@ function EmptyCart() {
     <div className="border border-nf-border px-6 py-16 text-center">
       <CartIcon width={40} height={40} className="mx-auto text-nf-dim" />
       <h2 className="type-h2 mt-6 text-nf-white">Koszyk jest pusty</h2>
+      {/* Tekst mowil o smyczach, ktorych sklep nie sprzedaje: katalog to same obroze
+          (nylonowe i lancuszkowe). Pusty koszyk nie ma prawa obiecywac asortymentu,
+          ktorego nie ma za nastepnym klknieciem */}
       <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-nf-muted">
-        Nic tu jeszcze nie trafiło. Obroże i smycze znajdziesz w sklepie, sprzęt służbowy
-        w sekcji PAKT-K9.
+        Nic tu jeszcze nie trafiło. Obroże nylonowe i łańcuszkowe znajdziesz w sklepie,
+        sprzęt służbowy w sekcji PAKT-K9.
       </p>
       <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-        <Button href="/collections/collars" className="rounded-[2px]">
-          Zobacz obroże
-        </Button>
-        <Button href="/k9" variant="ghost" className="rounded-[2px]">
+        {/* bez rounded-[2px]: cn() jedzie na twMerge, wiec klasa z wywolania BIJE promien
+            z komponentu i przycisk po cichu wypisywal sie z jednego jezyka CTA */}
+        <Button href="/collections/collars">Zobacz obroże</Button>
+        <Button href="/k9" variant="ghost">
           Sprzęt PAKT-K9
         </Button>
       </div>
@@ -92,7 +96,7 @@ export function CartView() {
       <section aria-label="Pozycje w koszyku" className="lg:col-span-7 xl:col-span-8">
         {/* pozycja = wariant (wiersz), nie sztuka: wczesniej licznik bral sume ilosci,
             wiec jeden wiersz z dwiema sztukami pokazywal "2 pozycje" */}
-        <p className="type-meta text-nf-dim">
+        <p className="type-label text-nf-dim">
           {lines.length} {plural(lines.length, "pozycja", "pozycje", "pozycji")}
           {count !== lines.length
             ? `, ${count} ${plural(count, "sztuka", "sztuki", "sztuk")}`
@@ -109,8 +113,11 @@ export function CartView() {
                 key={line.key}
                 className="flex flex-col gap-4 border-b border-nf-border py-6 sm:flex-row"
               >
+                {/* productHref, nie sklejanie /products/<slug>: sprzet K9 ma wlasna
+                    przestrzen adresow (/k9/produkt/<slug>), wiec pozycja K9 w koszyku
+                    linkowala w 404 */}
                 <Link
-                  href={`/products/${line.product.slug}`}
+                  href={productHref(line.product)}
                   className="relative h-32 w-24 shrink-0 overflow-hidden rounded-[2px] bg-nf-elevated"
                 >
                   <Image
@@ -127,7 +134,7 @@ export function CartView() {
                     <div className="min-w-0">
                       <h2 className="text-sm font-medium text-nf-text">
                         <Link
-                          href={`/products/${line.product.slug}`}
+                          href={productHref(line.product)}
                           className="transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
                         >
                           {line.product.name}
@@ -137,7 +144,7 @@ export function CartView() {
                       {line.color && (
                         <p className="mt-1 text-xs text-nf-muted">Kolor: {line.color.name}</p>
                       )}
-                      <p className="type-meta mt-1 text-nf-dim">SKU {line.variant.sku}</p>
+                      <p className="type-label mt-1 text-nf-dim">SKU {line.variant.sku}</p>
                       <p className="mt-2 text-xs text-nf-dim">
                         {formatPrice(line.variant.price, line.product.currency)} za sztukę
                       </p>
@@ -157,7 +164,9 @@ export function CartView() {
                   </div>
 
                   <div className="mt-4 flex items-center justify-between gap-4">
-                    <div className="flex items-center rounded-[2px] border border-nf-border">
+                    {/* nf-control: ta sama zasada co przy stepperze na karcie produktu -
+                        ramka jest jedynym sygnalem kontrolki (WCAG 1.4.11) */}
+                    <div className="flex items-center rounded-[2px] border border-nf-control">
                       <button
                         type="button"
                         aria-label={`Zmniejsz ilość: ${name}`}
@@ -229,7 +238,7 @@ export function CartView() {
           <FreeShippingBar subtotal={subtotal} className="mt-5" />
 
           <div className="mt-6 flex items-baseline justify-between gap-4 border-t border-nf-border pt-4">
-            <span className="type-meta text-nf-white">Razem</span>
+            <span className="type-label text-nf-white">Razem</span>
             <span className="text-lg font-semibold text-nf-white">{formatPrice(total)}</span>
           </div>
           <p className="mt-2 text-xs leading-relaxed text-nf-dim">
@@ -242,8 +251,9 @@ export function CartView() {
           <div className="mt-6 space-y-3">
             <Button
               href={orderMailHref(lines, subtotal, total, freeShipping)}
+              variant="danger"
               size="lg"
-              className="w-full rounded-[2px]"
+              className="w-full"
             >
               Złóż zamówienie mailem
             </Button>

@@ -11,7 +11,10 @@ interface Section {
 // Spis tresci czyta sekcje z DOM (data-section-label), a nie z zaszytej listy:
 // karta produktu pokazuje rozne sekcje zaleznie od typu (zgodnosc tylko dla e-obrozy),
 // wiec twarda lista rozjezdzala sie z trescia strony.
-export function SectionNav() {
+//
+// mono = rytm PAKT-K9. Spis stoi pod obiema kartami, a monospace nalezy do sprzetu
+// sluzbowego: w sklepie cywilnym nazwy sekcji ida groteskiem (type-label).
+export function SectionNav({ mono = false }: { mono?: boolean }) {
   const [sections, setSections] = useState<Section[]>([]);
   const [active, setActive] = useState<string>("");
 
@@ -68,9 +71,10 @@ export function SectionNav() {
                 aria-current={isActive ? "true" : undefined}
                 className={cn(
                   // min-h-11 trzyma cel dotykowy na 44px mimo drobnego kroju
-                  "type-meta -ml-px flex min-h-11 items-center border-l-2 pl-4 transition-colors duration-250 ease-nf motion-reduce:transition-none",
+                  "-ml-px flex min-h-11 items-center border-l-2 pl-4 transition-colors duration-250 ease-nf motion-reduce:transition-none",
+                  mono ? "type-meta" : "type-label",
                   isActive
-                    ? "border-nf-red text-white"
+                    ? "border-nf-red text-nf-white"
                     : "border-transparent text-nf-dim hover:text-nf-text"
                 )}
               >

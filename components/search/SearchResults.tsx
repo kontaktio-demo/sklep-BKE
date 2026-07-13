@@ -16,13 +16,17 @@ import { cn, plural } from "@/lib/utils";
 // (siatka kafli, szybki podglad), PAKT-K9 katalogiem (kafle techniczne, bez koszyka).
 // Wspolna jest tylko fraza.
 
+// pigulka frazy to przycisk konturowy: jej ramka jest jedynym sygnalem kontrolki, wiec
+// idzie na nf-control (3:1, WCAG 1.4.11), a nie na cicha linie dekoracyjna
 const CHIP =
-  "inline-flex min-h-11 items-center rounded-[2px] border border-nf-border px-3 text-sm text-nf-muted transition-colors duration-250 ease-nf hover:border-nf-border-strong hover:text-white motion-reduce:transition-none";
+  "inline-flex min-h-11 items-center rounded-[2px] border border-nf-control px-3 text-sm text-nf-muted transition-colors duration-250 ease-nf hover:border-nf-control-hover hover:text-nf-white motion-reduce:transition-none";
 
 function PopularSearches({ className }: { className?: string }) {
   return (
     <div className={className}>
-      <h2 className="type-meta text-nf-dim">Popularne wyszukiwania</h2>
+      {/* /szukaj to trasa sklepu cywilnego (takze sekcja z wynikami K9 na niej lezy),
+          wiec etykiety ida groteskiem - monospace zostaje w swiecie PAKT-K9 */}
+      <h2 className="type-label text-nf-dim">Popularne wyszukiwania</h2>
       <ul className="mt-3 flex flex-wrap justify-center gap-2">
         {POPULAR_SEARCHES.map((term) => (
           <li key={term}>
@@ -51,16 +55,16 @@ function SectionHeading({
 }) {
   return (
     <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-nf-border pb-4">
-      <h2 id={id} className="type-h2 text-white">
+      <h2 id={id} className="type-h2 text-nf-white">
         {title}
       </h2>
       <div className="flex items-baseline gap-4">
-        <p className="type-meta text-nf-dim">
+        <p className="type-label text-nf-dim">
           {count} {plural(count, "wynik", "wyniki", "wyników")}
         </p>
         <Link
           href={href}
-          className="type-meta text-nf-muted transition-colors duration-250 ease-nf hover:text-white motion-reduce:transition-none"
+          className="type-label text-nf-muted transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
         >
           {linkLabel}
         </Link>
@@ -102,19 +106,20 @@ export function SearchResults({
             okruszki, potem H1 ze skali - zeby /szukaj nie wygladalo na obcy serwis */}
         <header className="border-b border-nf-border pb-10">
           <Breadcrumbs items={[{ label: "Strona główna", href: "/" }, { label: "Szukaj" }]} />
-          <h1 className="type-h1 mt-6 text-white">Szukaj</h1>
+          <h1 className="type-h1 mt-6 text-nf-white">Szukaj</h1>
 
           <form role="search" onSubmit={submit} className="mt-8 flex max-w-2xl gap-2">
             <label htmlFor={inputId} className="sr-only">
               Czego szukasz?
             </label>
+            {/* nf-control: pole wyszukiwarki bez widocznej ramki nie wyglada na pole (WCAG 1.4.11) */}
             <input
               id={inputId}
               type="search"
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
               placeholder="Czego szukasz?"
-              className="h-12 min-w-0 flex-1 rounded-[2px] border border-nf-border bg-nf-elevated px-4 text-sm text-nf-text placeholder:text-nf-dim"
+              className="h-12 min-w-0 flex-1 rounded-[2px] border border-nf-control bg-nf-elevated px-4 text-sm text-nf-text placeholder:text-nf-dim"
             />
             <Button type="submit" className="h-12 shrink-0">
               Szukaj
@@ -132,7 +137,7 @@ export function SearchResults({
 
         {query === "" && (
           <div className="py-20 text-center">
-            <p className="text-lg font-semibold text-white">
+            <p className="text-lg font-semibold text-nf-white">
               Wpisz frazę, żeby przeszukać sklep i katalog PAKT-K9.
             </p>
             <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-nf-muted">
@@ -144,7 +149,7 @@ export function SearchResults({
 
         {query !== "" && total === 0 && (
           <div className="py-20 text-center">
-            <p className="text-lg font-semibold text-white">
+            <p className="text-lg font-semibold text-nf-white">
               Nic nie pasuje do frazy: {query}
             </p>
             <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-nf-muted">

@@ -35,7 +35,7 @@ export function Breadcrumbs({
               {item.href && !last ? (
                 <Link
                   href={item.href}
-                  className="rounded-[2px] transition-colors duration-250 ease-nf hover:text-white motion-reduce:transition-none"
+                  className="rounded-[2px] transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
                 >
                   {item.label}
                 </Link>

@@ -1,10 +1,18 @@
 import type { MetadataRoute } from "next";
-import { getK9Categories, getProductSlugs } from "@/lib/data";
+import { getK9Categories, getK9Products, getProducts } from "@/lib/data";
+import { productHref } from "@/lib/routes";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [slugs, categories] = await Promise.all([getProductSlugs(), getK9Categories()]);
+  // Adres karty zalezy od linii (sklep vs K9), wiec mapa strony czyta oba katalogi
+  // i sklada adresy tym samym helperem co interfejs. Lista samych slugow nie wystarczy:
+  // po slugu nie widac, do ktorego sklepu pozycja nalezy.
+  const [shop, k9, categories] = await Promise.all([
+    getProducts("collars"),
+    getK9Products(),
+    getK9Categories(),
+  ]);
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${BASE}/`, changeFrequency: "monthly", priority: 1 },
@@ -18,8 +26,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const productRoutes: MetadataRoute.Sitemap = slugs.map((slug) => ({
-    url: `${BASE}/products/${slug}`,
+  const productRoutes: MetadataRoute.Sitemap = [...shop, ...k9].map((product) => ({
+    url: `${BASE}${productHref(product)}`,
     changeFrequency: "weekly",
     priority: 0.6,
   }));

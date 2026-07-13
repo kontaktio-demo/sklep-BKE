@@ -9,21 +9,23 @@ import { useOverlayA11y } from "./useOverlay";
 // Czas wyjscia = najdluzsze przejscie panelu. Po nim zdejmujemy panel z drzewa.
 const EXIT_MS = 300;
 
-// Domyślnie ciemny (sklep, koszyk, filtry). "light" obsługuje jasną stronę główną.
+// Szuflada jest przedluzeniem strony, wiec stoi na tle strony (nf-bg) - tokeny semantyczne
+// odwracaja ja razem ze swiatem: papier w sklepie cywilnym, grafit w K9. Rozni sie tylko
+// gestosc welonu: nad papierem 40%, na graficie 60%.
 const SURFACE = {
   dark: {
-    scrim: "bg-black/60",
+    scrim: "bg-nf-black/60",
     panel: "bg-nf-bg",
     line: "border-nf-border",
     title: "text-nf-white",
     close: "text-nf-muted hover:text-nf-white",
   },
   light: {
-    scrim: "bg-pk-ink/40",
-    panel: "bg-pk-paper",
-    line: "border-pk-line",
-    title: "text-pk-ink",
-    close: "text-pk-ink-muted hover:text-pk-ink",
+    scrim: "bg-nf-black/40",
+    panel: "bg-nf-bg",
+    line: "border-nf-border",
+    title: "text-nf-white",
+    close: "text-nf-muted hover:text-nf-white",
   },
 } as const;
 
@@ -83,7 +85,10 @@ export function Drawer({
   children,
   footer,
   widthClassName,
-  theme = "dark",
+  // Domyslny swiat to sklep cywilny, nie K9. Przy domyslnym "dark" koszyk, filtry mobilne
+  // i szybki podglad (jedyne wywolania bez jawnego theme) potrafily wyjsc grafitowe na
+  // jasnej trasie. W K9 panel i tak zostaje ciemny: tokeny odwraca html[data-theme="dark"].
+  theme = "light",
 }: {
   open: boolean;
   onClose: () => void;
@@ -140,13 +145,10 @@ export function Drawer({
             surface.line
           )}
         >
-          <h2
-            id={titleId}
-            className={cn(
-              "font-display text-lg font-bold uppercase tracking-wide",
-              surface.title
-            )}
-          >
+          {/* type-h3, nie wlasny rozmiar z font-bold: Fjalla One ma JEDNA wage (400),
+              wiec font-bold kazal przegladarce dorysowac sztuczne pogrubienie i naglowek
+              szuflady robil sie brudny. Skala naglowkow zyje w globals.css, nie w komponencie. */}
+          <h2 id={titleId} className={cn("type-h3", surface.title)}>
             {title}
           </h2>
           <button

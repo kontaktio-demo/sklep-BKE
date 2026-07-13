@@ -27,14 +27,16 @@ type ArrayKey = "category" | "type" | "width" | "size" | "availability" | "color
 // obwodka (2px linii + 2px odstepu + 4px czarnej otoczki) znikala od lewej i od prawej
 // w calosci, bo wiersze filtrow siegaja krawedzi. Zapasu nie da sie tu dolozyc paddingiem:
 // padding w pionie na kontenerze z overflow-hidden zablokowalby zwijanie do zera.
-// Dlatego obwodka wchodzi do srodka kontrolki i czarna otoczka nie jest potrzebna.
-const RING = "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white focus-visible:shadow-none";
+// Dlatego obwodka wchodzi do srodka kontrolki i otoczka w kolorze tla nie jest potrzebna.
+// outline-nf-white, nie outline-white: token maksymalnego kontrastu odwraca sie razem ze
+// swiatem (tusz na papierze, biel na graficie), literalna biel znikalaby na jasnym tle.
+const RING = "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nf-white focus-visible:shadow-none";
 
 // Wariant dla kontrolek, gdzie fokus lapie element w srodku (checkbox w wierszu, przycisk
 // probki koloru), a obwodka ma obrysowac caly wiersz: pierscien idzie na opakowanie,
 // z elementu jest zdejmowany.
 const RING_WITHIN =
-  "has-[:focus-visible]:outline-2 has-[:focus-visible]:-outline-offset-2 has-[:focus-visible]:outline-white [&_:focus-visible]:outline-none [&_:focus-visible]:shadow-none";
+  "has-[:focus-visible]:outline-2 has-[:focus-visible]:-outline-offset-2 has-[:focus-visible]:outline-nf-white [&_:focus-visible]:outline-none [&_:focus-visible]:shadow-none";
 
 export interface FilterControlsProps {
   groups: FilterGroup[];
@@ -74,7 +76,9 @@ function Section({
           onClick={() => setOpen((o) => !o)}
           className="flex min-h-11 w-full items-center justify-between gap-2 py-5 text-left"
         >
-          <span className="text-xs uppercase tracking-widest text-nf-dim">{label}</span>
+          {/* type-label: filtry sklepu cywilnego nie sa panelem technicznym, wiec naglowek
+              sekcji idzie groteskiem, a nie monospace ani rozstrzelonym uppercase */}
+          <span className="type-label text-nf-dim">{label}</span>
           <ChevronDownIcon
             className={cn(
               "shrink-0 text-nf-dim transition-transform duration-250 ease-nf motion-reduce:transition-none",
@@ -101,7 +105,7 @@ function Section({
                 type="button"
                 onClick={onClear}
                 className={cn(
-                  "mt-1 inline-flex min-h-11 items-center rounded-[2px] px-1 text-xs uppercase tracking-widest text-nf-dim transition-colors duration-250 ease-nf hover:text-white",
+                  "type-label mt-1 inline-flex min-h-11 items-center rounded-[2px] px-1 text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white",
                   RING
                 )}
               >
@@ -140,12 +144,20 @@ function CheckboxGroup({
               )}
             >
               <span className="relative flex size-[18px] shrink-0 items-center justify-center">
+                {/* bg-nf-elevated: puste pole ma byc kadrem (biel na papierze, ciemniejszy
+                    grafit na graficie), a nie dziura w tle strony. Zaznaczone i tak jedzie
+                    na czerwieni.
+                    nf-control zamiast nf-border-strong: NIEZAZNACZONY checkbox to bialy
+                    kwadracik, wiec jego ramka jest jedyna informacja, ze cokolwiek tu jest.
+                    Na nf-border-strong dawala 1.93:1, czyli ponizej progu 3:1 (WCAG 1.4.11) */}
                 <input
                   type="checkbox"
                   checked={isChecked}
                   onChange={() => onToggle(opt.value)}
-                  className="peer size-[18px] appearance-none rounded-[2px] border border-nf-border-strong transition-colors duration-250 ease-nf checked:border-nf-red checked:bg-nf-red motion-reduce:transition-none"
+                  className="peer size-[18px] appearance-none rounded-[2px] border border-nf-control bg-nf-elevated transition-colors duration-250 ease-nf checked:border-nf-red checked:bg-nf-red motion-reduce:transition-none"
                 />
+                {/* ptaszek lezy na plaskiej czerwieni zaznaczonego pola - biel jest tu
+                    poprawna w obu swiatach, wiec zostaje literalna */}
                 <CheckIcon
                   width={12}
                   height={12}
@@ -156,7 +168,7 @@ function CheckboxGroup({
               <span
                 className={cn(
                   "text-sm transition-colors duration-250 ease-nf motion-reduce:transition-none",
-                  isChecked ? "text-white" : "text-nf-muted"
+                  isChecked ? "text-nf-white" : "text-nf-muted"
                 )}
               >
                 {opt.label}
@@ -192,7 +204,7 @@ function SwitchRow({
       <span
         className={cn(
           "text-sm transition-colors duration-250 ease-nf motion-reduce:transition-none",
-          checked ? "text-white" : "text-nf-muted"
+          checked ? "text-nf-white" : "text-nf-muted"
         )}
       >
         {label}
@@ -206,13 +218,23 @@ function SwitchRow({
           "relative h-6 w-11 shrink-0 rounded-full transition-colors duration-250 ease-nf motion-reduce:transition-none",
           // the count already carries ml-auto; without it the switch does the pushing
           count === undefined && "ml-auto",
-          checked ? "bg-nf-red" : "bg-nf-elevated-2"
+          // Tor WYLACZONY to nf-elevated-2 (#e5e5e2) na panelu #f0f0ee, czyli 1.11:1 -
+          // kontrolki po prostu nie widac. Obwodka na nf-control daje jej krawedz 3:1
+          // (WCAG 1.4.11). Ring, nie border: galka stoi na absolute left-[3px], a border
+          // scisnalby pole wypelnienia o 1px i galka skakalaby przy kazdym przelaczeniu.
+          // Stan WLACZONY zostaje plaska czerwienia - ta niesie sie sama.
+          checked ? "bg-nf-red" : "bg-nf-elevated-2 ring-1 ring-nf-control"
         )}
       >
+        {/* Galka zmienia kolor razem z torem, bo lezy na dwoch roznych tlach:
+            wlaczony tor jest plaska czerwienia (biel czyta sie na niej w obu swiatach),
+            wylaczony to nf-elevated-2, czyli jasna szarosc w cywilu - biala galka byla tam
+            praktycznie niewidoczna (1.1:1). Stad token maksymalnego kontrastu w stanie
+            wylaczonym: tusz na papierze, biel na graficie. */}
         <span
           className={cn(
-            "absolute left-[3px] top-[3px] size-[18px] rounded-full bg-white transition-transform duration-250 ease-nf motion-reduce:transition-none",
-            checked && "translate-x-5"
+            "absolute left-[3px] top-[3px] size-[18px] rounded-full transition-[background-color,transform] duration-250 ease-nf motion-reduce:transition-none",
+            checked ? "translate-x-5 bg-white" : "bg-nf-white"
           )}
         />
       </span>
@@ -257,8 +279,9 @@ function PriceSection({
     if (e.key === "Enter") commit();
   };
 
+  // nf-control: pole liczbowe bez widocznej ramki nie jest polem, tylko liczba na tle
   const inputClasses = cn(
-    "h-11 w-full rounded-[2px] border border-nf-border bg-nf-elevated px-3 text-sm text-nf-text",
+    "h-11 w-full rounded-[2px] border border-nf-control bg-nf-elevated px-3 text-sm text-nf-text",
     RING
   );
 
@@ -266,8 +289,13 @@ function PriceSection({
     <div>
       {/* Suwak nie przyjmuje klasy z zewnatrz, a jego dwa pola type=range siegaja pelnej
           szerokosci sekcji - obwodka na zewnatrz byla przycinana od lewej i prawej.
-          Wciagamy ja do srodka po klasie toru (.nf-range). */}
-      <div className="[&_.nf-range:focus-visible]:-outline-offset-2 [&_.nf-range:focus-visible]:outline-2 [&_.nf-range:focus-visible]:outline-white [&_.nf-range:focus-visible]:shadow-none">
+          Wciagamy ja do srodka po klasie toru (.nf-range).
+          Tym samym wejsciem dokladamy obwodke TOROWI suwaka: tor jest malowany na
+          nf-elevated-2, co na tle panelu daje 1.11:1 i suwak znika. Tor zyje w
+          components/ui/RangeSlider (nie nasz plik) i nie przyjmuje klasy, wiec siegamy po
+          niego selektorem jego wlasnego tla. Ring, nie border - tor ma 4px wysokosci,
+          border zjadlby polowe wypelnienia. Wypelnienie (bg-nf-red) zostaje nietkniete. */}
+      <div className="[&_.bg-nf-elevated-2]:ring-1 [&_.bg-nf-elevated-2]:ring-nf-control [&_.nf-range:focus-visible]:-outline-offset-2 [&_.nf-range:focus-visible]:outline-2 [&_.nf-range:focus-visible]:outline-nf-white [&_.nf-range:focus-visible]:shadow-none">
         <RangeSlider
           min={bounds[0]}
           max={bounds[1]}
@@ -278,10 +306,7 @@ function PriceSection({
       </div>
       <div className="mt-4 flex gap-3">
         <div className="flex-1">
-          <label
-            htmlFor={fromId}
-            className="mb-1.5 block text-xs uppercase tracking-widest text-nf-dim"
-          >
+          <label htmlFor={fromId} className="type-label mb-1.5 block text-nf-dim">
             Od
           </label>
           <input
@@ -298,10 +323,7 @@ function PriceSection({
           />
         </div>
         <div className="flex-1">
-          <label
-            htmlFor={toId}
-            className="mb-1.5 block text-xs uppercase tracking-widest text-nf-dim"
-          >
+          <label htmlFor={toId} className="type-label mb-1.5 block text-nf-dim">
             Do
           </label>
           <input

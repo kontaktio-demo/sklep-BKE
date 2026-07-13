@@ -41,7 +41,7 @@ export function BestsellerRow({
     <section ref={sectionRef} id={id} className="scroll-mt-24 space-y-3">
       <div className="mx-auto max-w-[1600px]">
         <div className="px-4 md:px-6">
-          <h2 className="type-h2 text-white">{title}</h2>
+          <h2 className="type-h2 text-nf-white">{title}</h2>
         </div>
 
         {mounted ? (

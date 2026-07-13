@@ -19,9 +19,9 @@ export function K9CategoryGrid({ categories }: { categories: K9CategoryInfo[] })
     <section id="kategorie" aria-labelledby="kategorie-naglowek" className="bg-nf-bg">
       <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-24">
         <div className="flex items-center gap-4">
-          {/* numer sekcji to oznaczenie porzadkowe, nie alarm - stad nf-dim zamiast czerwieni */}
-          <span className="type-meta text-nf-dim">01</span>
-          <h2 id="kategorie-naglowek" className="type-h2 text-white">
+          {/* bez numeru sekcji: "01" nic nie identyfikowalo, a kategorie maja wlasne,
+              prawdziwe kody (K9-01..K9-05) widoczne na kaflach */}
+          <h2 id="kategorie-naglowek" className="type-h2 text-nf-white">
             Kategorie
           </h2>
           <span aria-hidden="true" className="hatch h-px flex-1" />

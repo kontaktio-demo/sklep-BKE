@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/dostawa-i-platnosci" },
 };
 
-const TH =
-  "px-4 py-3 text-left font-mono text-[11px] uppercase tracking-[0.15em] text-nf-dim";
+// type-label, nie monospace: kroj maszynowy nalezy do sekcji PAKT-K9, a to jest strona sklepu
+const TH = "type-label px-4 py-3 text-left text-nf-dim";
 const TD = "px-4 py-3 text-sm text-nf-text";
 
 // cennik ma jedno zrodlo (SHIPPING_OPTIONS) - tekst pod tabela nie moze sie z nia rozjechac

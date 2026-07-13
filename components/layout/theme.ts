@@ -30,21 +30,25 @@ export interface ShellTheme {
   meta: string;
 }
 
+// hover:text-nf-white, nie hover:text-white: nf-white to token MAKSYMALNEGO KONTRASTU
+// (tusz na jasnym, biel na ciemnym). Literalna biel dawala bialy napis na jasnym pasku,
+// gdy shell ciemny wjezdzal na jasna trase. Wyjatek: text-white na plaskiej czerwieni
+// (bg-nf-red) jest poprawne w obu swiatach - czerwien nie odwraca sie razem z tlem.
 export const SHELL: Record<Theme, ShellTheme> = {
   dark: {
     shellSolid: "border-nf-border bg-nf-bg/95 backdrop-blur",
     shellTop: "border-transparent bg-transparent",
-    iconButton: "text-nf-text hover:text-white",
+    iconButton: "text-nf-text hover:text-nf-white",
     cartBadge: "bg-nf-red text-white",
-    navLink: "text-nf-text hover:text-white",
+    navLink: "text-nf-text hover:text-nf-white",
     navChevron: "text-nf-dim",
     panel: "border-nf-border bg-nf-bg/98 backdrop-blur",
     panelHeading: "text-nf-dim",
-    panelLink: "text-nf-muted hover:text-white",
+    panelLink: "text-nf-muted hover:text-nf-white",
     line: "border-nf-border",
     mobileItem: "text-nf-text",
     field: "border-nf-border bg-nf-elevated text-nf-text placeholder:text-nf-dim",
-    chip: "border-nf-border text-nf-muted hover:border-nf-border-strong hover:text-white",
+    chip: "border-nf-border text-nf-muted hover:border-nf-border-strong hover:text-nf-white",
     meta: "text-nf-dim",
   },
   light: {
@@ -72,21 +76,20 @@ export interface FooterTheme {
   lead: string;
   heading: string;
   link: string;
-  select: string;
-  globe: string;
   legal: string;
   legalLink: string;
 }
 
+// select i globe wypadly razem z martwym selektorem regionu w stopce (patrz lib/nav.ts).
 export const FOOTER: Record<Theme, FooterTheme> = {
   dark: {
-    shell: "border-nf-border bg-nf-black",
+    // bg-nf-bg, nie bg-nf-black: stopka siedzi w scope data-shell="dark", wiec token
+    // tla to juz grafit. Czern robila z niej dziure pod jasnym sklepem.
+    shell: "border-nf-border bg-nf-bg",
     line: "border-nf-border",
     lead: "text-nf-muted",
     heading: "text-nf-dim",
-    link: "text-nf-muted hover:text-white",
-    select: "border-nf-border bg-nf-elevated text-nf-text",
-    globe: "text-nf-dim",
+    link: "text-nf-muted hover:text-nf-white",
     legal: "text-nf-dim",
     legalLink: "hover:text-nf-muted",
   },
@@ -96,8 +99,6 @@ export const FOOTER: Record<Theme, FooterTheme> = {
     lead: "text-pk-ink-2",
     heading: "text-pk-ink-muted",
     link: "text-pk-ink-2 hover:text-pk-ink",
-    select: "border-pk-line-strong bg-pk-paper text-pk-ink",
-    globe: "text-pk-ink-muted",
     legal: "text-pk-ink-muted",
     legalLink: "hover:text-pk-ink",
   },
