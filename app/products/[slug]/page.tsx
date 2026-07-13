@@ -7,12 +7,21 @@ import { Breadcrumbs, type BreadcrumbItem } from "@/components/product/Breadcrum
 import { BuyBox } from "@/components/product/BuyBox";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductSections } from "@/components/product/ProductSections";
+import { RecentlyViewed } from "@/components/product/RecentlyViewed";
 import { Badge } from "@/components/ui/Badge";
-import { getK9Category, getProduct, getProductSlugs, getRelatedProducts } from "@/lib/data";
+import {
+  getK9Category,
+  getK9Products,
+  getProduct,
+  getProductSlugs,
+  getProducts,
+  getRelatedProducts,
+} from "@/lib/data";
 import { BRAND, K9_ROOT } from "@/lib/nav";
 import type { Product } from "@/lib/types";
 
-const COLLECTION_HREF = "/collections/collars";
+const COLLECTION_HANDLE = "collars";
+const COLLECTION_HREF = `/collections/${COLLECTION_HANDLE}`;
 const K9_BRAND = "PAKT-K9";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
@@ -91,10 +100,18 @@ export default async function ProductPage({
   // Okruszki K9 prowadzily do /collections/collars, gdzie sprzetu K9 fizycznie nie ma
   // (seam wpuszcza do sklepu wylacznie line === "shop"). Sciezka musi wracac do katalogu,
   // z ktorego pozycja pochodzi.
-  const [related, k9Category] = await Promise.all([
+  //
+  // "Ostatnio ogladane" trzyma na dysku same slugi (lib/recent.ts), wiec katalog do ich
+  // rozwiazania musi przyjechac z serwera - obie linie, bo historia nie zna podzialu na
+  // sklep i K9: kupujacy przechodzi miedzy nimi w obie strony
+  const [related, k9Category, shopCatalog, k9Catalog] = await Promise.all([
     getRelatedProducts(slug, 8),
     k9 && product.k9Category ? getK9Category(product.k9Category) : null,
+    getProducts(COLLECTION_HANDLE),
+    getK9Products(),
   ]);
+
+  const catalog = [...shopCatalog, ...k9Catalog];
 
   const backHref = k9Category ? `${K9_ROOT}/${k9Category.slug}` : COLLECTION_HREF;
 
@@ -172,6 +189,10 @@ export default async function ProductPage({
           />
         </div>
       )}
+
+      {/* rzad montuje sie dopiero po odczycie historii z dysku; przy pierwszej wizycie
+          nie renderuje niczego, lacznie z wlasna ramka */}
+      <RecentlyViewed products={catalog} currentSlug={product.slug} />
     </QuickViewProvider>
   );
 }

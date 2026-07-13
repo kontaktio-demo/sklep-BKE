@@ -15,6 +15,9 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     const start = () => {
       if (lenis) return;
       gsap.registerPlugin(ScrollTrigger);
+      // ignoreMobileResize: na telefonie chowanie i pokazywanie paska adresu zmienia wysokosc
+      // viewportu, a kazda taka zmiana przeliczala piny w trakcie scrolla (skoki tresci)
+      ScrollTrigger.config({ ignoreMobileResize: true });
       // allowNestedScroll - otherwise Lenis preventDefaults wheel events over the
       // drawers/dialog/sidebar scroll areas, making them wheel-unscrollable
       const instance = new Lenis({ allowNestedScroll: true });

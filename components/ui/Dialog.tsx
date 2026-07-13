@@ -1,12 +1,13 @@
 "use client";
 
-import { useId, useRef } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useId, useRef, useState } from "react";
 import { CloseIcon } from "@/components/ui/icons";
+import { usePrefersReducedMotion } from "@/components/motion/useReducedMotion";
 import { cn } from "@/lib/utils";
 import { useOverlayA11y } from "./useOverlay";
 
-const NF_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
+// Czas wyjscia = przejscie panelu i przycienienia. Po nim zdejmujemy je z drzewa.
+const EXIT_MS = 250;
 
 // Domyślnie ciemny (sklep). "light" obsługuje jasną stronę główną - patrz components/layout/theme.ts.
 // Panel odcina się od tła mocniejszą krawędzią, a nie cieniem: shadow-2xl/shadow-xl
@@ -28,6 +29,54 @@ const SURFACE = {
   },
 } as const;
 
+// Montowanie sterowane recznie, zamiast AnimatePresence.
+// Wejscie: mount -> po dwoch klatkach klasa docelowa (jedna klatka nie wystarcza,
+// przegladarka potrafi scalic wstawienie wezla ze zmiana klasy i przejscie nie rusza).
+// Wyjscie: zdjecie klasy docelowej -> odmontowanie po czasie przejscia.
+// Przy prefers-reduced-motion oba kierunki sa natychmiastowe.
+function useOverlayTransition(open: boolean, exitMs: number) {
+  const reduced = usePrefersReducedMotion();
+  const [mounted, setMounted] = useState(open);
+  const [entered, setEntered] = useState(open && reduced);
+
+  // Aktualizacja w trakcie renderu: panel trafia do drzewa w tym samym commicie,
+  // w ktorym open zmienia sie na true. Dzieki temu useOverlayA11y widzi juz ref
+  // panelu i nie gubi ustawienia focusu ani pulapki focusu.
+  if (open && !mounted) {
+    setMounted(true);
+    if (reduced) setEntered(true);
+  }
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    if (open) {
+      if (reduced) {
+        setEntered(true);
+        return;
+      }
+      let inner = 0;
+      const outer = requestAnimationFrame(() => {
+        inner = requestAnimationFrame(() => setEntered(true));
+      });
+      return () => {
+        cancelAnimationFrame(outer);
+        cancelAnimationFrame(inner);
+      };
+    }
+
+    setEntered(false);
+    if (reduced) {
+      setMounted(false);
+      return;
+    }
+    const timer = window.setTimeout(() => setMounted(false), exitMs);
+    return () => window.clearTimeout(timer);
+  }, [open, mounted, reduced, exitMs]);
+
+  return { mounted, entered };
+}
+
 export function Dialog({
   open,
   onClose,
@@ -46,22 +95,12 @@ export function Dialog({
   theme?: "light" | "dark";
 }) {
   const panelRef = useRef<HTMLDivElement | null>(null);
-  const reduced = useReducedMotion();
   const titleId = useId();
   const surface = SURFACE[theme];
+  const { mounted, entered } = useOverlayTransition(open, EXIT_MS);
   useOverlayA11y(open, onClose, panelRef);
 
-  const panelMotion = reduced
-    ? {
-        initial: { opacity: 1, scale: 1 },
-        animate: { opacity: 1, scale: 1 },
-        exit: { opacity: 1, scale: 1 },
-      }
-    : {
-        initial: { opacity: 0, scale: 0.96 },
-        animate: { opacity: 1, scale: 1 },
-        exit: { opacity: 0, scale: 0.96 },
-      };
+  if (!mounted) return null;
 
   const closeButton = (
     <button
@@ -79,58 +118,58 @@ export function Dialog({
   );
 
   return (
-    <AnimatePresence>
-      {open && (
-        <>
-          <motion.div
-            aria-hidden="true"
-            className={cn("fixed inset-0 z-50", surface.scrim)}
-            initial={{ opacity: reduced ? 1 : 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: reduced ? 1 : 0 }}
-            transition={{ duration: reduced ? 0 : 0.25, ease: NF_EASE }}
-            onClick={onClose}
-          />
-          <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center">
-            <motion.div
-              ref={panelRef}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby={titleId}
-              tabIndex={-1}
+    <>
+      <div
+        aria-hidden="true"
+        onClick={onClose}
+        className={cn(
+          "fixed inset-0 z-50 transition-opacity duration-250 ease-nf motion-reduce:transition-none",
+          surface.scrim,
+          entered ? "opacity-100" : "opacity-0",
+          !open && "pointer-events-none"
+        )}
+      />
+      <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center">
+        <div
+          ref={panelRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={titleId}
+          tabIndex={-1}
+          inert={!open}
+          className={cn(
+            // Stan otwarty nie ma klasy scale: `scale: none` zamiast `scale: 1`.
+            // Niezerowa wartosc scale tworzy blok zawierajacy dla potomkow position:fixed.
+            "pointer-events-auto relative mx-4 max-h-[90dvh] w-full overflow-y-auto rounded-[2px] border transition-[opacity,scale] duration-250 ease-nf motion-reduce:transition-none",
+            surface.panel,
+            maxWidthClassName ?? "max-w-lg",
+            entered ? "opacity-100" : "scale-[0.96] opacity-0",
+            !open && "pointer-events-none"
+          )}
+        >
+          {hideTitle ? (
+            <>
+              <h2 id={titleId} className="sr-only">
+                {title}
+              </h2>
+              {closeButton}
+            </>
+          ) : (
+            <div
               className={cn(
-                "pointer-events-auto relative mx-4 max-h-[90dvh] w-full overflow-y-auto rounded-[2px] border",
-                surface.panel,
-                maxWidthClassName ?? "max-w-lg"
+                "flex items-center justify-between border-b py-3 pl-5 pr-3",
+                surface.line
               )}
-              transition={{ duration: reduced ? 0 : 0.25, ease: NF_EASE }}
-              {...panelMotion}
             >
-              {hideTitle ? (
-                <>
-                  <h2 id={titleId} className="sr-only">
-                    {title}
-                  </h2>
-                  {closeButton}
-                </>
-              ) : (
-                <div
-                  className={cn(
-                    "flex items-center justify-between border-b py-3 pl-5 pr-3",
-                    surface.line
-                  )}
-                >
-                  <h2 id={titleId} className={cn("type-h3", surface.title)}>
-                    {title}
-                  </h2>
-                  {closeButton}
-                </div>
-              )}
-              {children}
-            </motion.div>
-          </div>
-        </>
-      )}
-    </AnimatePresence>
+              <h2 id={titleId} className={cn("type-h3", surface.title)}>
+                {title}
+              </h2>
+              {closeButton}
+            </div>
+          )}
+          {children}
+        </div>
+      </div>
+    </>
   );
 }

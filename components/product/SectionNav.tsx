@@ -3,23 +3,31 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
-const SECTIONS = [
-  { id: "opis", label: "Opis" },
-  { id: "specyfikacja", label: "Specyfikacja" },
-  { id: "rozmiary", label: "Rozmiary" },
-  { id: "dostawa", label: "Dostawa i zwroty" },
-];
+interface Section {
+  id: string;
+  label: string;
+}
 
+// Spis tresci czyta sekcje z DOM (data-section-label), a nie z zaszytej listy:
+// karta produktu pokazuje rozne sekcje zaleznie od typu (zgodnosc tylko dla e-obrozy),
+// wiec twarda lista rozjezdzala sie z trescia strony.
 export function SectionNav() {
-  const [active, setActive] = useState(SECTIONS[0].id);
+  const [sections, setSections] = useState<Section[]>([]);
+  const [active, setActive] = useState<string>("");
 
   useEffect(() => {
-    const nodes = SECTIONS.map((s) => document.getElementById(s.id)).filter(
-      (n): n is HTMLElement => n !== null
+    const nodes = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-section-label]")
     );
-    if (nodes.length === 0) return;
+    const found = nodes
+      .filter((node) => node.id)
+      .map((node) => ({ id: node.id, label: node.dataset.sectionLabel ?? node.id }));
 
-    // aktywna = ostatnia sekcja, której początek minął próg pod sticky headerem
+    setSections(found);
+    if (found.length === 0) return;
+    setActive(found[0].id);
+
+    // aktywna = ostatnia sekcja, ktorej poczatek minal prog pod sticky headerem
     const THRESHOLD = 140;
     let frame = 0;
 
@@ -46,10 +54,12 @@ export function SectionNav() {
     };
   }, []);
 
+  if (sections.length === 0) return null;
+
   return (
     <nav aria-label="Sekcje produktu" className="hidden lg:block">
       <ul className="sticky top-28 space-y-1 border-l border-nf-border">
-        {SECTIONS.map((section) => {
+        {sections.map((section) => {
           const isActive = active === section.id;
           return (
             <li key={section.id}>
@@ -58,7 +68,7 @@ export function SectionNav() {
                 aria-current={isActive ? "true" : undefined}
                 className={cn(
                   // min-h-11 trzyma cel dotykowy na 44px mimo drobnego kroju
-                  "-ml-px flex min-h-11 items-center border-l-2 pl-4 text-xs uppercase tracking-widest transition-colors duration-250 ease-nf motion-reduce:transition-none",
+                  "type-meta -ml-px flex min-h-11 items-center border-l-2 pl-4 transition-colors duration-250 ease-nf motion-reduce:transition-none",
                   isActive
                     ? "border-nf-red text-white"
                     : "border-transparent text-nf-dim hover:text-nf-text"

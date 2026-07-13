@@ -11,7 +11,8 @@ import { cn } from "@/lib/utils";
 const ROTATE_MS = 4500;
 const FADE_MS = 250;
 
-const BAR = "flex h-9 items-center justify-center bg-nf-black px-4";
+// h-11: pasek musi pomiescic przycisk pauzy o celu dotykowym 44 px
+const BAR = "flex h-11 items-center justify-center bg-nf-black px-4";
 
 function Highlighted({ text, highlight }: { text: string; highlight: string }) {
   const at = text.indexOf(highlight);
@@ -58,6 +59,7 @@ export function AnnouncementBar() {
   const pathname = usePathname();
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(true);
+  const [paused, setPaused] = useState(false);
 
   const k9 = isK9Route(pathname);
   const hidden = isLightRoute(pathname);
@@ -67,6 +69,8 @@ export function AnnouncementBar() {
     // tylko przemielalby stan bez odbiorcy
     if (k9 || hidden) return;
     if (ANNOUNCEMENTS.length < 2) return;
+    // WCAG 2.2.2: uzytkownik zatrzymal rotacje - komunikat zostaje na aktualnym
+    if (paused) return;
     // reduced motion -> first message shown statically, no rotation
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let fadeTimer: number | undefined;
@@ -81,7 +85,14 @@ export function AnnouncementBar() {
       window.clearInterval(interval);
       if (fadeTimer !== undefined) window.clearTimeout(fadeTimer);
     };
-  }, [k9, hidden]);
+  }, [k9, hidden, paused]);
+
+  // pauza w trakcie wygaszania zabralaby zegar, ktory przywraca widocznosc - komunikat
+  // zostalby przezroczysty, dlatego kazde przelaczenie odsłania biezacy tekst
+  const togglePause = () => {
+    setPaused((p) => !p);
+    setVisible(true);
+  };
 
   // Strona główna jest landingiem marki, nie sklepem: czarny pasek użytkowy nad
   // jasnym hero psuł kadr i nie niósł treści potrzebnej w tym miejscu.
@@ -96,10 +107,12 @@ export function AnnouncementBar() {
         "relative text-[11px] uppercase tracking-[0.15em] text-nf-muted"
       )}
     >
+      {/* px-11: tekst jest wysrodkowany w calym pasku, wiec musi trzymac dystans
+          od przycisku pauzy przyklejonego do prawej krawedzi */}
       <p
         aria-hidden="true"
         className={cn(
-          "transition-opacity duration-250 ease-nf motion-reduce:transition-none",
+          "px-11 text-center transition-opacity duration-250 ease-nf motion-reduce:transition-none",
           visible ? "opacity-100" : "opacity-0"
         )}
       >
@@ -114,7 +127,7 @@ export function AnnouncementBar() {
           <li key={a.text}>{a.text}</li>
         ))}
       </ul>
-      <p className="absolute right-4 hidden items-center gap-3 text-nf-dim lg:flex lg:right-6">
+      <p className="absolute right-12 hidden items-center gap-3 text-nf-dim lg:flex lg:right-14">
         {TRUST_TRIAD.map((item, i) => (
           <Fragment key={item}>
             {i > 0 && <span aria-hidden="true" className="h-3 border-l border-nf-border" />}
@@ -122,6 +135,21 @@ export function AnnouncementBar() {
           </Fragment>
         ))}
       </p>
+
+      {/* WCAG 2.2.2: rotacja co 4,5 s musi dac sie zatrzymac. motion-reduce:hidden, bo przy
+          wylaczonym ruchu rotacji nie ma i przycisk nie mialby czego pauzowac */}
+      {ANNOUNCEMENTS.length > 1 && (
+        <button
+          type="button"
+          onClick={togglePause}
+          aria-label={
+            paused ? "Wznów rotację komunikatów" : "Zatrzymaj rotację komunikatów"
+          }
+          className="absolute right-0 top-0 flex size-11 items-center justify-center font-mono text-[11px] tracking-[0.1em] text-nf-dim transition-colors duration-250 ease-nf hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white motion-reduce:hidden motion-reduce:transition-none"
+        >
+          <span aria-hidden="true">{paused ? ">" : "II"}</span>
+        </button>
+      )}
     </div>
   );
 }

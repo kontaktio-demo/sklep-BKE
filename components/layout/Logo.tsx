@@ -55,6 +55,9 @@ export function Logo({
   const useHead = variant === "header";
   const asset = useHead ? ASSETS.head : ASSETS.mark;
   const markSize = markClassName ?? (useHead ? "h-10 w-auto lg:h-12" : "h-16 w-auto");
+  // priority tylko dla paska nawigacyjnego: sygnet w stopce jest poza pierwszym ekranem,
+  // a bezwarunkowe priority wpychalo go do preloadu i konkurowalo o pasmo z LCP
+  const priority = useHead;
 
   return (
     <Link
@@ -68,7 +71,7 @@ export function Logo({
           alt=""
           width={asset.w}
           height={asset.h}
-          priority
+          priority={priority}
           className={cn("w-auto", markSize)}
         />
       )}
@@ -78,7 +81,7 @@ export function Logo({
           alt=""
           width={289}
           height={89}
-          priority
+          priority={priority}
           className={cn("w-auto", wordmarkClassName)}
         />
       )}

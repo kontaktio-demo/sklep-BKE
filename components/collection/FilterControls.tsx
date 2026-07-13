@@ -1,15 +1,12 @@
 "use client";
 
 import { useEffect, useId, useState, type KeyboardEvent, type ReactNode } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { FilterGroup } from "@/lib/types";
 import type { FilterState } from "@/lib/filtering";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
 import { RangeSlider } from "@/components/ui/RangeSlider";
 import { CheckIcon, ChevronDownIcon } from "@/components/ui/icons";
 import { cn, formatPrice } from "@/lib/utils";
-
-const NF_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
 
 // §8-F fixed order; "price" has no FilterGroup and is rendered from bounds
 const GROUP_ORDER = [
@@ -52,7 +49,6 @@ function Section({
 }) {
   const [open, setOpen] = useState(true);
   const bodyId = useId();
-  const reduced = useReducedMotion();
 
   return (
     <section className="border-b border-nf-border last:border-b-0">
@@ -73,31 +69,30 @@ function Section({
           />
         </button>
       </h3>
-      <div id={bodyId}>
-        <AnimatePresence initial={false}>
-          {open && (
-            <motion.div
-              className="overflow-hidden"
-              initial={reduced ? false : { height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={reduced ? undefined : { height: 0, opacity: 0 }}
-              transition={{ duration: reduced ? 0 : 0.25, ease: NF_EASE }}
-            >
-              <div className="pb-5">
-                {children}
-                {active && (
-                  <button
-                    type="button"
-                    onClick={onClear}
-                    className="mt-1 inline-flex min-h-11 items-center text-xs uppercase tracking-widest text-nf-dim transition-colors duration-250 ease-nf hover:text-white"
-                  >
-                    Wyczyść
-                  </button>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+      {/* Wysokosc animowana na grid-template-rows 0fr -> 1fr, bez mierzenia w JS.
+          Zwiniete pola zostaja w DOM, wiec inert wycina je z kolejnosci tabulacji
+          i z drzewa dostepnosci - tak jak wczesniej robilo to odmontowanie. */}
+      <div
+        id={bodyId}
+        className={cn(
+          "grid transition-[grid-template-rows] duration-250 ease-nf motion-reduce:transition-none",
+          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        )}
+      >
+        <div className="overflow-hidden" inert={!open}>
+          <div className="pb-5">
+            {children}
+            {active && (
+              <button
+                type="button"
+                onClick={onClear}
+                className="mt-1 inline-flex min-h-11 items-center text-xs uppercase tracking-widest text-nf-dim transition-colors duration-250 ease-nf hover:text-white"
+              >
+                Wyczyść
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );

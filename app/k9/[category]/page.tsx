@@ -158,10 +158,19 @@ export default async function K9CategoryPage({
           </div>
         ) : (
           <>
+            {/* h1 (tytul kategorii) -> h3 (nazwy pozycji) bylo przeskokiem poziomu.
+                Naglowek jest sr-only: uklad zostaje, konspekt sie domyka */}
+            <h2 id="k9-pozycje" className="sr-only">
+              Pozycje w kategorii {category.title}
+            </h2>
+
             {/* Reveal na calej siatce, nie na kaflach: stagger przesuwalby kafle w pionie,
                 a to na chwile odslanialoby tlo siatki miedzy nimi */}
             <Reveal>
-              <ul className="grid grid-cols-1 gap-px border border-nf-border bg-nf-border sm:grid-cols-2 xl:grid-cols-3">
+              <ul
+                aria-labelledby="k9-pozycje"
+                className="grid grid-cols-1 gap-px border border-nf-border bg-nf-border sm:grid-cols-2 xl:grid-cols-3"
+              >
                 {products.map((product) => (
                   <li key={product.id} className="flex">
                     <K9ProductCard product={product} className="w-full" />

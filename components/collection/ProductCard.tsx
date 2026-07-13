@@ -7,6 +7,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useQuickView } from "@/components/collection/QuickViewModal";
 import { Badge } from "@/components/ui/Badge";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
@@ -31,8 +32,24 @@ export function ProductCard({
 }) {
   const { openQuickView } = useQuickView();
 
+  // Druga warstwa zdjecia zyje wylacznie na hover/focus. Na dotyku nie pokaze sie nigdy,
+  // a i tak byla pobierana - przy 26 kartach to 26 zbednych obrazow na lacze komorkowe.
+  // Montujemy ja tylko na urzadzeniach z realnym kursorem albo po pierwszym fokusie
+  // (klawiatura na sprzecie bez hovera). Sprawdzenie w efekcie, nie w renderze: SSR nie
+  // zna matchMedia, a rozjazd hydracji kosztowalby wiecej niz sam obraz.
+  const [hoverLayer, setHoverLayer] = useState(false);
+  const hasSecondImage = product.images.length > 1;
+
+  useEffect(() => {
+    if (!hasSecondImage) return;
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) setHoverLayer(true);
+  }, [hasSecondImage]);
+
   return (
-    <article className={cn("group/card relative", className)}>
+    <article
+      className={cn("group/card relative", className)}
+      onFocus={() => setHoverLayer(true)}
+    >
       <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] border border-nf-border bg-nf-elevated transition-colors duration-300 ease-nf group-hover/card:border-nf-border-strong group-focus-within/card:border-nf-border-strong motion-reduce:transition-none">
         {/* rusza sie tylko warstwa ze zdjeciami - ramka, plakietki i pasek stoja w miejscu */}
         <div className="absolute inset-0 transition-transform duration-500 ease-out motion-safe:group-hover/card:scale-[1.03] motion-safe:group-focus-within/card:scale-[1.03] motion-reduce:transition-none">
@@ -43,14 +60,16 @@ export function ProductCard({
             sizes={sizes}
             className={cn("object-cover", !product.inStock && "brightness-75")}
           />
-          <Image
-            src={product.images[1]}
-            alt=""
-            aria-hidden="true"
-            fill
-            sizes={sizes}
-            className="object-cover opacity-0 transition-opacity duration-500 ease-nf group-hover/card:opacity-100 group-focus-within/card:opacity-100 motion-reduce:transition-none"
-          />
+          {hoverLayer && hasSecondImage && (
+            <Image
+              src={product.images[1]}
+              alt=""
+              aria-hidden="true"
+              fill
+              sizes={sizes}
+              className="object-cover opacity-0 transition-opacity duration-500 ease-nf group-hover/card:opacity-100 group-focus-within/card:opacity-100 motion-reduce:transition-none"
+            />
+          )}
         </div>
 
         {/* touch/keyboard path (§7-4): the whole image is the quick-view trigger */}

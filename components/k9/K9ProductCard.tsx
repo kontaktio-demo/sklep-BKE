@@ -51,18 +51,21 @@ export function K9ProductCard({
       <div className="flex items-baseline gap-4 font-mono text-[11px] uppercase tracking-[0.2em] text-nf-dim">
         <span className="shrink-0">{product.sku}</span>
         {product.k9Standard && (
-          // dluga klasyfikacja (np. "Zgodna z modułami do 45 mm") skraca sie wizualnie,
-          // pelna wartosc zostaje w DOM dla czytnikow i w title dla myszy
-          <span className="ml-auto min-w-0 truncate text-right" title={product.k9Standard}>
+          // line-clamp-2 zamiast truncate: dluga klasyfikacja (np. "Zgodna z modułami do
+          // 45 mm") miesci sie w dwoch wierszach. Wczesniej byla ucinana wizualnie, a pelna
+          // wartosc siedziala w title - niedostepnym z klawiatury i na dotyku
+          <span className="ml-auto line-clamp-2 min-w-0 text-right">
             {product.k9Standard}
           </span>
         )}
       </div>
 
       <div className="relative mt-4 aspect-[4/3] overflow-hidden border border-nf-border bg-nf-elevated transition-colors duration-250 ease-nf group-hover/card:border-nf-border-strong motion-reduce:transition-none">
+        {/* alt="": nazwa produktu stoi w naglowku obok, wiec opis zdjecia tylko dublowalby
+            odczyt. Zdjecie nie niesie tu informacji ponad tekst karty */}
         <Image
           src={product.images[0]}
-          alt={product.name}
+          alt=""
           fill
           sizes={CARD_SIZES}
           className={cn("object-cover", !product.inStock && "brightness-75")}

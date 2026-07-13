@@ -18,13 +18,13 @@ import {
 } from "@/components/ui/icons";
 import { useCart } from "@/lib/cart";
 import { NAV_ITEMS, TRUST_TRIAD } from "@/lib/nav";
+import { POPULAR_SEARCHES, searchHref } from "@/lib/search";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 import { Logo } from "./Logo";
 import { MegaMenu } from "./MegaMenu";
 import { SHELL, type Theme } from "./theme";
 import { isLightRoute } from "./ThemeSync";
-
-const POPULAR_SEARCHES = ["Obroże robocze", "Odblaskowe", "Łańcuszkowe", "Panele ID"];
 
 const ICON_BUTTON_BASE =
   "flex h-11 w-11 items-center justify-center transition-colors duration-250 ease-nf";
@@ -34,6 +34,7 @@ function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) 
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const inputId = useId();
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     // the overlay hook focuses the dialog's first focusable (the close button)
@@ -46,10 +47,14 @@ function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) 
     <div className="p-5">
       <form
         role="search"
+        className="flex gap-2"
         onSubmit={(e) => {
           e.preventDefault();
+          const phrase = query.trim();
+          // pusta fraza nie ma dokad prowadzic - panel zostaje otwarty
+          if (!phrase) return;
           onClose();
-          router.push("/collections/collars");
+          router.push(searchHref(phrase));
         }}
       >
         <label htmlFor={inputId} className="sr-only">
@@ -60,12 +65,17 @@ function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) 
           id={inputId}
           type="search"
           autoFocus
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder="Czego szukasz?"
           className={cn(
-            "h-12 w-full rounded-[4px] border px-4 text-sm",
+            "h-12 min-w-0 flex-1 rounded-[4px] border px-4 text-sm",
             t.field
           )}
         />
+        <Button type="submit" className="h-12 shrink-0">
+          Szukaj
+        </Button>
       </form>
       <div className="mt-5">
         <h3 className={cn("text-[11px] uppercase tracking-widest", t.meta)}>
@@ -75,7 +85,7 @@ function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) 
           {POPULAR_SEARCHES.map((term) => (
             <li key={term}>
               <Link
-                href="/collections/collars"
+                href={searchHref(term)}
                 onClick={onClose}
                 className={cn(
                   "inline-flex h-11 items-center rounded-[4px] border px-3 text-sm transition-colors duration-250 ease-nf",

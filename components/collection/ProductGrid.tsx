@@ -16,6 +16,12 @@ export function ProductGrid({
 }) {
   return (
     <div id="product-grid" className="scroll-mt-24">
+      {/* Bez tego naglowka karty (h3) wpadaly pod h2 "Filtry" z panelu obok i konspekt
+          sugerowal, ze produkty naleza do filtrow. sr-only: uklad zostaje bez zmian */}
+      <h2 id="wyniki" className="sr-only">
+        Wyniki
+      </h2>
+
       {/* Reveal stays mounted across filter changes: its effect runs once on mount
           (ScrollTrigger once + clearProps), so only the initial grid staggers in -
           filtered re-renders paint instantly. */}
@@ -36,7 +42,10 @@ export function ProductGrid({
             )}
           </div>
         ) : (
-          <ul className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 xl:grid-cols-4">
+          <ul
+            aria-labelledby="wyniki"
+            className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 xl:grid-cols-4"
+          >
             {products.map((product) => (
               <li key={product.id} data-card>
                 <ProductCard product={product} />
