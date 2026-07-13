@@ -9,6 +9,7 @@ import Link from "next/link";
 import { FreeShippingBar } from "@/components/cart/FreeShippingBar";
 import { Button } from "@/components/ui/Button";
 import { CartIcon, MinusIcon, PlusIcon, TrashIcon } from "@/components/ui/icons";
+import type { CartLine } from "@/lib/cart";
 import { useCart } from "@/lib/cart";
 import { COMPANY, FREE_SHIPPING_THRESHOLD, SHIPPING_FROM } from "@/lib/nav";
 import { formatPrice, plural } from "@/lib/utils";
@@ -18,13 +19,42 @@ const STEPPER_BUTTON =
 
 const SUMMARY_ROW = "flex items-baseline justify-between gap-4 text-sm";
 
+const ORDER_SUBJECT = "Zamówienie ze sklepu PAKT";
+
+/** Zamowienie sklada sie mailem, wiec przycisk musi wyjsc z pelna trescia koszyka:
+ *  pozycje, kolory, SKU, ilosci, wartosci i suma. Klient dopisuje adres i wysyla. */
+function orderMailHref(lines: CartLine[], subtotal: number, total: number, freeShipping: boolean): string {
+  const body = [
+    "Dzień dobry,",
+    "składam zamówienie na poniższe pozycje.",
+    "",
+    ...lines.map((line) => {
+      const color = line.color ? `, kolor: ${line.color.name}` : "";
+      const value = formatPrice(line.product.price * line.qty, line.product.currency);
+      return `- ${line.product.name} (SKU ${line.product.sku})${color}, sztuk: ${line.qty}, wartość: ${value}`;
+    }),
+    "",
+    `Suma częściowa: ${formatPrice(subtotal)}`,
+    `Dostawa: ${freeShipping ? "gratis" : `od ${formatPrice(SHIPPING_FROM)}`}`,
+    `Razem: ${formatPrice(total)}`,
+    "",
+    "Dane do wysyłki:",
+    "Imię i nazwisko:",
+    "Adres:",
+    "Telefon:",
+    "Sposób dostawy (paczkomat albo kurier):",
+  ].join("\n");
+
+  return `mailto:${COMPANY.shopEmail}?subject=${encodeURIComponent(
+    ORDER_SUBJECT
+  )}&body=${encodeURIComponent(body)}`;
+}
+
 function EmptyCart() {
   return (
     <div className="border border-nf-border px-6 py-16 text-center">
       <CartIcon width={40} height={40} className="mx-auto text-nf-dim" />
-      <h2 className="mt-6 font-display text-xl font-bold uppercase tracking-tight text-nf-white">
-        Koszyk jest pusty
-      </h2>
+      <h2 className="type-h2 mt-6 text-nf-white">Koszyk jest pusty</h2>
       <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-nf-muted">
         Nic tu jeszcze nie trafiło. Obroże i smycze znajdziesz w sklepie, sprzęt służbowy
         w sekcji PAKT-K9.
@@ -52,7 +82,7 @@ export function CartView() {
   return (
     <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
       <section aria-label="Pozycje w koszyku" className="lg:col-span-7 xl:col-span-8">
-        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-nf-dim">
+        <p className="type-meta text-nf-dim">
           {count} {plural(count, "pozycja", "pozycje", "pozycji")}
         </p>
 
@@ -89,9 +119,7 @@ export function CartView() {
                     {line.color && (
                       <p className="mt-1 text-xs text-nf-muted">Kolor: {line.color.name}</p>
                     )}
-                    <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.15em] text-nf-dim">
-                      SKU {line.product.sku}
-                    </p>
+                    <p className="type-meta mt-1 text-nf-dim">SKU {line.product.sku}</p>
                     <p className="mt-2 text-xs text-nf-dim">
                       {formatPrice(line.product.price, line.product.currency)} za sztukę
                     </p>
@@ -155,9 +183,8 @@ export function CartView() {
 
       <aside aria-label="Podsumowanie zamówienia" className="lg:col-span-5 xl:col-span-4">
         <div className="border border-nf-border bg-nf-elevated p-6 lg:sticky lg:top-24">
-          <h2 className="font-display text-lg font-bold uppercase tracking-tight text-nf-white">
-            Podsumowanie
-          </h2>
+          {/* karta, nie sekcja strony - stopien nizej niz H1 koszyka */}
+          <h2 className="type-h3 text-nf-white">Podsumowanie</h2>
 
           <dl className="mt-6 space-y-3">
             <div className={SUMMARY_ROW}>
@@ -175,9 +202,7 @@ export function CartView() {
           <FreeShippingBar subtotal={subtotal} className="mt-5" />
 
           <div className="mt-6 flex items-baseline justify-between gap-4 border-t border-nf-border pt-4">
-            <span className="font-display text-sm font-bold uppercase tracking-wide text-nf-white">
-              Razem
-            </span>
+            <span className="type-meta text-nf-white">Razem</span>
             <span className="text-lg font-semibold text-nf-white">{formatPrice(total)}</span>
           </div>
           <p className="mt-2 text-xs leading-relaxed text-nf-dim">
@@ -189,24 +214,22 @@ export function CartView() {
 
           <div className="mt-6 space-y-3">
             <Button
-              type="button"
+              href={orderMailHref(lines, subtotal, total, freeShipping)}
               size="lg"
               className="w-full rounded-[2px]"
-              disabled
-              aria-describedby="checkout-status"
             >
-              Do kasy
+              Złóż zamówienie mailem
             </Button>
-            <p id="checkout-status" className="text-xs leading-relaxed text-nf-muted">
-              Płatności uruchamiamy wraz z integracją operatora. Do tego czasu zamówienie
-              złożysz mailem:{" "}
+            <p className="text-xs leading-relaxed text-nf-muted">
+              Zamówienie składasz mailem:{" "}
               <a
                 href={`mailto:${COMPANY.shopEmail}`}
                 className="text-nf-text underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
               >
                 {COMPANY.shopEmail}
               </a>
-              .
+              . Przycisk otwiera wiadomość z pozycjami z koszyka i sumą. Dopisz adres wysyłki,
+              a odpiszemy z potwierdzeniem i danymi do przelewu.
             </p>
           </div>
 

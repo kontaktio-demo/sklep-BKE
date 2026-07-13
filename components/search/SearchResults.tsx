@@ -6,6 +6,7 @@ import { useEffect, useId, useState, type FormEvent } from "react";
 import { ProductGrid } from "@/components/collection/ProductGrid";
 import { QuickViewProvider } from "@/components/collection/QuickViewModal";
 import { K9ProductCard } from "@/components/k9/K9ProductCard";
+import { Breadcrumbs } from "@/components/product/Breadcrumbs";
 import { Button } from "@/components/ui/Button";
 import { POPULAR_SEARCHES, searchHref } from "@/lib/search";
 import type { Product } from "@/lib/types";
@@ -96,10 +97,12 @@ export function SearchResults({
 
   return (
     <QuickViewProvider>
-      <div className="mx-auto max-w-[1600px] px-4 py-10 md:px-6 lg:py-14">
+      <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-24">
+        {/* ten sam naglowek strony co w koszyku i na stronach informacyjnych:
+            okruszki, potem H1 ze skali - zeby /szukaj nie wygladalo na obcy serwis */}
         <header className="border-b border-nf-border pb-10">
-          <p className="type-meta text-nf-dim">Wyszukiwarka</p>
-          <h1 className="type-h1 mt-4 text-white">Szukaj</h1>
+          <Breadcrumbs items={[{ label: "Strona główna", href: "/" }, { label: "Szukaj" }]} />
+          <h1 className="type-h1 mt-6 text-white">Szukaj</h1>
 
           <form role="search" onSubmit={submit} className="mt-8 flex max-w-2xl gap-2">
             <label htmlFor={inputId} className="sr-only">

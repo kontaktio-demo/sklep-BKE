@@ -87,9 +87,20 @@ function readStored(): StoredLine[] {
  *  Bierzemy wieksza ilosc, nie sume: efekt montujacy odpala sie w trybie deweloperskim
  *  dwa razy, a sumowanie podbijaloby ilosci przy kazdym przeladowaniu strony. */
 function mergeLines(stored: CartLine[], pending: CartLine[]): CartLine[] {
-  if (pending.length === 0) return stored;
-
-  const byKey = new Map(stored.map((line) => [line.key, line]));
+  // Deduplikujemy ZAWSZE, takze przy pustym `pending`. Wczesniej byl tu wczesny return,
+  // wiec zwykle odswiezenie strony omijalo Mape: dwie zapisane pozycje tego samego produktu
+  // (np. z kolorem, ktory zniknal z katalogu i podstawil sie pierwszy dostepny) ladowaly
+  // na tym samym kluczu i koszyk pokazywal dwa identyczne wiersze.
+  const byKey = new Map<string, CartLine>();
+  for (const line of stored) {
+    const existing = byKey.get(line.key);
+    byKey.set(
+      line.key,
+      existing
+        ? { ...existing, qty: Math.min(existing.qty + line.qty, MAX_QTY) }
+        : line
+    );
+  }
   for (const line of pending) {
     const existing = byKey.get(line.key);
     byKey.set(

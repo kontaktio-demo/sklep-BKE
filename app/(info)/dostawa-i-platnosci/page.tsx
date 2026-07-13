@@ -6,7 +6,7 @@ import { Bullets, InfoHeader, InfoLink, Mail, Note, P, Section } from "../_ui";
 export const metadata: Metadata = {
   title: "Dostawa i płatności",
   description:
-    "Wysyłka w 24 h w dni robocze, paczkomat od 12,99 zł, kurier od 15,99 zł, darmowa dostawa od 299 zł. BLIK, Przelewy24, karta, PayPal, przelew i pobranie.",
+    "Wysyłka w 24 h w dni robocze, paczkomat od 12,99 zł, kurier od 15,99 zł, darmowa dostawa od 299 zł. Zamówienia przyjmujemy mailem, płacisz przelewem albo za pobraniem.",
   alternates: { canonical: "/dostawa-i-platnosci" },
 };
 
@@ -99,22 +99,22 @@ export default function ShippingPage() {
       </Section>
 
       <Section title="Płatności">
+        <P>
+          Zamówienie składasz mailem: <Mail address={COMPANY.shopEmail} />. Przycisk w koszyku
+          otwiera wiadomość z listą pozycji i sumą - dopisujesz adres i wysyłasz. W odpowiedzi
+          dostajesz potwierdzenie, kwotę do zapłaty i numer rachunku.
+        </P>
         <Bullets
           items={[
-            "BLIK - kod z aplikacji banku, płatność natychmiastowa.",
-            "Przelewy24 - szybki przelew z listy banków.",
-            "Karta - Visa i Mastercard.",
-            "PayPal - konto PayPal lub karta powiązana z kontem.",
-            "Przelew tradycyjny - numer rachunku i tytuł podajemy w e-mailu potwierdzającym zamówienie. Czekamy na wpłatę 7 dni, potem zamówienie anulujemy.",
+            "Przelew tradycyjny - numer rachunku i tytuł podajemy w e-mailu z potwierdzeniem zamówienia. Czekamy na wpłatę 7 dni, potem zamówienie anulujemy.",
             `Za pobraniem - płacisz kurierowi przy odbiorze, koszt ${
               COD ? formatPrice(COD.price) : ""
             }.`,
           ]}
         />
         <Note>
-          Operator płatności jest w trakcie podłączania. Do czasu uruchomienia przyjmujemy
-          zamówienia mailem: <Mail address={COMPANY.shopEmail} />. Podaj model, kolor, rozmiar
-          i dane do wysyłki, a odeślemy podsumowanie z numerem rachunku.
+          Kasy online w sklepie nie ma: kartą, BLIK-iem ani przez Przelewy24 nie zapłacisz.
+          Rozliczamy się przelewem albo przy odbiorze paczki.
         </Note>
       </Section>
 

@@ -77,7 +77,10 @@ export function ProductCard({
           type="button"
           aria-label={`Szybki podgląd: ${product.name}`}
           onClick={() => openQuickView(product)}
-          className="absolute inset-0 z-[1] w-full cursor-pointer"
+          // obwodka wcieta do srodka: przycisk pokrywa caly kadr, a kadr ma overflow-hidden,
+          // wiec zwykly pierscien na zewnatrz byl w calosci przycinany i fokus znikal.
+          // outline-2, bo samo "outline" daje 1px - za cienko na tle zdjecia
+          className="absolute inset-0 z-[1] w-full cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white focus-visible:shadow-none"
         />
 
         {product.badges.length > 0 && (
@@ -93,7 +96,9 @@ export function ProductCard({
         <button
           type="button"
           onClick={() => openQuickView(product)}
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-11 w-full translate-y-1 border-t border-nf-border bg-nf-bg/90 text-sm text-nf-text opacity-0 backdrop-blur-sm transition duration-300 ease-nf hover:text-white group-hover/card:pointer-events-auto group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100 motion-reduce:transition-none"
+          // ten sam powod co wyzej: pasek siedzi przy krawedzi kadru z overflow-hidden,
+          // wiec obwodka musi isc do srodka, inaczej fokus na nim jest niewidoczny
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-11 w-full translate-y-1 border-t border-nf-border bg-nf-bg/90 text-sm text-nf-text opacity-0 backdrop-blur-sm transition duration-300 ease-nf hover:text-white focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white focus-visible:shadow-none group-hover/card:pointer-events-auto group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100 motion-reduce:transition-none"
         >
           Szybki podgląd
         </button>

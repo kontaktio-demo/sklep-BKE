@@ -56,7 +56,7 @@ export function Toolbar({
             id={sortId}
             value={sort}
             onChange={(e) => onSortChange(e.target.value as SortOption)}
-            className="h-11 max-w-48 rounded-[4px] border border-nf-border bg-transparent px-3 text-sm text-nf-text"
+            className="h-11 max-w-48 rounded-[2px] border border-nf-border bg-transparent px-3 text-sm text-nf-text"
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>

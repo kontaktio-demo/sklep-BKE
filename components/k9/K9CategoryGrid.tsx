@@ -36,16 +36,20 @@ export function K9CategoryGrid({ categories }: { categories: K9CategoryInfo[] })
         >
           {categories.map((cat, i) => (
             <li key={cat.slug} data-tile className={cn("flex", SPANS[i % SPANS.length])}>
+              {/* overflow-hidden na kaflu przycina siatke techniczna w srodku, ale NIE tnie
+                  wlasnej obwodki fokusu kafla: element nie przycina sam siebie, wiec pierscien
+                  wychodzi na zewnatrz i jest w calosci widoczny w 16px odstepie siatki.
+                  Doklada sie tylko parytet stanow: to, co robi hover, ma robic tez fokus. */}
               <Link
                 href={`/k9/${cat.slug}`}
                 className={cn(
                   "group relative flex min-h-[220px] w-full flex-col overflow-hidden rounded-[2px] border border-nf-border bg-nf-elevated p-6",
-                  "transition-colors duration-250 ease-nf hover:border-nf-red"
+                  "transition-colors duration-250 ease-nf hover:border-nf-red focus-visible:border-nf-red"
                 )}
               >
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 grid-tech opacity-40 transition-opacity duration-300 ease-nf group-hover:opacity-100"
+                  className="pointer-events-none absolute inset-0 grid-tech opacity-40 transition-opacity duration-300 ease-nf group-hover:opacity-100 group-focus-visible:opacity-100"
                   style={{ "--grid-size": "32px" } as CSSProperties}
                 />
 
@@ -61,7 +65,7 @@ export function K9CategoryGrid({ categories }: { categories: K9CategoryInfo[] })
                     {plural(cat.productCount, "pozycja", "pozycje", "pozycji")}
                   </span>
                   <ArrowRightIcon
-                    className="size-4 text-nf-dim transition-[transform,color] duration-250 ease-nf group-hover:text-white motion-safe:group-hover:translate-x-1"
+                    className="size-4 text-nf-dim transition-[transform,color] duration-250 ease-nf group-hover:text-white group-focus-visible:text-white motion-safe:group-hover:translate-x-1 motion-safe:group-focus-visible:translate-x-1"
                   />
                 </span>
               </Link>

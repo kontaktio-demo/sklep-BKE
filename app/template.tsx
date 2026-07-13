@@ -4,25 +4,24 @@ import { useEffect, useState } from "react";
 import { usePrefersReducedMotion } from "@/components/motion/useReducedMotion";
 import { cn } from "@/lib/utils";
 
-// Przejscie miedzy stronami: krotkie, bez przeladowania kadru.
-// Template (nie layout) montuje sie ponownie przy kazdej nawigacji, wiec animacja
-// wejscia odpala sie za kazdym razem, a stan koszyka w layoucie zostaje nietkniety.
-// Stan otwarty nie ma klasy translate (`translate: none`, nie `translate: 0 0`):
-// niezerowy translate tworzylby blok zawierajacy dla kazdego position:fixed w drzewie
-// strony, czyli dla szuflad i modali.
+// Przejscie miedzy stronami. KLUCZOWE: markup z serwera NIE moze byc ukryty.
+// Wczesniej wrapper wychodzil z serwera z opacity-0 i translate, wiec bez JS cala
+// witryna byla niewidoczna (a bezpieczny wariant SeamTransition tracil sens).
+// Teraz stan startowy zakladamy dopiero po montazu: SSR oddaje tresc widoczna.
 export default function Template({ children }: { children: React.ReactNode }) {
   const reduced = usePrefersReducedMotion();
-  const [shown, setShown] = useState(false);
+  const [phase, setPhase] = useState<"ssr" | "start" | "shown">("ssr");
 
   useEffect(() => {
     if (reduced) {
-      setShown(true);
+      setPhase("shown");
       return;
     }
+    setPhase("start");
     // dwie klatki: pierwsza oddaje przegladarce styl startowy, druga uruchamia przejscie
     let inner = 0;
     const outer = requestAnimationFrame(() => {
-      inner = requestAnimationFrame(() => setShown(true));
+      inner = requestAnimationFrame(() => setPhase("shown"));
     });
     return () => {
       cancelAnimationFrame(outer);
@@ -34,7 +33,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
     <div
       className={cn(
         "transition-[opacity,translate] duration-500 ease-out-expo motion-reduce:transition-none",
-        shown ? "opacity-100" : "translate-y-3 opacity-0"
+        phase === "start" && "translate-y-3 opacity-0"
       )}
     >
       {children}

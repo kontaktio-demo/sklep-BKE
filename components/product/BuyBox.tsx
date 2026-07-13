@@ -13,7 +13,7 @@ import {
   TruckIcon,
 } from "@/components/ui/icons";
 import { useCart } from "@/lib/cart";
-import { TRUST_TRIAD } from "@/lib/nav";
+import { COMPANY, TRUST_TRIAD } from "@/lib/nav";
 import { SIZE_LABEL, WIDTH_LABEL } from "@/lib/sizes";
 import type { Product, ProductColor } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -34,12 +34,24 @@ export function BuyBox({ product }: { product: Product }) {
   const { addLine, openCart } = useCart();
   const [color, setColor] = useState<ProductColor | undefined>(product.colors[0]);
   const [qty, setQty] = useState(1);
-  const [notified, setNotified] = useState(false);
 
   const colorLabelId = useId();
-  const notifyId = useId();
 
   const k9 = product.line === "k9";
+
+  // Zapytanie o dostepnosc idzie na skrzynke, ktora obsluguje dana linie
+  const notifyEmail = k9 ? COMPANY.k9Email : COMPANY.shopEmail;
+  const notifyHref = `mailto:${notifyEmail}?subject=${encodeURIComponent(
+    `Dostępność: ${product.name} (${product.sku})`
+  )}&body=${encodeURIComponent(
+    [
+      "Dzień dobry,",
+      `proszę o wiadomość, gdy ${product.name} (SKU ${product.sku}) wróci do sprzedaży.`,
+      color ? `Kolor: ${color.name}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n")
+  )}`;
 
   function handleAdd() {
     // addLine increments by one per call - the cart has no bulk API
@@ -187,36 +199,27 @@ export function BuyBox({ product }: { product: Product }) {
             Dodaj do koszyka
           </Button>
         ) : (
+          // Listy oczekujacych nie ma gdzie trzymac - serwis nie ma backendu ani wysylki.
+          // Pole e-mail bylo atrapa: adres nigdzie nie szedl, a komunikat obiecywal
+          // wiadomosc. Zostaje sciezka, ktora dziala: mail do sklepu z SKU w temacie.
           <div className="space-y-4">
             <Button variant="primary" size="lg" className="w-full" disabled>
               Chwilowo niedostępna
             </Button>
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                setNotified(true);
-              }}
-              className="space-y-2"
-            >
-              <label htmlFor={notifyId} className="block text-xs text-nf-muted">
-                Zostaw adres e-mail, a wyślemy wiadomość, gdy obroża wróci do sprzedaży.
-              </label>
-              <div className="flex flex-col gap-2 sm:flex-row">
-                <input
-                  id={notifyId}
-                  type="email"
-                  required
-                  autoComplete="email"
-                  className="h-11 flex-1 rounded-[2px] border border-nf-border-strong bg-transparent px-3 text-sm text-white"
-                />
-                <Button type="submit" variant="ghost" size="md" className="h-11 shrink-0">
-                  Powiadom o dostępności
-                </Button>
-              </div>
-              <p aria-live="polite" className="min-h-5 text-xs text-nf-muted">
-                {notified ? "Damy znać, gdy wróci." : ""}
+            <div className="space-y-2">
+              <p className="text-xs leading-relaxed text-nf-muted">
+                Listę oczekujących prowadzimy mailem. Napisz na {notifyEmail}, a odpiszemy,
+                gdy model wróci do sprzedaży.
               </p>
-            </form>
+              <Button
+                href={notifyHref}
+                variant="ghost"
+                size="md"
+                className="h-11 w-full sm:w-auto"
+              >
+                Napisz w sprawie dostępności
+              </Button>
+            </div>
           </div>
         )}
 

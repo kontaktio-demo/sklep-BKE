@@ -84,10 +84,16 @@ export async function generateMetadata({
 
 export default async function CollectionPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ handle: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { handle } = await params;
+  // Odczyt searchParams przelacza trase na render dynamiczny. Bez tego strona byla
+  // prerenderowana, useSearchParams w CollectionView wymuszal fallback Suspense i w HTML
+  // nie bylo ANI JEDNEGO produktu: bez JS pusta lista, a roboty nie widzialy 26 kart.
+  await searchParams;
 
   const [collection, products, groups] = await Promise.all([
     getCollection(handle).catch(() => null),

@@ -18,7 +18,9 @@ export function Footer() {
 
   return (
     <footer className={cn("border-t", t.shell)}>
-      <div className="container mx-auto px-4 py-14 lg:px-6">
+      {/* ta sama siatka co naglowek i tresc stron - kolumny stopki nie moga sie
+          rozjezdzac z trescia powyzej na szerokich ekranach */}
+      <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-24">
         <div
           className={cn(
             "mb-12 flex flex-col gap-4 border-b pb-10 md:flex-row md:items-end md:justify-between",
@@ -42,9 +44,7 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-5">
           {FOOTER_COLUMNS.map((col) => (
             <nav key={col.title} aria-label={col.title}>
-              <h3 className={cn("mb-4 text-[11px] uppercase tracking-widest", t.heading)}>
-                {col.title}
-              </h3>
+              <h3 className={cn("type-meta mb-4", t.heading)}>{col.title}</h3>
               <ul>
                 {col.links.map((link) => (
                   <li key={link.label}>
@@ -74,7 +74,7 @@ export function Footer() {
             <select
               aria-label="Region i waluta"
               defaultValue={REGIONS[0]}
-              className={cn("h-11 rounded-[4px] border px-3 text-sm", t.select)}
+              className={cn("h-11 rounded-[2px] border px-3 text-sm", t.select)}
             >
               {REGIONS.map((region) => (
                 <option key={region} value={region}>

@@ -1,28 +1,79 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { CheckIcon, MinusIcon, PlusIcon } from "@/components/ui/icons";
 import type { K9CategoryInfo, Product } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import { cn, plural } from "@/lib/utils";
 
 interface K9InquiryFormProps {
   categories: K9CategoryInfo[];
   products: Product[];
 }
 
-const FIELD =
-  "h-12 w-full rounded-[2px] border border-nf-border bg-nf-elevated px-4 text-sm text-nf-text placeholder:text-nf-dim";
+const FIELD = "w-full rounded-[2px] border bg-nf-elevated text-sm text-nf-text placeholder:text-nf-dim";
+const LINE = "h-12 px-4";
+const BORDER_OK = "border-nf-border";
+const BORDER_BAD = "border-nf-red-bright";
 const LABEL = "type-meta block text-nf-dim";
+const ERROR = "mt-2 text-sm text-nf-red-bright";
 
-// Formularz zapytania ofertowego. Nie wysyla nic na serwer (brak backendu w tej fazie),
+// wystarczajaco scisly, zeby zlapac literowke, dosc luzny, zeby nie odrzucic poprawnego adresu
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+const MAX_QTY = 999;
+
+interface Values {
+  unit: string;
+  person: string;
+  email: string;
+  phone: string;
+  deadline: string;
+  notes: string;
+  consent: boolean;
+}
+
+const EMPTY: Values = {
+  unit: "",
+  person: "",
+  email: "",
+  phone: "",
+  deadline: "",
+  notes: "",
+  consent: false,
+};
+
+type FieldName = "unit" | "person" | "email" | "consent";
+type Errors = Partial<Record<FieldName, string>>;
+
+/** Kolejnosc pol w ukladzie - po nieudanym submicie fokus idzie na pierwszy blad z tej listy. */
+const ORDER: FieldName[] = ["unit", "person", "email", "consent"];
+
+function validate(v: Values): Errors {
+  const errors: Errors = {};
+  if (!v.unit.trim()) errors.unit = "Podaj nazwę jednostki lub firmy.";
+  if (!v.person.trim()) errors.person = "Podaj osobę do kontaktu.";
+  if (!v.email.trim()) errors.email = "Podaj adres e-mail.";
+  else if (!EMAIL_RE.test(v.email.trim())) errors.email = "Adres e-mail ma niepoprawny format.";
+  if (!v.consent) errors.consent = "Bez zgody nie mamy podstawy, żeby odpisać.";
+  return errors;
+}
+
+// Formularz zapytania ofertowego. Nie wysyla nic na serwer - serwis nie ma backendu -
 // wiec po zatwierdzeniu pokazuje uczciwe podsumowanie z gotowa trescia do skopiowania
 // i adresem, pod ktory mozna ja wyslac. Zadnej udawanej wysylki.
 export function K9InquiryForm({ categories, products }: K9InquiryFormProps) {
+  // Wartosci pol w stanie, nie w DOM: walidacja po submicie ich potrzebuje, a powrot
+  // z podsumowania nie moze kasowac tego, co ktos wpisal.
+  const [values, setValues] = useState<Values>(EMPTY);
+  const [errors, setErrors] = useState<Errors>({});
   const [items, setItems] = useState<Record<string, number>>({});
   const [summary, setSummary] = useState<string | null>(null);
-  const [consent, setConsent] = useState(false);
+
+  // Jeden komunikat dla calego steppera. Sam licznik przy pozycji oglasza gola liczbe
+  // ("3"), bez nazwy pozycji - a wlasnie nazwa niesie tu cala informacje.
+  const [announcement, setAnnouncement] = useState("");
 
   const unitId = useId();
   const personId = useId();
@@ -32,36 +83,73 @@ export function K9InquiryForm({ categories, products }: K9InquiryFormProps) {
   const notesId = useId();
   const consentId = useId();
 
-  const setQty = (slug: string, qty: number) => {
-    setItems((prev) => {
+  const ids: Record<FieldName, string> = {
+    unit: unitId,
+    person: personId,
+    email: emailId,
+    consent: consentId,
+  };
+
+  // Po zatwierdzeniu formularz znika z ukladu, a fokus zostawal na <body>: czytnik nie
+  // mial czego oglosic, a klawiatura wracala na poczatek strony. Naglowek podsumowania
+  // przejmuje fokus (tabIndex -1), region status oglasza zmiane niezaleznie od fokusu.
+  const confirmRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (summary) confirmRef.current?.focus();
+  }, [summary]);
+
+  const set = <K extends keyof Values>(key: K, value: Values[K]) => {
+    setValues((prev) => ({ ...prev, [key]: value }));
+    setErrors((prev) => {
+      if (!(key in prev)) return prev;
       const next = { ...prev };
-      if (qty <= 0) delete next[slug];
-      else next[slug] = Math.min(qty, 999);
+      delete next[key as FieldName];
       return next;
     });
+  };
+
+  const setQty = (product: Product, qty: number) => {
+    const next = Math.min(Math.max(qty, 0), MAX_QTY);
+    setItems((prev) => {
+      const copy = { ...prev };
+      if (next <= 0) delete copy[product.slug];
+      else copy[product.slug] = next;
+      return copy;
+    });
+    setAnnouncement(
+      next === 0
+        ? `${product.name}: bez wyboru`
+        : `${product.name}: ${next} ${plural(next, "sztuka", "sztuki", "sztuk")}`
+    );
   };
 
   const chosen = products.filter((p) => items[p.slug]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const lines = chosen.map(
-      (p) => `- ${p.name} (${p.sku}), sztuk: ${items[p.slug]}`
-    );
+    const found = validate(values);
+    setErrors(found);
+
+    const first = ORDER.find((field) => found[field]);
+    if (first) {
+      document.getElementById(ids[first])?.focus();
+      return;
+    }
+
+    const lines = chosen.map((p) => `- ${p.name} (${p.sku}), sztuk: ${items[p.slug]}`);
 
     setSummary(
       [
-        `Jednostka: ${data.get("unit")}`,
-        `Osoba kontaktowa: ${data.get("person")}`,
-        `E-mail: ${data.get("email")}`,
-        `Telefon: ${data.get("phone")}`,
-        `Termin: ${data.get("deadline") || "nie podano"}`,
+        `Jednostka: ${values.unit.trim()}`,
+        `Osoba kontaktowa: ${values.person.trim()}`,
+        `E-mail: ${values.email.trim()}`,
+        `Telefon: ${values.phone.trim() || "nie podano"}`,
+        `Termin: ${values.deadline.trim() || "nie podano"}`,
         "",
         "Pozycje:",
         ...(lines.length > 0 ? lines : ["- nie wybrano pozycji z katalogu"]),
         "",
-        `Uwagi: ${data.get("notes") || "brak"}`,
+        `Uwagi: ${values.notes.trim() || "brak"}`,
       ].join("\n")
     );
   };
@@ -69,21 +157,29 @@ export function K9InquiryForm({ categories, products }: K9InquiryFormProps) {
   if (summary) {
     return (
       <div className="max-w-3xl">
-        <p className="flex items-center gap-2 text-nf-text">
-          <CheckIcon className="shrink-0 text-nf-text" />
-          Zapytanie przygotowane.
-        </p>
-        <p className="mt-4 leading-relaxed text-nf-muted">
-          Wysyłkę z formularza uruchomimy razem z integracją poczty. Do tego czasu
-          skopiuj treść poniżej i wyślij ją na{" "}
-          <a
-            href="mailto:k9@pakt.pl"
-            className="text-white underline underline-offset-4 hover:text-nf-red-bright"
+        {/* Region status obejmuje naglowek i akapit, ale NIE blok <pre>: czytnik ma oglosic
+            zmiane stanu, a nie recytowac cale zapytanie. */}
+        <div role="status" aria-live="polite">
+          <h2
+            ref={confirmRef}
+            tabIndex={-1}
+            className="type-h2 flex items-center gap-3 text-white"
           >
-            k9@pakt.pl
-          </a>
-          . Odpowiadamy w ciągu dwóch dni roboczych.
-        </p>
+            <CheckIcon className="shrink-0 text-nf-text" />
+            Zapytanie przygotowane
+          </h2>
+          <p className="mt-4 leading-relaxed text-nf-muted">
+            Ten formularz nie wysyła wiadomości. Skopiuj treść poniżej i wyślij ją na{" "}
+            <a
+              href="mailto:k9@pakt.pl"
+              className="text-white underline underline-offset-4 hover:text-nf-red-bright"
+            >
+              k9@pakt.pl
+            </a>
+            . Odpowiadamy w ciągu dwóch dni roboczych.
+          </p>
+        </div>
+
         <pre className="mt-6 overflow-x-auto whitespace-pre-wrap rounded-[2px] border border-nf-border bg-nf-elevated p-5 font-mono text-xs leading-relaxed text-nf-text">
           {summary}
         </pre>
@@ -99,7 +195,10 @@ export function K9InquiryForm({ categories, products }: K9InquiryFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-12 lg:grid-cols-12">
+    // noValidate: dymki przegladarki znikaja same i nie da sie ich powiazac z polem przez
+    // aria-describedby. Warstwa bledow jest nasza, required zostaje - niesie semantyke
+    // pola wymaganego dla czytnika ekranu.
+    <form onSubmit={handleSubmit} noValidate className="grid gap-12 lg:grid-cols-12">
       <div className="lg:col-span-5">
         <h2 className="type-h2 text-white">Dane</h2>
         <div className="mt-6 space-y-5">
@@ -107,13 +206,42 @@ export function K9InquiryForm({ categories, products }: K9InquiryFormProps) {
             <label htmlFor={unitId} className={LABEL}>
               Jednostka lub firma
             </label>
-            <input id={unitId} name="unit" required className={cn(FIELD, "mt-2")} />
+            <input
+              id={unitId}
+              name="unit"
+              required
+              value={values.unit}
+              onChange={(e) => set("unit", e.target.value)}
+              aria-invalid={errors.unit ? true : undefined}
+              aria-describedby={errors.unit ? `${unitId}-error` : undefined}
+              className={cn(FIELD, LINE, errors.unit ? BORDER_BAD : BORDER_OK, "mt-2")}
+            />
+            {errors.unit && (
+              <p id={`${unitId}-error`} className={ERROR}>
+                {errors.unit}
+              </p>
+            )}
           </div>
           <div>
             <label htmlFor={personId} className={LABEL}>
               Osoba kontaktowa
             </label>
-            <input id={personId} name="person" required className={cn(FIELD, "mt-2")} />
+            <input
+              id={personId}
+              name="person"
+              required
+              autoComplete="name"
+              value={values.person}
+              onChange={(e) => set("person", e.target.value)}
+              aria-invalid={errors.person ? true : undefined}
+              aria-describedby={errors.person ? `${personId}-error` : undefined}
+              className={cn(FIELD, LINE, errors.person ? BORDER_BAD : BORDER_OK, "mt-2")}
+            />
+            {errors.person && (
+              <p id={`${personId}-error`} className={ERROR}>
+                {errors.person}
+              </p>
+            )}
           </div>
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
@@ -125,14 +253,32 @@ export function K9InquiryForm({ categories, products }: K9InquiryFormProps) {
                 name="email"
                 type="email"
                 required
-                className={cn(FIELD, "mt-2")}
+                autoComplete="email"
+                value={values.email}
+                onChange={(e) => set("email", e.target.value)}
+                aria-invalid={errors.email ? true : undefined}
+                aria-describedby={errors.email ? `${emailId}-error` : undefined}
+                className={cn(FIELD, LINE, errors.email ? BORDER_BAD : BORDER_OK, "mt-2")}
               />
+              {errors.email && (
+                <p id={`${emailId}-error`} className={ERROR}>
+                  {errors.email}
+                </p>
+              )}
             </div>
             <div>
               <label htmlFor={phoneId} className={LABEL}>
                 Telefon
               </label>
-              <input id={phoneId} name="phone" type="tel" className={cn(FIELD, "mt-2")} />
+              <input
+                id={phoneId}
+                name="phone"
+                type="tel"
+                autoComplete="tel"
+                value={values.phone}
+                onChange={(e) => set("phone", e.target.value)}
+                className={cn(FIELD, LINE, BORDER_OK, "mt-2")}
+              />
             </div>
           </div>
           <div>
@@ -143,7 +289,9 @@ export function K9InquiryForm({ categories, products }: K9InquiryFormProps) {
               id={deadlineId}
               name="deadline"
               placeholder="np. do końca kwartału"
-              className={cn(FIELD, "mt-2")}
+              value={values.deadline}
+              onChange={(e) => set("deadline", e.target.value)}
+              className={cn(FIELD, LINE, BORDER_OK, "mt-2")}
             />
           </div>
           <div>
@@ -154,7 +302,9 @@ export function K9InquiryForm({ categories, products }: K9InquiryFormProps) {
               id={notesId}
               name="notes"
               rows={4}
-              className="mt-2 w-full rounded-[2px] border border-nf-border bg-nf-elevated px-4 py-3 text-sm text-nf-text placeholder:text-nf-dim"
+              value={values.notes}
+              onChange={(e) => set("notes", e.target.value)}
+              className={cn(FIELD, BORDER_OK, "mt-2 px-4 py-3")}
             />
           </div>
         </div>
@@ -188,26 +338,31 @@ export function K9InquiryForm({ categories, products }: K9InquiryFormProps) {
                           <p className="text-sm text-nf-text">{product.name}</p>
                           <p className="type-meta mt-1 text-nf-dim">{product.sku}</p>
                         </div>
-                        <div className="flex items-center rounded-[2px] border border-nf-border">
+                        {/* grupa z etykieta: bez niej czytnik czyta sam licznik ("3"),
+                            bez informacji, czego dotyczy */}
+                        <div
+                          role="group"
+                          aria-label={`Liczba sztuk: ${product.name}`}
+                          className="flex items-center rounded-[2px] border border-nf-border"
+                        >
                           <button
                             type="button"
                             aria-label={`Zmniejsz liczbę sztuk: ${product.name}`}
-                            onClick={() => setQty(product.slug, qty - 1)}
-                            className="flex h-11 w-11 items-center justify-center text-nf-dim transition-colors hover:text-white"
+                            disabled={qty === 0}
+                            onClick={() => setQty(product, qty - 1)}
+                            className="flex h-11 w-11 items-center justify-center text-nf-dim transition-colors hover:text-white disabled:pointer-events-none disabled:opacity-40"
                           >
                             <MinusIcon width={16} height={16} />
                           </button>
-                          <span
-                            aria-live="polite"
-                            className="min-w-10 text-center text-sm text-nf-text"
-                          >
+                          <span className="min-w-10 text-center text-sm tabular-nums text-nf-text">
                             {qty}
                           </span>
                           <button
                             type="button"
                             aria-label={`Zwiększ liczbę sztuk: ${product.name}`}
-                            onClick={() => setQty(product.slug, qty + 1)}
-                            className="flex h-11 w-11 items-center justify-center text-nf-dim transition-colors hover:text-white"
+                            disabled={qty === MAX_QTY}
+                            onClick={() => setQty(product, qty + 1)}
+                            className="flex h-11 w-11 items-center justify-center text-nf-dim transition-colors hover:text-white disabled:pointer-events-none disabled:opacity-40"
                           >
                             <PlusIcon width={16} height={16} />
                           </button>
@@ -221,17 +376,27 @@ export function K9InquiryForm({ categories, products }: K9InquiryFormProps) {
           })}
         </div>
 
+        {/* jeden region na cala liste pozycji - kazda zmiana licznika idzie tedy */}
+        <p aria-live="polite" className="sr-only">
+          {announcement}
+        </p>
+
         <div className="mt-8 border-t border-nf-border pt-6">
-          <label htmlFor={consentId} className="flex items-start gap-3 text-sm text-nf-muted">
+          <div className="flex items-start gap-3">
             <input
               id={consentId}
               type="checkbox"
               required
-              checked={consent}
-              onChange={(e) => setConsent(e.target.checked)}
-              className="mt-0.5 size-[18px] shrink-0 rounded-[2px] border border-nf-border-strong accent-nf-red"
+              checked={values.consent}
+              onChange={(e) => set("consent", e.target.checked)}
+              aria-invalid={errors.consent ? true : undefined}
+              aria-describedby={errors.consent ? `${consentId}-error` : undefined}
+              className={cn(
+                "mt-0.5 size-[18px] shrink-0 rounded-[2px] border accent-nf-red",
+                errors.consent ? BORDER_BAD : "border-nf-border-strong"
+              )}
             />
-            <span>
+            <label htmlFor={consentId} className="text-sm text-nf-muted">
               Zgadzam się na kontakt w sprawie tego zapytania i na przetwarzanie danych
               zgodnie z{" "}
               <Link
@@ -241,8 +406,13 @@ export function K9InquiryForm({ categories, products }: K9InquiryFormProps) {
                 polityką prywatności
               </Link>
               .
-            </span>
-          </label>
+            </label>
+          </div>
+          {errors.consent && (
+            <p id={`${consentId}-error`} className={ERROR}>
+              {errors.consent}
+            </p>
+          )}
 
           <Button type="submit" size="lg" className="mt-6 w-full sm:w-auto">
             Przygotuj zapytanie

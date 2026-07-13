@@ -191,15 +191,10 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
   },
 ];
 
-export const PAYMENT_METHODS = [
-  "BLIK",
-  "Przelewy24",
-  "Visa",
-  "Mastercard",
-  "PayPal",
-  "Apple Pay",
-  "Klarna",
-];
+// Badge z metoda platnosci to deklaracja, nie ozdoba: pasek pokazuje wylacznie to, czym da
+// sie u nas zaplacic. Kasy online nie ma, zamowienie idzie mailem, wiec zostaja dwie metody,
+// ktore dzialaja: przelew i pobranie. Karty i BLIK wchodza tu razem z kasa online.
+export const PAYMENT_METHODS = ["Przelew bankowy", "Za pobraniem"];
 
 export const REGIONS = [
   "Polska (PLN zł)",

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function CartPage() {
   return (
-    <div className="mx-auto max-w-[1600px] px-4 py-12 md:px-6 md:py-16">
+    <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-24">
       <Breadcrumbs
         items={[
           { label: "Sklep", href: "/collections/collars" },
@@ -21,11 +21,9 @@ export default function CartPage() {
         ]}
       />
 
-      <h1 className="mt-6 font-display text-3xl font-bold uppercase leading-tight tracking-tight text-nf-white md:text-4xl">
-        Koszyk
-      </h1>
+      <h1 className="type-h1 mt-6 text-nf-white">Koszyk</h1>
 
-      <div className="mt-10">
+      <div className="mt-12">
         <CartView />
       </div>
     </div>

@@ -82,24 +82,33 @@ html[data-theme="light"] ::selection {
 
 /* Obwodka fokusu jest dwutonowa: biale kolo w czarnej otoczce. Dzieki temu ma >=3:1
    i na papierze, i na graficie - a strona glowna miesza jedno z drugim (ciemny panel K9,
-   ciemna stopka), wiec kolor zalezny od TRASY zostawal niewidoczny na ciemnych wyspach. */
-:focus-visible {
-  outline: 2px solid var(--color-nf-white);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.85);
-}
+   ciemna stopka), wiec kolor zalezny od TRASY zostawal niewidoczny na ciemnych wyspach.
 
-html[data-theme="light"] :focus-visible {
-  outline-color: var(--color-pk-ink);
-  box-shadow: 0 0 0 4px rgba(242, 241, 238, 0.9);
-}
+   CALOSC LEZY W @layer base, i to nie jest kosmetyka. Tailwind trzyma wszystkie klasy
+   uzytkowe w @layer utilities, a regula BEZ warstwy bije kazda regule Z warstwy niezaleznie
+   od specyficznosci. Dopoki ten blok byl bezwarstwowy, klasy focus-visible:outline-*
+   (obwodka wcieta w kontenerach z overflow-hidden) nie mialy zadnego skutku - obwodka
+   dalej wychodzila na zewnatrz i byla przycinana. Teraz utilities wygrywaja z base,
+   wiec pojedyncza kontrolka moze wciagnac obwodke do srodka. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-nf-white);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.85);
+  }
 
-/* ciemne wyspy na jasnej trasie (panel K9, newsletter, stopka) wracaja do bialej obwodki */
-html[data-theme="light"] [data-shell="dark"] :focus-visible,
-html[data-theme="light"] footer :focus-visible,
-html[data-theme="light"] section[data-surface="dark"] :focus-visible {
-  outline-color: var(--color-nf-white);
-  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.85);
+  html[data-theme="light"] :focus-visible {
+    outline-color: var(--color-pk-ink);
+    box-shadow: 0 0 0 4px rgba(242, 241, 238, 0.9);
+  }
+
+  /* ciemne wyspy na jasnej trasie (panel K9, newsletter, stopka) wracaja do bialej obwodki */
+  html[data-theme="light"] [data-shell="dark"] :focus-visible,
+  html[data-theme="light"] footer :focus-visible,
+  html[data-theme="light"] section[data-surface="dark"] :focus-visible {
+    outline-color: var(--color-nf-white);
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.85);
+  }
 }
 
 /* ---- skala typograficzna: jedyne zrodlo rozmiarow naglowkow ----
@@ -216,8 +225,14 @@ html[data-theme="light"] section[data-surface="dark"] :focus-visible {
   }
 }
 
+/* Wlasciwosci rozpisane, NIE skrot: skrot "animation" resetuje animation-play-state,
+   wiec klasa pauzy ([animation-play-state:paused]) nie miala szans zadzialac i przycisk
+   zatrzymania byl atrapa. */
 @utility marquee-track {
-  animation: pk-marquee 42s linear infinite;
+  animation-name: pk-marquee;
+  animation-duration: 42s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
   will-change: transform;
 }
 

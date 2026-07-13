@@ -39,7 +39,7 @@ export default function PrivacyPage() {
         <Bullets
           items={[
             "Zamówienie: imię i nazwisko, adres dostawy, e-mail, telefon, treść zamówienia. Przy fakturze także nazwa firmy i NIP.",
-            "Kontakt: imię, adres e-mail i treść wiadomości wysłanej przez formularz lub pocztą.",
+            "Kontakt: imię, adres e-mail i treść wiadomości, którą wysyłasz do nas pocztą elektroniczną. Formularze na stronie nie przesyłają danych na nasz serwer, tylko przygotowują treść wiadomości po Twojej stronie.",
             "Newsletter: adres e-mail.",
             "Techniczne: adres IP, typ przeglądarki, zdarzenia w sklepie zapisywane w logach serwera.",
             "Płatności: numeru karty nie widzimy i nie przechowujemy. Obsługuje ją operator płatności, my dostajemy tylko status transakcji.",

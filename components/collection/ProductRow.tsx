@@ -233,7 +233,8 @@ export function RowScroller({
 
   const arrowClass = (enabled: boolean, side: "left" | "right") =>
     cn(
-      "absolute inset-y-4 z-10 hidden w-10 items-center justify-center border border-nf-border bg-nf-bg/80 text-white transition-opacity duration-250 ease-nf hover:bg-nf-bg lg:flex",
+      // w-11, nie w-10: cel dotykowy/klikniecia ma miec 44px w obu osiach
+      "absolute inset-y-4 z-10 hidden w-11 items-center justify-center border border-nf-border bg-nf-bg/80 text-white transition-opacity duration-250 ease-nf hover:bg-nf-bg lg:flex",
       side === "left" ? "left-0" : "right-0",
       enabled
         ? "opacity-0 focus-visible:opacity-100 group-hover:opacity-100"
@@ -242,10 +243,20 @@ export function RowScroller({
 
   return (
     <div className="group relative">
-      {/* py-4 keeps the card's image hover-scale from clipping */}
+      {/* py-4 keeps the card's image hover-scale from clipping - i daje zapas obwodce fokusu
+          (8px: 2px linii + 2px odstepu + 4px otoczki), bo overflow-x: auto przycina tez w pionie.
+
+          scroll-px-* : tabowanie wsuwa karte w kadr rowno z krawedzia toru, wiec obwodka
+          ladowala poza kadrem i znikala. Scroll-padding odsuwa punkt zatrzymania o szerokosc
+          paddingu i obwodka miesci sie w calosci.
+
+          has-[:focus-visible]:[mask-image:none] : edge-fade-x wygasza 32px przy obu krawedziach
+          toru. Karta dobita do krawedzi tabulatorem lezy dokladnie w tym wygaszeniu, wiec jej
+          obwodka byla przezroczysta - maska gasla razem z nia. Na czas fokusu z klawiatury maska
+          znika; przy myszy i dotyku wygaszenie zostaje. */}
       <ul
         ref={trackRef}
-        className="edge-fade-x no-scrollbar flex select-none snap-x snap-mandatory gap-4 overflow-x-auto px-4 py-4 md:px-6 lg:cursor-grab"
+        className="edge-fade-x no-scrollbar flex select-none snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 py-4 has-[:focus-visible]:[mask-image:none] md:scroll-px-6 md:px-6 lg:cursor-grab"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={(e) => endDrag(e, true)}

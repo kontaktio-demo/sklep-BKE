@@ -1,6 +1,9 @@
 "use client";
 
-// §8-C [VERDICT: NSDW] - right drawer, cross-sell strip, trust + payment rows
+// §8-C [VERDICT: NSDW] - right drawer, cross-sell strip, trust row
+//
+// Bez paska metod platnosci: w sklepie nie ma kasy, zamowienie skladamy mailem. Ikony
+// BLIK-a i kart nad przyciskiem obiecywalyby platnosc, ktorej nie ma.
 
 import Image from "next/image";
 import { FreeShippingBar } from "@/components/cart/FreeShippingBar";
@@ -17,10 +20,9 @@ import {
 } from "@/components/ui/icons";
 import { PriceTag } from "@/components/ui/PriceTag";
 import { useCart } from "@/lib/cart";
-import { TRUST_TRIAD } from "@/lib/nav";
+import { COMPANY, TRUST_TRIAD } from "@/lib/nav";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
-import { PaymentIcons } from "./PaymentIcons";
 
 const TRUST_ICONS = [ShieldIcon, TruckIcon, ReturnIcon];
 
@@ -43,7 +45,7 @@ function EmptyState({ onShop }: { onShop: () => void }) {
   );
 }
 
-function CartFooter({ subtotal, onCheckout }: { subtotal: number; onCheckout: () => void }) {
+function CartFooter({ subtotal, onGoToCart }: { subtotal: number; onGoToCart: () => void }) {
   return (
     <div className="space-y-4 px-5 py-4">
       <ul className="flex items-center justify-between gap-2 text-[10px] text-nf-muted">
@@ -57,19 +59,20 @@ function CartFooter({ subtotal, onCheckout }: { subtotal: number; onCheckout: ()
           );
         })}
       </ul>
-      <PaymentIcons />
       <FreeShippingBar subtotal={subtotal} />
       <div className="flex items-center justify-between text-sm font-semibold text-nf-white">
         <span>Razem</span>
         <span>{formatPrice(subtotal)}</span>
       </div>
-      <p className="text-xs text-nf-dim">
-        Cena zawiera VAT. Koszt dostawy naliczany przy zamówieniu.
+      <p className="text-xs leading-relaxed text-nf-dim">
+        Cena zawiera VAT. Koszt dostawy naliczany przy zamówieniu. Zamówienie składasz mailem
+        na {COMPANY.shopEmail} - wiadomość z pozycjami i sumą przygotujesz w koszyku.
       </p>
-      {/* Button z href renderuje Link i przekazuje onClick - szuflada zamyka sie przy
-          przejsciu na /koszyk, zeby nie zostac otwarta nad strona koszyka */}
-      <Button href="/koszyk" onClick={onCheckout} className="w-full">
-        Do kasy
+      {/* Przycisk prowadzi tam, gdzie zamowienie da sie zlozyc: na strone koszyka. Button
+          z href renderuje Link i przekazuje onClick - szuflada zamyka sie przy przejsciu,
+          zeby nie zostac otwarta nad strona koszyka */}
+      <Button href="/koszyk" onClick={onGoToCart} className="w-full">
+        Przejdź do koszyka
       </Button>
     </div>
   );
@@ -89,7 +92,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
       side="right"
       title="Twój koszyk"
       footer={
-        isEmpty ? undefined : <CartFooter subtotal={subtotal} onCheckout={closeCart} />
+        isEmpty ? undefined : <CartFooter subtotal={subtotal} onGoToCart={closeCart} />
       }
     >
       {isEmpty ? (
@@ -99,7 +102,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
           <ul className="divide-y divide-nf-border">
             {lines.map((line) => (
               <li key={line.key} className="flex gap-4 py-4">
-                <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-[4px] bg-nf-elevated">
+                <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-[2px] bg-nf-elevated">
                   <Image
                     src={line.product.images[0]}
                     alt={line.product.name}
@@ -125,7 +128,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                     />
                   </div>
                   <div className="mt-2 flex items-center justify-between">
-                    <div className="flex items-center rounded-[4px] border border-nf-border">
+                    <div className="flex items-center rounded-[2px] border border-nf-border">
                       <button
                         type="button"
                         aria-label="Zmniejsz ilość"
@@ -167,7 +170,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
               <ul className="no-scrollbar mt-3 flex gap-3 overflow-x-auto">
                 {suggestions.map((product) => (
                   <li key={product.id} className="w-32 shrink-0">
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-[4px] bg-nf-elevated">
+                    <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] bg-nf-elevated">
                       <Image
                         src={product.images[0]}
                         alt={product.name}
@@ -185,7 +188,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                     <button
                       type="button"
                       onClick={() => addLine(product)}
-                      className="mt-2 flex h-11 w-full items-center justify-center rounded-[4px] bg-nf-red text-xs font-semibold text-white transition-colors duration-250 ease-nf hover:bg-nf-red-hover"
+                      className="mt-2 flex h-11 w-full items-center justify-center rounded-[2px] bg-nf-red text-xs font-semibold text-white transition-colors duration-250 ease-nf hover:bg-nf-red-hover"
                     >
                       Dodaj
                     </button>

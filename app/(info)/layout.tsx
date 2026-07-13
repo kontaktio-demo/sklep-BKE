@@ -1,9 +1,16 @@
 // Wspolna powloka stron informacyjnych (kontakt, dostawa, zwroty, gwarancja, rozmiary,
 // regulamin, polityka prywatnosci, o nas). Ciemny motyw jak reszta sklepu - jasny zostaje
-// wylacznie stronie glownej. Waska kolumna: to sa strony do czytania, nie do przegladania.
+// wylacznie stronie glownej.
+//
+// Kontener jest ten sam co w calym serwisie (max-w-[1600px] px-4 md:px-6), zeby tytul
+// strony zaczynal sie dokladnie pod logo w naglowku. Waska kolumna czytelnicza (900px)
+// siedzi w srodku i trzyma sie lewej krawedzi siatki - to strony do czytania, wiec dlugosc
+// wiersza zostaje ograniczona, ale nie kosztem wspolnej osi.
 
 export default function InfoLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mx-auto max-w-[900px] px-4 py-16 md:px-6 md:py-24">{children}</div>
+    <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-24">
+      <div className="max-w-[900px]">{children}</div>
+    </div>
   );
 }

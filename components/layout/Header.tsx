@@ -69,7 +69,7 @@ function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) 
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Czego szukasz?"
           className={cn(
-            "h-12 min-w-0 flex-1 rounded-[4px] border px-4 text-sm",
+            "h-12 min-w-0 flex-1 rounded-[2px] border px-4 text-sm",
             t.field
           )}
         />
@@ -78,9 +78,7 @@ function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) 
         </Button>
       </form>
       <div className="mt-5">
-        <h3 className={cn("text-[11px] uppercase tracking-widest", t.meta)}>
-          Popularne wyszukiwania
-        </h3>
+        <h3 className={cn("type-meta", t.meta)}>Popularne wyszukiwania</h3>
         <ul className="mt-2 flex flex-wrap gap-2">
           {POPULAR_SEARCHES.map((term) => (
             <li key={term}>
@@ -88,7 +86,7 @@ function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) 
                 href={searchHref(term)}
                 onClick={onClose}
                 className={cn(
-                  "inline-flex h-11 items-center rounded-[4px] border px-3 text-sm transition-colors duration-250 ease-nf",
+                  "inline-flex h-11 items-center rounded-[2px] border px-3 text-sm transition-colors duration-250 ease-nf",
                   t.chip
                 )}
               >
@@ -126,9 +124,7 @@ function MobileNav({
         /* §8-B: K9TG mobile nav is full-screen; cap the width only from sm upward */
         "max-w-none sm:max-w-sm"
       }
-      footer={
-        <p className={cn("px-5 py-4 text-[11px]", t.meta)}>{TRUST_TRIAD.join(" · ")}</p>
-      }
+      footer={<p className={cn("type-meta px-5 py-4", t.meta)}>{TRUST_TRIAD.join(" · ")}</p>}
     >
       <nav aria-label="Nawigacja główna">
         <ul>
@@ -175,14 +171,7 @@ function MobileNav({
                   <div className="space-y-5 px-5 pb-5">
                     {columns.map((col) => (
                       <div key={col.title}>
-                        <h3
-                          className={cn(
-                            "mb-1 text-[11px] uppercase tracking-widest",
-                            t.panelHeading
-                          )}
-                        >
-                          {col.title}
-                        </h3>
+                        <h3 className={cn("type-meta mb-1", t.panelHeading)}>{col.title}</h3>
                         <ul>
                           {col.links.map((link) => (
                             <li key={link.label}>
@@ -303,7 +292,10 @@ export function Header() {
           />
         )}
         {/* no `relative` here - the mega panel positions against the header */}
-        <div className="container mx-auto flex h-16 items-center gap-2 px-4 lg:h-[72px] lg:px-6">
+        {/* ta sama siatka co tresc stron: mx-auto max-w-[1600px] px-4 md:px-6.
+            Stary "container" mial skokowy max-width (40/48/64/80/96rem), wiec powyzej
+            1536px logo stalo w innym miejscu niz tresc pod naglowkiem. */}
+        <div className="mx-auto flex h-16 w-full max-w-[1600px] items-center gap-2 px-4 md:px-6 lg:h-[72px]">
           <button
             type="button"
             aria-label="Otwórz menu"
@@ -314,7 +306,7 @@ export function Header() {
           </button>
           <Logo onDark={!light} />
           {inK9 && (
-            <span className="flex shrink-0 items-center gap-2 pl-1 font-mono text-[10px] uppercase tracking-[0.2em] text-nf-red-bright">
+            <span className="type-meta flex shrink-0 items-center gap-2 pl-1 text-nf-red-bright">
               <span aria-hidden="true" className="h-3 w-px bg-nf-border-strong" />
               <span className="sr-only">Sekcja </span>K9
             </span>

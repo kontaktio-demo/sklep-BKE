@@ -109,22 +109,17 @@ export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
               </Link>
               {open && (
                 <div className={cn("absolute inset-x-0 top-full border-b", t.panel)}>
+                  {/* panel jest absolutny wzgledem <header>, wiec jego kolumny musza
+                      lezec na tej samej siatce co pasek i tresc stron: max-w-[1600px] */}
                   <div
-                    className="container mx-auto grid gap-10 px-4 py-10 lg:px-6"
+                    className="mx-auto grid w-full max-w-[1600px] gap-10 px-4 py-10 md:px-6"
                     style={{
                       gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
                     }}
                   >
                     {columns.map((col) => (
                       <div key={col.title}>
-                        <h3
-                          className={cn(
-                            "mb-3 text-[11px] uppercase tracking-widest",
-                            t.panelHeading
-                          )}
-                        >
-                          {col.title}
-                        </h3>
+                        <h3 className={cn("type-meta mb-3", t.panelHeading)}>{col.title}</h3>
                         <ul>
                           {col.links.map((link) => (
                             <li key={link.label}>

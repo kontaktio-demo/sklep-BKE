@@ -22,6 +22,20 @@ const GROUP_ORDER = [
 
 type ArrayKey = "category" | "type" | "width" | "size" | "availability" | "color";
 
+// Cialo sekcji zwija sie przez grid-template-rows 0fr -> 1fr, a to wymaga overflow-hidden.
+// Kazda kontrolka w srodku ma wiec przyciete wszystko, co wychodzi poza jej pole: zwykla
+// obwodka (2px linii + 2px odstepu + 4px czarnej otoczki) znikala od lewej i od prawej
+// w calosci, bo wiersze filtrow siegaja krawedzi. Zapasu nie da sie tu dolozyc paddingiem:
+// padding w pionie na kontenerze z overflow-hidden zablokowalby zwijanie do zera.
+// Dlatego obwodka wchodzi do srodka kontrolki i czarna otoczka nie jest potrzebna.
+const RING = "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-white focus-visible:shadow-none";
+
+// Wariant dla kontrolek, gdzie fokus lapie element w srodku (checkbox w wierszu, przycisk
+// probki koloru), a obwodka ma obrysowac caly wiersz: pierscien idzie na opakowanie,
+// z elementu jest zdejmowany.
+const RING_WITHIN =
+  "has-[:focus-visible]:outline-2 has-[:focus-visible]:-outline-offset-2 has-[:focus-visible]:outline-white [&_:focus-visible]:outline-none [&_:focus-visible]:shadow-none";
+
 export interface FilterControlsProps {
   groups: FilterGroup[];
   state: FilterState;
@@ -86,7 +100,10 @@ function Section({
               <button
                 type="button"
                 onClick={onClear}
-                className="mt-1 inline-flex min-h-11 items-center text-xs uppercase tracking-widest text-nf-dim transition-colors duration-250 ease-nf hover:text-white"
+                className={cn(
+                  "mt-1 inline-flex min-h-11 items-center rounded-[2px] px-1 text-xs uppercase tracking-widest text-nf-dim transition-colors duration-250 ease-nf hover:text-white",
+                  RING
+                )}
               >
                 Wyczyść
               </button>
@@ -113,7 +130,15 @@ function CheckboxGroup({
         const isChecked = selected.includes(opt.value);
         return (
           <li key={opt.value}>
-            <label className="flex min-h-11 cursor-pointer items-center gap-3">
+            {/* obwodka obrysowuje caly wiersz (44px), nie sam kwadracik 18px: w polu
+                przycietym przez overflow-hidden pierscien wokol checkboxa i tak nie ma
+                gdzie sie zmiescic, a wiersz jest czytelniejszym celem */}
+            <label
+              className={cn(
+                "flex min-h-11 cursor-pointer items-center gap-3 rounded-[2px]",
+                RING_WITHIN
+              )}
+            >
               <span className="relative flex size-[18px] shrink-0 items-center justify-center">
                 <input
                   type="checkbox"
@@ -162,7 +187,7 @@ function SwitchRow({
       role="switch"
       aria-checked={checked}
       onClick={onToggle}
-      className="flex min-h-11 w-full items-center gap-3 text-left"
+      className={cn("flex min-h-11 w-full items-center gap-3 rounded-[2px] text-left", RING)}
     >
       <span
         className={cn(
@@ -232,18 +257,25 @@ function PriceSection({
     if (e.key === "Enter") commit();
   };
 
-  const inputClasses =
-    "h-11 w-full rounded-[2px] border border-nf-border bg-nf-elevated px-3 text-sm text-nf-text";
+  const inputClasses = cn(
+    "h-11 w-full rounded-[2px] border border-nf-border bg-nf-elevated px-3 text-sm text-nf-text",
+    RING
+  );
 
   return (
     <div>
-      <RangeSlider
-        min={bounds[0]}
-        max={bounds[1]}
-        value={value}
-        onChange={(v) => onPriceInput(v[0], v[1])}
-        formatValue={(n) => formatPrice(n)}
-      />
+      {/* Suwak nie przyjmuje klasy z zewnatrz, a jego dwa pola type=range siegaja pelnej
+          szerokosci sekcji - obwodka na zewnatrz byla przycinana od lewej i prawej.
+          Wciagamy ja do srodka po klasie toru (.nf-range). */}
+      <div className="[&_.nf-range:focus-visible]:-outline-offset-2 [&_.nf-range:focus-visible]:outline-2 [&_.nf-range:focus-visible]:outline-white [&_.nf-range:focus-visible]:shadow-none">
+        <RangeSlider
+          min={bounds[0]}
+          max={bounds[1]}
+          value={value}
+          onChange={(v) => onPriceInput(v[0], v[1])}
+          formatValue={(n) => formatPrice(n)}
+        />
+      </div>
       <div className="mt-4 flex gap-3">
         <div className="flex-1">
           <label
@@ -307,7 +339,7 @@ function ColorGrid({
         <li
           key={opt.value}
           title={`${opt.label} (${opt.count})`}
-          className="flex flex-col items-center gap-1"
+          className={cn("flex flex-col items-center gap-1 rounded-[2px]", RING_WITHIN)}
         >
           <ColorSwatch
             size="md"

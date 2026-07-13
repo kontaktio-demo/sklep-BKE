@@ -24,6 +24,7 @@ interface SeamTransitionProps {
 export function SeamTransition({ from, to, className }: SeamTransitionProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const baseRef = useRef<HTMLDivElement | null>(null);
+  const coverRef = useRef<HTMLDivElement | null>(null);
   const reduced = usePrefersReducedMotion();
   const [mounted, setMounted] = useState(false);
 
@@ -56,12 +57,12 @@ export function SeamTransition({ from, to, className }: SeamTransitionProps) {
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
-            // gdy gorna warstwa juz przykryla dolna, dolna wypada z tab ordera
-            // i z drzewa dostepnosci - inaczej Tab wchodzi w niewidoczny link
+            // Obie warstwy sa w DOM przez caly czas, wiec obie musza wypadac z tab ordera,
+            // gdy sa niewidoczne: dolna po przykryciu, gorna dopoki jest przycieta maska.
+            // Inaczej Tab wchodzi w link, ktorego nie widac.
             const covered = self.progress > 0.92;
-            if (baseRef.current) {
-              baseRef.current.inert = covered;
-            }
+            if (baseRef.current) baseRef.current.inert = covered;
+            if (coverRef.current) coverRef.current.inert = self.progress < 0.08;
           },
         },
       });
@@ -99,8 +100,12 @@ export function SeamTransition({ from, to, className }: SeamTransitionProps) {
           {from}
         </div>
       </div>
+      {/* inert od startu: warstwa jest przycieta maska do zera, wiec nic w niej nie moze
+          lapac fokusu, dopoki nie zacznie sie odslaniac (onUpdate zdejmuje inert) */}
       <div
+        ref={coverRef}
         data-seam-cover
+        inert
         className="absolute inset-0"
         style={{ clipPath: "inset(100% 0% 0% 0%)" }}
       >

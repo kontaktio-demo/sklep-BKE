@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Breadcrumbs } from "@/components/product/Breadcrumbs";
 import { getK9Categories, getK9Products } from "@/lib/data";
 import { K9InquiryForm } from "@/components/k9/K9InquiryForm";
 
@@ -40,22 +40,14 @@ export default async function K9InquiryPage() {
   return (
     <div className="bg-nf-bg">
       <section className="border-b border-nf-border">
-        <div className={`${CONTAINER} py-12 md:py-16`}>
-          <nav aria-label="Ścieżka nawigacji" className="type-meta text-nf-dim">
-            <ol className="flex flex-wrap items-center gap-2">
-              <li>
-                <Link href="/k9" className="transition-colors hover:text-white">
-                  PAKT-K9
-                </Link>
-              </li>
-              <li aria-hidden="true">/</li>
-              <li aria-current="page" className="text-nf-text">
-                Zapytanie ofertowe
-              </li>
-            </ol>
-          </nav>
+        <div className={`${CONTAINER} py-16 md:py-24`}>
+          {/* te same okruszki co na /k9/[category]: wariant mono, bo to swiat K9 */}
+          <Breadcrumbs
+            mono
+            items={[{ label: "PAKT-K9", href: "/k9" }, { label: "Zapytanie ofertowe" }]}
+          />
 
-          <h1 className="type-h1 mt-8 text-white">Zapytanie ofertowe</h1>
+          <h1 className="type-h1 mt-6 text-white">Zapytanie ofertowe</h1>
           <p className="mt-6 max-w-2xl leading-relaxed text-nf-muted">
             Formularz dla jednostek, hodowli i szkół tresury, które zamawiają sprzęt
             w większej liczbie sztuk lub potrzebują znakowania. Pojedyncze pozycje z
@@ -65,7 +57,7 @@ export default async function K9InquiryPage() {
       </section>
 
       <section className="border-b border-nf-border">
-        <div className={`${CONTAINER} py-12 md:py-16`}>
+        <div className={`${CONTAINER} py-16 md:py-24`}>
           <ul className="grid gap-px bg-nf-border md:grid-cols-2 lg:grid-cols-4">
             {TERMS.map((term) => (
               <li key={term.code} className="bg-nf-bg p-6">
@@ -78,7 +70,7 @@ export default async function K9InquiryPage() {
         </div>
       </section>
 
-      <section className={`${CONTAINER} py-12 md:py-20`}>
+      <section className={`${CONTAINER} py-16 md:py-24`}>
         <K9InquiryForm categories={categories} products={products} />
       </section>
     </div>
