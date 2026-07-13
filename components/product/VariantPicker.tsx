@@ -91,12 +91,16 @@ export function VariantPicker({
                 checked && variant.inStock && "text-white"
               )}
             >
+              {/* Wyprzedany rozmiar zostaje WYBIERALNY (aria-disabled, nie disabled).
+                  Z disabled klient chcacy rozmiar L nie mial jak o niego zapytac: sciezka
+                  "napisz w sprawie dostepnosci" dotyczy konkretnego wariantu, a nie dalo sie
+                  go zaznaczyc. Blokada siedzi na przycisku dodania do koszyka, nie na wyborze. */}
               <input
                 type="radio"
                 name={name}
                 value={variant.sku}
                 checked={checked}
-                disabled={!variant.inStock}
+                aria-disabled={!variant.inStock}
                 onChange={() => onSelect(variant)}
                 className="sr-only"
               />

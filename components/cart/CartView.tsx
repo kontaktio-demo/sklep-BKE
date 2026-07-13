@@ -90,8 +90,13 @@ export function CartView() {
   return (
     <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
       <section aria-label="Pozycje w koszyku" className="lg:col-span-7 xl:col-span-8">
+        {/* pozycja = wariant (wiersz), nie sztuka: wczesniej licznik bral sume ilosci,
+            wiec jeden wiersz z dwiema sztukami pokazywal "2 pozycje" */}
         <p className="type-meta text-nf-dim">
-          {count} {plural(count, "pozycja", "pozycje", "pozycji")}
+          {lines.length} {plural(lines.length, "pozycja", "pozycje", "pozycji")}
+          {count !== lines.length
+            ? `, ${count} ${plural(count, "sztuka", "sztuki", "sztuk")}`
+            : ""}
         </p>
 
         <ul className="mt-4 border-t border-nf-border">

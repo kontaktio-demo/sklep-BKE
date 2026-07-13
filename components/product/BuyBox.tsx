@@ -120,6 +120,12 @@ export function BuyBox({ product }: { product: Product }) {
               ? "Chwilowo niedostępna"
               : `Rozmiar ${SIZE_SHORT[variant.size]} chwilowo niedostępny`}
         </p>
+
+        {/* dane wybranego rozmiaru: po zmianie wariantu zmienia sie cena i SKU, wiec obwod
+            i waga tez musza byc widoczne w tym samym miejscu, a nie dopiero w tabeli nizej */}
+        <p aria-live="polite" className="type-meta text-nf-dim">
+          Obwód {variant.neck} / waga {variant.weightGrams} g
+        </p>
       </div>
 
       <div className="mt-8 space-y-7">

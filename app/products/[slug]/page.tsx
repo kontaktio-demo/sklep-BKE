@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 import { ProductRow } from "@/components/collection/ProductRow";
 import { QuickViewProvider } from "@/components/collection/QuickViewModal";
 import { Breadcrumbs, type BreadcrumbItem } from "@/components/product/Breadcrumbs";
+import { SIZE_SHORT } from "@/lib/sizes";
 import { BuyBox } from "@/components/product/BuyBox";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductSections } from "@/components/product/ProductSections";
@@ -63,6 +64,22 @@ export async function generateMetadata({
 }
 
 function productJsonLd(product: Product): string {
+  // Oferta per WARIANT: wczesniej byla jedna oferta z cena OD i SKU modelu, czyli numerem,
+  // ktorego nie da sie zamowic. Wyszukiwarka dostawala cene jednego rozmiaru jako cene calosci.
+  const offers = product.variants.map((variant) => ({
+    "@type": "Offer",
+    url: `/products/${product.slug}`,
+    sku: variant.sku,
+    name: `${product.name}, rozmiar ${SIZE_SHORT[variant.size]} (${variant.neck})`,
+    price: variant.price,
+    priceCurrency: product.currency,
+    availability: variant.inStock
+      ? "https://schema.org/InStock"
+      : "https://schema.org/OutOfStock",
+  }));
+
+  const prices = product.variants.map((v) => v.price);
+
   const data = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -72,13 +89,12 @@ function productJsonLd(product: Product): string {
     sku: product.sku,
     brand: { "@type": "Brand", name: BRAND },
     offers: {
-      "@type": "Offer",
-      url: `/products/${product.slug}`,
-      price: product.price,
+      "@type": "AggregateOffer",
       priceCurrency: product.currency,
-      availability: product.inStock
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock",
+      lowPrice: Math.min(...prices),
+      highPrice: Math.max(...prices),
+      offerCount: offers.length,
+      offers,
     },
   };
 

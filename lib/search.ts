@@ -135,7 +135,28 @@ function fields(product: Product): string[][] {
  * dzieki temu "obroża robocza" nie wyrzuca calego katalogu tylko dlatego, ze wszystko
  * nazywa sie "obroża".
  */
+/** Wyglada jak numer katalogowy: PAKT-RAN-175-M, K9-PAT-175-L, PAKT-RAN-175 */
+const SKU_RE = /^[a-z0-9]+(?:-[a-z0-9]+){2,}$/i;
+
 export function searchProducts(products: Product[], query: string): Product[] {
+  const trimmed = query.trim();
+
+  // Zapytanie o numer katalogowy obslugujemy osobno i doslownie. Rozbicie SKU na tokeny
+  // dawalo smieci: "175" trafialo w kazdy model o szerokosci 4,5 cm, a kod rozmiaru "M"
+  // w kazdy model, bo kazdy ma wariant M. Klient przepisujacy SKU z maila dostawal liste
+  // zamiast tego jednego produktu.
+  if (SKU_RE.test(trimmed)) {
+    const needle = trimmed.toUpperCase();
+    // Brak trafienia = pusty wynik, NIE dopasowanie rozmyte. Wyszukiwarka pyta osobno
+    // o linie sklepu i K9, wiec fallback podsuwalby przypadkowy model z drugiej linii:
+    // token "175" trafia w kazda obroze 4,5 cm, a kod rozmiaru "M" w kazdy model.
+    return products.filter(
+      (product) =>
+        product.sku.toUpperCase() === needle ||
+        product.variants.some((variant) => variant.sku.toUpperCase() === needle)
+    );
+  }
+
   const tokens = words(query);
   if (tokens.length === 0) return [];
 

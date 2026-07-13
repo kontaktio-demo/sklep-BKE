@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { SIZE_NAME, SIZE_NECK, SIZE_ORDER, SIZE_WEIGHT } from "@/lib/sizes";
+import type { CollarSize } from "@/lib/types";
 import { Bullets, InfoHeader, InfoLink, Note, P, Section, Steps } from "../_ui";
 
 export const metadata: Metadata = {
@@ -8,26 +10,21 @@ export const metadata: Metadata = {
   alternates: { canonical: "/tabela-rozmiarow" },
 };
 
-const SIZES: { name: string; neck: string; weight: string; dogs: string }[] = [
-  {
-    name: "Mały",
-    neck: "28-36 cm",
-    weight: "8-20 kg",
-    dogs: "Beagle, border collie, cocker spaniel, mniejszy owczarek australijski",
-  },
-  {
-    name: "Średni",
-    neck: "38-46 cm",
-    weight: "20-35 kg",
-    dogs: "Owczarek belgijski malinois, owczarek niemiecki, labrador, boxer",
-  },
-  {
-    name: "Duży",
-    neck: "48-60 cm",
-    weight: "35-60 kg",
-    dogs: "Rottweiler, dog niemiecki, cane corso, duży owczarek kaukaski",
-  },
-];
+// Zakresy ida z lib/sizes (tego samego slownika, co karta produktu i filtry). Wczesniej
+// ta strona trzymala wlasna kopie i podawala inna wage psa: pies 18 kg byl tu "Maly",
+// a na karcie produktu "Sredni". Rasy sa lokalne, bo nie ma ich w slowniku.
+const DOGS: Record<CollarSize, string> = {
+  small: "Beagle, border collie, cocker spaniel, mniejszy owczarek australijski",
+  medium: "Owczarek belgijski malinois, owczarek niemiecki, labrador, boxer",
+  large: "Rottweiler, dog niemiecki, cane corso, duży owczarek kaukaski",
+};
+
+const SIZES = SIZE_ORDER.map((size) => ({
+  name: SIZE_NAME[size],
+  neck: SIZE_NECK[size],
+  weight: SIZE_WEIGHT[size],
+  dogs: DOGS[size],
+}));
 
 const WIDTHS: { width: string; use: string }[] = [
   {
