@@ -92,16 +92,19 @@ const STUDIO = {
     sheenBottom: "#16161a",
     sheenBottomOpacity: 0.05,
   },
+  // Studio K9 stoi na powierzchniach z K9_IDENTITY (§1): karta #161616 schodzaca do tla
+  // strony #0E0E0E. Stary grafit (#24282c) na czerni sekcji czytal sie jak szare pudlo
+  // doklejone do kadru.
   dark: {
-    bgTop: "#24282c",
-    bgBottom: "#1a1d20",
+    bgTop: "#191919",
+    bgBottom: "#0e0e0e",
     floor: "#000000",
-    floorOpacity: 0.4,
+    floorOpacity: 0.45,
     grain: "0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.012 0",
     sheenTop: "#ffffff",
-    sheenTopOpacity: 0.05,
+    sheenTopOpacity: 0.04,
     sheenBottom: "#000000",
-    sheenBottomOpacity: 0.08,
+    sheenBottomOpacity: 0.1,
   },
 };
 

@@ -11,7 +11,9 @@ import { cn } from "@/lib/utils";
 // wiec strona ma tylko naglowek, pasek kategorii, tabele pozycji i stopke z liczba pozycji.
 // Z tego samego powodu strona NIE jest owinieta w QuickViewProvider - nic tu go nie otwiera.
 
-const CONTAINER = "mx-auto max-w-[1600px] px-4 md:px-6";
+// Kontener sekcji K9 wg K9_IDENTITY §3: 1440 px, marginesy clamp(20px, 4vw, 48px).
+// Sklep cywilny ma szerszy (1600 px) - to dwa osobne uklady, nie jeden wspolny.
+const CONTAINER = "mx-auto max-w-[1440px] px-5 md:px-8 lg:px-12";
 
 const SM_COLS = 2;
 const XL_COLS = 3;
@@ -69,17 +71,13 @@ export default async function K9CategoryPage({
 
   return (
     <>
-      <header className="relative overflow-hidden border-b border-nf-border">
-        <div
-          aria-hidden="true"
-          className="grid-tech pointer-events-none absolute inset-0 [--grid-size:48px]"
-        />
-
-        <div className={cn(CONTAINER, "relative pb-10 pt-8 lg:pb-14")}>
+      {/* Bez siatki technicznej i bez szrafury: K9_IDENTITY nie zna tych wzorow, a §6
+          zakazuje dekoracji, ktorej nie ma ani w referencji, ani w specyfikacji.
+          Strukture rysuja WLOSOWE LINIE i czerwona linia sekcji - i tyle. */}
+      <header className="border-b border-k9-border bg-k9-bg">
+        <div className={cn(CONTAINER, "pb-10 pt-8 lg:pb-14")}>
           <nav aria-label="Ścieżka nawigacji">
-            {/* type-meta: jedno zrodlo dla oznaczen technicznych w K9. Recznie skladany
-                font-mono z innym trackingiem rozjezdzal sie z kodami na kaflach */}
-            <ol className="type-meta flex flex-wrap items-center gap-x-2 text-nf-dim">
+            <ol className="type-k9-spec flex flex-wrap items-center gap-x-2 text-k9-muted">
               <li>
                 <Link
                   href="/k9"
@@ -97,23 +95,21 @@ export default async function K9CategoryPage({
             </ol>
           </nav>
 
-          {/* bez znacznikow naroznikowych i bez maskowanego wjazdu naglowka: to byly
-              ozdobniki, ktore nie niosly zadnej informacji */}
           <div className="mt-8">
-            {/* pas ostrzegawczy - jedyne uzycie szrafury na stronie */}
-            <div aria-hidden="true" className="hatch-red h-1.5 w-24" />
+            {/* czerwona linia 2 px jako znacznik sekcji - struktura rysowana linia (§3) */}
+            <span aria-hidden="true" className="block h-0.5 w-16 bg-k9-red" />
 
-            <p className="type-meta mt-5 text-nf-dim">
+            <p className="type-k9-eyebrow mt-5 text-k9-muted">
               {category.code}
-              <span aria-hidden="true" className="px-2 text-nf-border-strong">
-                /
+              <span aria-hidden="true" className="px-2 text-k9-red">
+                {"//"}
               </span>
               Sprzęt służbowy
             </p>
 
-            <h1 className="type-h1 mt-4 text-nf-white">{category.title}</h1>
+            <h1 className="type-k9-h2 mt-4 text-k9-white">{category.title}</h1>
 
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-nf-muted md:text-base">
+            <p className="type-k9-body mt-4 max-w-2xl text-k9-text">
               {category.description}
             </p>
           </div>
@@ -128,11 +124,9 @@ export default async function K9CategoryPage({
 
       <div className={cn(CONTAINER, "pb-20 pt-10")}>
         {products.length === 0 ? (
-          <div className="border border-nf-border p-10 text-center">
-            <p className="type-meta text-nf-dim">
-              Brak pozycji w tej kategorii
-            </p>
-            <p className="mt-3 text-sm text-nf-muted">
+          <div className="border border-k9-border p-10">
+            <p className="type-k9-spec text-k9-muted">Brak pozycji w tej kategorii</p>
+            <p className="type-k9-body mt-3 text-k9-text">
               Pozostały sprzęt K9 znajdziesz w kategoriach na pasku powyżej.
             </p>
           </div>
@@ -169,7 +163,7 @@ export default async function K9CategoryPage({
               ))}
             </ul>
 
-            <div className="type-meta mt-4 flex items-center justify-between text-nf-dim">
+            <div className="type-k9-spec mt-4 flex items-center justify-between text-k9-muted">
               <span>Pozycji: {products.length}</span>
               <span aria-hidden="true">{category.code}</span>
             </div>

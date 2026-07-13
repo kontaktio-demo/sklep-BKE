@@ -15,6 +15,28 @@ osobna przestrzeń adresów (`lib/routes.ts`) i `notFound()` na obu trasach kart
 Ceny w PLN, formatowanie `pl-PL`. Backendu nie ma: formularze nie udają wysyłki, tylko
 przygotowują treść i otwierają program pocztowy. Koszyk żyje w `localStorage`.
 
+## Tożsamość PAKT-K9 (`K9_IDENTITY.md`) - wartości są prawem
+
+Sekcja K9 ma **własną tożsamość wizualną**, opisaną w `K9_IDENTITY.md`. Obowiązuje na
+trasach `/k9/*` i nie wolno w niej podmieniać wartości "na oko":
+
+- **Paleta:** tło `#0E0E0E`, karty `#161616`, warstwa wyższa `#1E1E1E`, tekst `#EDEDED`,
+  drobny `#8A8A8A`, linie `rgba(255,255,255,.08)` / `.16`. Czerwień `#E50914` jest
+  **jedynym** akcentem i używa się jej oszczędnie (CTA, stan aktywny, linia sekcji,
+  jedno słowo w nagłówku). Nigdy jako duże wypełnienie.
+- **Typografia:** Archivo 800/900 (nagłówki, wersaliki, ciasny tracking), Geist Sans
+  (treść), **Geist Mono (każdy odczyt techniczny: `K9-01`, `ZERWANIE 380 KG`, `1000D`)**.
+  Inter i system-ui są w K9 **zakazane**. Klasy: `type-k9-hero` / `-h2` / `-h3` / `-body`
+  / `-meta` / `-spec` / `-eyebrow`.
+- **Geometria:** promień maks. 2 px (token `--radius-control`, w sklepie cywilnym 4 px),
+  elewacja przez **rozjaśnienie obwódki**, nigdy przez cień. Zero gradientowych plam,
+  zero ikon w kółkach, zero wyśrodkowanego wszystkiego.
+- **Rytm:** kontener 1440 px; sekcje gęste `clamp(56px, 6vw, 88px)`, sekcje oddechowe
+  `clamp(96px, 12vw, 160px)`. Padding nie jest wszędzie ten sam - to celowe.
+
+Zanim dołożysz cokolwiek do `/k9`, sprawdź listę zakazów (§6 dokumentu). Jeżeli element
+nie stoi ani w referencji, ani w specyfikacji, nie ma go tam.
+
 ## Dwa światy w jednym zestawie nazw (`app/globals.css`)
 
 Tokeny `nf-*` są **semantyczne i odwracają się same** w zależności od zakresu:

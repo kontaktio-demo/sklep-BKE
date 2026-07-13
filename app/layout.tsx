@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fjalla_One, Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo, Fjalla_One, Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { LenisProvider } from "@/components/motion/LenisProvider";
 import { CartProvider } from "@/lib/cart";
@@ -11,8 +11,12 @@ import { Newsletter } from "@/components/layout/Newsletter";
 import { Footer } from "@/components/layout/Footer";
 import { getProducts } from "@/lib/data";
 
-// Naglowki: kondensowany grotesk w jednej wadze. Archivo Black w rozmiarze bilbordu
-// bylo najmocniejszym sygnalem "prezentacja, nie sklep".
+// DWA SKLEPY = DWA KROJE PISMA. To nie jest niekonsekwencja, tylko konsekwencja podzialu:
+// sklep cywilny idzie za referencja sklepowa (kondensowany Fjalla + Inter), a PAKT-K9 ma
+// wlasna tozsamosc wizualna (K9_IDENTITY.md): Archivo 800/900 na naglowki, Geist Sans
+// na tresc, Geist Mono na kazdy odczyt techniczny.
+
+// ---- sklep cywilny ----
 const display = Fjalla_One({
   variable: "--font-display-condensed",
   subsets: ["latin", "latin-ext"],
@@ -24,9 +28,24 @@ const inter = Inter({
   subsets: ["latin", "latin-ext"],
 });
 
-// oznaczenia techniczne (kody kategorii, SKU, dane) - sekcja K9 i meta na stronie głównej
-const mono = JetBrains_Mono({
-  variable: "--font-mono-tech",
+// ---- PAKT-K9 ----
+// Archivo: naglowki bilbordowe, uppercase, ciasny tracking (§2 K9_IDENTITY)
+const archivo = Archivo({
+  variable: "--font-k9-display",
+  subsets: ["latin", "latin-ext"],
+  weight: ["800", "900"],
+});
+
+// Geist Sans: tresc i interfejs K9. NIE Inter, NIE system-ui - to jest wprost zakazane w §6
+const geist = Geist({
+  variable: "--font-k9-sans",
+  subsets: ["latin", "latin-ext"],
+});
+
+// Geist Mono: kazdy odczyt techniczny (1000D, ZERWANIE 380 KG, 168 g, K9-01).
+// To ten kroj sprawia, ze sekcja czyta sie jak karta sprzetu, a nie jak strona sklepu
+const geistMono = Geist_Mono({
+  variable: "--font-k9-mono",
   subsets: ["latin", "latin-ext"],
   weight: ["400", "500"],
 });
@@ -82,7 +101,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${display.variable} ${inter.variable} ${mono.variable} antialiased`}
+        className={`${display.variable} ${inter.variable} ${archivo.variable} ${geist.variable} ${geistMono.variable} antialiased`}
       >
         <a
           href="#tresc"

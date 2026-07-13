@@ -66,19 +66,122 @@
   --color-pk-line-strong: rgba(22, 22, 26, 0.3);
   --color-pk-red: #c20812;
 
+  /* ---- TOZSAMOSC PAKT-K9 (K9_IDENTITY.md §1): wartosci sa prawem, bez podmian.
+     Stoja w @theme, bo Tailwind musi z nich wygenerowac klasy (bg-k9-bg, text-k9-red...).
+     Sa STALE - o tym, gdzie wolno ich uzyc, decyduje sekcja, a nie motyw: zyja wylacznie
+     w /k9. Sklep cywilny ma wlasna palete powyzej i nic tu nie siega. */
+  --color-k9-bg: #0e0e0e; /* strona */
+  --color-k9-surface: #161616; /* karty */
+  --color-k9-raised: #1e1e1e; /* hover / warstwa wyzsza */
+  --color-k9-red: #e50914; /* JEDYNY akcent */
+  --color-k9-red-hover: #ff1e27;
+  --color-k9-red-deep: #b20710;
+  --color-k9-white: #ffffff;
+  --color-k9-text: #ededed;
+  --color-k9-muted: #8a8a8a;
+  --color-k9-border: rgba(255, 255, 255, 0.08);
+  --color-k9-border-hi: rgba(255, 255, 255, 0.16);
+
+  /* Promien kontrolki jest TOKENEM, nie liczba wpisana w komponent: sklep cywilny ma 4 px
+     (referencja sklepowa), a PAKT-K9 schodzi do 2 px, bo tozsamosc K9 jest ostra (§4).
+     Dzieki temu ten sam Button renderuje sie poprawnie w obu sklepach bez rozgalezien. */
+  --radius-control: 4px;
+
   --ease-nf: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ---- swiat K9: cala sekcja (html[data-theme="dark"]) oraz ciemne wyspy na
-   jasnych trasach (stopka, panel wejsciowy K9) - ten sam zestaw nazw, inne wartosci.
-   Czerwien schodzi z sygnalowej (#e50914) do ciemnej, wojskowej: sygnalowa na
-   grafitie wygladala jak marka rozrywkowa, a nie jak sprzet sluzbowy. ---- */
-html[data-theme="dark"],
-[data-shell="dark"],
-footer[data-shell="dark"] {
-  /* grafit, nie czern: 1c1f22 ma zimny odcien stali, czern #141414 czytala sie
-     jak tlo serwisu filmowego */
+/* ============================================================================
+   TOZSAMOSC PAKT-K9 (K9_IDENTITY.md) - WARTOSCI SA PRAWEM, BEZ PODMIAN.
+
+   Obowiazuje na trasach /k9/* (html[data-theme="dark"]). Sklep cywilny zostaje jasny
+   i nietkniety. Nazwy k9-* sa doslowne (tak jak w dokumencie tozsamosci), a tokeny nf-*
+   sa na nie przemapowane, zeby komponenty wspoldzielone (koszyk, szuflada, dialogi)
+   automatycznie mowily tym samym jezykiem w sekcji K9.
+
+   Czerwien wraca do sygnalowej #E50914 i jest JEDYNYM akcentem. Uzywana oszczednie:
+   CTA, stan aktywny, linia sekcji, jedno slowo w naglowku. Nigdy jako duze wypelnienie.
+   ============================================================================ */
+html[data-theme="dark"] {
+  /* --- przemapowanie tokenow wspoldzielonych na tozsamosc K9 (wartosci k9-* stoja
+     w @theme powyzej, bo Tailwind musi z nich wygenerowac klasy) --- */
+  --color-nf-bg: var(--color-k9-bg);
+  --color-nf-elevated: var(--color-k9-surface);
+  --color-nf-elevated-2: var(--color-k9-raised);
+
+  --color-nf-red: var(--color-k9-red);
+  --color-nf-red-hover: var(--color-k9-red-hover);
+  --color-nf-red-dark: var(--color-k9-red-deep);
+  /* #E50914 jako DROBNY TEKST na #0E0E0E daje 4.0:1 - wystarcza dla elementu graficznego
+     (>=3:1), ale nie dla drobnego napisu (4.5:1). Napisy w czerwieni ida wiec przez
+     ten sam ton rozjasniony o krok, i tylko tam, gdzie czerwien niesie STAN. */
+  --color-nf-red-bright: #ff3b43;
+
+  --color-nf-white: var(--color-k9-white);
+  --color-nf-text: var(--color-k9-text);
+  --color-nf-muted: #a8a8a8;
+  --color-nf-dim: var(--color-k9-muted);
+
+  --color-nf-border: var(--color-k9-border);
+  --color-nf-border-strong: var(--color-k9-border-hi);
+
+  /* krawedz kontrolki musi miec >=3:1 (WCAG 1.4.11), a border-hi ma na #0E0E0E 1.6:1.
+     Linia dekoracyjna zostaje wlosowa, kontrolka dostaje swoj token - inaczej pole
+     formularza w K9 przestaje wygladac jak pole */
+  --color-nf-control: rgba(255, 255, 255, 0.36);
+  --color-nf-control-hover: rgba(255, 255, 255, 0.56);
+
+  --color-pk-paper: var(--color-k9-bg);
+  --color-pk-paper-2: var(--color-k9-surface);
+  --color-pk-ink: var(--color-k9-white);
+  --color-pk-ink-2: var(--color-k9-text);
+  --color-pk-ink-muted: var(--color-k9-muted);
+  --color-pk-line: var(--color-k9-border);
+  --color-pk-line-strong: var(--color-k9-border-hi);
+  --color-pk-red: #ff3b43;
+
+  /* geometria: ostro. Promien kontrolek schodzi z 4 px do 2 px (§4) */
+  --radius-control: 2px;
+
+  color-scheme: dark;
+}
+
+/* Kroje w sekcji K9. Selektor celuje w <body>, bo to na nim next/font stawia zmienne
+   fontow - regula na <html> przegralaby z klasa nasadzona przez next/font.
+   Skutek: kazdy komponent WSPOLDZIELONY (koszyk, karta produktu, okruszki, dialogi)
+   mowi w K9 jezykiem K9, bez rozgalezien w kodzie. */
+html[data-theme="dark"] body {
+  --font-inter: var(--font-k9-sans);
+  --font-mono-tech: var(--font-k9-mono);
+}
+
+/* Naglowki komponentow wspoldzielonych w K9: Archivo 800 zamiast kondensowanej Fjalli.
+   Reguly celowo BEZ warstwy - klasa uzytkowa (@utility type-h1) siedzi w @layer utilities,
+   a regula bezwarstwowa bije kazda regule z warstwy, wiec nadpisuje kroj i wage. */
+html[data-theme="dark"] .type-display,
+html[data-theme="dark"] .type-h1 {
+  font-family: var(--font-k9-display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+html[data-theme="dark"] .type-h2 {
+  font-family: var(--font-k9-display);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+html[data-theme="dark"] .type-h3 {
+  font-family: var(--font-k9-display);
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+/* ---- ciemne wyspy na trasach CYWILNYCH (stopka, newsletter): grafit, nie tozsamosc K9.
+   :not([data-theme="dark"]) jest tu konieczne - bez tego regula na elemencie bilaby
+   zmienne odziedziczone z <html> i stopka na trasie K9 wracalaby do grafitu zamiast
+   zostac w czerni sekcji. ---- */
+html:not([data-theme="dark"]) [data-shell="dark"] {
   --color-nf-bg: #1c1f22;
   --color-nf-elevated: #24282c;
   --color-nf-elevated-2: #2e3338;
@@ -86,8 +189,6 @@ footer[data-shell="dark"] {
   --color-nf-red: #8f1d14;
   --color-nf-red-hover: #a82418;
   --color-nf-red-dark: #6d150e;
-  /* ciemna czerwien jako DROBNY TEKST nie ma na graficie 4.5:1 - do napisow idzie
-     rozjasniony odcien tej samej barwy */
   --color-nf-red-bright: #e0655a;
 
   --color-nf-white: #ffffff;
@@ -97,8 +198,6 @@ footer[data-shell="dark"] {
 
   --color-nf-border: rgba(255, 255, 255, 0.1);
   --color-nf-border-strong: rgba(255, 255, 255, 0.22);
-
-  /* ta sama zasada po ciemnej stronie: 0.22 dawalo kontrolce 1.99:1 na graficie */
   --color-nf-control: rgba(255, 255, 255, 0.38);
   --color-nf-control-hover: rgba(255, 255, 255, 0.58);
 
@@ -224,7 +323,78 @@ body {
   letter-spacing: 0.04em;
 }
 
-/* oznaczenia techniczne: kody kategorii, SKU, dane - tylko swiat K9 */
+/* ---- SKALA PAKT-K9 (K9_IDENTITY.md §2) - wartosci sa prawem ----------------
+   Archivo 800/900 na naglowki (uppercase, ciasny tracking), Geist Sans na tresc,
+   Geist Mono na KAZDY odczyt techniczny. To monospace w danych sprawia, ze sekcja
+   czyta sie jak karta sprzetu, a nie jak zwykla strona sklepu.
+   Klasy zyja WYLACZNIE w /k9 - sklep cywilny ma wlasna skale powyzej.
+   --------------------------------------------------------------------------- */
+
+/* naglowek bilbordowy: jeden na strone, zakotwiczony do lewej */
+@utility type-k9-hero {
+  font-family: var(--font-k9-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+/* naglowek sekcji */
+@utility type-k9-h2 {
+  font-family: var(--font-k9-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+/* tytul karty: grotesk, NIE wersaliki - inaczej cala strona krzyczy */
+@utility type-k9-h3 {
+  font-family: var(--font-k9-sans);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+@utility type-k9-body {
+  font-family: var(--font-k9-sans);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@utility type-k9-meta {
+  font-family: var(--font-k9-sans);
+  font-weight: 400;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+/* odczyt techniczny: 1000D, ZERWANIE 380 KG, 168 G, K9-01 */
+@utility type-k9-spec {
+  font-family: var(--font-k9-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* kicker nad naglowkiem: PAKT-K9 // SPRZET SLUZBOWY */
+@utility type-k9-eyebrow {
+  font-family: var(--font-k9-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* Oznaczenia techniczne w komponentach WSPOLDZIELONYCH (koszyk, karta produktu,
+   okruszki): w K9 musza jechac tym samym monospace co reszta sekcji, wiec kroj bierze
+   sie ze zmiennej, ktora w /k9 wskazuje Geist Mono, a poza nim JetBrains Mono. */
 @utility type-meta {
   font-family: var(--font-mono-tech);
   font-size: 11px;
@@ -250,35 +420,12 @@ body {
   }
 }
 
-/* ---- wzory: wylacznie swiat K9 ---- */
+/* Byly tu wzory sekcji K9: siatka milimetrowa i szrafura. Zniknely, bo tozsamosc K9
+   (K9_IDENTITY.md) ich nie zna, a §6 zakazuje dekoracji, ktorej nie ma ani w referencji,
+   ani w specyfikacji. Strukture rysuja teraz WLOSOWE LINIE i czerwona linia sekcji,
+   a charakter niosa: czern #0E0E0E, jeden czerwony akcent i monospace w kazdym odczycie.
 
-/* siatka milimetrowa; gestosc sterowana --grid-size */
-@utility grid-tech {
-  --grid-size: 64px;
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-  background-size: var(--grid-size) var(--grid-size);
-}
-
-/* szrafura pod pasy ostrzegawcze i znaczniki naroznikowe */
-@utility hatch {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    rgba(255, 255, 255, 0.07) 0 2px,
-    transparent 2px 9px
-  );
-}
-
-@utility hatch-red {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    rgba(143, 29, 20, 0.85) 0 3px,
-    transparent 3px 10px
-  );
-}
-
-/* Bylo tu jeszcze maskowanie wierszy naglowka (wjazd liter) i tor przewijanego pasa
+   Bylo tu tez maskowanie wierszy naglowka (wjazd liter) i tor przewijanego pasa
    parametrow (marquee). Oba znikly razem z komponentami, ktore ich uzywaly: napis
    w nieskonczonej petli nie daje sie przeczytac ani zaznaczyc, a wjezdzajace litery to
    ruch dla ruchu. Interfejs ma byc spokojny, wiec ruch zostal tylko tam, gdzie jest

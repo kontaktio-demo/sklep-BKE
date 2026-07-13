@@ -42,7 +42,10 @@ export function PhotoTile({
       className={cn(
         "group relative block overflow-hidden rounded-[4px] border",
         ratio,
-        dark ? "border-nf-border bg-nf-bg" : "border-nf-border bg-nf-elevated-2",
+        // Kafel wejsciowy do K9 jest zapowiedzia tamtej tozsamosci: czern #0E0E0E,
+        // czerwona linia, monospace. Nie sciagamy tu jednak calego jezyka K9 - to wciaz
+        // strona cywilna, wiec kafel ma byc drzwiami, a nie sekcja.
+        dark ? "border-k9-border bg-k9-bg" : "border-nf-border bg-nf-elevated-2",
         className
       )}
     >
@@ -65,18 +68,13 @@ export function PhotoTile({
           />
         </>
       ) : (
-        // Brak zdjecia: plaszczyzna z materialu sekcji. Kafel K9 dostaje siatke i pas
-        // szrafury, bo to jego swiat. Kafel cywilny zostaje plaskim papierem (bg-nf-elevated-2
-        // z klasy kontenera): zaden wzor techniczny nie ma prawa wejsc do sklepu cywilnego.
-        // Zadnej atrapy fotografii.
+        // Brak zdjecia: plaska plaszczyzna materialu. Siatka techniczna i szrafura znikly
+        // razem z reszta dekoracji spoza tozsamosci K9 (§6) - zostaje czern i czerwona linia.
         dark && (
-          <div aria-hidden="true" className="absolute inset-0">
-            <div
-              className="grid-tech absolute inset-0"
-              style={{ ["--grid-size" as string]: "56px" }}
-            />
-            <div className="hatch-red absolute inset-x-0 bottom-0 h-1.5" />
-          </div>
+          <span
+            aria-hidden="true"
+            className="absolute left-5 top-5 block h-0.5 w-12 bg-k9-red md:left-7 md:top-7"
+          />
         )
       )}
 

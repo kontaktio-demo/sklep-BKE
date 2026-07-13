@@ -49,7 +49,9 @@ function buttonClasses(variant: ButtonVariant, size: ButtonSize, className?: str
     // strony glownej, przyciski w kaflach, linki-CTA) i sklep rozjezdzal sie wizualnie.
     // Bez skalowania na hover - odbijajace sie CTA to slad poprzedniego kierunku,
     // przycisk reaguje wylacznie kolorem.
-    "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-[4px] font-semibold uppercase leading-none tracking-[0.04em] transition-colors duration-250 ease-nf motion-reduce:transition-none",
+    // rounded-control, nie rounded-[4px]: promien jest tokenem. Sklep cywilny ma 4 px,
+    // a PAKT-K9 schodzi do 2 px (tozsamosc K9 jest ostra) - ten sam przycisk, dwa sklepy.
+    "inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-control font-semibold uppercase leading-none tracking-[0.04em] transition-colors duration-250 ease-nf motion-reduce:transition-none",
     // Stan wylaczony ma WLASNE kolory, nie przezroczystosc. opacity-50 na czerwonym CTA
     // dawalo na papierze rozowy przycisk z biala etykieta (okolo 2.6:1), a etykieta niesie
     // tresc ("Chwilowo niedostepna"), wiec musi zostac czytelna.
