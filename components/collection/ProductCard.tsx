@@ -7,7 +7,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuickView } from "@/components/collection/QuickViewModal";
 import { Badge } from "@/components/ui/Badge";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
@@ -34,23 +34,23 @@ export function ProductCard({
 }) {
   const { openQuickView } = useQuickView();
 
-  // Druga warstwa zdjecia zyje wylacznie na hover/focus. Na dotyku nie pokaze sie nigdy,
-  // a i tak byla pobierana - przy 26 kartach to 26 zbednych obrazow na lacze komorkowe.
-  // Montujemy ja tylko na urzadzeniach z realnym kursorem albo po pierwszym fokusie
-  // (klawiatura na sprzecie bez hovera). Sprawdzenie w efekcie, nie w renderze: SSR nie
-  // zna matchMedia, a rozjazd hydracji kosztowalby wiecej niz sam obraz.
+  // Druga warstwa zdjecia montuje sie DOPIERO, gdy kursor wejdzie na TE karte (albo gdy
+  // karta dostanie fokus z klawiatury). Wczesniej wystarczylo, ze urzadzenie ma kursor,
+  // i wszystkie 26 kart ladowalo drugi obraz od razu: 52 obrazy na liscie kolekcji,
+  // z czego 26 niewidocznych. To bylo widac nie tylko na laczu - kazdy z nich trzeba bylo
+  // zdekodowac i trzymac w pamieci, a przy przewijaniu przemalowac.
   const [hoverLayer, setHoverLayer] = useState(false);
   const hasSecondImage = product.images.length > 1;
 
-  useEffect(() => {
-    if (!hasSecondImage) return;
-    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) setHoverLayer(true);
-  }, [hasSecondImage]);
+  const armHoverLayer = () => {
+    if (hasSecondImage) setHoverLayer(true);
+  };
 
   return (
     <article
       className={cn("group/card relative", className)}
-      onFocus={() => setHoverLayer(true)}
+      onPointerEnter={armHoverLayer}
+      onFocus={armHoverLayer}
     >
       <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] border border-nf-border bg-nf-elevated transition-colors duration-300 ease-nf group-hover/card:border-nf-border-strong group-focus-within/card:border-nf-border-strong motion-reduce:transition-none">
         {/* rusza sie tylko warstwa ze zdjeciami - ramka, plakietki i pasek stoja w miejscu */}
@@ -103,7 +103,10 @@ export function ProductCard({
           onClick={() => openQuickView(product)}
           // ten sam powod co wyzej: pasek siedzi przy krawedzi kadru z overflow-hidden,
           // wiec obwodka musi isc do srodka, inaczej fokus na nim jest niewidoczny
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-11 w-full translate-y-1 border-t border-nf-border bg-nf-bg/90 text-sm text-nf-text opacity-0 backdrop-blur-sm transition duration-300 ease-nf hover:text-nf-white focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nf-white focus-visible:shadow-none group-hover/card:pointer-events-auto group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100 motion-reduce:transition-none"
+          // bez backdrop-blur i bez przezroczystosci: warstwa rozmywajaca tlo istniala
+          // w KAZDEJ z 26 kart naraz. Pasek jest teraz pelnym tlem - wyglada tak samo,
+          // a przegladarka nie musi rozmywac zdjecia pod nim przy kazdym przemalowaniu
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-11 w-full translate-y-1 border-t border-nf-border bg-nf-bg text-sm text-nf-text opacity-0 transition duration-300 ease-nf hover:text-nf-white focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nf-white focus-visible:shadow-none group-hover/card:pointer-events-auto group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100 motion-reduce:transition-none"
         >
           Szybki podgląd
         </button>

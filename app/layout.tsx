@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Fjalla_One, Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { LenisProvider } from "@/components/motion/LenisProvider";
 import { CartProvider } from "@/lib/cart";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { ThemeSync } from "@/components/layout/ThemeSync";
@@ -112,16 +111,18 @@ export default async function RootLayout({
           Przejdź do treści
         </a>
         <ThemeSync />
-        <LenisProvider>
-          <CartProvider>
-            <AnnouncementBar />
-            <Header />
-            <main id="tresc">{children}</main>
-            <Newsletter />
-            <Footer />
-            <CartDrawer crossSell={crossSell} />
-          </CartProvider>
-        </LenisProvider>
+        {/* Bez smooth scrolla (Lenis). Biblioteka przejmowala kolko myszy i ANIMOWALA
+            przewijanie w JS, wiec kazda ciezsza klatka zamieniala scroll w gume. Natywne
+            przewijanie idzie po stronie kompozytora przegladarki i nie da sie go zaciac
+            renderem. */}
+        <CartProvider>
+          <AnnouncementBar />
+          <Header />
+          <main id="tresc">{children}</main>
+          <Newsletter />
+          <Footer />
+          <CartDrawer crossSell={crossSell} />
+        </CartProvider>
       </body>
     </html>
   );

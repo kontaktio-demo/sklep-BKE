@@ -55,7 +55,7 @@ export function BestsellerRow({
                     w lewej kolumnie, a miejsca 1-6 maja plakietke */}
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute right-2 top-2 z-20 flex size-7 items-center justify-center rounded-full border border-nf-border-strong bg-nf-bg/85 text-xs font-semibold tabular-nums text-nf-text backdrop-blur-sm"
+                  className="pointer-events-none absolute right-2 top-2 z-20 flex size-7 items-center justify-center rounded-full border border-nf-border-strong bg-nf-bg text-xs font-semibold tabular-nums text-nf-text"
                 >
                   {i + 1}
                 </span>

@@ -34,15 +34,20 @@ export interface ShellTheme {
 // (tusz na jasnym, biel na ciemnym). Literalna biel dawala bialy napis na jasnym pasku,
 // gdy shell ciemny wjezdzal na jasna trase. Wyjatek: text-white na plaskiej czerwieni
 // (bg-nf-red) jest poprawne w obu swiatach - czerwien nie odwraca sie razem z tlem.
+// BEZ backdrop-blur. Rozmycie tla na PRZYKLEJONYM pasku (i w panelu menu) kaze przegladarce
+// przy kazdej klatce przewijania wziac to, co wlasnie przejechalo pod spodem, i rozmyc to
+// od nowa - na calej szerokosci okna. To byla stala oplata za sam scroll, placona po to,
+// zeby rozmyc tlo, ktore i tak zaslania nieprzezroczysta plaszczyzna (95-98%).
+// Tlo jest teraz pelne: wyglada tak samo, kosztuje zero.
 export const SHELL: Record<Theme, ShellTheme> = {
   dark: {
-    shellSolid: "border-nf-border bg-nf-bg/95 backdrop-blur",
+    shellSolid: "border-nf-border bg-nf-bg",
     shellTop: "border-transparent bg-transparent",
     iconButton: "text-nf-text hover:text-nf-white",
     cartBadge: "bg-nf-red text-white",
     navLink: "text-nf-text hover:text-nf-white",
     navChevron: "text-nf-dim",
-    panel: "border-nf-border bg-nf-bg/98 backdrop-blur",
+    panel: "border-nf-border bg-nf-bg",
     panelHeading: "text-nf-dim",
     panelLink: "text-nf-muted hover:text-nf-white",
     line: "border-nf-border",
@@ -52,13 +57,13 @@ export const SHELL: Record<Theme, ShellTheme> = {
     meta: "text-nf-dim",
   },
   light: {
-    shellSolid: "border-pk-line bg-pk-paper/90 backdrop-blur",
+    shellSolid: "border-pk-line bg-pk-paper",
     shellTop: "border-transparent bg-transparent",
     iconButton: "text-pk-ink-2 hover:text-pk-ink",
     cartBadge: "bg-pk-red text-white",
     navLink: "text-pk-ink-2 hover:text-pk-ink",
     navChevron: "text-pk-ink-muted",
-    panel: "border-pk-line bg-pk-paper/98 backdrop-blur",
+    panel: "border-pk-line bg-pk-paper",
     panelHeading: "text-pk-ink-muted",
     panelLink: "text-pk-ink-2 hover:text-pk-ink",
     line: "border-pk-line",

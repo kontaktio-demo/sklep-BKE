@@ -254,40 +254,45 @@ export function Header() {
       return;
     }
 
-    let frame = 0;
-    const sample = () => {
-      frame = 0;
-      const header = document.querySelector("header");
-      const y = (header?.getBoundingClientRect().height ?? 64) + 4;
-      const xs = [window.innerWidth * 0.15, window.innerWidth * 0.5, window.innerWidth * 0.85];
-      const dark = xs.some((x) =>
-        document
-          .elementsFromPoint(x, y)
-          .some(
-            (el) =>
-              el instanceof HTMLElement &&
-              el.dataset.shell === "dark" &&
-              // pasek sam nosi teraz data-shell="dark" (zakres tokenow), a przy niezwinietym
-              // pasku ogloszen probka wypada w jego wnetrzu. Bez tego wykluczenia header
-              // wykrywalby samego siebie i juz nigdy nie wrocilby do jasnego.
-              !header?.contains(el)
-          )
-      );
-      setOverDark(dark);
-    };
+    // IntersectionObserver, NIE probkowanie w kazdej klatce. Poprzednia wersja robila trzy
+    // wywolania elementsFromPoint na kazda klatke przewijania, a kazde z nich wymusza
+    // przeliczenie ukladu (hit-test) na calym drzewie - przy 26 kartach w siatce to byla
+    // stala oplata za sam scroll. Obserwator liczy to samo, ale w przegladarce i tylko
+    // wtedy, gdy cos faktycznie wjedzie pod pasek.
+    const header = document.querySelector("header");
+    const headerH = header?.getBoundingClientRect().height ?? 64;
 
-    const onScroll = () => {
-      if (frame === 0) frame = requestAnimationFrame(sample);
-    };
+    const islands = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-shell="dark"]')
+    ).filter((el) => !header?.contains(el));
 
-    sample();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    return () => {
-      if (frame !== 0) cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
+    if (islands.length === 0) {
+      setOverDark(false);
+      return;
+    }
+
+    const covering = new Set<Element>();
+
+    // Pasek obserwacji to 8 px tuz pod dolna krawedzia naglowka: wszystko powyzej i ponizej
+    // jest przycinane przez rootMargin, wiec "przeciecie" znaczy dokladnie "lezy pod paskiem".
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) covering.add(entry.target);
+          else covering.delete(entry.target);
+        }
+        setOverDark(covering.size > 0);
+      },
+      {
+        rootMargin: `-${Math.round(headerH)}px 0px -${Math.max(
+          0,
+          Math.round(window.innerHeight - headerH - 8)
+        )}px 0px`,
+      }
+    );
+
+    islands.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, [routeLight, pathname]);
 
   // jasne trasy: zawsze pelny pasek. K9: przezroczysty nad hero, pelny po przewinieciu.

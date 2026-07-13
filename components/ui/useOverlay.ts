@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, type RefObject } from "react";
-import { pauseSmoothScroll, resumeSmoothScroll } from "@/components/motion/LenisProvider";
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -68,19 +67,18 @@ export function useOverlayA11y(
     const prevPaddingRight = document.body.style.paddingRight;
     // compensate the vanishing scrollbar so the page doesn't shift on classic-scrollbar platforms
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    // Po usunieciu smooth scrolla samo overflow:hidden wystarcza: przewijanie wraca do
+    // przegladarki, wiec tlo pod otwarta szuflada stoi. Wczesniej trzeba bylo osobno
+    // zatrzymywac Lenisa, bo on przewijal programowo i overflow go nie obchodzil.
     document.body.style.overflow = "hidden";
     if (scrollbarWidth > 0) {
       document.body.style.paddingRight = `${scrollbarWidth}px`;
     }
-    // overflow:hidden nie zatrzymuje Lenisa - on przewija programowo, wiec tlo pod otwarta
-    // szuflada dalej uciekalo przy kreceniu kolkiem
-    pauseSmoothScroll();
 
     return () => {
       document.removeEventListener("keydown", onKeyDown, true);
       document.body.style.overflow = prevOverflow;
       document.body.style.paddingRight = prevPaddingRight;
-      resumeSmoothScroll();
       if (previouslyFocused && document.contains(previouslyFocused)) {
         previouslyFocused.focus();
       }

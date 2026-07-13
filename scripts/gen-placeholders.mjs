@@ -108,6 +108,11 @@ const STUDIO = {
   },
 };
 
+// ZIARNO (feTurbulence) WYLECIALO I NIE MA PRAWA WROCIC.
+// Filtr SVG rasteryzuje sie na CPU przy KAZDYM przemalowaniu obrazka, a na liscie kolekcji
+// takich obrazkow jest 52 (26 kart razy dwie warstwy). Kazde przewiniecie i kazdy hover
+// kazal przegladarce policzyc szum na kadrze 1200x1500 pikseli - stad zacinanie.
+// Zysk wizualny z ziarna: zaden. Koszt: cala plynnosc strony.
 const DEFS = (id, s) => `
   <defs>
     <linearGradient id="bg-${id}" x1="0" y1="0" x2="0" y2="1">
@@ -118,10 +123,6 @@ const DEFS = (id, s) => `
       <stop offset="0%" stop-color="${s.floor}" stop-opacity="${s.floorOpacity}"/>
       <stop offset="100%" stop-color="${s.floor}" stop-opacity="0"/>
     </radialGradient>
-    <filter id="grain-${id}">
-      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" stitchTiles="stitch"/>
-      <feColorMatrix type="matrix" values="${s.grain}"/>
-    </filter>
     <linearGradient id="sheen-${id}" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="${s.sheenTop}" stop-opacity="${s.sheenTopOpacity}"/>
       <stop offset="60%" stop-color="${s.sheenTop}" stop-opacity="0"/>
@@ -283,7 +284,6 @@ function productSvg(slug, hex, chain, variant) {
   <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-${id})"/>
   ${body}
   <rect width="1200" height="1500" fill="url(#sheen-${id})" opacity="0.5"/>
-  <rect width="1200" height="1500" filter="url(#grain-${id})"/>
 </svg>`;
 }
 
@@ -293,24 +293,25 @@ function productSvg(slug, hex, chain, variant) {
 function heroSvg() {
   const rnd = mulberry32(hashCode("hero-collars"));
   const ring = nylonCollar("#4A5D43", rnd, false);
+  // Bez filtrow (rozmycie i ziarno): baner ma 2400x1200 px, a feGaussianBlur i feTurbulence
+  // na tym kadrze to najdrozsza rzecz, jaka mozna kazac policzyc przegladarce przy scrollu.
+  // Cien pod obroza jest teraz zwyklym gradientem radialnym - wyglada tak samo, kosztuje zero.
   return `<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1200" viewBox="0 0 2400 1200">
   <defs>
     <linearGradient id="hero-bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#ffffff"/>
       <stop offset="100%" stop-color="#e7e7e4"/>
     </linearGradient>
-    <filter id="hero-blur"><feGaussianBlur stdDeviation="26"/></filter>
-    <filter id="hero-grain">
-      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.02 0"/>
-    </filter>
+    <radialGradient id="hero-floor" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#16161a" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#16161a" stop-opacity="0"/>
+    </radialGradient>
   </defs>
   <rect width="2400" height="1200" fill="url(#hero-bg)"/>
   <g transform="translate(1130 -120) scale(1.55)">
     ${ring}
   </g>
-  <ellipse cx="1720" cy="1090" rx="640" ry="120" fill="#16161a" opacity="0.14" filter="url(#hero-blur)"/>
-  <rect width="2400" height="1200" filter="url(#hero-grain)"/>
+  <ellipse cx="1720" cy="1090" rx="700" ry="150" fill="url(#hero-floor)"/>
 </svg>`;
 }
 
