@@ -1,8 +1,8 @@
 "use client";
 
 // Pelna strona koszyka. Szuflada (CartDrawer) jest skrotem przy dodawaniu do koszyka,
-// ta strona jest miejscem, w ktorym sie zamowienie sprawdza: pelne pozycje, SKU, kolor,
-// wartosc pozycji i podsumowanie, ktore nie ucieka przy przewijaniu.
+// ta strona jest miejscem, w ktorym sie zamowienie sprawdza: pelne pozycje, rozmiar, SKU
+// wariantu, kolor, wartosc pozycji i podsumowanie, ktore nie ucieka przy przewijaniu.
 
 import Image from "next/image";
 import Link from "next/link";
@@ -12,6 +12,7 @@ import { CartIcon, MinusIcon, PlusIcon, TrashIcon } from "@/components/ui/icons"
 import type { CartLine } from "@/lib/cart";
 import { useCart } from "@/lib/cart";
 import { COMPANY, FREE_SHIPPING_THRESHOLD, SHIPPING_FROM } from "@/lib/nav";
+import { SIZE_SHORT } from "@/lib/sizes";
 import { formatPrice, plural } from "@/lib/utils";
 
 const STEPPER_BUTTON =
@@ -21,8 +22,15 @@ const SUMMARY_ROW = "flex items-baseline justify-between gap-4 text-sm";
 
 const ORDER_SUBJECT = "Zamówienie ze sklepu PAKT";
 
+/** Rozmiar w jednej linii: kod z przyciskow wyboru i obwod szyi, po ktorym sie mierzy.
+ *  Ten sam ciag idzie na ekran i do maila z zamowieniem. */
+function sizeLabel(line: CartLine): string {
+  return `${SIZE_SHORT[line.variant.size]} (${line.variant.neck})`;
+}
+
 /** Zamowienie sklada sie mailem, wiec przycisk musi wyjsc z pelna trescia koszyka:
- *  pozycje, kolory, SKU, ilosci, wartosci i suma. Klient dopisuje adres i wysyla. */
+ *  pozycje, rozmiary, kolory, SKU wariantow, ilosci, wartosci i suma. Bez rozmiaru i SKU
+ *  wariantu wiadomosc nie mowi, co spakowac. Klient dopisuje adres i wysyla. */
 function orderMailHref(lines: CartLine[], subtotal: number, total: number, freeShipping: boolean): string {
   const body = [
     "Dzień dobry,",
@@ -30,8 +38,8 @@ function orderMailHref(lines: CartLine[], subtotal: number, total: number, freeS
     "",
     ...lines.map((line) => {
       const color = line.color ? `, kolor: ${line.color.name}` : "";
-      const value = formatPrice(line.product.price * line.qty, line.product.currency);
-      return `- ${line.product.name} (SKU ${line.product.sku})${color}, sztuk: ${line.qty}, wartość: ${value}`;
+      const value = formatPrice(line.variant.price * line.qty, line.product.currency);
+      return `- ${line.product.name} (SKU ${line.variant.sku}), rozmiar: ${sizeLabel(line)}${color}, sztuk: ${line.qty}, wartość: ${value}`;
     }),
     "",
     `Suma częściowa: ${formatPrice(subtotal)}`,
@@ -87,88 +95,102 @@ export function CartView() {
         </p>
 
         <ul className="mt-4 border-t border-nf-border">
-          {lines.map((line) => (
-            <li
-              key={line.key}
-              className="flex flex-col gap-4 border-b border-nf-border py-6 sm:flex-row"
-            >
-              <Link
-                href={`/products/${line.product.slug}`}
-                className="relative h-32 w-24 shrink-0 overflow-hidden rounded-[2px] bg-nf-elevated"
+          {lines.map((line) => {
+            // rozmiar jest czescia tozsamosci pozycji, wiec wchodzi tez do etykiet
+            // przyciskow: dwa wiersze tego samego modelu roznia sie wylacznie nim
+            const name = `${line.product.name}, rozmiar ${SIZE_SHORT[line.variant.size]}`;
+            return (
+              <li
+                key={line.key}
+                className="flex flex-col gap-4 border-b border-nf-border py-6 sm:flex-row"
               >
-                <Image
-                  src={line.product.images[0]}
-                  alt={line.product.name}
-                  fill
-                  sizes="96px"
-                  className="object-cover"
-                />
-              </Link>
+                <Link
+                  href={`/products/${line.product.slug}`}
+                  className="relative h-32 w-24 shrink-0 overflow-hidden rounded-[2px] bg-nf-elevated"
+                >
+                  <Image
+                    src={line.product.images[0]}
+                    alt={line.product.name}
+                    fill
+                    sizes="96px"
+                    className="object-cover"
+                  />
+                </Link>
 
-              <div className="flex min-w-0 flex-1 flex-col">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <h2 className="text-sm font-medium text-nf-text">
-                      <Link
-                        href={`/products/${line.product.slug}`}
-                        className="transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
-                      >
-                        {line.product.name}
-                      </Link>
-                    </h2>
-                    {line.color && (
-                      <p className="mt-1 text-xs text-nf-muted">Kolor: {line.color.name}</p>
-                    )}
-                    <p className="type-meta mt-1 text-nf-dim">SKU {line.product.sku}</p>
-                    <p className="mt-2 text-xs text-nf-dim">
-                      {formatPrice(line.product.price, line.product.currency)} za sztukę
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <h2 className="text-sm font-medium text-nf-text">
+                        <Link
+                          href={`/products/${line.product.slug}`}
+                          className="transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
+                        >
+                          {line.product.name}
+                        </Link>
+                      </h2>
+                      <p className="mt-1 text-xs text-nf-muted">Rozmiar: {sizeLabel(line)}</p>
+                      {line.color && (
+                        <p className="mt-1 text-xs text-nf-muted">Kolor: {line.color.name}</p>
+                      )}
+                      <p className="type-meta mt-1 text-nf-dim">SKU {line.variant.sku}</p>
+                      <p className="mt-2 text-xs text-nf-dim">
+                        {formatPrice(line.variant.price, line.product.currency)} za sztukę
+                      </p>
+                      {/* stan magazynowy mogl sie zmienic, odkad pozycja trafila do koszyka:
+                          mail z zamowieniem i tak by ja zawieral, wiec musi to byc widoczne */}
+                      {!line.variant.inStock && (
+                        <p className="mt-2 text-xs text-nf-red-bright">
+                          Ten rozmiar jest chwilowo niedostępny. Potwierdzimy termin w odpowiedzi
+                          na zamówienie.
+                        </p>
+                      )}
+                    </div>
+
+                    <p className="shrink-0 text-sm font-semibold text-nf-white">
+                      {formatPrice(line.variant.price * line.qty, line.product.currency)}
                     </p>
                   </div>
 
-                  <p className="shrink-0 text-sm font-semibold text-nf-white">
-                    {formatPrice(line.product.price * line.qty, line.product.currency)}
-                  </p>
-                </div>
+                  <div className="mt-4 flex items-center justify-between gap-4">
+                    <div className="flex items-center rounded-[2px] border border-nf-border">
+                      <button
+                        type="button"
+                        aria-label={`Zmniejsz ilość: ${name}`}
+                        onClick={() => setQty(line.key, line.qty - 1)}
+                        className={STEPPER_BUTTON}
+                      >
+                        <MinusIcon width={16} height={16} />
+                      </button>
+                      <span
+                        aria-live="polite"
+                        className="min-w-8 text-center text-sm text-nf-text"
+                      >
+                        {line.qty}
+                      </span>
+                      <button
+                        type="button"
+                        aria-label={`Zwiększ ilość: ${name}`}
+                        onClick={() => setQty(line.key, line.qty + 1)}
+                        className={STEPPER_BUTTON}
+                      >
+                        <PlusIcon width={16} height={16} />
+                      </button>
+                    </div>
 
-                <div className="mt-4 flex items-center justify-between gap-4">
-                  <div className="flex items-center rounded-[2px] border border-nf-border">
                     <button
                       type="button"
-                      aria-label={`Zmniejsz ilość: ${line.product.name}`}
-                      onClick={() => setQty(line.key, line.qty - 1)}
-                      className={STEPPER_BUTTON}
+                      onClick={() => removeLine(line.key)}
+                      className="flex h-11 items-center gap-2 px-2 text-xs text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
                     >
-                      <MinusIcon width={16} height={16} />
-                    </button>
-                    <span
-                      aria-live="polite"
-                      className="min-w-8 text-center text-sm text-nf-text"
-                    >
-                      {line.qty}
-                    </span>
-                    <button
-                      type="button"
-                      aria-label={`Zwiększ ilość: ${line.product.name}`}
-                      onClick={() => setQty(line.key, line.qty + 1)}
-                      className={STEPPER_BUTTON}
-                    >
-                      <PlusIcon width={16} height={16} />
+                      <TrashIcon width={16} height={16} aria-hidden="true" />
+                      <span>Usuń</span>
+                      <span className="sr-only">{name}</span>
                     </button>
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={() => removeLine(line.key)}
-                    className="flex h-11 items-center gap-2 px-2 text-xs text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
-                  >
-                    <TrashIcon width={16} height={16} aria-hidden="true" />
-                    <span>Usuń</span>
-                    <span className="sr-only">{line.product.name}</span>
-                  </button>
                 </div>
-              </div>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
 
         <div className="mt-6">
@@ -228,7 +250,7 @@ export function CartView() {
               >
                 {COMPANY.shopEmail}
               </a>
-              . Przycisk otwiera wiadomość z pozycjami z koszyka i sumą. Dopisz adres wysyłki,
+              . Przycisk otwiera wiadomość z pozycjami, rozmiarami i sumą. Dopisz adres wysyłki,
               a odpiszemy z potwierdzeniem i danymi do przelewu.
             </p>
           </div>

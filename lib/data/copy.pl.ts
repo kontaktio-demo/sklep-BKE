@@ -15,7 +15,6 @@ export const productCopy: Record<string, ProductCopy> = {
       "Taśma 1000D, szerokość 4,5 cm",
       "Rzep na panel ID i naszywki",
       "Klamra zatrzaskowa, stop cynku",
-      "Obwód 48-60 cm",
     ],
   },
 
@@ -25,7 +24,6 @@ export const productCopy: Record<string, ProductCopy> = {
       "Wersja na spacer i dom, bez elementów typowych dla obroży roboczych. Taśma 2,5 cm z neoprenową wyściółką nie zbiera wody i schnie w kilkadziesiąt minut po deszczu. Klamra zatrzaskowa ze stopu cynku pozwala zdjąć obrożę jedną ręką, bez odpinania smyczy.",
     highlights: [
       "Szerokość 2,5 cm",
-      "Obwód szyi 28-36 cm",
       "Wyściółka z neoprenu",
       "Trzy kolory taśmy",
     ],
@@ -38,7 +36,6 @@ export const productCopy: Record<string, ProductCopy> = {
     highlights: [
       "Rzep na całej długości",
       "Taśma 1000D, szerokość 4,5 cm",
-      "Obwód 38-46 cm",
       "D-ring blokowany przy klamrze",
     ],
   },
@@ -51,7 +48,6 @@ export const productCopy: Record<string, ProductCopy> = {
       "Zgodna z modułami do 45 mm",
       "Szerokość taśmy 4 cm",
       "Rzep na panel ID",
-      "Obwód 38-46 cm",
     ],
   },
 
@@ -60,11 +56,10 @@ export const productCopy: Record<string, ProductCopy> = {
   "vanguard-k9-collar": {
     tagline: "Przeszycia krzyżowe w punktach obciążenia",
     description:
-      "Obroża do szkolenia i pracy z dużym psem. Taśma 1000D o szerokości 4,5 cm, przeszycie krzyżowe przy klamrze i przy D-ringu, czyli w punktach, które puszczają pierwsze. Obwód 48-60 cm daje zapas regulacji na zimową okrywę, a klamra zatrzaskowa zapina się jedną ręką, także w rękawicy. Rzep pod panele identyfikacyjne biegnie przez całą taśmę.",
+      "Obroża do szkolenia i pracy z dużym psem. Taśma 1000D o szerokości 4,5 cm, przeszycie krzyżowe przy klamrze i przy D-ringu, czyli w punktach, które puszczają pierwsze. Zakres regulacji daje zapas na zimową okrywę, a klamra zatrzaskowa zapina się jedną ręką, także w rękawicy. Rzep pod panele identyfikacyjne biegnie przez całą taśmę.",
     highlights: [
       "Przeszycie krzyżowe przy klamrze i D-ringu",
       "Taśma 1000D, szerokość 4,5 cm",
-      "Obwód 48-60 cm",
       "Rzep na panele identyfikacyjne",
     ],
   },
@@ -76,7 +71,6 @@ export const productCopy: Record<string, ProductCopy> = {
     highlights: [
       "Nić odblaskowa po obu stronach",
       "Szerokość 2,5 cm",
-      "Obwód 38-46 cm",
       "Czarny i pomarańczowy",
     ],
   },
@@ -87,7 +81,6 @@ export const productCopy: Record<string, ProductCopy> = {
       "Na dłuższe wyjścia w góry i całodniowe trasy. Taśma 4 cm rozkłada nacisk w miejscu, gdzie ocierają szelki i pas plecaka, a neopren pod spodem nie chłonie wody z mokrej trawy ani śniegu. Trzy stonowane kolory dobrane pod sprzęt turystyczny.",
     highlights: [
       "Szerokość 4 cm",
-      "Obwód 48-60 cm",
       "Neopren odporny na wilgoć",
       "Oliwka, granat, coyote",
     ],
@@ -100,7 +93,6 @@ export const productCopy: Record<string, ProductCopy> = {
     highlights: [
       "Taśma 1000D, szerokość 4 cm",
       "Rzep na panel ID",
-      "Obwód 48-60 cm",
       "Klamra zatrzaskowa ze stopu cynku",
     ],
   },
@@ -112,7 +104,6 @@ export const productCopy: Record<string, ProductCopy> = {
     highlights: [
       "Dwie warstwy taśmy 1000D",
       "Szerokość 4,5 cm",
-      "Obwód 48-60 cm",
       "Rzep na panel ID",
     ],
   },
@@ -123,7 +114,6 @@ export const productCopy: Record<string, ProductCopy> = {
       "Szeroka taśma przy niskiej wadze. Nacisk rozkłada się na większą powierzchnię niż w obrożach 2,5 cm, co ma znaczenie u psów z wrażliwą skórą i cienką sierścią. Wyściółka z neoprenu zaokrąglona na krawędziach, bez rzepu i bez okuć roboczych.",
     highlights: [
       "Szerokość 4 cm",
-      "Obwód 38-46 cm",
       "Wyściółka z neoprenu",
       "Bez panelu ID",
     ],
@@ -137,7 +127,6 @@ export const productCopy: Record<string, ProductCopy> = {
       "Stal nierdzewna, polerowana",
       "Ogniwa spawane, bez ostrych krawędzi",
       "Ogranicznik zacisku pętli",
-      "Obwód 48-60 cm",
     ],
   },
 
@@ -148,7 +137,6 @@ export const productCopy: Record<string, ProductCopy> = {
     highlights: [
       "Stal nierdzewna, polerowana",
       "Ogniwa spawane, gładkie krawędzie",
-      "Obwód 38-46 cm",
       "Do pracy pod nadzorem",
     ],
   },
@@ -160,7 +148,6 @@ export const productCopy: Record<string, ProductCopy> = {
     highlights: [
       "Zgodna z modułami do 45 mm",
       "Szerokość 2,5 cm",
-      "Obwód 38-46 cm",
       "Czarny, czerwony, pomarańczowy",
     ],
   },
@@ -168,10 +155,9 @@ export const productCopy: Record<string, ProductCopy> = {
   "aurora-padded-collar": {
     tagline: "Wyściełana taśma 4 cm dla małych psów",
     description:
-      "Szeroka taśma na małą szyję. Cztery centymetry przy obwodzie 28-36 cm rozkładają nacisk tam, gdzie wąska obroża zostawia zagniecenie w sierści. Wyściółka z neoprenu wykończona na miękko, okucia ze stopu cynku. Kolory: piaskowy, biały i granatowy.",
+      "Szeroka taśma na małą szyję. Cztery centymetry taśmy rozkładają nacisk tam, gdzie wąska obroża zostawia zagniecenie w sierści. Wyściółka z neoprenu wykończona na miękko, okucia ze stopu cynku. Kolory: piaskowy, biały i granatowy.",
     highlights: [
       "Szerokość 4 cm",
-      "Obwód 28-36 cm",
       "Wyściółka z neoprenu",
       "Klamra zatrzaskowa, stop cynku",
     ],
@@ -183,7 +169,6 @@ export const productCopy: Record<string, ProductCopy> = {
       "Model na codzienne trasy poza miastem. Taśma 4 cm, wyściółka z neoprenu, okucia ze stopu cynku, czyli konstrukcja jak w modelach roboczych, ale bez rzepu i bez zapasu taśmy pod moduły. Coyote i oliwka znoszą kurz i błoto lepiej niż jasne kolory.",
     highlights: [
       "Szerokość 4 cm",
-      "Obwód 38-46 cm",
       "Bez panelu ID",
       "Coyote i oliwkowy",
     ],
@@ -195,7 +180,6 @@ export const productCopy: Record<string, ProductCopy> = {
       "Obroża do wody i piachu. Neopren nie nasiąka, a taśma 2,5 cm schnie szybciej niż szersze modele, więc po kąpieli nie zostaje wilgotny pas pod sierścią. Okucia ze stopu cynku, bez elementów stalowych, które mogłyby korodować od soli.",
     highlights: [
       "Szerokość 2,5 cm",
-      "Obwód 28-36 cm",
       "Neopren nie nasiąka wodą",
       "Okucia ze stopu cynku",
     ],
@@ -204,11 +188,10 @@ export const productCopy: Record<string, ProductCopy> = {
   "cipher-tactical-collar": {
     tagline: "Taśma 4,5 cm, pełny rzep, niski profil",
     description:
-      "Szerokość 4,5 cm przy obwodzie 38-46 cm, czyli największa powierzchnia nacisku, jaką da się rozłożyć na średniej szyi. Rzep na całej długości przyjmuje panele ID i oznaczenia funkcyjne. Trzy kolory kryjące: czarny, oliwkowy i coyote.",
+      "Szerokość 4,5 cm, czyli największa powierzchnia nacisku, jaką da się rozłożyć na średniej szyi. Rzep na całej długości przyjmuje panele ID i oznaczenia funkcyjne. Trzy kolory kryjące: czarny, oliwkowy i coyote.",
     highlights: [
       "Taśma 1000D, szerokość 4,5 cm",
       "Rzep na całej długości",
-      "Obwód 38-46 cm",
       "Klamra zatrzaskowa, stop cynku",
     ],
   },
@@ -216,11 +199,10 @@ export const productCopy: Record<string, ProductCopy> = {
   "ember-reflective-collar": {
     tagline: "Odblask i kolor sygnałowy dla małych psów",
     description:
-      "Czerwona albo pomarańczowa taśma z nicią odblaskową. Kolor pracuje przy świetle dziennym, odblask po zmroku i w reflektorach samochodu. Szerokość 2,5 cm, obwód 28-36 cm, wyściółka z neoprenu na całej długości taśmy. Klamra zatrzaskowa ze stopu cynku.",
+      "Czerwona albo pomarańczowa taśma z nicią odblaskową. Kolor pracuje przy świetle dziennym, odblask po zmroku i w reflektorach samochodu. Szerokość 2,5 cm, wyściółka z neoprenu na całej długości taśmy. Klamra zatrzaskowa ze stopu cynku.",
     highlights: [
       "Nić odblaskowa w taśmie",
       "Szerokość 2,5 cm",
-      "Obwód 28-36 cm",
       "Czerwony i pomarańczowy",
     ],
   },
@@ -233,17 +215,15 @@ export const productCopy: Record<string, ProductCopy> = {
       "Stal nierdzewna, polerowana",
       "Ogniwa spawane, D-ring stalowy",
       "Szerokość 4 cm",
-      "Obwód 48-60 cm",
     ],
   },
 
   "willow-heritage-collar": {
     tagline: "Klasyczna wąska obroża, jasna taśma",
     description:
-      "Prosty model bez rzepu i bez okuć roboczych. Taśma 2,5 cm w kolorze piaskowym lub białym, klamra zatrzaskowa, D-ring ze stopu cynku. Wyściółka z neoprenu podszyta pod całą długością taśmy, obwód szyi 38-46 cm. Krawędzie taśmy zgrzewane, nie strzępią się na końcach.",
+      "Prosty model bez rzepu i bez okuć roboczych. Taśma 2,5 cm w kolorze piaskowym lub białym, klamra zatrzaskowa, D-ring ze stopu cynku. Wyściółka z neoprenu podszyta pod całą długością taśmy. Krawędzie taśmy zgrzewane, nie strzępią się na końcach.",
     highlights: [
       "Szerokość 2,5 cm",
-      "Obwód 38-46 cm",
       "Piaskowy lub biały",
       "Bez panelu ID",
     ],
@@ -252,23 +232,21 @@ export const productCopy: Record<string, ProductCopy> = {
   "strike-e-fit-pro-collar": {
     tagline: "Szeroki pasek e-obroży z panelem ID",
     description:
-      "Wersja pod moduły e-obroży dla dużych psów. Taśma 4,5 cm utrzymuje obudowę do 45 mm w jednej pozycji także przy biegu w gęstym poszyciu. Rzep na całej długości mieści panel ID obok modułu, obwód regulowany w zakresie 48-60 cm.",
+      "Wersja pod moduły e-obroży dla dużych psów. Taśma 4,5 cm utrzymuje obudowę do 45 mm w jednej pozycji także przy biegu w gęstym poszyciu. Rzep na całej długości mieści panel ID obok modułu.",
     highlights: [
       "Zgodna z modułami do 45 mm",
       "Taśma 1000D, szerokość 4,5 cm",
       "Rzep na panel ID",
-      "Obwód 48-60 cm",
     ],
   },
 
   "kodiak-duty-collar": {
     tagline: "Szeroka taśma na pracę przez cały dzień",
     description:
-      "Dla przewodników, którzy pracują z psem po kilka godzin dziennie. Taśma 1000D o szerokości 4,5 cm, wyściółka z neoprenu na całej długości, okucia ze stopu cynku. Rzep mieści panel ID i oznaczenia funkcyjne, obwód 48-60 cm.",
+      "Dla przewodników, którzy pracują z psem po kilka godzin dziennie. Taśma 1000D o szerokości 4,5 cm, wyściółka z neoprenu na całej długości, okucia ze stopu cynku. Rzep mieści panel ID i oznaczenia funkcyjne.",
     highlights: [
       "Taśma 1000D, szerokość 4,5 cm",
       "Rzep na panel ID",
-      "Obwód 48-60 cm",
       "Wyściółka z neoprenu",
     ],
   },
@@ -276,10 +254,9 @@ export const productCopy: Record<string, ProductCopy> = {
   "meadow-soft-collar": {
     tagline: "Wąska obroża dla szczeniąt i małych psów",
     description:
-      "Najlżejszy model w ofercie. Taśma 2,5 cm i obwód 28-36 cm pasują na szczenięta oraz psy małych ras. Neoprenowa wyściółka zmniejsza tarcie na miękkiej sierści, klamra zatrzaskowa zapina się jedną ręką, bez ściągania obroży przez głowę.",
+      "Najlżejszy model w ofercie. Taśma 2,5 cm pasuje na szczenięta oraz psy małych ras. Neoprenowa wyściółka zmniejsza tarcie na miękkiej sierści, klamra zatrzaskowa zapina się jedną ręką, bez ściągania obroży przez głowę.",
     highlights: [
       "Szerokość 2,5 cm",
-      "Obwód 28-36 cm",
       "Wyściółka z neoprenu",
       "Trzy kolory taśmy",
     ],
@@ -288,11 +265,10 @@ export const productCopy: Record<string, ProductCopy> = {
   "breeze-mesh-collar": {
     tagline: "Wentylowana obroża na ciepłe miesiące",
     description:
-      "Taśma nylonowa 2,5 cm, a pod nią wyściółka z neoprenu kryta siatką. Powietrze przechodzi pod obrożą, więc po upalnym spacerze nie zostaje wilgotny pas przy skórze. Rozmiar na obwód szyi 28-36 cm, kolory szary i granatowy.",
+      "Taśma nylonowa 2,5 cm, a pod nią wyściółka z neoprenu kryta siatką. Powietrze przechodzi pod obrożą, więc po upalnym spacerze nie zostaje wilgotny pas przy skórze. Kolory szary i granatowy.",
     highlights: [
       "Neopren kryty siatką",
       "Szerokość 2,5 cm",
-      "Obwód 28-36 cm",
       "Szary i granatowy",
     ],
   },
@@ -300,11 +276,10 @@ export const productCopy: Record<string, ProductCopy> = {
   "surge-e-fit-collar": {
     tagline: "Pasek e-obroży w rozmiarze małym",
     description:
-      "Najmniejszy pasek pod moduł w ofercie: obwód 28-36 cm przy taśmie o szerokości 4 cm. Sztywność szerokiej taśmy utrzymuje elektrody w kontakcie z szyją także u psów o wąskim karku. Rzep mieści panel ID, moduł do 45 mm. Taśma czarna, bez nici odblaskowej.",
+      "Najwęższy pasek pod moduł w ofercie: taśma o szerokości 4 cm. Sztywność szerokiej taśmy utrzymuje elektrody w kontakcie z szyją także u psów o wąskim karku. Rzep mieści panel ID, moduł do 45 mm. Taśma czarna, bez nici odblaskowej.",
     highlights: [
       "Zgodna z modułami do 45 mm",
       "Szerokość 4 cm",
-      "Obwód 28-36 cm",
       "Rzep na panel ID",
     ],
   },
@@ -312,12 +287,11 @@ export const productCopy: Record<string, ProductCopy> = {
   "raptor-e-fit-field-collar": {
     tagline: "Pasek e-obroży do pracy w terenie",
     description:
-      "Wersja terenowa: taśma 4 cm w kolorze oliwkowym lub czarnym, rzep pod panel ID i moduł o obudowie do 45 mm. Wyściółka z neoprenu nie chłonie wody, więc obroża nie ciąży po przejściu przez rów i mokre poszycie. Obwód 38-46 cm.",
+      "Wersja terenowa: taśma 4 cm w kolorze oliwkowym lub czarnym, rzep pod panel ID i moduł o obudowie do 45 mm. Wyściółka z neoprenu nie chłonie wody, więc obroża nie ciąży po przejściu przez rów i mokre poszycie.",
     highlights: [
       "Zgodna z modułami do 45 mm",
       "Szerokość 4 cm",
       "Rzep na panel ID",
-      "Obwód 38-46 cm",
     ],
   },
 };

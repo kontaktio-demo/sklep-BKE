@@ -48,13 +48,19 @@ export function applyFilters(products: Product[], state: FilterState): Product[]
     if (state.category.length && !state.category.includes(p.category)) return false;
     if (state.type.length && !state.type.includes(p.type)) return false;
     if (state.width.length && !state.width.includes(p.width)) return false;
-    if (state.size.length && !state.size.includes(p.size)) return false;
+    // rozmiar jest wariantem: model pasuje, gdy MA wariant w wybranym rozmiarze.
+    // Model z S i M liczy sie i pod "maly", i pod "sredni".
+    if (state.size.length && !p.sizes.some((size) => state.size.includes(size))) return false;
     if (state.idPanel && !p.idPanelCompatible) return false;
     if (state.availability.length) {
+      // p.inStock = chociaz jeden wariant dostepny. Model z wyprzedanym duzym
+      // nadal jest "dostepny" - bo w malym da sie go kupic.
       const status = p.inStock ? "in-stock" : "out-of-stock";
       if (!state.availability.includes(status)) return false;
     }
     if (state.color.length && !p.colors.some((c) => state.color.includes(c.name))) return false;
+    // p.price = cena OD (najtanszy wariant). Filtr odsiewa po cenie wejscia w model,
+    // czyli po tej samej liczbie, ktora widac na karcie.
     if (state.price && (p.price < state.price[0] || p.price > state.price[1])) return false;
     return true;
   });
@@ -100,6 +106,11 @@ export function countActiveFilters(state: FilterState): number {
   );
 }
 
+/**
+ * Zakres suwaka liczony po cenie OD, bo po tej samej cenie filtruje applyFilters.
+ * Gorna granica to najdrozsze WEJSCIE w model, nie najdrozszy wariant w sklepie:
+ * duzy rozmiar moze kosztowac wiecej niz maksimum suwaka i to jest poprawne.
+ */
 export function priceBounds(products: Product[]): [number, number] {
   if (!products.length) return [0, 0];
   let min = Infinity;

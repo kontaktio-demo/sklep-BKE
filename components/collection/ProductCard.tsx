@@ -12,6 +12,7 @@ import { useQuickView } from "@/components/collection/QuickViewModal";
 import { Badge } from "@/components/ui/Badge";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
 import { PriceTag } from "@/components/ui/PriceTag";
+import { SIZE_NAME, SIZE_SHORT } from "@/lib/sizes";
 import type { Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -124,6 +125,31 @@ export function ProductCard({
             {product.productType}
           </span>
         </div>
+
+        {/* Rozmiary stoja pod cena, bo tlumacza cene "od": pokazuja, miedzy iloma wariantami
+            ta cena sie rozklada i ktore z nich mozna faktycznie kupic. Niedostepny wariant
+            gasnie I zostaje przekreslony - dwa kanaly, bo sam kolor nie wystarczy przy
+            zaburzeniach rozroznienia barw. Przekreslenie widzi tylko oko, wiec ten sam stan
+            niesie odczyt w sr-only. */}
+        {product.variants.length > 0 && (
+          <ul aria-label="Rozmiary" className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            {product.variants.map((variant) => (
+              <li
+                key={variant.size}
+                className={cn(
+                  "type-meta",
+                  variant.inStock ? "text-nf-muted" : "text-nf-dim line-through"
+                )}
+              >
+                <span aria-hidden="true">{SIZE_SHORT[variant.size]}</span>
+                <span className="sr-only">
+                  {SIZE_NAME[variant.size]}: {variant.inStock ? "dostępny" : "brak"}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+
         {product.colors.length > 0 && (
           <div className="flex items-center gap-1.5 pt-2">
             {product.colors.slice(0, MAX_SWATCHES).map((color) => (

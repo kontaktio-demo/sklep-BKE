@@ -1,7 +1,7 @@
 import { SectionNav } from "@/components/product/SectionNav";
 import { CheckIcon } from "@/components/ui/icons";
 import { getProductFaq } from "@/lib/data/faq";
-import { SIZE_NAME, SIZE_NECK, SIZE_ORDER, SIZE_WEIGHT } from "@/lib/sizes";
+import { SIZE_NAME, SIZE_NECK, SIZE_ORDER, SIZE_SHORT, SIZE_WEIGHT } from "@/lib/sizes";
 import type { Product } from "@/lib/types";
 import { cn, formatPrice } from "@/lib/utils";
 
@@ -33,6 +33,11 @@ export function ProductSections({ product }: { product: Product }) {
   // na wypadek rozejscia sie obu slownikow
   const showCompatibility = product.category === "e-collar" || product.k9Category === "e-collar";
   const faq = getProductFaq(product);
+
+  // tabela rozmiarow pokazuje pelna skale, ale mowi wprost, ktore rozmiary ma TEN model.
+  // Obwodu szyi i wagi nie ma juz w specyfikacji: obie wartosci naleza do wariantu,
+  // wiec stoja w wierszu swojego rozmiaru, a nie jako jedna liczba dla calego modelu
+  const variantBySize = new Map(product.variants.map((v) => [v.size, v] as const));
 
   return (
     <div className="grid gap-10 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-16">
@@ -75,6 +80,16 @@ export function ProductSections({ product }: { product: Product }) {
               </div>
             ))}
           </dl>
+          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-nf-muted">
+            Obwód szyi i waga zależą od rozmiaru.{" "}
+            <a
+              href="#rozmiary"
+              className="text-nf-text underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-white motion-reduce:transition-none"
+            >
+              Sprawdź je w tabeli rozmiarów
+            </a>
+            .
+          </p>
         </section>
 
         <section
@@ -97,7 +112,7 @@ export function ProductSections({ product }: { product: Product }) {
             aria-label="Tabela rozmiarów"
             className="mt-6 max-w-3xl overflow-x-auto"
           >
-            <table className="w-full min-w-[420px] text-sm">
+            <table className="w-full min-w-[560px] text-sm">
               <thead>
                 <tr className="border-b border-nf-border-strong">
                   <th scope="col" className={cn(CELL, "font-medium text-nf-dim")}>
@@ -109,11 +124,16 @@ export function ProductSections({ product }: { product: Product }) {
                   <th scope="col" className={cn(CELL, "font-medium text-nf-dim")}>
                     Waga psa (orientacyjnie)
                   </th>
+                  <th scope="col" className={cn(CELL, "font-medium text-nf-dim")}>
+                    Waga obroży
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {SIZE_ORDER.map((size) => {
-                  const current = size === product.size;
+                  const variant = variantBySize.get(size);
+                  // rozmiar w ofercie tego modelu; osobno jego stan magazynowy
+                  const offered = variant !== undefined;
                   return (
                     <tr key={size} className="border-b border-nf-border">
                       <th
@@ -121,21 +141,30 @@ export function ProductSections({ product }: { product: Product }) {
                         className={cn(
                           CELL,
                           "font-medium",
-                          // wiersz produktu znaczy czerwona krawędź i biel tekstu, nie tło;
-                          // sr-only note keeps it perceivable without color
-                          current
-                            ? "border-l-2 border-nf-red text-white"
-                            : "text-nf-muted"
+                          // rozmiar z oferty znaczy czerwona krawędź i biel tekstu, nie tło;
+                          // sam kolor nie niesie znaczenia - stan dopowiada tekst i kolumna wagi
+                          offered ? "border-l-2 border-nf-red text-white" : "text-nf-muted"
                         )}
                       >
                         {SIZE_NAME[size]}
-                        {current && <span className="sr-only"> (rozmiar tego produktu)</span>}
+                        <span className="type-meta ml-2 text-nf-dim">{SIZE_SHORT[size]}</span>
+                        {variant && !variant.inStock && (
+                          <span className="mt-1 block text-xs font-normal text-nf-muted">
+                            chwilowo niedostępny
+                          </span>
+                        )}
+                        {!offered && <span className="sr-only"> (brak w tym modelu)</span>}
                       </th>
-                      <td className={cn(CELL, current ? "text-white" : "text-nf-muted")}>
-                        {SIZE_NECK[size]}
+                      {/* obwod bierzemy z wariantu - model moze miec wlasne zakresy, a nie
+                          zawsze te ze slownika */}
+                      <td className={cn(CELL, offered ? "text-white" : "text-nf-muted")}>
+                        {variant?.neck ?? SIZE_NECK[size]}
                       </td>
-                      <td className={cn(CELL, current ? "text-white" : "text-nf-muted")}>
+                      <td className={cn(CELL, offered ? "text-white" : "text-nf-muted")}>
                         {SIZE_WEIGHT[size]}
+                      </td>
+                      <td className={cn(CELL, offered ? "text-white" : "text-nf-dim")}>
+                        {variant ? `${variant.weightGrams} g` : "brak w tym modelu"}
                       </td>
                     </tr>
                   );
@@ -143,6 +172,10 @@ export function ProductSections({ product }: { product: Product }) {
               </tbody>
             </table>
           </div>
+          <p className="mt-3 max-w-3xl text-xs leading-relaxed text-nf-dim">
+            Wyróżnione wiersze to rozmiary, które ma ten model. Waga obroży dotyczy wersji
+            w danym rozmiarze.
+          </p>
         </section>
 
         <section

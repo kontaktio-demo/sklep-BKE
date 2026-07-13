@@ -102,7 +102,9 @@ function facetText(product: Product): string {
     product.idPanelCompatible ? "panel ID" : "",
     product.k9Standard ?? "",
     product.productType,
-    SIZE_LABEL[product.size],
+    // rozmiar jest wariantem: model wchodzi pod kazdy rozmiar, w ktorym istnieje.
+    // SIZE_LABEL niesie juz obwod ("Mały (28-36 cm)"), wiec neck wariantu nic nie doklada.
+    ...product.sizes.map((size) => SIZE_LABEL[size]),
     WIDTH_LABEL[product.width],
     ...product.colors.map((color) => color.name),
     ...product.specs.map((spec) => spec.value),
@@ -120,7 +122,9 @@ function fields(product: Product): string[][] {
   return [
     words(product.name),
     words(product.tagline),
-    words(product.sku),
+    // SKU modelu nie niesie juz kodu rozmiaru - kupowane SKU siedzi w wariancie.
+    // Bez SKU wariantow zapytanie "PAKT-RAN-175-M" nie trafialoby w nic.
+    words([product.sku, ...product.variants.map((variant) => variant.sku)].join(" ")),
     words(facetText(product)),
   ];
 }

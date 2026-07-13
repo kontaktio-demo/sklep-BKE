@@ -2,6 +2,12 @@
 
 import Link from "next/link";
 import { useId, useState } from "react";
+import {
+  VariantPicker,
+  availabilityEmail,
+  availabilityMailHref,
+  defaultVariant,
+} from "@/components/product/VariantPicker";
 import { Button } from "@/components/ui/Button";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
 import { PriceTag } from "@/components/ui/PriceTag";
@@ -13,9 +19,9 @@ import {
   TruckIcon,
 } from "@/components/ui/icons";
 import { useCart } from "@/lib/cart";
-import { COMPANY, TRUST_TRIAD } from "@/lib/nav";
-import { SIZE_LABEL, WIDTH_LABEL } from "@/lib/sizes";
-import type { Product, ProductColor } from "@/lib/types";
+import { TRUST_TRIAD } from "@/lib/nav";
+import { SIZE_SHORT, WIDTH_LABEL } from "@/lib/sizes";
+import type { Product, ProductColor, ProductVariant } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const TRUST_ICONS = [ShieldIcon, TruckIcon, ReturnIcon] as const;
@@ -33,29 +39,26 @@ const K9_INQUIRY_HREF = "/k9/zapytanie";
 export function BuyBox({ product }: { product: Product }) {
   const { addLine, openCart } = useCart();
   const [color, setColor] = useState<ProductColor | undefined>(product.colors[0]);
+  // Cena, SKU i stan magazynowy naleza do WARIANTU, nie do produktu: naglowek karty
+  // pokazuje to, co faktycznie trafi do koszyka, a nie cene "od".
+  const [variant, setVariant] = useState<ProductVariant>(() => defaultVariant(product));
   const [qty, setQty] = useState(1);
 
   const colorLabelId = useId();
 
   const k9 = product.line === "k9";
 
-  // Zapytanie o dostepnosc idzie na skrzynke, ktora obsluguje dana linie
-  const notifyEmail = k9 ? COMPANY.k9Email : COMPANY.shopEmail;
-  const notifyHref = `mailto:${notifyEmail}?subject=${encodeURIComponent(
-    `Dostępność: ${product.name} (${product.sku})`
-  )}&body=${encodeURIComponent(
-    [
-      "Dzień dobry,",
-      `proszę o wiadomość, gdy ${product.name} (SKU ${product.sku}) wróci do sprzedaży.`,
-      color ? `Kolor: ${color.name}` : "",
-    ]
-      .filter(Boolean)
-      .join("\n")
-  )}`;
+  // Zapytanie o dostepnosc idzie na skrzynke, ktora obsluguje dana linie, i dotyczy
+  // wybranego rozmiaru - inaczej odpowiedz nie mowilaby o tym, o co pytal klient
+  const notifyEmail = availabilityEmail(product);
+  const notifyHref = availabilityMailHref(product, variant, color);
+
+  // caly model wyprzedany to inna sytuacja niz jeden rozmiar bez stanu - komunikat rozroznia
+  const modelSoldOut = !product.inStock;
 
   function handleAdd() {
     // addLine increments by one per call - the cart has no bulk API
-    for (let i = 0; i < qty; i += 1) addLine(product, color);
+    for (let i = 0; i < qty; i += 1) addLine(product, variant, color);
     openCart();
   }
 
@@ -67,7 +70,7 @@ export function BuyBox({ product }: { product: Product }) {
             nic, czego nie ma w nazwie i tabeli */}
         {k9 ? (
           <p className={LABEL}>
-            {product.sku}
+            {variant.sku}
             {product.k9Standard && (
               <>
                 <span aria-hidden="true" className="px-2 text-nf-border-strong">
@@ -79,7 +82,7 @@ export function BuyBox({ product }: { product: Product }) {
           </p>
         ) : (
           <p className={LABEL}>
-            {product.productType} / {product.sku}
+            {product.productType} / {variant.sku}
           </p>
         )}
         {/* text-balance: nazwa lamie sie w kolumnie 440 px, wiec wiersze maja byc rowne */}
@@ -89,10 +92,11 @@ export function BuyBox({ product }: { product: Product }) {
 
       <div className="mt-6 space-y-2">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          {/* PriceTag wnosi kolor (nf-white) - dokładamy tylko skalę i wagę */}
+          {/* cena wybranego rozmiaru, nie cena "od": PriceTag wnosi kolor (nf-white),
+              dokładamy tylko skalę i wagę */}
           <PriceTag
-            price={product.price}
-            fromPrice={product.fromPrice}
+            price={variant.price}
+            fromPrice={false}
             currency={product.currency}
             className="text-2xl font-semibold"
           />
@@ -107,10 +111,14 @@ export function BuyBox({ product }: { product: Product }) {
             aria-hidden="true"
             className={cn(
               "size-1.5 shrink-0 rounded-full",
-              product.inStock ? "bg-nf-text" : "bg-nf-dim"
+              variant.inStock ? "bg-nf-text" : "bg-nf-dim"
             )}
           />
-          {product.inStock ? "Dostępna, wysyłka w 24 h" : "Chwilowo niedostępna"}
+          {variant.inStock
+            ? "Dostępna, wysyłka w 24 h"
+            : modelSoldOut
+              ? "Chwilowo niedostępna"
+              : `Rozmiar ${SIZE_SHORT[variant.size]} chwilowo niedostępny`}
         </p>
       </div>
 
@@ -141,26 +149,24 @@ export function BuyBox({ product }: { product: Product }) {
           </div>
         )}
 
-        <dl className="space-y-7">
-          <div>
-            <dt className={LABEL}>Rozmiar</dt>
-            <dd className="mt-2 flex flex-wrap items-center gap-3">
-              <span className={PILL}>{SIZE_LABEL[product.size]}</span>
-              <a
-                href="#rozmiary"
-                className="text-xs text-nf-muted underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-white"
-              >
-                Tabela rozmiarów
-              </a>
-            </dd>
-          </div>
-          <div>
-            <dt className={LABEL}>Szerokość</dt>
-            <dd className="mt-2">
-              <span className={PILL}>{WIDTH_LABEL[product.width]}</span>
-            </dd>
-          </div>
-        </dl>
+        <div>
+          <VariantPicker
+            variants={product.variants}
+            selected={variant}
+            onSelect={setVariant}
+          />
+          <a
+            href="#rozmiary"
+            className="mt-3 inline-flex min-h-11 items-center text-xs text-nf-muted underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-white motion-reduce:transition-none"
+          >
+            Tabela rozmiarów
+          </a>
+        </div>
+
+        <div>
+          <span className={cn("block", LABEL)}>Szerokość</span>
+          <span className={cn("mt-2", PILL)}>{WIDTH_LABEL[product.width]}</span>
+        </div>
 
         <div>
           <span className={cn("block", LABEL)}>Ilość</span>
@@ -194,22 +200,25 @@ export function BuyBox({ product }: { product: Product }) {
       </div>
 
       <div className="mt-8">
-        {product.inStock ? (
+        {variant.inStock ? (
           <Button variant="primary" size="lg" className="w-full" onClick={handleAdd}>
             Dodaj do koszyka
           </Button>
         ) : (
           // Listy oczekujacych nie ma gdzie trzymac - serwis nie ma backendu ani wysylki.
           // Pole e-mail bylo atrapa: adres nigdzie nie szedl, a komunikat obiecywal
-          // wiadomosc. Zostaje sciezka, ktora dziala: mail do sklepu z SKU w temacie.
+          // wiadomosc. Zostaje sciezka, ktora dziala: mail ze SKU wariantu w temacie.
           <div className="space-y-4">
             <Button variant="primary" size="lg" className="w-full" disabled>
-              Chwilowo niedostępna
+              {modelSoldOut
+                ? "Chwilowo niedostępna"
+                : `Rozmiar ${SIZE_SHORT[variant.size]} niedostępny`}
             </Button>
             <div className="space-y-2">
               <p className="text-xs leading-relaxed text-nf-muted">
-                Listę oczekujących prowadzimy mailem. Napisz na {notifyEmail}, a odpiszemy,
-                gdy model wróci do sprzedaży.
+                {modelSoldOut
+                  ? `Listę oczekujących prowadzimy mailem. Napisz na ${notifyEmail}, a odpiszemy, gdy model wróci do sprzedaży.`
+                  : `Pozostałe rozmiary tego modelu są dostępne. Listę oczekujących na rozmiar ${SIZE_SHORT[variant.size]} prowadzimy mailem: napisz na ${notifyEmail}, a odpiszemy, gdy wróci do sprzedaży.`}
               </p>
               <Button
                 href={notifyHref}

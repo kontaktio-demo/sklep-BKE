@@ -36,12 +36,14 @@ export const filterGroups: FilterGroup[] = [
     })),
   },
   {
+    // rozmiar jest wariantem: model z wariantem S i M liczy sie w obu fasetach,
+    // wiec suma licznikow jest wieksza niz liczba produktow. Tak ma byc.
     id: "size",
     label: "Rozmiar",
     options: SIZE_ORDER.map((size) => ({
       value: size,
       label: SIZE_LABEL[size],
-      count: count((p) => p.size === size),
+      count: count((p) => p.sizes.includes(size)),
     })),
   },
   {
@@ -52,6 +54,8 @@ export const filterGroups: FilterGroup[] = [
     ],
   },
   {
+    // "Dostepne" = ma chociaz jeden dostepny wariant. Model z wyprzedanym duzym
+    // zostaje na liscie, bo w malym da sie go kupic.
     id: "availability",
     label: "Dostępność",
     options: [

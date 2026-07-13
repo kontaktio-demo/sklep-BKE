@@ -5,6 +5,11 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  VariantPicker,
+  availabilityMailHref,
+  defaultVariant,
+} from "@/components/product/VariantPicker";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
@@ -12,8 +17,8 @@ import { Dialog } from "@/components/ui/Dialog";
 import { PriceTag } from "@/components/ui/PriceTag";
 import { MinusIcon, PlusIcon } from "@/components/ui/icons";
 import { useCart } from "@/lib/cart";
-import { SIZE_LABEL, WIDTH_LABEL } from "@/lib/sizes";
-import type { Product, ProductColor } from "@/lib/types";
+import { SIZE_SHORT, WIDTH_LABEL } from "@/lib/sizes";
+import type { Product, ProductColor, ProductVariant } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 // wspolny rytm etykiet i pol - ten sam co w BuyBox (karta produktu)
@@ -70,10 +75,15 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
   const { addLine, openCart } = useCart();
   const [imageIndex, setImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState<ProductColor | undefined>(product.colors[0]);
+  // ten sam kontrakt co na karcie produktu: do koszyka idzie wariant, wiec podglad
+  // musi go wybrac, a nie zgadnac
+  const [variant, setVariant] = useState<ProductVariant>(() => defaultVariant(product));
   const [qty, setQty] = useState(1);
 
+  const modelSoldOut = !product.inStock;
+
   const handleAddToCart = () => {
-    for (let i = 0; i < qty; i++) addLine(product, selectedColor);
+    for (let i = 0; i < qty; i++) addLine(product, variant, selectedColor);
     onClose();
     openCart();
   };
@@ -123,12 +133,15 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
 
         <div>
           <p className="type-h3 text-nf-white">{product.name}</p>
-          <p className={cn("mt-2", LABEL)}>{product.productType}</p>
+          <p className={cn("mt-2", LABEL)}>
+            {product.productType} / {variant.sku}
+          </p>
         </div>
 
+        {/* cena wybranego rozmiaru - "od" zostaje na kafelku w siatce, tu wybor juz zapadl */}
         <PriceTag
-          price={product.price}
-          fromPrice={product.fromPrice}
+          price={variant.price}
+          fromPrice={false}
           currency={product.currency}
           className="text-lg"
         />
@@ -153,15 +166,18 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
           </div>
         )}
 
-        {/* single-variant products: the one value renders as a selected, non-interactive pill */}
+        {/* szerokosc jest cecha modelu, nie wariantu: jedna wartosc renderuje sie jako pigulka */}
         <div>
           <span className={LABEL}>Szerokość</span>
           <span className={PILL}>{WIDTH_LABEL[product.width]}</span>
         </div>
-        <div>
-          <span className={LABEL}>Rozmiar</span>
-          <span className={PILL}>{SIZE_LABEL[product.size]}</span>
-        </div>
+
+        <VariantPicker
+          variants={product.variants}
+          selected={variant}
+          onSelect={setVariant}
+          density="sm"
+        />
 
         <div>
           <span className={LABEL}>Ilość</span>
@@ -190,16 +206,28 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
         </div>
 
         <div className="mt-auto flex flex-col gap-3">
-          {product.inStock ? (
+          {variant.inStock ? (
             <Button variant="primary" size="lg" className="w-full" onClick={handleAddToCart}>
               Dodaj do koszyka
             </Button>
           ) : (
-            // slot CTA mowi "Chwilowo niedostepna" tak samo jak na karcie produktu;
-            // "Wyprzedane" zostaje na plakietce i w filtrze (stan katalogu)
-            <Button variant="primary" size="lg" className="w-full" disabled>
-              Chwilowo niedostępna
-            </Button>
+            // brak stanu na wybranym rozmiarze zamyka koszyk, ale nie zamyka rozmowy:
+            // ta sama sciezka mailowa co na karcie produktu, ze SKU wariantu w temacie
+            <>
+              <Button variant="primary" size="lg" className="w-full" disabled>
+                {modelSoldOut
+                  ? "Chwilowo niedostępna"
+                  : `Rozmiar ${SIZE_SHORT[variant.size]} niedostępny`}
+              </Button>
+              <Button
+                href={availabilityMailHref(product, variant, selectedColor)}
+                variant="ghost"
+                size="md"
+                className="h-11 w-full"
+              >
+                Napisz w sprawie dostępności
+              </Button>
+            </>
           )}
           <Link
             href={`/products/${product.slug}`}

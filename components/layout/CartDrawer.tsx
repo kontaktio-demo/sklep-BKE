@@ -6,6 +6,7 @@
 // BLIK-a i kart nad przyciskiem obiecywalyby platnosc, ktorej nie ma.
 
 import Image from "next/image";
+import Link from "next/link";
 import { FreeShippingBar } from "@/components/cart/FreeShippingBar";
 import { Button } from "@/components/ui/Button";
 import { Drawer } from "@/components/ui/Drawer";
@@ -21,6 +22,7 @@ import {
 import { PriceTag } from "@/components/ui/PriceTag";
 import { useCart } from "@/lib/cart";
 import { COMPANY, TRUST_TRIAD } from "@/lib/nav";
+import { SIZE_SHORT } from "@/lib/sizes";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
 
@@ -79,7 +81,7 @@ function CartFooter({ subtotal, onGoToCart }: { subtotal: number; onGoToCart: ()
 }
 
 export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
-  const { lines, subtotal, isOpen, closeCart, addLine, removeLine, setQty } = useCart();
+  const { lines, subtotal, isOpen, closeCart, removeLine, setQty } = useCart();
 
   const inCart = new Set(lines.map((line) => line.product.id));
   const suggestions = crossSell.filter((p) => !inCart.has(p.id)).slice(0, 4);
@@ -100,67 +102,81 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
       ) : (
         <div className="px-5 pb-6">
           <ul className="divide-y divide-nf-border">
-            {lines.map((line) => (
-              <li key={line.key} className="flex gap-4 py-4">
-                <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-[2px] bg-nf-elevated">
-                  <Image
-                    src={line.product.images[0]}
-                    alt={line.product.name}
-                    fill
-                    sizes="64px"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-nf-text">
-                        {line.product.name}
-                      </p>
-                      {line.color && (
-                        <p className="text-xs text-nf-muted">{line.color.name}</p>
-                      )}
-                    </div>
-                    <PriceTag
-                      price={line.product.price}
-                      fromPrice={false}
-                      currency={line.product.currency}
+            {lines.map((line) => {
+              const name = `${line.product.name}, rozmiar ${SIZE_SHORT[line.variant.size]}`;
+              return (
+                <li key={line.key} className="flex gap-4 py-4">
+                  <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-[2px] bg-nf-elevated">
+                    <Image
+                      src={line.product.images[0]}
+                      alt={line.product.name}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
                     />
                   </div>
-                  <div className="mt-2 flex items-center justify-between">
-                    <div className="flex items-center rounded-[2px] border border-nf-border">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium text-nf-text">
+                          {line.product.name}
+                        </p>
+                        {/* rozmiar przed kolorem: to on decyduje o cenie, SKU i stanie */}
+                        <p className="text-xs text-nf-muted">
+                          {SIZE_SHORT[line.variant.size]} ({line.variant.neck})
+                          {line.color ? `, ${line.color.name}` : ""}
+                        </p>
+                        <p className="type-meta mt-1 truncate text-nf-dim">
+                          {line.variant.sku}
+                        </p>
+                        {!line.variant.inStock && (
+                          <p className="mt-1 text-xs text-nf-red-bright">
+                            Rozmiar chwilowo niedostępny
+                          </p>
+                        )}
+                      </div>
+                      {/* cena wariantu - koszyk nie zna ceny "od" */}
+                      <PriceTag
+                        price={line.variant.price}
+                        fromPrice={false}
+                        currency={line.product.currency}
+                      />
+                    </div>
+                    <div className="mt-2 flex items-center justify-between">
+                      <div className="flex items-center rounded-[2px] border border-nf-border">
+                        <button
+                          type="button"
+                          aria-label={`Zmniejsz ilość: ${name}`}
+                          onClick={() => setQty(line.key, line.qty - 1)}
+                          className={STEPPER_BUTTON_CLASSES}
+                        >
+                          <MinusIcon width={16} height={16} />
+                        </button>
+                        <span className="min-w-6 text-center text-sm text-nf-text">
+                          {line.qty}
+                        </span>
+                        <button
+                          type="button"
+                          aria-label={`Zwiększ ilość: ${name}`}
+                          onClick={() => setQty(line.key, line.qty + 1)}
+                          className={STEPPER_BUTTON_CLASSES}
+                        >
+                          <PlusIcon width={16} height={16} />
+                        </button>
+                      </div>
                       <button
                         type="button"
-                        aria-label="Zmniejsz ilość"
-                        onClick={() => setQty(line.key, line.qty - 1)}
-                        className={STEPPER_BUTTON_CLASSES}
+                        aria-label={`Usuń ${name}`}
+                        onClick={() => removeLine(line.key)}
+                        className="flex h-11 w-11 items-center justify-center text-nf-dim transition-colors duration-250 ease-nf hover:text-white"
                       >
-                        <MinusIcon width={16} height={16} />
-                      </button>
-                      <span className="min-w-6 text-center text-sm text-nf-text">
-                        {line.qty}
-                      </span>
-                      <button
-                        type="button"
-                        aria-label="Zwiększ ilość"
-                        onClick={() => setQty(line.key, line.qty + 1)}
-                        className={STEPPER_BUTTON_CLASSES}
-                      >
-                        <PlusIcon width={16} height={16} />
+                        <TrashIcon width={18} height={18} />
                       </button>
                     </div>
-                    <button
-                      type="button"
-                      aria-label={`Usuń ${line.product.name}`}
-                      onClick={() => removeLine(line.key)}
-                      className="flex h-11 w-11 items-center justify-center text-nf-dim transition-colors duration-250 ease-nf hover:text-white"
-                    >
-                      <TrashIcon width={18} height={18} />
-                    </button>
                   </div>
-                </div>
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
           {suggestions.length > 0 && (
             <section aria-label="Do kompletu" className="mt-2 border-t border-nf-border pt-5">
@@ -185,13 +201,16 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                       fromPrice={product.fromPrice}
                       currency={product.currency}
                     />
-                    <button
-                      type="button"
-                      onClick={() => addLine(product)}
-                      className="mt-2 flex h-11 w-full items-center justify-center rounded-[2px] bg-nf-red text-xs font-semibold text-white transition-colors duration-250 ease-nf hover:bg-nf-red-hover"
+                    {/* Wczesniej byl tu przycisk "Dodaj", ktory wrzucal produkt bez rozmiaru.
+                        Kazda pozycja koszyka to konkretny wariant, wiec podpowiedz prowadzi
+                        na karte produktu, gdzie rozmiar wybiera klient, a nie sklep za niego */}
+                    <Link
+                      href={`/products/${product.slug}`}
+                      onClick={closeCart}
+                      className="mt-2 flex h-11 w-full items-center justify-center rounded-[2px] border border-nf-border-strong text-xs font-semibold text-white transition-colors duration-250 ease-nf hover:bg-white/10 motion-reduce:transition-none"
                     >
-                      Dodaj
-                    </button>
+                      Wybierz rozmiar
+                    </Link>
                   </li>
                 ))}
               </ul>

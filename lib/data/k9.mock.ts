@@ -1,6 +1,17 @@
-import type { K9Category, K9CategoryInfo, Product, ProductColor, ProductSpec } from "../types";
+import { SIZE_NECK, SIZE_ORDER, SIZE_SHORT, deriveVariantFields } from "../sizes";
+import type {
+  CollarSize,
+  K9Category,
+  K9CategoryInfo,
+  Product,
+  ProductColor,
+  ProductSpec,
+  ProductVariant,
+} from "../types";
 
 // Linia PAKT-K9: sprzet sluzbowy. Te produkty NIE pojawiaja sie w zwyklym sklepie.
+// Pies sluzbowy to owczarek, malinois albo spaniel do pracy wechowej - stad rozmiary
+// zaczynaja sie od sredniego, a maly wystepuje tylko tam, gdzie pracuje maly pies.
 
 const C: Record<string, ProductColor> = {
   czarny: { name: "Czarny", hex: "#1F1F1F" },
@@ -16,27 +27,60 @@ interface K9Spec {
   tagline: string;
   description: string;
   highlights: string[];
-  price: number;
-  fromPrice?: boolean;
+  /** rozmiary, w ktorych model istnieje */
+  sizes: CollarSize[];
+  /** cena najmniejszego oferowanego rozmiaru */
+  basePrice: number;
+  /** doplata za kazdy kolejny rozmiar */
+  sizeStep: number;
+  /** waga najmniejszego oferowanego rozmiaru, w gramach */
+  baseWeight: number;
+  /** przyrost wagi na kazdy kolejny rozmiar */
+  weightStep: number;
+  /** warianty chwilowo niedostepne */
+  soldOut?: CollarSize[];
   colors: ProductColor[];
   k9Category: K9Category;
   k9Standard: string;
   width: Product["width"];
-  size: Product["size"];
   type: Product["type"];
   idPanelCompatible: boolean;
-  inStock?: boolean;
   badges?: Product["badges"];
   bestsellerRank?: number;
   createdAt: string;
+  /** cechy wspolne modelu. Obwod szyi i waga sa w wariancie. */
   specs: ProductSpec[];
 }
 
-const SIZE_CODE: Record<Product["size"], string> = { small: "S", medium: "M", large: "L" };
+function variantsFor(spec: K9Spec): ProductVariant[] {
+  const model = (spec.slug.split("-")[1] ?? spec.slug).slice(0, 3).toUpperCase();
+  const trunk = `K9-${model}-${spec.width.replace(".", "")}`;
+  const offered = SIZE_ORDER.filter((size) => spec.sizes.includes(size));
+
+  return offered.map((size, step) => ({
+    size,
+    sku: `${trunk}-${SIZE_SHORT[size]}`,
+    price: spec.basePrice + step * spec.sizeStep,
+    inStock: !spec.soldOut?.includes(size),
+    neck: SIZE_NECK[size],
+    weightGrams: spec.baseWeight + step * spec.weightStep,
+  }));
+}
 
 function k9(spec: K9Spec): Product {
   const model = (spec.slug.split("-")[1] ?? spec.slug).slice(0, 3).toUpperCase();
+  const derived = deriveVariantFields(variantsFor(spec));
+  const badges = spec.badges ?? [];
+
+  // plakietka i dostepnosc musza mowic to samo - inaczej karta zaprzecza sama sobie
+  if (badges.includes("sold-out") === derived.inStock) {
+    throw new Error(
+      `Produkt ${spec.slug}: plakietka "sold-out" nie zgadza się z dostępnością wariantów`
+    );
+  }
+
   return {
+    ...derived,
     id: `k9_${spec.slug}`,
     slug: spec.slug,
     name: spec.name,
@@ -44,20 +88,16 @@ function k9(spec: K9Spec): Product {
     description: spec.description,
     highlights: spec.highlights,
     specs: spec.specs,
-    price: spec.price,
-    fromPrice: spec.fromPrice ?? false,
     currency: "PLN",
-    sku: `K9-${model}-${spec.width.replace(".", "")}-${SIZE_CODE[spec.size]}`,
+    sku: `K9-${model}-${spec.width.replace(".", "")}`,
     images: [`/placeholder/${spec.slug}-1.svg`, `/placeholder/${spec.slug}-2.svg`],
     gallery: [1, 2, 3, 4].map((n) => `/placeholder/${spec.slug}-${n}.svg`),
     colors: spec.colors,
-    badges: spec.badges ?? [],
+    badges,
     category: spec.k9Category === "e-collar" ? "e-collar" : "working",
     type: spec.type,
     width: spec.width,
-    size: spec.size,
     idPanelCompatible: spec.idPanelCompatible,
-    inStock: spec.inStock ?? true,
     bestsellerRank: spec.bestsellerRank,
     productType: "Obroża służbowa",
     createdAt: spec.createdAt,
@@ -67,12 +107,10 @@ function k9(spec: K9Spec): Product {
   };
 }
 
-const nylonSpecs = (width: string, neck: string, weight: number, idPanel: boolean): ProductSpec[] => [
+const nylonSpecs = (width: string, idPanel: boolean): ProductSpec[] => [
   { label: "Materiał", value: "Nylon 1000D, wyściółka z neoprenu" },
   { label: "Okucia", value: "Klamra stalowa, D-ring spawany" },
   { label: "Szerokość", value: width },
-  { label: "Obwód szyi", value: neck },
-  { label: "Waga", value: `${weight} g` },
   { label: "Panel ID", value: idPanel ? "Tak, rzep na całej długości" : "Brak" },
   { label: "Wytrzymałość", value: "Zerwanie przy 380 kg (test statyczny)" },
   { label: "Produkcja", value: "Szyte w Polsce" },
@@ -92,18 +130,21 @@ export const k9Products: Product[] = [
       "Zerwanie przy 380 kg",
       "Rzep na panele ID",
     ],
-    price: 389,
+    sizes: ["medium", "large"],
+    basePrice: 389,
+    sizeStep: 30,
+    baseWeight: 146,
+    weightStep: 22,
     colors: [C.czarny, C.oliwkowy, C.coyote],
     k9Category: "patrol",
     k9Standard: "Klasa robocza / patrol",
     width: "1.75",
-    size: "large",
     type: "nylon",
     idPanelCompatible: true,
     badges: ["bestseller"],
     bestsellerRank: 1,
     createdAt: "2026-01-18",
-    specs: nylonSpecs("4,5 cm", "48-60 cm", 168, true),
+    specs: nylonSpecs("4,5 cm", true),
   }),
   k9({
     slug: "k9-grip-handle-collar",
@@ -117,19 +158,22 @@ export const k9Products: Product[] = [
       "Taśma 4,5 cm, 1000D",
       "Rzep na panele ID",
     ],
-    price: 449,
+    sizes: ["medium", "large"],
+    basePrice: 449,
+    sizeStep: 30,
+    baseWeight: 190,
+    weightStep: 24,
     colors: [C.czarny, C.oliwkowy],
     k9Category: "handle",
     k9Standard: "Klasa robocza / interwencja",
     width: "1.75",
-    size: "large",
     type: "nylon",
     idPanelCompatible: true,
     badges: ["bestseller"],
     bestsellerRank: 2,
     createdAt: "2026-02-02",
     specs: [
-      ...nylonSpecs("4,5 cm", "48-60 cm", 214, true),
+      ...nylonSpecs("4,5 cm", true),
       { label: "Uchwyt", value: "12 cm, przeszycie krzyżowe" },
     ],
   }),
@@ -145,19 +189,22 @@ export const k9Products: Product[] = [
       "Klamra stalowa",
       "Rzep na panele ID",
     ],
-    price: 419,
+    sizes: ["medium", "large"],
+    basePrice: 419,
+    sizeStep: 25,
+    baseWeight: 166,
+    weightStep: 20,
     colors: [C.czarny, C.grafitowy],
     k9Category: "handle",
     k9Standard: "Klasa robocza / interwencja",
     width: "1.5",
-    size: "large",
     type: "nylon",
     idPanelCompatible: true,
     badges: ["new"],
     bestsellerRank: 6,
     createdAt: "2026-06-11",
     specs: [
-      ...nylonSpecs("4 cm", "48-60 cm", 186, true),
+      ...nylonSpecs("4 cm", true),
       { label: "Uchwyt", value: "8 cm, niskoprofilowy" },
     ],
   }),
@@ -173,18 +220,21 @@ export const k9Products: Product[] = [
       "Taśma 4 cm",
       "Praca z obrożą główną",
     ],
-    price: 279,
+    sizes: ["medium", "large"],
+    basePrice: 279,
+    sizeStep: 20,
+    baseWeight: 142,
+    weightStep: 18,
     colors: [C.czarny, C.oliwkowy],
     k9Category: "e-collar",
     k9Standard: "Zgodna z modułami do 45 mm",
     width: "1.5",
-    size: "medium",
     type: "nylon",
     idPanelCompatible: false,
     bestsellerRank: 4,
     createdAt: "2025-12-05",
     specs: [
-      ...nylonSpecs("4 cm", "38-46 cm", 142, false),
+      ...nylonSpecs("4 cm", false),
       { label: "Moduł", value: "Zgodna z obudowami do 45 mm" },
     ],
   }),
@@ -200,18 +250,22 @@ export const k9Products: Product[] = [
       "Rzep na panele ID",
       "Klamra stalowa",
     ],
-    price: 329,
+    sizes: ["medium", "large"],
+    basePrice: 329,
+    sizeStep: 25,
+    baseWeight: 156,
+    weightStep: 20,
+    soldOut: ["large"],
     colors: [C.czarny, C.ranger],
     k9Category: "e-collar",
     k9Standard: "Zgodna z modułami do 45 mm",
     width: "1.75",
-    size: "large",
     type: "nylon",
     idPanelCompatible: true,
     bestsellerRank: 5,
     createdAt: "2026-03-22",
     specs: [
-      ...nylonSpecs("4,5 cm", "48-60 cm", 176, true),
+      ...nylonSpecs("4,5 cm", true),
       { label: "Moduł", value: "Zgodna z obudowami do 45 mm" },
     ],
   }),
@@ -227,17 +281,20 @@ export const k9Products: Product[] = [
       "Taśma 4 cm",
       "Konstrukcja bez zbędnych elementów",
     ],
-    price: 249,
+    sizes: ["medium", "large"],
+    basePrice: 249,
+    sizeStep: 20,
+    baseWeight: 138,
+    weightStep: 18,
     colors: [C.oliwkowy, C.coyote, C.czarny],
     k9Category: "training",
     k9Standard: "Klasa robocza / szkolenie",
     width: "1.5",
-    size: "medium",
     type: "nylon",
     idPanelCompatible: false,
     bestsellerRank: 3,
     createdAt: "2025-11-14",
-    specs: nylonSpecs("4 cm", "38-46 cm", 138, false),
+    specs: nylonSpecs("4 cm", false),
   }),
   k9({
     slug: "k9-check-training-chain",
@@ -251,12 +308,16 @@ export const k9Products: Product[] = [
       "Do pracy pod nadzorem",
       "D-ring spawany",
     ],
-    price: 289,
+    sizes: ["medium", "large"],
+    basePrice: 289,
+    sizeStep: 25,
+    baseWeight: 178,
+    weightStep: 34,
+    soldOut: ["large"],
     colors: [C.grafitowy],
     k9Category: "training",
     k9Standard: "Klasa robocza / szkolenie",
     width: "1",
-    size: "large",
     type: "chain",
     idPanelCompatible: false,
     createdAt: "2025-09-08",
@@ -264,8 +325,6 @@ export const k9Products: Product[] = [
       { label: "Materiał", value: "Stal nierdzewna, polerowana" },
       { label: "Okucia", value: "Ogniwa spawane, D-ring ze stali" },
       { label: "Szerokość", value: "2,5 cm" },
-      { label: "Obwód szyi", value: "48-60 cm" },
-      { label: "Waga", value: "212 g" },
       { label: "Panel ID", value: "Brak" },
       { label: "Wytrzymałość", value: "Zerwanie przy 420 kg (test statyczny)" },
       { label: "Produkcja", value: "Montowane w Polsce" },
@@ -284,17 +343,22 @@ export const k9Products: Product[] = [
       "Taśma 4 cm",
       "Minimum okuć",
     ],
-    price: 269,
+    // do pracy wechowej ida takze psy male (spaniele), stad rozmiar maly.
+    // Duzy nie istnieje: przy 132 g obietnica "ponizej 120 g" bylaby nieprawdziwa.
+    sizes: ["small", "medium"],
+    basePrice: 269,
+    sizeStep: 15,
+    baseWeight: 104,
+    weightStep: 14,
     colors: [C.oliwkowy, C.coyote],
     k9Category: "detection",
     k9Standard: "Klasa robocza / detekcja",
     width: "1.5",
-    size: "medium",
     type: "nylon",
     idPanelCompatible: true,
     bestsellerRank: 7,
     createdAt: "2026-04-30",
-    specs: nylonSpecs("4 cm", "38-46 cm", 118, true),
+    specs: nylonSpecs("4 cm", true),
   }),
   k9({
     slug: "k9-track-detection-collar",
@@ -308,17 +372,20 @@ export const k9Products: Product[] = [
       "Taśma 4,5 cm",
       "Do pracy na długiej lince",
     ],
-    price: 309,
+    sizes: ["medium", "large"],
+    basePrice: 309,
+    sizeStep: 25,
+    baseWeight: 140,
+    weightStep: 18,
     colors: [C.oliwkowy, C.czarny],
     k9Category: "detection",
     k9Standard: "Klasa robocza / detekcja",
     width: "1.75",
-    size: "large",
     type: "nylon",
     idPanelCompatible: true,
     badges: ["new"],
     createdAt: "2026-06-24",
-    specs: nylonSpecs("4,5 cm", "48-60 cm", 158, true),
+    specs: nylonSpecs("4,5 cm", true),
   }),
   k9({
     slug: "k9-sentry-patrol-collar",
@@ -332,16 +399,19 @@ export const k9Products: Product[] = [
       "Taśma 4,5 cm",
       "Rzep na panele ID",
     ],
-    price: 409,
+    sizes: ["medium", "large"],
+    basePrice: 409,
+    sizeStep: 30,
+    baseWeight: 150,
+    weightStep: 22,
     colors: [C.czarny, C.grafitowy],
     k9Category: "patrol",
     k9Standard: "Klasa robocza / patrol",
     width: "1.75",
-    size: "large",
     type: "nylon",
     idPanelCompatible: true,
     createdAt: "2026-05-02",
-    specs: nylonSpecs("4,5 cm", "48-60 cm", 172, true),
+    specs: nylonSpecs("4,5 cm", true),
   }),
   k9({
     slug: "k9-anchor-patrol-collar",
@@ -355,17 +425,19 @@ export const k9Products: Product[] = [
       "Taśma 4,5 cm",
       "Klamra stalowa",
     ],
-    price: 439,
-    fromPrice: true,
+    sizes: ["medium", "large"],
+    basePrice: 439,
+    sizeStep: 30,
+    baseWeight: 160,
+    weightStep: 24,
     colors: [C.czarny, C.oliwkowy, C.coyote],
     k9Category: "patrol",
     k9Standard: "Klasa robocza / patrol",
     width: "1.75",
-    size: "large",
     type: "nylon",
     idPanelCompatible: true,
     createdAt: "2026-01-30",
-    specs: nylonSpecs("4,5 cm", "48-60 cm", 184, true),
+    specs: nylonSpecs("4,5 cm", true),
   }),
   k9({
     slug: "k9-cadet-training-collar",
@@ -375,22 +447,26 @@ export const k9Products: Product[] = [
       "Obroża dla psów wchodzących w szkolenie, jeszcze przed przydziałem do zadań. Węższa taśma i mniejszy zakres obwodu, bo młody pies nie ma jeszcze docelowej masy. Ta sama klamra i te same przeszycia co w wersjach służbowych.",
     highlights: [
       "Taśma 4 cm",
-      "Obwód 38-46 cm",
+      "Rozmiary S i M, obwód 28-46 cm",
       "Klamra stalowa",
       "Przeszycia jak w wersjach służbowych",
     ],
-    price: 229,
+    // pies w szkoleniu podstawowym nie ma jeszcze docelowej masy - duzy nie ma tu sensu
+    sizes: ["small", "medium"],
+    basePrice: 229,
+    sizeStep: 15,
+    baseWeight: 118,
+    weightStep: 14,
+    soldOut: ["small", "medium"],
     colors: [C.oliwkowy, C.czarny],
     k9Category: "training",
     k9Standard: "Klasa robocza / szkolenie",
     width: "1.5",
-    size: "medium",
     type: "nylon",
     idPanelCompatible: false,
-    inStock: false,
     badges: ["sold-out"],
     createdAt: "2025-10-19",
-    specs: nylonSpecs("4 cm", "38-46 cm", 132, false),
+    specs: nylonSpecs("4 cm", false),
   }),
 ];
 

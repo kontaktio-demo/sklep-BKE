@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Fragment } from "react";
 import { Button } from "@/components/ui/Button";
 import { PriceTag } from "@/components/ui/PriceTag";
+import { SIZE_NAME, SIZE_SHORT } from "@/lib/sizes";
 import type { Product, ProductSpec } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -13,19 +15,28 @@ import { cn } from "@/lib/utils";
 const CARD_SIZES =
   "(min-width:1600px) 480px, (min-width:1280px) calc((100vw - 100px) / 3), (min-width:640px) calc((100vw - 100px) / 2), calc(100vw - 74px)";
 
+// Obwod szyi i waga to cechy wariantu, nie produktu. Jedna wartosc w tabeli klamalaby
+// przy produkcie z trzema rozmiarami ("48-60 cm" przy modelu, ktory idzie takze w M),
+// wiec oba wiersze zastepuje jeden wiersz "Rozmiary" budowany z wariantow. Z listy
+// specyfikacji sa usuwane, zeby nie wrocily tylnymi drzwiami jako wiersz dobijajacy.
+const VARIANT_SPECS = ["Obwód szyi", "Waga"];
+
 // dane, ktore przewodnik porownuje miedzy modelami; reszta specyfikacji zostaje na karcie produktu
-const PREFERRED_SPECS = ["Szerokość", "Obwód szyi", "Waga", "Wytrzymałość"];
-const MAX_SPEC_ROWS = 4;
+const PREFERRED_SPECS = ["Szerokość", "Materiał", "Wytrzymałość"];
+// 3 wiersze + wiersz "Rozmiary" = tabela ma tyle samo wierszy co wczesniej
+const MAX_SPEC_ROWS = 3;
 
 function catalogSpecs(specs: ProductSpec[]): ProductSpec[] {
+  const usable = specs.filter((spec) => !VARIANT_SPECS.includes(spec.label));
+
   const picked = PREFERRED_SPECS.map((label) =>
-    specs.find((spec) => spec.label === label)
+    usable.find((spec) => spec.label === label)
   ).filter((spec): spec is ProductSpec => spec !== undefined);
 
   if (picked.length >= MAX_SPEC_ROWS) return picked.slice(0, MAX_SPEC_ROWS);
 
   // produkt bez kompletu preferowanych pol (np. lancuszek) dobija wiersze z reszty specyfikacji
-  const rest = specs.filter((spec) => !picked.includes(spec));
+  const rest = usable.filter((spec) => !picked.includes(spec));
   return [...picked, ...rest].slice(0, MAX_SPEC_ROWS);
 }
 
@@ -111,6 +122,42 @@ export function K9ProductCard({
             <dd className="text-right text-sm text-nf-text">{spec.value}</dd>
           </div>
         ))}
+
+        {product.variants.length > 0 && (
+          <div className="flex items-baseline justify-between gap-4 border-t border-nf-border py-2">
+            <dt className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-nf-dim">
+              Rozmiary
+            </dt>
+            {/* Wartosc jest tekstem plynacym, nie flexem: przy trzech wariantach lamie sie
+                na dwa wiersze, a przecinki zostaja przy poprzednim rozmiarze. Przecinek stoi
+                poza przekreslonym spanem, inaczej separator tez bylby przekreslony.
+
+                Warstwa widoczna idzie w calosci pod aria-hidden, bo kod rozmiaru i
+                przekreslenie to skroty dla oka. Odczyt dostaje to samo rozwiniete: pelna
+                nazwa, obwod i stan magazynowy - bez dublowania "M" i "Sredni". */}
+            <dd className="text-right text-sm text-nf-text">
+              {product.variants.map((variant, i) => (
+                <Fragment key={variant.size}>
+                  {i > 0 && (
+                    <span aria-hidden="true" className="text-nf-dim">
+                      ,{" "}
+                    </span>
+                  )}
+                  <span
+                    aria-hidden="true"
+                    className={cn(!variant.inStock && "text-nf-dim line-through")}
+                  >
+                    {SIZE_SHORT[variant.size]} ({variant.neck})
+                  </span>
+                  <span className="sr-only">
+                    {SIZE_NAME[variant.size]}, {variant.neck}:{" "}
+                    {variant.inStock ? "dostępny" : "brak"}.{" "}
+                  </span>
+                </Fragment>
+              ))}
+            </dd>
+          </div>
+        )}
       </dl>
 
       {/* mt-auto: stopki wszystkich kafli w wierszu staja w jednej linii mimo roznej dlugosci danych */}
