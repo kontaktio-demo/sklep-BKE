@@ -8,7 +8,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDownIcon } from "@/components/ui/icons";
-import { K9_NAV_LABEL, NAV_ITEMS } from "@/lib/nav";
+import { PRO_NAV_LABEL, NAV_ITEMS } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { SHELL, type Theme } from "./theme";
 
@@ -17,14 +17,14 @@ const CLOSE_DELAY_MS = 150;
 const LINK_BASE =
   "flex h-11 items-center gap-1 px-3 text-[13px] font-semibold uppercase tracking-wide transition-colors duration-250 ease-nf";
 
-// PAKT-K9 to nie kolejna zakladka sklepu, ale pasek nawigacji stoi w sklepie cywilnym,
-// gdzie monospace nie ma czego oznaczac. Odcinamy ja kolorem linii K9 zamiast krojem.
-const K9_LINK = "text-nf-red-bright";
+// Dog Store Pro to nie kolejna zakladka sklepu, ale pasek nawigacji stoi w sklepie cywilnym,
+// gdzie monospace nie ma czego oznaczac. Odcinamy ja kolorem linii Pro zamiast krojem.
+const PRO_LINK = "text-nf-red-bright";
 
 export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
   const t = SHELL[theme];
   const linkFor = (label: string) =>
-    cn(LINK_BASE, t.navLink, label === K9_NAV_LABEL && K9_LINK);
+    cn(LINK_BASE, t.navLink, label === PRO_NAV_LABEL && PRO_LINK);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const closeTimer = useRef<number | null>(null);
   const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -119,7 +119,7 @@ export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
                   >
                     {columns.map((col) => (
                       <div key={col.title}>
-                        {/* type-label, nie type-meta: mono zostaje w swiecie K9 */}
+                        {/* type-label, nie type-meta: mono zostaje w swiecie Dog Store Pro */}
                         <h3 className={cn("type-label mb-3", t.panelHeading)}>{col.title}</h3>
                         <ul>
                           {col.links.map((link) => (

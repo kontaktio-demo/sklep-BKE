@@ -7,13 +7,13 @@ import { COMPANY } from "@/lib/nav";
 
 // Formularz nie ma dokad wyslac wiadomosci - w serwisie nie ma backendu ani poczty.
 // Zamiast udawac wysylke, sklada z pol gotowa tresc: mozna ja skopiowac albo otworzyc
-// w swoim programie pocztowym. Ten sam wzorzec co K9InquiryForm.
+// w swoim programie pocztowym. Ten sam wzorzec co ProInquiryForm.
 
 const FIELD = "w-full rounded-[2px] border bg-nf-elevated text-sm text-nf-text placeholder:text-nf-dim";
 const LINE = "h-11 px-3";
 const BORDER_OK = "border-nf-border";
 const BORDER_BAD = "border-nf-red-bright";
-// type-label, nie type-meta: monospace niesie oznaczenia techniczne sekcji PAKT-K9.
+// type-label, nie type-meta: monospace niesie oznaczenia techniczne sekcji Dog Store Pro.
 // Etykieta pola w formularzu sklepu cywilnego jedzie zwykla etykieta sklepu.
 const LABEL = "type-label block text-nf-dim";
 const ERROR = "mt-2 text-sm text-nf-red-bright";
@@ -24,7 +24,7 @@ const SUBJECTS = [
   "Zamówienie i wysyłka",
   "Zwrot lub reklamacja",
   "Dobór rozmiaru",
-  "Sprzęt PAKT-K9",
+  "Sprzęt Dog Store Pro",
   OTHER_SUBJECT,
 ];
 
@@ -157,7 +157,7 @@ export function ContactForm() {
 
             Monospace zostaje TYLKO tutaj: to podglad gotowego maila, wiec staly krok znaku
             pokazuje dokladnie ten tekst, ktory trafi do skrzynki. Reszta stron informacyjnych
-            nie ma prawa uzywac kroju maszynowego - on nalezy do sekcji PAKT-K9. */}
+            nie ma prawa uzywac kroju maszynowego - on nalezy do sekcji Dog Store Pro. */}
         <pre className="mt-5 overflow-x-auto whitespace-pre-wrap rounded-[2px] border border-nf-border bg-nf-elevated-2 p-4 font-mono text-xs leading-relaxed text-nf-text">
           {body}
         </pre>

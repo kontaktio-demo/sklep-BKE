@@ -82,7 +82,7 @@ export default function ReturnsPage() {
       <Section title="Reklamacja">
         <P>
           Reklamację składasz z rękojmi (2 lata od wydania towaru, odpowiada za nią sprzedawca)
-          albo z gwarancji PAKT (2 lata na szwy i okucia). Wybór należy do Ciebie i jedno nie
+          albo z gwarancji Dog Store (2 lata na szwy i okucia). Wybór należy do Ciebie i jedno nie
           wyklucza drugiego.
         </P>
         <Steps

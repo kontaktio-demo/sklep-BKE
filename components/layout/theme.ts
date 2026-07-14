@@ -1,6 +1,6 @@
 // Warstwa kolorow shellu (pasek nawigacyjny + stopka). Dwa swiaty:
 //   "/"                  -> papier i tusz (pk-*)
-//   sklep, /k9, reszta   -> grafit (nf-*)
+//   sklep, /pro, reszta  -> grafit (nf-*)
 // Tutaj sa tylko slowniki klas; skladamy je przez cn() w miejscu uzycia,
 // zeby struktura i logika komponentow zostala bez zmian.
 

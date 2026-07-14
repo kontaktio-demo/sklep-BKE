@@ -10,10 +10,10 @@ import { useOverlayA11y } from "./useOverlay";
 const EXIT_MS = 250;
 
 // Powierzchnia panelu stoi na tokenach semantycznych, wiec sama odwraca sie razem ze swiatem:
-// na jasnej trasie karta jest biala z tuszem, w K9 grafitowa z biela. Rozni sie welon: czarny
+// na jasnej trasie karta jest biala z tuszem, w sekcji Pro grafitowa z biela. Rozni sie welon: czarny
 // w obu swiatach, ale nad papierem wystarczy 40% - 60% robi z jasnej strony noc.
 // Panel odcina się od tła mocniejszą krawędzią, a nie cieniem: shadow-2xl/shadow-xl
-// dawały rozmytą poświatę pod modalem, czego język PAKT nie używa.
+// dawały rozmytą poświatę pod modalem, czego język Dog Store nie używa.
 const SURFACE = {
   dark: {
     scrim: "bg-nf-black/60",
@@ -86,7 +86,7 @@ export function Dialog({
   children,
   maxWidthClassName,
   hideTitle = false,
-  // Domyslny swiat to sklep cywilny, nie K9 - patrz Drawer. Szybki podglad w kolekcji jest
+  // Domyslny swiat to sklep cywilny, nie sekcja Pro - patrz Drawer. Szybki podglad w kolekcji jest
   // jedynym wywolaniem bez jawnego theme i przy "dark" wychodzil grafitowy na jasnej trasie.
   theme = "light",
 }: {

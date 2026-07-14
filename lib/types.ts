@@ -1,8 +1,8 @@
-/** Linia produktowa: zwykly sklep vs dedykowana sekcja PAKT-K9 (sprzet sluzbowy). */
-export type ProductLine = "shop" | "k9";
+/** Linia produktowa: zwykly sklep vs dedykowana sekcja Dog Store Pro (sprzet sluzbowy). */
+export type ProductLine = "shop" | "pro";
 
-/** Kategorie w sekcji K9 (produkty z tej linii nie trafiaja do zwyklego sklepu). */
-export type K9Category = "patrol" | "handle" | "e-collar" | "training" | "detection";
+/** Kategorie w sekcji Pro (produkty z tej linii nie trafiaja do zwyklego sklepu). */
+export type ProCategory = "patrol" | "handle" | "e-collar" | "training" | "detection";
 
 export type CollarCategory = "working" | "non-working" | "e-collar";
 export type CollarType = "nylon" | "chain";
@@ -27,7 +27,7 @@ export interface ProductSpec {
  */
 export interface ProductVariant {
   size: CollarSize;
-  sku: string; // SKU modelu + kod rozmiaru, np. PAKT-RAN-175-M
+  sku: string; // SKU modelu + kod rozmiaru, np. DS-RAN-175-M
   price: number; // whole PLN, jak Product.price
   inStock: boolean;
   neck: string; // obwod szyi, np. "38-46 cm"
@@ -50,7 +50,7 @@ export interface Product {
   highlights: string[]; // 4-5 bullets
   /** cechy wspolne modelu. Obwod szyi i waga sa w wariancie - zaleza od rozmiaru. */
   specs: ProductSpec[];
-  /** SKU modelu, bez kodu rozmiaru (np. PAKT-RAN-175). Kupowane SKU siedzi w wariancie. */
+  /** SKU modelu, bez kodu rozmiaru (np. DS-RAN-175). Kupowane SKU siedzi w wariancie. */
   sku: string;
   colors: ProductColor[];
   badges: ProductBadge[];
@@ -67,17 +67,17 @@ export interface Product {
   bestsellerRank?: number; // for Top 10 row
   productType: string; // "Collar" label shown under price (K9TG pattern)
   createdAt: string; // ISO date - required by the Date new->old / old->new sorts (§8-E)
-  /** "shop" = zwykly sklep, "k9" = sprzet sluzbowy dostepny tylko w sekcji PAKT-K9 */
+  /** "shop" = zwykly sklep, "pro" = sprzet sluzbowy dostepny tylko w sekcji Dog Store Pro */
   line: ProductLine;
-  /** wypelniane wylacznie dla line === "k9" */
-  k9Category?: K9Category;
-  /** oznaczenie zgodnosci / normy pokazywane w sekcji K9 */
-  k9Standard?: string;
+  /** wypelniane wylacznie dla line === "pro" */
+  proCategory?: ProCategory;
+  /** oznaczenie zgodnosci / normy pokazywane w sekcji Pro */
+  proStandard?: string;
 }
 
-export interface K9CategoryInfo {
-  slug: K9Category;
-  code: string; // oznaczenie w stylu technicznym, np. "K9-01"
+export interface ProCategoryInfo {
+  slug: ProCategory;
+  code: string; // oznaczenie w stylu technicznym, np. "PRO-01"
   title: string;
   description: string;
   productCount: number;

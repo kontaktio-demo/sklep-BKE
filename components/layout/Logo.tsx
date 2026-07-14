@@ -1,91 +1,113 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BRAND } from "@/lib/nav";
+import { BRAND, PRO_NAV_LABEL, PRO_ROOT } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
-// Assety wycinane z brand/logo.png przez scripts/gen-brand.mjs.
-// Dwa warianty sygnetu, dobierane przez `onDark`:
-//   light -> czarna sylwetka psa (na papierze, strona główna)
-//   dark  -> ta sama sylwetka podniesiona do grafitu, żeby nie znikała na czerni
-// Wordmark jest czerwony i czyta się na obu tłach - ma jeden plik.
-const ASSETS = {
-  // pełna sylwetka (głowa + popiersie z zawieszką) - tam, gdzie jest miejsce: stopka
-  mark: {
-    light: "/brand/pakt-mark.png",
-    dark: "/brand/pakt-mark-dark.png",
-    w: 238,
-    h: 445,
+// Assety wycinane ze zrodlowych logotypow przez scripts/gen-brand.mjs.
+// DWA SKLEPY = DWA LOGOTYPY. Nie warianty jednego znaku, tylko dwie marki:
+//   shop -> Dog Store      okragly emblemat, sklep cywilny
+//   pro  -> Dog Store Pro  kanciasta tarcza, sklep sluzbowy
+//
+// Sygnet ma JEDEN plik na marke: sylwetka lezy na wlasnym czerwonym polu, wiec czyta sie
+// i na papierze sklepu, i na graficie sekcji Pro - nie potrzebuje wariantu.
+// Wordmark ma dwa: napis "DOG" jest w zrodle bialy, wiec na papierze musi zejsc do tuszu.
+//
+// Kazda marka ma WLASNA domyslna wysokosc napisu, bo napisy maja rozna liczbe wierszy:
+// "DOG / STORE" to dwa wiersze, "DOG / STORE / PRO" - trzy. Wspolna wysokosc scisnela
+// trzeci wiersz do kilku pikseli, wiec napis "PRO" przestawal byc czytelny.
+const BRANDS = {
+  shop: {
+    label: BRAND,
+    href: "/",
+    mark: { src: "/brand/ds-mark.png", w: 645, h: 517 },
+    wordmark: {
+      light: "/brand/ds-wordmark.png",
+      dark: "/brand/ds-wordmark-dark.png",
+      w: 794,
+      h: 246,
+      className: "h-7 w-auto lg:h-8", // dwa wiersze
+    },
   },
-  // sam kadr głowy - pasek nawigacyjny, gdzie pionowa sylwetka robi się wąskim paskiem
-  head: {
-    light: "/brand/pakt-head.png",
-    dark: "/brand/pakt-head-dark.png",
-    w: 224,
-    h: 305,
+  pro: {
+    label: PRO_NAV_LABEL,
+    href: PRO_ROOT,
+    mark: { src: "/brand/ds-pro-mark.png", w: 820, h: 576 },
+    wordmark: {
+      light: "/brand/ds-pro-wordmark.png",
+      dark: "/brand/ds-pro-wordmark-dark.png",
+      w: 825,
+      h: 415,
+      className: "h-9 w-auto lg:h-11", // trzy wiersze - potrzebuja wiecej wysokosci
+    },
   },
-};
-const WORDMARK = "/brand/pakt-wordmark.png";
+} as const;
 
+export type LogoBrand = keyof typeof BRANDS;
 type LogoVariant = "header" | "lockup" | "mark" | "wordmark";
 
 interface LogoProps {
+  /** ktora marka. Domyslnie sklep cywilny - sekcja Pro podaje "pro" jawnie */
+  brand?: LogoBrand;
+  /** domyslnie strona glowna wlasnej marki: "/" dla sklepu, "/pro" dla sekcji sluzbowej */
   href?: string;
   className?: string;
   /**
-   * "header"   - głowa psa + napis (pasek nawigacyjny)
-   * "lockup"   - pełna sylwetka + napis (stopka)
+   * "header"   - sygnet + napis (pasek nawigacyjny)
+   * "lockup"   - to samo, wiekszy (stopka)
    * "mark"     - sam sygnet
    * "wordmark" - sam napis
    */
   variant?: LogoVariant;
   markClassName?: string;
   wordmarkClassName?: string;
-  /** true = sygnet leży na ciemnym tle (grafitowa sylwetka); false = na papierze (czarna) */
+  /** true = logo lezy na ciemnym tle (bialy napis); false = na papierze (tusz) */
   onDark?: boolean;
 }
 
 export function Logo({
-  href = "/",
+  brand = "shop",
+  href,
   className,
   variant = "header",
   markClassName,
-  wordmarkClassName = "h-4 w-auto lg:h-5",
+  wordmarkClassName,
   onDark = true,
 }: LogoProps) {
-  const useHead = variant === "header";
-  const asset = useHead ? ASSETS.head : ASSETS.mark;
-  const markSize = markClassName ?? (useHead ? "h-10 w-auto lg:h-12" : "h-16 w-auto");
-  // priority tylko dla paska nawigacyjnego: sygnet w stopce jest poza pierwszym ekranem,
-  // a bezwarunkowe priority wpychalo go do preloadu i konkurowalo o pasmo z LCP
-  const priority = useHead;
+  const b = BRANDS[brand];
+  const inHeader = variant === "header";
+  const markSize = markClassName ?? (inHeader ? "h-9 w-auto lg:h-11" : "h-16 w-auto");
+  const wordSize = wordmarkClassName ?? b.wordmark.className;
+  // priority tylko dla paska nawigacyjnego: logo w stopce jest poza pierwszym ekranem,
+  // a bezwarunkowe priority wpychalo je do preloadu i konkurowalo o pasmo z LCP
+  const priority = inHeader;
 
   return (
     <Link
-      href={href}
-      aria-label={`${BRAND}, strona główna`}
+      href={href ?? b.href}
+      aria-label={`${b.label}, strona główna`}
       className={cn("flex items-center gap-2.5", className)}
     >
       {variant !== "wordmark" && (
         <Image
-          src={onDark ? asset.dark : asset.light}
+          src={b.mark.src}
           alt=""
-          width={asset.w}
-          height={asset.h}
+          width={b.mark.w}
+          height={b.mark.h}
           priority={priority}
           className={cn("w-auto", markSize)}
         />
       )}
       {variant !== "mark" && (
         <Image
-          src={WORDMARK}
+          src={onDark ? b.wordmark.dark : b.wordmark.light}
           alt=""
-          width={289}
-          height={89}
+          width={b.wordmark.w}
+          height={b.wordmark.h}
           priority={priority}
-          className={cn("w-auto", wordmarkClassName)}
+          className={cn("w-auto", wordSize)}
         />
       )}
-      <span className="sr-only">{BRAND}</span>
+      <span className="sr-only">{b.label}</span>
     </Link>
   );
 }

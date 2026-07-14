@@ -41,7 +41,7 @@ const WIDTHS: { width: string; use: string }[] = [
   },
 ];
 
-// type-label, nie monospace: kroj maszynowy nalezy do sekcji PAKT-K9, a to jest strona sklepu.
+// type-label, nie monospace: kroj maszynowy nalezy do sekcji Dog Store Pro, a to jest strona sklepu.
 // Liczby w komorkach trzyma tabular-nums, wiec kolumna stoi rowno bez krojow technicznych.
 const TH = "type-label px-4 py-3 text-left text-nf-dim";
 const TD = "px-4 py-3 text-sm text-nf-text";

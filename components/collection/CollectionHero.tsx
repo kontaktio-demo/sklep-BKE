@@ -3,7 +3,7 @@ import type { Collection } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 
 // Naglowek kolekcji: czysty, typograficzny, na tle strony (nf-bg - papier w swiecie
-// cywilnym, grafit w K9). Bez zdjecia w tle i bez WebGL - rozmyta grafika z poswiata
+// cywilnym, grafit w sekcji Pro). Bez zdjecia w tle i bez WebGL - rozmyta grafika z poswiata
 // wygladala tanio.
 export function CollectionHero({ collection }: { collection: Collection }) {
   return (
@@ -32,7 +32,7 @@ export function CollectionHero({ collection }: { collection: Collection }) {
           <div className="max-w-3xl">
             {/* eyebrow jest oznaczeniem, nie akcja - czerwien zostaje dla CTA i stanu aktywnego.
                 type-label, nie type-meta: kolekcja zyje w sklepie cywilnym, a monospace jest
-                jezykiem katalogu PAKT-K9 */}
+                jezykiem katalogu Dog Store Pro */}
             <p className="type-label text-nf-dim">Kolekcja</p>
             <h1 className="type-h1 mt-4 text-nf-white">{collection.title}</h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-nf-muted">

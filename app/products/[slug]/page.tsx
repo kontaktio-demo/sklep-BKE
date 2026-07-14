@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ProductPageView, productJsonLd } from "@/components/product/ProductPageView";
+import { ProductPageView } from "@/components/product/ProductPageView";
 import { getProduct, getProducts } from "@/lib/data";
 import { BRAND } from "@/lib/nav";
 
-// Karta produktu SKLEPU CYWILNEGO. Sprzet PAKT-K9 ma wlasna przestrzen adresow
-// (/k9/produkt/<slug>) i wlasny, ciemny motyw - tu jest niedostepny, tak samo jak
+// Karta produktu SKLEPU CYWILNEGO. Sprzet Dog Store Pro ma wlasna przestrzen adresow
+// (/pro/produkt/<slug>) i wlasny, ciemny motyw - tu jest niedostepny, tak samo jak
 // w katalogu i w wyszukiwarce sklepu.
-export { productJsonLd };
+//
+// Bez re-eksportu productJsonLd: plik strony moze eksportowac wylacznie to, co Next zna
+// (default, metadata, generateStaticParams...), a kazdy inny eksport wywraca build. Sam
+// znacznik JSON-LD wstawia ProductPageView - strona nigdy z tej funkcji nie korzystala.
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const products = await getProducts("collars");
@@ -22,7 +25,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = await getProduct(slug);
 
-  // nieznany slug albo pozycja z linii K9: strona renderuje notFound(), metadane nie moga rzucic
+  // nieznany slug albo pozycja z linii Pro: strona renderuje notFound(), metadane nie moga rzucic
   if (!product || product.line !== "shop") {
     return {
       title: "Produkt niedostępny",
@@ -50,7 +53,7 @@ export default async function ProductPage({
 }) {
   const { slug } = await params;
   const product = await getProduct(slug);
-  // linia K9 pod adresem sklepu = 404. Ten sam sprzet ma swoj adres w sekcji K9,
+  // linia Pro pod adresem sklepu = 404. Ten sam sprzet ma swoj adres w sekcji Pro,
   // wiec dublowanie go tutaj bylo by druga wystawa tego samego katalogu.
   if (!product || product.line !== "shop") notFound();
 

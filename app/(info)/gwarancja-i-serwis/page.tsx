@@ -18,7 +18,7 @@ const REPAIRS: { job: string; price: number; note: string }[] = [
   { job: "Skrócenie taśmy", price: 30, note: "Cięcie, zgrzanie krawędzi, nowe przeszycie" },
 ];
 
-// type-label, nie monospace: kroj maszynowy nalezy do sekcji PAKT-K9, a to jest strona sklepu
+// type-label, nie monospace: kroj maszynowy nalezy do sekcji Dog Store Pro, a to jest strona sklepu
 const TH = "type-label px-4 py-3 text-left text-nf-dim";
 const TD = "px-4 py-3 text-sm text-nf-text";
 
@@ -67,7 +67,7 @@ export default function WarrantyPage() {
 
       <Section id="serwis" title="Serwis i naprawy">
         <P>
-          Naprawiamy sprzęt PAKT także po gwarancji i niezależnie od tego, czy uszkodzenie
+          Naprawiamy sprzęt Dog Store także po gwarancji i niezależnie od tego, czy uszkodzenie
           jest wadą, czy skutkiem pracy psa. Wymiana klamry jest tańsza niż nowa obroża.
         </P>
         <div className="mt-4 overflow-x-auto">

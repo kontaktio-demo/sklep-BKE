@@ -9,7 +9,7 @@ import { getProducts } from "@/lib/data";
  * wejsc w katalog, zeby zobaczyc towar.
  *
  * Karty ida z linii SKLEPU: getProducts zwraca wylacznie line === "shop", wiec sprzet
- * PAKT-K9 nie ma jak tu trafic. Sekcja sluzbowa ma wlasne wejscie w kaflach wyzej.
+ * Dog Store Pro nie ma jak tu trafic. Sekcja sluzbowa ma wlasne wejscie w kaflach wyzej.
  */
 const COLLECTION_HREF = "/collections/collars";
 const MAX_TILES = 4;

@@ -4,7 +4,7 @@
 
 import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
-import { ANNOUNCEMENTS, K9_STATUS, TRUST_TRIAD, isK9Route } from "@/lib/nav";
+import { ANNOUNCEMENTS, PRO_STATUS, TRUST_TRIAD, isProRoute } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
 const ROTATE_MS = 4500;
@@ -34,22 +34,22 @@ function Sep({ className }: { className?: string }) {
   );
 }
 
-// Sekcja K9 nie sprzedaje darmowej dostawy - pasek niesie status linii. Statycznie,
+// Sekcja Pro nie sprzedaje darmowej dostawy - pasek niesie status linii. Statycznie,
 // bez rotacji: to naglowek katalogu, nie karuzela promocji.
-function K9StatusBar() {
+function ProStatusBar() {
   // type-meta = mono 11px uppercase 0.2em (globals.css)
-  // Czern na graficie: pasek jest juz w swiecie K9, wiec tokeny nf-* czytaja sie jasno
+  // Czern na graficie: pasek jest juz w swiecie Dog Store Pro, wiec tokeny nf-* czytaja sie jasno
   return (
     <div className={cn(BAR, "type-meta bg-nf-black text-nf-dim")}>
-      {/* czerwien = stan aktywny: jestes w linii K9, nie w sklepie cywilnym */}
-      <span className="text-nf-red-bright">{K9_STATUS.line}</span>
+      {/* czerwien = stan aktywny: jestes w linii Pro, nie w sklepie cywilnym */}
+      <span className="text-nf-red-bright">{PRO_STATUS.line}</span>
       <Sep />
-      <span>{K9_STATUS.scope}</span>
+      <span>{PRO_STATUS.scope}</span>
       {/* adres znika ponizej md - w 360 px trzy segmenty z tym trackingiem nie wchodza */}
       <Sep className="hidden md:inline" />
       <span className="hidden md:inline">
-        {K9_STATUS.contactLabel}{" "}
-        <span className="normal-case text-nf-muted">{K9_STATUS.contactEmail}</span>
+        {PRO_STATUS.contactLabel}{" "}
+        <span className="normal-case text-nf-muted">{PRO_STATUS.contactEmail}</span>
       </span>
     </div>
   );
@@ -61,11 +61,11 @@ export function AnnouncementBar() {
   const [visible, setVisible] = useState(true);
   const [paused, setPaused] = useState(false);
 
-  const k9 = isK9Route(pathname);
+  const pro = isProRoute(pathname);
 
   useEffect(() => {
-    // pasek K9 jest statyczny - zegar tylko przemielalby stan bez odbiorcy
-    if (k9) return;
+    // pasek w sekcji Pro jest statyczny - zegar tylko przemielalby stan bez odbiorcy
+    if (pro) return;
     if (ANNOUNCEMENTS.length < 2) return;
     // WCAG 2.2.2: uzytkownik zatrzymal rotacje - komunikat zostaje na aktualnym
     if (paused) return;
@@ -83,7 +83,7 @@ export function AnnouncementBar() {
       window.clearInterval(interval);
       if (fadeTimer !== undefined) window.clearTimeout(fadeTimer);
     };
-  }, [k9, paused]);
+  }, [pro, paused]);
 
   // pauza w trakcie wygaszania zabralaby zegar, ktory przywraca widocznosc - komunikat
   // zostalby przezroczysty, dlatego kazde przelaczenie odsłania biezacy tekst
@@ -92,7 +92,7 @@ export function AnnouncementBar() {
     setVisible(true);
   };
 
-  if (k9) return <K9StatusBar />;
+  if (pro) return <ProStatusBar />;
 
   // Pasek uzytkowy w kolorze marki, na kazdej trasie sklepu lacznie ze strona glowna:
   // niesie darmowa dostawe i triade zaufania, czyli dokladnie to, po co klient patrzy

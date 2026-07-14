@@ -65,7 +65,7 @@ function weightFor(spec: Spec, size: CollarSize): number {
 /** SKU modelu. Trzon = pierwszy człon slugu (ranger-duty-collar -> RAN) + szerokosc. */
 function skuTrunk(spec: Spec): string {
   const model = (spec.slug.split("-")[0] ?? "").slice(0, 3).toUpperCase();
-  return `PAKT-${model}-${spec.width.replace(".", "")}`;
+  return `DS-${model}-${spec.width.replace(".", "")}`;
 }
 
 function variantsFor(spec: Spec): ProductVariant[] {
@@ -154,7 +154,7 @@ function collar(spec: Spec): Product {
 export const products: Product[] = [
   collar({
     slug: "ranger-duty-collar",
-    // Slowa SLUZBOWA / K9 / KLASA ROBOCZA sa zarezerwowane dla linii PAKT-K9. Sklep cywilny
+    // Slowa SLUZBOWA / KLASA ROBOCZA sa zarezerwowane dla linii Dog Store Pro. Sklep cywilny
     // nazywa rzeczy po swojemu, inaczej obietnica "tych pozycji nie znajdziesz w sklepie
     // cywilnym" rozjezdza sie z polka. Slugi zostaja - wisza na nich pliki w /public.
     name: "Obroża robocza Ranger",
@@ -219,7 +219,7 @@ export const products: Product[] = [
     createdAt: "2025-09-30",
   }),
   collar({
-    slug: "vanguard-k9-collar",
+    slug: "vanguard-collar",
     name: "Obroża uniwersalna Vanguard",
     sizes: ["medium", "large"],
     basePrice: 319,

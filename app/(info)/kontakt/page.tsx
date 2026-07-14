@@ -6,7 +6,7 @@ import { ContactForm } from "./ContactForm";
 export const metadata: Metadata = {
   title: "Kontakt",
   description:
-    "Kontakt do sklepu PAKT: e-mail, telefon, godziny pracy, dane firmy i adres do zwrotów. Odpisujemy do 24 godzin w dni robocze.",
+    "Kontakt do sklepu Dog Store: e-mail, telefon, godziny pracy, dane firmy i adres do zwrotów. Odpisujemy do 24 godzin w dni robocze.",
   alternates: { canonical: "/kontakt" },
 };
 
@@ -44,13 +44,13 @@ export default function ContactPage() {
         />
       </Section>
 
-      <Section title="PAKT-K9">
+      <Section title="Dog Store Pro">
         <P>
           Jednostki, szkoły przewodników, kluby sportowe i firmy ochrony. Zapytania ofertowe,
           faktury z odroczonym terminem płatności, dobór sprzętu do zadania i oznaczenia na
           zamówienie.
         </P>
-        <Facts rows={[{ label: "E-mail", value: <Mail address={COMPANY.k9Email} /> }]} />
+        <Facts rows={[{ label: "E-mail", value: <Mail address={COMPANY.proEmail} /> }]} />
       </Section>
 
       <Section title="Zwroty i reklamacje">

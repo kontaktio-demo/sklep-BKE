@@ -4,12 +4,12 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 /**
- * Ciemny jest WYLACZNIE swiat K9. Sklep cywilny, strona glowna, koszyk, wyszukiwarka
- * i strony informacyjne stoja na jasnym szarym - to dwie osobne kategorie sklepu,
- * nie dwa warianty tego samego.
+ * Ciemny jest WYLACZNIE swiat Dog Store Pro. Sklep cywilny, strona glowna, koszyk,
+ * wyszukiwarka i strony informacyjne stoja na jasnym szarym - to dwie osobne kategorie
+ * sklepu, nie dwa warianty tego samego.
  */
 export function isDarkRoute(pathname: string): boolean {
-  return pathname === "/k9" || pathname.startsWith("/k9/");
+  return pathname === "/pro" || pathname.startsWith("/pro/");
 }
 
 // Ustawia data-theme na <html>, zeby tlo POZA trescia (overscroll, obszar pod stopka)

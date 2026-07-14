@@ -29,15 +29,15 @@ const CARE: string[] = [
 
 export function ProductSections({ product }: { product: Product }) {
   // pas pod modul e-obrozy: jedyna karta, na ktorej tabela zgodnosci cokolwiek znaczy.
-  // K9 trzyma te sama kategorie (lib/data/k9.mock), wiec drugi warunek jest zabezpieczeniem
+  // Sekcja Pro trzyma te sama kategorie (lib/data/pro.mock), wiec drugi warunek jest zabezpieczeniem
   // na wypadek rozejscia sie obu slownikow
-  const showCompatibility = product.category === "e-collar" || product.k9Category === "e-collar";
+  const showCompatibility = product.category === "e-collar" || product.proCategory === "e-collar";
   const faq = getProductFaq(product);
 
   // Sekcje opisowe stoja pod obiema kartami. Monospace jest oznaczeniem technicznym sprzetu
-  // sluzbowego, wiec kod rozmiaru i numer kroku pielegnacji biora go tylko w K9.
-  const k9 = product.line === "k9";
-  const META = k9 ? "type-meta" : "type-label";
+  // sluzbowego, wiec kod rozmiaru i numer kroku pielegnacji biora go tylko w sekcji Pro.
+  const pro = product.line === "pro";
+  const META = pro ? "type-meta" : "type-label";
 
   // tabela rozmiarow pokazuje pelna skale, ale mowi wprost, ktore rozmiary ma TEN model.
   // Obwodu szyi i wagi nie ma juz w specyfikacji: obie wartosci naleza do wariantu,
@@ -46,7 +46,7 @@ export function ProductSections({ product }: { product: Product }) {
 
   return (
     <div className="grid gap-10 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-16">
-      <SectionNav mono={k9} />
+      <SectionNav mono={pro} />
       <div className="min-w-0">
         <section id="opis"
           data-section-label="Opis" className="scroll-mt-28" aria-labelledby="opis-heading">

@@ -1,12 +1,12 @@
-# PAKT - sklep z obrożami (frontend, bez backendu)
+# Dog Store - sklep z obrożami (frontend, bez backendu)
 
 Polskojęzyczny sklep dla marki sprzętu dla psów pracujących. To **dwa osobne sklepy**,
 nie dwa warianty jednego:
 
-| | PAKT (cywilny) | PAKT-K9 (służbowy) |
+| | Dog Store (cywilny) | Dog Store Pro (służbowy) |
 |---|---|---|
-| adresy | `/`, `/collections/collars`, `/products/<slug>`, `/koszyk`, `/szukaj`, strony informacyjne | `/k9`, `/k9/<kategoria>`, `/k9/produkt/<slug>`, `/k9/zapytanie` |
-| katalog | 26 modeli (`line: "shop"`) | 12 modeli (`line: "k9"`), niedostępnych w sklepie cywilnym |
+| adresy | `/`, `/collections/collars`, `/products/<slug>`, `/koszyk`, `/szukaj`, strony informacyjne | `/pro`, `/pro/<kategoria>`, `/pro/produkt/<slug>`, `/pro/zapytanie` |
+| katalog | 26 modeli (`line: "shop"`) | 12 modeli (`line: "pro"`), niedostępnych w sklepie cywilnym |
 | wygląd | jasny szary papier, białe kadry, czerwień jako akcent | grafit, ciemna czerwień, siatka techniczna, monospace na kody |
 
 Sprzęt z jednej linii nie pojawia się w drugiej: pilnuje tego seam (`lib/data/index.ts`),
@@ -15,18 +15,18 @@ osobna przestrzeń adresów (`lib/routes.ts`) i `notFound()` na obu trasach kart
 Ceny w PLN, formatowanie `pl-PL`. Backendu nie ma: formularze nie udają wysyłki, tylko
 przygotowują treść i otwierają program pocztowy. Koszyk żyje w `localStorage`.
 
-## Tożsamość PAKT-K9 (`K9_IDENTITY.md`) - wartości są prawem
+## Tożsamość Dog Store Pro (`PRO_IDENTITY.md`) - wartości są prawem
 
-Sekcja K9 ma **własną tożsamość wizualną**, opisaną w `K9_IDENTITY.md`. Obowiązuje na
-trasach `/k9/*` i nie wolno w niej podmieniać wartości "na oko":
+Sekcja Pro ma **własną tożsamość wizualną**, opisaną w `PRO_IDENTITY.md`. Obowiązuje na
+trasach `/pro/*` i nie wolno w niej podmieniać wartości "na oko":
 
 - **Paleta:** tło `#0E0E0E`, karty `#161616`, warstwa wyższa `#1E1E1E`, tekst `#EDEDED`,
   drobny `#8A8A8A`, linie `rgba(255,255,255,.08)` / `.16`. Czerwień `#E50914` jest
   **jedynym** akcentem i używa się jej oszczędnie (CTA, stan aktywny, linia sekcji,
   jedno słowo w nagłówku). Nigdy jako duże wypełnienie.
 - **Typografia:** Archivo 800/900 (nagłówki, wersaliki, ciasny tracking), Geist Sans
-  (treść), **Geist Mono (każdy odczyt techniczny: `K9-01`, `ZERWANIE 380 KG`, `1000D`)**.
-  Inter i system-ui są w K9 **zakazane**. Klasy: `type-k9-hero` / `-h2` / `-h3` / `-body`
+  (treść), **Geist Mono (każdy odczyt techniczny: `PRO-01`, `ZERWANIE 380 KG`, `1000D`)**.
+  Inter i system-ui są w sekcji Pro **zakazane**. Klasy: `type-pro-hero` / `-h2` / `-h3` / `-body`
   / `-meta` / `-spec` / `-eyebrow`.
 - **Geometria:** promień maks. 2 px (token `--radius-control`, w sklepie cywilnym 4 px),
   elewacja przez **rozjaśnienie obwódki**, nigdy przez cień. Zero gradientowych plam,
@@ -34,14 +34,14 @@ trasach `/k9/*` i nie wolno w niej podmieniać wartości "na oko":
 - **Rytm:** kontener 1440 px; sekcje gęste `clamp(56px, 6vw, 88px)`, sekcje oddechowe
   `clamp(96px, 12vw, 160px)`. Padding nie jest wszędzie ten sam - to celowe.
 
-Zanim dołożysz cokolwiek do `/k9`, sprawdź listę zakazów (§6 dokumentu). Jeżeli element
+Zanim dołożysz cokolwiek do `/pro`, sprawdź listę zakazów (§6 dokumentu). Jeżeli element
 nie stoi ani w referencji, ani w specyfikacji, nie ma go tam.
 
 ## Dwa światy w jednym zestawie nazw (`app/globals.css`)
 
 Tokeny `nf-*` są **semantyczne i odwracają się same** w zależności od zakresu:
 
-| token | sklep cywilny | PAKT-K9 |
+| token | sklep cywilny | Dog Store Pro |
 |---|---|---|
 | `nf-bg` | `#f0f0ee` (tło strony) | grafit `#1c1f22` |
 | `nf-elevated` | biel (kadr, karta) | ciemniejszy grafit |
@@ -51,19 +51,19 @@ Tokeny `nf-*` są **semantyczne i odwracają się same** w zależności od zakre
 `nf-white` to **maksymalny kontrast**, a nie "biel". Dzięki temu ten sam komponent działa
 w obu światach bez rozgałęzień w kodzie.
 
-Ciemny motyw włącza się z **trasy** (`ThemeSync` ustawia `data-theme="dark"` na `/k9/*`).
-Ciemna wyspa na jasnej stronie (stopka, newsletter, kafel wejściowy K9) dostaje
+Ciemny motyw włącza się z **trasy** (`ThemeSync` ustawia `data-theme="dark"` na `/pro/*`).
+Ciemna wyspa na jasnej stronie (stopka, newsletter, kafel wejściowy do sekcji Pro) dostaje
 `data-shell="dark"` i odwraca tokeny w swoim poddrzewie.
 
 Nagłówki: Fjalla One (kondensowany, uppercase) przez klasy `type-display` / `type-h1` /
 `type-h2` / `type-h3`. **Komponenty nie definiują własnych rozmiarów nagłówków.**
-Monospace (`type-meta`) należy wyłącznie do sekcji K9.
+Monospace (`type-meta`) należy wyłącznie do sekcji Pro.
 
 ## Zdjęcia (`public/foto/`)
 
 Fotografii jeszcze nie ma i nie są generowane. Kafle i baner mają sloty: wystarczy wrzucić
 plik do `public/foto/`, żeby wypełnił kadr (`lib/photos.ts` sprawdza, czy plik istnieje).
-Rozpoznawane nazwy: `hero.jpg`, `sklep.jpg`, `k9.jpg`, `robocze.jpg`, `codzienne.jpg`,
+Rozpoznawane nazwy: `hero.jpg`, `sklep.jpg`, `pro.jpg`, `robocze.jpg`, `codzienne.jpg`,
 `e-obroza.jpg`. Bez pliku kafel zostaje płaską płaszczyzną z materiału sekcji, a nie atrapą
 udającą zdjęcie.
 
@@ -89,14 +89,14 @@ getCollection(handle): Promise<Collection>
 getProducts(handle): Promise<Product[]>          // tylko linia "shop"
 getFilters(handle): Promise<FilterGroup[]>
 getProduct(slug): Promise<Product | null>        // null -> notFound()
-getRelatedProducts(slug, limit?): Promise<Product[]>   // nie miesza linii shop i k9
-getK9Categories(): Promise<K9CategoryInfo[]>
-getK9Category(slug): Promise<K9CategoryInfo | null>
-getK9Products(category?): Promise<Product[]>
+getRelatedProducts(slug, limit?): Promise<Product[]>   // nie miesza linii shop i pro
+getProCategories(): Promise<ProCategoryInfo[]>
+getProCategory(slug): Promise<ProCategoryInfo | null>
+getProProducts(category?): Promise<Product[]>
 ```
 
 **Żadna funkcja seamu nie zwraca obu linii naraz** i tak ma zostać. `generateStaticParams`
-buduje trasy sklepu z `getProducts("collars")`, a trasy K9 z `getK9Products()` - dzięki temu
+buduje trasy sklepu z `getProducts("collars")`, a trasy Pro z `getProProducts()` - dzięki temu
 nie da się wygenerować karty sprzętu służbowego pod cywilnym adresem `/products/<slug>`.
 (Poprzednie `getProductSlugs()` sklejało slugi obu linii i zostało usunięte właśnie dlatego.)
 
@@ -107,7 +107,7 @@ nie da się wygenerować karty sprzętu służbowego pod cywilnym adresem `/prod
 ```ts
 interface ProductVariant {
   size: "small" | "medium" | "large";
-  sku: string;          // SKU modelu + kod rozmiaru, np. PAKT-RAN-175-M
+  sku: string;          // SKU modelu + kod rozmiaru, np. DS-RAN-175-M
   price: number;        // pełne PLN, cena TEGO rozmiaru
   inStock: boolean;     // dostępność TEGO rozmiaru
   neck: string;         // obwód szyi, np. "38-46 cm"
@@ -121,8 +121,8 @@ interface ProductVariant {
 - `price` = **cena OD** (najniższa z wariantów), `fromPrice` = ceny wariantów się różnią
 - `inStock` = **choć jeden** wariant dostępny; `sku` = SKU modelu bez kodu rozmiaru
 - `specs` = cechy wspólne modelu. Obwód szyi i waga **nie są** w `specs`, bo zależą od rozmiaru
-- `line: "shop" | "k9"` - sprzęt K9 nie może trafić do zwykłego sklepu
-- dla K9 dodatkowo: `k9Category`, `k9Standard`
+- `line: "shop" | "pro"` - sprzęt z linii Pro nie może trafić do zwykłego sklepu
+- dla linii Pro dodatkowo: `proCategory`, `proStandard`
 
 Zasady dla backendu:
 
@@ -140,16 +140,16 @@ bez zmian, dopóki seam zwraca powyższe kształty. Stan filtrów żyje w URL
 ```
 app/page.tsx                    strona główna (jasna): hero, sekcja "jak pracujemy", dwa wejścia
 app/collections/[handle]/       sklep cywilny (filtry w URL, SSR z produktami)
-app/products/[slug]/            karta produktu (38 sztuk: 26 sklep + 12 K9)
-app/k9/                         PAKT-K9: strona sekcji, kategorie, katalog, zapytanie ofertowe
+app/products/[slug]/            karta produktu (38 sztuk: 26 sklep + 12 Pro)
+app/pro/                        Dog Store Pro: strona sekcji, kategorie, katalog, zapytanie ofertowe
 app/koszyk/                     koszyk (persystencja, zamówienie mailem)
 app/szukaj/                     wyszukiwarka (nazwa, SKU, specyfikacja, kolory)
 app/(info)/                     kontakt, dostawa, zwroty, gwarancja, rozmiary, regulamin,
                                 polityka prywatności, o nas
 components/home/                hero, intro, dwa wejścia (SeamTransition)
-components/k9/                  hero z soczewką, marquee, kategorie, katalog, zapytanie
+components/pro/                  hero z soczewką, marquee, kategorie, katalog, zapytanie
 components/motion/              SplitLines, SeamTransition, Lens, Reveal, LenisProvider
-lib/data/                       SEAM + mocki (products, k9, filters, copy, faq)
+lib/data/                       SEAM + mocki (products, pro, filters, copy, faq)
 brand/logo.png                  źródło marki (-> scripts/gen-brand.mjs)
 public/placeholder/             tymczasowe grafiki produktów (-> scripts/gen-placeholders.mjs)
 ```
@@ -159,7 +159,7 @@ public/placeholder/             tymczasowe grafiki produktów (-> scripts/gen-pl
 Strona główna chodzi na jasnej palecie (`pk-*`), reszta serwisu na ciemnej (`nf-*`).
 `ThemeSync` ustawia `data-theme` na `<html>`, a skrypt w `<head>` robi to jeszcze przed
 pierwszym malowaniem, więc jasna strona nie miga grafitem. Header sam próbkuje, co pod nim
-leży, i przełącza motyw, gdy wjeżdża pod niego ciemny panel K9.
+leży, i przełącza motyw, gdy wjeżdża pod niego ciemny panel sekcji Pro.
 
 ## Ruch
 

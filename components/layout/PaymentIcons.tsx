@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import type { Theme } from "./theme";
 
 // Plakietki stoja na tokenach semantycznych, wiec obie strony sa tym samym zestawem klas:
-// biala pigulka z tuszem na papierze, grafitowa z biela w K9. Slownik zostaje, bo motyw
+// biala pigulka z tuszem na papierze, grafitowa z biela w sekcji Pro. Slownik zostaje, bo motyw
 // nadal moze byc narzucony z zewnatrz (ciemna wyspa na jasnej trasie).
 const BADGE: Record<Theme, string> = {
   dark: "border-nf-border bg-nf-elevated text-nf-muted",

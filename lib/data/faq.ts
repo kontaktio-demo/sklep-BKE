@@ -160,7 +160,7 @@ const FAQ: Record<FaqVariant, FaqItem[]> = {
  * e-obrozy jest najpierw pasem pod modul, a dopiero potem obroza z rzepem na panel ID.
  */
 export function getProductFaq(product: Product): FaqItem[] {
-  if (product.category === "e-collar" || product.k9Category === "e-collar") {
+  if (product.category === "e-collar" || product.proCategory === "e-collar") {
     return FAQ["e-collar"];
   }
   if (product.type === "chain") return FAQ.chain;

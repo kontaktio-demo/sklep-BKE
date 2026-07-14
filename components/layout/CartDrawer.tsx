@@ -204,8 +204,8 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                     {/* Wczesniej byl tu przycisk "Dodaj", ktory wrzucal produkt bez rozmiaru.
                         Kazda pozycja koszyka to konkretny wariant, wiec podpowiedz prowadzi
                         na karte produktu, gdzie rozmiar wybiera klient, a nie sklep za niego.
-                        productHref, nie sklejanie /products/<slug>: pozycja z linii K9 zyje
-                        pod /k9/produkt/<slug>, wiec reczny adres prowadzil w 404.
+                        productHref, nie sklejanie /products/<slug>: pozycja z linii Pro zyje
+                        pod /pro/produkt/<slug>, wiec reczny adres prowadzil w 404.
                         nf-control: to przycisk konturowy, jego ramka jest jedynym sygnalem
                         kontrolki (WCAG 1.4.11) */}
                     <Link

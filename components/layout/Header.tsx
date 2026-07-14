@@ -1,7 +1,7 @@
 "use client";
 
 // §8-B [NSDW structure; Netflix transparent->solid over the hero]
-// Shell chodzi w dwoch motywach: "/" = papier i tusz, reszta (sklep, /k9) = grafit.
+// Shell chodzi w dwoch motywach: "/" = papier i tusz, reszta (sklep, /pro) = grafit.
 // Kolory siedza w slowniku SHELL - struktura i logika komponentow zostaja te same.
 
 import Link from "next/link";
@@ -28,7 +28,7 @@ import { isDarkRoute } from "./ThemeSync";
 const ICON_BUTTON_BASE =
   "flex h-11 w-11 items-center justify-center transition-colors duration-250 ease-nf";
 
-// Monospace nalezy do swiata K9. Nakladki shellu (wyszukiwarka, menu mobilne) niosa
+// Monospace nalezy do swiata Dog Store Pro. Nakladki shellu (wyszukiwarka, menu mobilne) niosa
 // nawigacje sklepu cywilnego, wiec drobne naglowki ida groteskiem.
 const PANEL_HEADING = "type-label";
 
@@ -212,12 +212,12 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Ciemna wyspa (kafel wejsciowy K9) potrafi wjechac pod pasek na jasnej trasie.
+  // Ciemna wyspa (kafel wejsciowy do sekcji Pro) potrafi wjechac pod pasek na jasnej trasie.
   // Probkujemy, co faktycznie lezy pod headerem, i przelaczamy motyw - inaczej jasny
   // pasek zostaje na graficie i wyglada jak bug.
   const [overDark, setOverDark] = useState(false);
-  const inK9 = isDarkRoute(pathname);
-  const routeLight = !inK9;
+  const inPro = isDarkRoute(pathname);
+  const routeLight = !inPro;
   const light = routeLight && !overDark;
   const theme: Theme = light ? "light" : "dark";
   const t = SHELL[theme];
@@ -225,7 +225,7 @@ export function Header() {
   // Nakladki (wyszukiwarka, menu mobilne) otwieraja sie na srodku ekranu, a nie na tresci
   // pod paskiem - ich motyw ma wynikac z TRASY, nie z tego, co akurat wjechalo pod header.
   // Inaczej przewiniecie do ciemnej wyspy na jasnym sklepie robilo z nich grafit bez powodu.
-  const overlayTheme: Theme = inK9 ? "dark" : "light";
+  const overlayTheme: Theme = inPro ? "dark" : "light";
 
   useEffect(() => {
     // strony z pelnoekranowym hero oznaczaja go przez data-hero-sentinel
@@ -233,7 +233,7 @@ export function Header() {
     const hero = sentinel !== null;
     setHasHero(hero);
     // Sklep cywilny: pasek jest zawsze pelny i jasny, jak w sklepie z referencji.
-    // Przezroczysty pasek nad zdjeciem zostaje wylacznie w K9.
+    // Przezroczysty pasek nad zdjeciem zostaje wylacznie w sekcji Pro.
     if (!isDarkRoute(pathname)) {
       setScrolled(false);
       return;
@@ -295,7 +295,7 @@ export function Header() {
     return () => observer.disconnect();
   }, [routeLight, pathname]);
 
-  // jasne trasy: zawsze pelny pasek. K9: przezroczysty nad hero, pelny po przewinieciu.
+  // jasne trasy: zawsze pelny pasek. Pro: przezroczysty nad hero, pelny po przewinieciu.
   const solid = routeLight ? true : !hasHero || scrolled;
 
   return (
@@ -305,7 +305,7 @@ export function Header() {
         // zakresem odwracajacym tokeny: nad ciemna wyspa zostawal jasny, a hover na
         // nf-white dawal tusz na tusz. data-shell="dark" otwiera ten zakres.
         // Regula [data-shell="dark"] siedzi w @layer base, wiec klasy uzytkowe
-        // (bg-transparent nad hero K9) nadal ja przebijaja.
+        // (bg-transparent nad hero sekcji Pro) nadal ja przebijaja.
         data-shell={theme === "dark" ? "dark" : undefined}
         className={cn(
           "sticky top-0 z-40 border-b transition-[background-color,border-color] duration-300 ease-nf",
@@ -336,13 +336,10 @@ export function Header() {
           >
             <MenuIcon />
           </button>
-          <Logo onDark={!light} />
-          {inK9 && (
-            <span className="type-meta flex shrink-0 items-center gap-2 pl-1 text-nf-red-bright">
-              <span aria-hidden="true" className="h-3 w-px bg-nf-border-strong" />
-              <span className="sr-only">Sekcja </span>K9
-            </span>
-          )}
+          {/* Sekcja sluzbowa ma WLASNY logotyp, nie doklejke do logo sklepu: napis "PRO"
+              siedzi juz w samym znaku, wiec dawna plakietka "| Pro" obok logo bylaby
+              powtorzeniem tej samej informacji drugi raz. */}
+          <Logo brand={inPro ? "pro" : "shop"} onDark={!light} />
 
           <div className="hidden flex-1 justify-center lg:flex">
             <MegaMenu theme={theme} />

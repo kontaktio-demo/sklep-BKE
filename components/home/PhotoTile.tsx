@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
  * Kafel wejsciowy: kadr, tytul, jedno zdanie, jeden przycisk. Caly kafel jest linkiem
  * (przycisk jest w srodku wylacznie jako sygnal - nie zagnieżdzamy dwoch linkow).
  *
- * Kafel K9 (tone="dark") niesie material sekcji: grafit, siatka techniczna, pas szrafury.
+ * Kafel sekcji Pro (tone="dark") niesie material sekcji: grafit, siatka techniczna, pas szrafury.
  * Kafel cywilny stoi na papierze. To ma byc widoczne juz na stronie glownej, bo to sa
  * dwa osobne sklepy, nie dwa filtry tego samego katalogu.
  */
@@ -42,10 +42,10 @@ export function PhotoTile({
       className={cn(
         "group relative block overflow-hidden rounded-[4px] border",
         ratio,
-        // Kafel wejsciowy do K9 jest zapowiedzia tamtej tozsamosci: czern #0E0E0E,
-        // czerwona linia, monospace. Nie sciagamy tu jednak calego jezyka K9 - to wciaz
+        // Kafel wejsciowy do sekcji Pro jest zapowiedzia tamtej tozsamosci: czern #0E0E0E,
+        // czerwona linia, monospace. Nie sciagamy tu jednak calego jezyka Dog Store Pro - to wciaz
         // strona cywilna, wiec kafel ma byc drzwiami, a nie sekcja.
-        dark ? "border-k9-border bg-k9-bg" : "border-nf-border bg-nf-elevated-2",
+        dark ? "border-pro-border bg-pro-bg" : "border-nf-border bg-nf-elevated-2",
         className
       )}
     >
@@ -69,18 +69,18 @@ export function PhotoTile({
         </>
       ) : (
         // Brak zdjecia: plaska plaszczyzna materialu. Siatka techniczna i szrafura znikly
-        // razem z reszta dekoracji spoza tozsamosci K9 (§6) - zostaje czern i czerwona linia.
+        // razem z reszta dekoracji spoza tozsamosci Dog Store Pro (§6) - zostaje czern i czerwona linia.
         dark && (
           <span
             aria-hidden="true"
-            className="absolute left-5 top-5 block h-0.5 w-12 bg-k9-red md:left-7 md:top-7"
+            className="absolute left-5 top-5 block h-0.5 w-12 bg-pro-red md:left-7 md:top-7"
           />
         )
       )}
 
       <div className="absolute inset-x-0 bottom-0 p-5 md:p-7">
         {/* Na zdjeciu tekst jest zawsze bialy (welon jest ciemny). Bez zdjecia jedzie
-            na tokenie kontrastu, wiec kafel K9 ma biel, a cywilny tusz. */}
+            na tokenie kontrastu, wiec kafel sekcji Pro ma biel, a cywilny tusz. */}
         <h3 className={cn("type-h1", src || dark ? "text-white" : "text-nf-white")}>{title}</h3>
         <p
           className={cn(

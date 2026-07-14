@@ -4,8 +4,8 @@ export interface ProductCopy {
   highlights: string[];
 }
 
-// Sklep cywilny nie uzywa slow SLUZBOWA / K9 / KLASA ROBOCZA - te sa zarezerwowane dla
-// linii PAKT-K9 (lib/data/k9.mock.ts). Tutaj: robocza, calodzienna, wzmocniona, terenowa.
+// Sklep cywilny nie uzywa slow SLUZBOWA / KLASA ROBOCZA - te sa zarezerwowane dla
+// linii Dog Store Pro (lib/data/pro.mock.ts). Tutaj: robocza, calodzienna, wzmocniona, terenowa.
 export const productCopy: Record<string, ProductCopy> = {
   "ranger-duty-collar": {
     tagline: "Taśma 1000D, panel ID, praca w terenie",
@@ -53,7 +53,7 @@ export const productCopy: Record<string, ProductCopy> = {
 
   // nazwa mowi "wzmocniona", wiec tekst musi pokazac, czym: samo "szeroka tasma" tego
   // nie unosi, a dwie warstwy sa juz znakiem rozpoznawczym Bastionu
-  "vanguard-k9-collar": {
+  "vanguard-collar": {
     tagline: "Przeszycia krzyżowe w punktach obciążenia",
     description:
       "Obroża do szkolenia i pracy z dużym psem. Taśma 1000D o szerokości 4,5 cm, przeszycie krzyżowe przy klamrze i przy D-ringu, czyli w punktach, które puszczają pierwsze. Zakres regulacji daje zapas na zimową okrywę, a klamra zatrzaskowa zapina się jedną ręką, także w rękawicy. Rzep pod panele identyfikacyjne biegnie przez całą taśmę.",

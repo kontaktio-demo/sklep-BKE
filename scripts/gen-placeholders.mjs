@@ -12,7 +12,7 @@ const PRODUCTS = [
   { slug: "fjord-everyday-collar", hex: "#22304A", chain: false },
   { slug: "sentinel-id-collar", hex: "#1F1F1F", chain: false },
   { slug: "bolt-e-fit-collar", hex: "#4A5D43", chain: false },
-  { slug: "vanguard-k9-collar", hex: "#7A5C3E", chain: false },
+  { slug: "vanguard-collar", hex: "#7A5C3E", chain: false },
   { slug: "nightwatch-reflective-collar", hex: "#C75000", chain: false },
   { slug: "grizzly-alpine-collar", hex: "#4A5D43", chain: false },
   { slug: "ridgeline-field-collar", hex: "#4A5D43", chain: false },
@@ -34,19 +34,20 @@ const PRODUCTS = [
   { slug: "breeze-mesh-collar", hex: "#8E9193", chain: false },
   { slug: "surge-e-fit-collar", hex: "#1F1F1F", chain: false },
   { slug: "raptor-e-fit-field-collar", hex: "#4A5D43", chain: false },
-  // linia PAKT-K9 (sprzet sluzbowy, niedostepny w zwyklym sklepie)
-  { slug: "k9-patrol-duty-collar", hex: "#1F1F1F", chain: false },
-  { slug: "k9-grip-handle-collar", hex: "#1F1F1F", chain: false },
-  { slug: "k9-breach-handle-collar", hex: "#4B4F55", chain: false },
-  { slug: "k9-mount-e-collar", hex: "#3E4634", chain: false },
-  { slug: "k9-relay-e-collar", hex: "#4A5D43", chain: false },
-  { slug: "k9-drill-training-collar", hex: "#3E4634", chain: false },
-  { slug: "k9-check-training-chain", hex: "#4B4F55", chain: true },
-  { slug: "k9-scent-detection-collar", hex: "#7A5C3E", chain: false },
-  { slug: "k9-track-detection-collar", hex: "#3E4634", chain: false },
-  { slug: "k9-sentry-patrol-collar", hex: "#1F1F1F", chain: false },
-  { slug: "k9-anchor-patrol-collar", hex: "#7A5C3E", chain: false },
-  { slug: "k9-cadet-training-collar", hex: "#3E4634", chain: false },
+  // linia Dog Store Pro (sprzet sluzbowy, niedostepny w zwyklym sklepie).
+  // pro: true decyduje o studiu (grafit zamiast bieli) - patrz STUDIO nizej.
+  { slug: "patrol-duty-collar", hex: "#1F1F1F", chain: false, pro: true },
+  { slug: "grip-handle-collar", hex: "#1F1F1F", chain: false, pro: true },
+  { slug: "breach-handle-collar", hex: "#4B4F55", chain: false, pro: true },
+  { slug: "mount-e-collar", hex: "#3E4634", chain: false, pro: true },
+  { slug: "relay-e-collar", hex: "#4A5D43", chain: false, pro: true },
+  { slug: "drill-training-collar", hex: "#3E4634", chain: false, pro: true },
+  { slug: "check-training-chain", hex: "#4B4F55", chain: true, pro: true },
+  { slug: "scent-detection-collar", hex: "#7A5C3E", chain: false, pro: true },
+  { slug: "track-detection-collar", hex: "#3E4634", chain: false, pro: true },
+  { slug: "sentry-patrol-collar", hex: "#1F1F1F", chain: false, pro: true },
+  { slug: "anchor-patrol-collar", hex: "#7A5C3E", chain: false, pro: true },
+  { slug: "cadet-training-collar", hex: "#3E4634", chain: false, pro: true },
 ];
 
 function mulberry32(seed) {
@@ -77,8 +78,10 @@ function shade(hex, f) {
 }
 
 // Dwa swiaty, dwa studia. Sklep cywilny stoi na jasnym tle (produkt na bieli, jak
-// w kazdym sklepie), sekcja K9 na graficie. O tym, ktore studio dostaje produkt,
-// decyduje jego linia - nie osobna lista, tylko prefiks slug "k9-".
+// w kazdym sklepie), sekcja Pro na graficie. O tym, ktore studio dostaje produkt,
+// decyduje WYLACZNIE flaga `pro` przy jego wpisie w PRODUCTS - ze slugu tego nie widac,
+// bo slugi obu linii wygladaja tak samo. Dopisujac produkt do linii sluzbowej, trzeba
+// te flage ustawic: bez niej dostanie jasne studio sklepu.
 const STUDIO = {
   light: {
     bgTop: "#ffffff",
@@ -92,7 +95,7 @@ const STUDIO = {
     sheenBottom: "#16161a",
     sheenBottomOpacity: 0.05,
   },
-  // Studio K9 stoi na powierzchniach z K9_IDENTITY (§1): karta #161616 schodzaca do tla
+  // Studio Pro stoi na powierzchniach z PRO_IDENTITY (§1): karta #161616 schodzaca do tla
   // strony #0E0E0E. Stary grafit (#24282c) na czerni sekcji czytal sie jak szare pudlo
   // doklejone do kadru.
   dark: {
@@ -266,10 +269,10 @@ function flatLayShot(hex, chain, rnd) {
   </g>`;
 }
 
-function productSvg(slug, hex, chain, variant) {
+function productSvg(slug, hex, chain, variant, pro) {
   const id = `${slug}-${variant}`;
   const rnd = mulberry32(hashCode(id));
-  const studio = slug.startsWith("k9-") ? STUDIO.dark : STUDIO.light;
+  const studio = pro ? STUDIO.dark : STUDIO.light;
   const body =
     variant === 3
       ? hardwareShot(hex, chain, rnd)
@@ -318,7 +321,10 @@ function heroSvg() {
 let written = 0;
 for (const p of PRODUCTS) {
   for (const variant of [1, 2, 3, 4]) {
-    writeFileSync(join(OUT, `${p.slug}-${variant}.svg`), productSvg(p.slug, p.hex, p.chain, variant));
+    writeFileSync(
+      join(OUT, `${p.slug}-${variant}.svg`),
+      productSvg(p.slug, p.hex, p.chain, variant, p.pro === true)
+    );
     written++;
   }
 }

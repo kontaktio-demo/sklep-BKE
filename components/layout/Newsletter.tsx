@@ -6,7 +6,7 @@
 import { usePathname } from "next/navigation";
 import { useId } from "react";
 import { Button } from "@/components/ui/Button";
-import { COMPANY, isK9Route } from "@/lib/nav";
+import { COMPANY, isProRoute } from "@/lib/nav";
 
 interface NewsletterCopy {
   eyebrow: string;
@@ -14,12 +14,12 @@ interface NewsletterCopy {
   lead?: string;
   note: string;
   cta: string;
-  /** Adres zapisu. Sklep i linia K9 maja osobne skrzynki, wiec adres idzie razem z trescia. */
+  /** Adres zapisu. Sklep i linia Pro maja osobne skrzynki, wiec adres idzie razem z trescia. */
   email: string;
   mailto: string;
 }
 
-// Sklep mowi o nowych modelach, linia K9 o zmianach w katalogu i wynikach testow. Zadna
+// Sklep mowi o nowych modelach, linia Pro o zmianach w katalogu i wynikach testow. Zadna
 // z wersji nie obiecuje rabatu: kodu nie ma jak wystawic, wiec znika tez z podpisu.
 //
 // Zapis idzie mailem, bo nie ma serwera, ktory przyjalby adres z pola. Formularz, ktory
@@ -31,23 +31,23 @@ const SHOP_COPY: NewsletterCopy = {
   note: "Do listy dopisujemy ręcznie, po odebraniu wiadomości. Wypisujesz się jednym mailem.",
   cta: "Zapisz się mailem",
   email: COMPANY.shopEmail,
-  mailto: `mailto:${COMPANY.shopEmail}?subject=${encodeURIComponent("Newsletter PAKT: zapis")}`,
+  mailto: `mailto:${COMPANY.shopEmail}?subject=${encodeURIComponent("Newsletter Dog Store: zapis")}`,
 };
 
-const K9_COPY: NewsletterCopy = {
-  eyebrow: "PAKT-K9",
-  heading: ["Nowe pozycje", "w katalogu K9"],
+const PRO_COPY: NewsletterCopy = {
+  eyebrow: "Dog Store Pro",
+  heading: ["Nowe pozycje", "w katalogu Pro"],
   lead: "Wiadomość wychodzi, gdy do katalogu wchodzi nowa pozycja albo gdy zmieniamy konstrukcję istniejącej. Do tego wyniki testów: obciążenia statyczne, ścieranie taśmy, zachowanie okuć po sezonie pracy.",
   note: "Bez ofert i bez rabatów. Do listy dopisujemy ręcznie, po odebraniu wiadomości. Wypisujesz się jednym mailem.",
   cta: "Zapisz się mailem",
-  email: COMPANY.k9Email,
-  mailto: `mailto:${COMPANY.k9Email}?subject=${encodeURIComponent("Katalog PAKT-K9: zapis")}`,
+  email: COMPANY.proEmail,
+  mailto: `mailto:${COMPANY.proEmail}?subject=${encodeURIComponent("Katalog Dog Store Pro: zapis")}`,
 };
 
 export function Newsletter() {
   const pathname = usePathname();
-  const k9 = isK9Route(pathname);
-  const copy = k9 ? K9_COPY : SHOP_COPY;
+  const pro = isProRoute(pathname);
+  const copy = pro ? PRO_COPY : SHOP_COPY;
   const headingId = useId();
 
   return (
@@ -61,8 +61,8 @@ export function Newsletter() {
     >
       <div className="mx-auto grid max-w-[1600px] gap-8 px-4 md:px-6 lg:grid-cols-12 lg:items-end">
         <div className="lg:col-span-5">
-          {/* monospace zostaje na oznaczenia techniczne w K9; w sklepie zwykla etykieta */}
-          <p className={k9 ? "type-meta text-nf-dim" : "type-label text-nf-dim"}>
+          {/* monospace zostaje na oznaczenia techniczne w sekcji Pro; w sklepie zwykla etykieta */}
+          <p className={pro ? "type-meta text-nf-dim" : "type-label text-nf-dim"}>
             {copy.eyebrow}
           </p>
           <h2 id={headingId} className="type-h2 mt-4 text-nf-white">

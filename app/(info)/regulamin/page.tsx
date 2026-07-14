@@ -5,7 +5,7 @@ import { Bullets, Facts, InfoHeader, InfoLink, Mail, P, Section } from "../_ui";
 export const metadata: Metadata = {
   title: "Regulamin",
   description:
-    "Regulamin sklepu PAKT: strony umowy, składanie zamówień, ceny, płatności, dostawa, odstąpienie od umowy, reklamacje, dane osobowe.",
+    "Regulamin sklepu Dog Store: strony umowy, składanie zamówień, ceny, płatności, dostawa, odstąpienie od umowy, reklamacje, dane osobowe.",
   alternates: { canonical: "/regulamin" },
 };
 
@@ -16,7 +16,7 @@ export default function TermsPage() {
     <>
       <InfoHeader
         title="Regulamin"
-        lead="Regulamin sklepu internetowego pakt.pl. Określa zasady sprzedaży, dostawy, odstąpienia od umowy i reklamacji."
+        lead="Regulamin sklepu internetowego dogstore.pl. Określa zasady sprzedaży, dostawy, odstąpienia od umowy i reklamacji."
         updated="Obowiązuje od 1 lipca 2026 r."
       />
 
@@ -38,7 +38,7 @@ export default function TermsPage() {
       <Section title="2. Definicje">
         <Bullets
           items={[
-            "Sklep - serwis internetowy pakt.pl prowadzony przez Sprzedawcę.",
+            "Sklep - serwis internetowy dogstore.pl prowadzony przez Sprzedawcę.",
             "Klient - osoba fizyczna, prawna lub jednostka organizacyjna składająca zamówienie.",
             "Konsument - osoba fizyczna dokonująca zakupu w celu niezwiązanym bezpośrednio z jej działalnością gospodarczą lub zawodową.",
             "Przedsiębiorca na prawach konsumenta - osoba fizyczna prowadząca działalność gospodarczą, dla której zakup nie ma charakteru zawodowego. Przysługują jej te same uprawnienia co Konsumentowi w zakresie odstąpienia od umowy i rękojmi.",

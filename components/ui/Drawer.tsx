@@ -10,7 +10,7 @@ import { useOverlayA11y } from "./useOverlay";
 const EXIT_MS = 300;
 
 // Szuflada jest przedluzeniem strony, wiec stoi na tle strony (nf-bg) - tokeny semantyczne
-// odwracaja ja razem ze swiatem: papier w sklepie cywilnym, grafit w K9. Rozni sie tylko
+// odwracaja ja razem ze swiatem: papier w sklepie cywilnym, grafit w sekcji Pro. Rozni sie tylko
 // gestosc welonu: nad papierem 40%, na graficie 60%.
 const SURFACE = {
   dark: {
@@ -85,9 +85,9 @@ export function Drawer({
   children,
   footer,
   widthClassName,
-  // Domyslny swiat to sklep cywilny, nie K9. Przy domyslnym "dark" koszyk, filtry mobilne
+  // Domyslny swiat to sklep cywilny, nie sekcja Pro. Przy domyslnym "dark" koszyk, filtry mobilne
   // i szybki podglad (jedyne wywolania bez jawnego theme) potrafily wyjsc grafitowe na
-  // jasnej trasie. W K9 panel i tak zostaje ciemny: tokeny odwraca html[data-theme="dark"].
+  // jasnej trasie. W sekcji Pro panel i tak zostaje ciemny: tokeny odwraca html[data-theme="dark"].
   theme = "light",
 }: {
   open: boolean;

@@ -18,14 +18,14 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/ui/icons";
 import { usePrefersReducedMotion } from "@/components/motion/useReducedMotion";
 import { ProductCard } from "@/components/collection/ProductCard";
-import { K9ProductCard } from "@/components/k9/K9ProductCard";
+import { ProProductCard } from "@/components/pro/ProProductCard";
 
 const DEFAULT_ITEM_CLASS = "w-[46vw] sm:w-[240px] lg:w-[270px]";
 const CARD_SIZES = "(min-width:1024px) 270px, (min-width:640px) 240px, 46vw";
 
-// Kafel katalogowy K9 niesie tabele specyfikacji, wiec potrzebuje szerszego toru niz
+// Kafel katalogowy Dog Store Pro niesie tabele specyfikacji, wiec potrzebuje szerszego toru niz
 // kafel sklepowy - w kolumnie 270px tabela lamalaby sie na kazdym wierszu.
-const K9_ITEM_CLASS = "w-[78vw] sm:w-[340px] lg:w-[380px]";
+const PRO_ITEM_CLASS = "w-[78vw] sm:w-[340px] lg:w-[380px]";
 
 // Lazy-mount below the fold (§10). Shared by ProductRow and BestsellerRow.
 export function useLazyMount<T extends HTMLElement>(ref: RefObject<T | null>): boolean {
@@ -303,7 +303,7 @@ export function RowScroller({
 //
 // variant wybiera UBRANIE kafla, nie dane. Rzad w sklepie cywilnym jedzie karta sklepowa
 // (szybki podglad, swatche, cywilna typografia), rzad w sekcji sluzbowej karta katalogowa
-// K9 (oznaczenie, tabela specyfikacji, bez szybkiego podgladu). Wczesniej sprzet K9 dostawal
+// Pro (oznaczenie, tabela specyfikacji, bez szybkiego podgladu). Wczesniej sprzet Dog Store Pro dostawal
 // kafel sklepu, czyli sluzbowa pozycja w cywilnym ubraniu.
 export function ProductRow({
   title,
@@ -316,12 +316,12 @@ export function ProductRow({
   products: Product[];
   id?: string;
   exploreHref?: string;
-  variant?: "shop" | "k9";
+  variant?: "shop" | "pro";
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const mounted = useLazyMount(sectionRef);
-  const k9 = variant === "k9";
-  const itemClass = k9 ? K9_ITEM_CLASS : undefined;
+  const pro = variant === "pro";
+  const itemClass = pro ? PRO_ITEM_CLASS : undefined;
 
   if (products.length === 0) return null;
 
@@ -331,13 +331,13 @@ export function ProductRow({
         <div className="flex items-center justify-between gap-4 px-4 md:px-6">
           <h2 className="type-h2 text-nf-white">{title}</h2>
           {exploreHref && (
-            // monospace (type-meta) niesie oznaczenia techniczne i nalezy do swiata K9;
+            // monospace (type-meta) niesie oznaczenia techniczne i nalezy do swiata Dog Store Pro;
             // w sklepie cywilnym ten sam link jedzie zwykla etykieta
             <Link
               href={exploreHref}
               className={cn(
                 "inline-flex min-h-11 items-center text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none",
-                k9 ? "type-meta" : "type-label"
+                pro ? "type-meta" : "type-label"
               )}
             >
               Zobacz wszystkie
@@ -348,8 +348,8 @@ export function ProductRow({
         {mounted ? (
           <RowScroller itemClassName={itemClass}>
             {products.map((p) =>
-              k9 ? (
-                <K9ProductCard key={p.id} product={p} />
+              pro ? (
+                <ProProductCard key={p.id} product={p} />
               ) : (
                 <ProductCard key={p.id} product={p} sizes={CARD_SIZES} />
               )

@@ -6,19 +6,19 @@ import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductSections } from "@/components/product/ProductSections";
 import { RecentlyViewed } from "@/components/product/RecentlyViewed";
 import { Badge } from "@/components/ui/Badge";
-import { getK9Category, getK9Products, getProducts, getRelatedProducts } from "@/lib/data";
-import { BRAND, K9_ROOT } from "@/lib/nav";
+import { getProCategory, getProProducts, getProducts, getRelatedProducts } from "@/lib/data";
+import { BRAND, PRO_ROOT } from "@/lib/nav";
 import { productHref } from "@/lib/routes";
 import { SIZE_SHORT } from "@/lib/sizes";
 import type { Product } from "@/lib/types";
 
 const COLLECTION_HANDLE = "collars";
 const COLLECTION_HREF = `/collections/${COLLECTION_HANDLE}`;
-export const K9_BRAND = "PAKT-K9";
+export const PRO_BRAND = "Dog Store Pro";
 
 /**
  * Widok karty produktu, wspolny dla obu sklepow. Trasy sa dwie (/products/<slug> oraz
- * /k9/produkt/<slug>), bo z trasy bierze sie motyw i przynaleznosc do katalogu - ale
+ * /pro/produkt/<slug>), bo z trasy bierze sie motyw i przynaleznosc do katalogu - ale
  * uklad karty, galeria, warianty i sekcje opisowe sa te same. Roznice (okruszki, siatka
  * techniczna, marka w tytule) sterowane sa linia produktu, nie osobna kopia pliku.
  */
@@ -47,7 +47,7 @@ export function productJsonLd(product: Product): string {
     image: product.gallery,
     description: product.description,
     sku: product.sku,
-    brand: { "@type": "Brand", name: product.line === "k9" ? K9_BRAND : BRAND },
+    brand: { "@type": "Brand", name: product.line === "pro" ? PRO_BRAND : BRAND },
     offers: {
       "@type": "AggregateOffer",
       priceCurrency: product.currency,
@@ -63,29 +63,29 @@ export function productJsonLd(product: Product): string {
 }
 
 export async function ProductPageView({ product }: { product: Product }) {
-  const k9 = product.line === "k9";
+  const pro = product.line === "pro";
 
-  // Okruszki K9 prowadzily do /collections/collars, gdzie sprzetu K9 fizycznie nie ma
+  // Okruszki w sekcji Pro prowadzily do /collections/collars, gdzie sprzetu z tej linii fizycznie nie ma
   // (seam wpuszcza do sklepu wylacznie line === "shop"). Sciezka musi wracac do katalogu,
   // z ktorego pozycja pochodzi.
   //
   // "Ostatnio ogladane" trzyma na dysku same slugi (lib/recent.ts), wiec katalog do ich
   // rozwiazania musi przyjechac z serwera. Jedzie katalog TEJ linii, nie obu: wczesniej
-  // szedl tu sklep sklejony z K9 i na cywilnej karcie produktu ladowal kafel sprzetu
+  // szedl tu sklep sklejony z linia Pro i na cywilnej karcie produktu ladowal kafel sprzetu
   // sluzbowego - z szybkim podgladem i dodawaniem do koszyka. Historia moze zawierac slugi
   // z obu swiatow, ale kazdy swiat rozwiazuje wylacznie swoje.
-  const [related, k9Category, catalog] = await Promise.all([
+  const [related, proCategory, catalog] = await Promise.all([
     getRelatedProducts(product.slug, 8),
-    k9 && product.k9Category ? getK9Category(product.k9Category) : null,
-    k9 ? getK9Products() : getProducts(COLLECTION_HANDLE),
+    pro && product.proCategory ? getProCategory(product.proCategory) : null,
+    pro ? getProProducts() : getProducts(COLLECTION_HANDLE),
   ]);
 
-  const backHref = k9Category ? `${K9_ROOT}/${k9Category.slug}` : COLLECTION_HREF;
+  const backHref = proCategory ? `${PRO_ROOT}/${proCategory.slug}` : COLLECTION_HREF;
 
-  const crumbs: BreadcrumbItem[] = k9
+  const crumbs: BreadcrumbItem[] = pro
     ? [
-        { label: K9_BRAND, href: K9_ROOT },
-        ...(k9Category ? [{ label: k9Category.title, href: backHref }] : []),
+        { label: PRO_BRAND, href: PRO_ROOT },
+        ...(proCategory ? [{ label: proCategory.title, href: backHref }] : []),
         { label: product.name },
       ]
     : [
@@ -101,18 +101,18 @@ export async function ProductPageView({ product }: { product: Product }) {
         dangerouslySetInnerHTML={{ __html: productJsonLd(product) }}
       />
 
-      {/* Bez siatki technicznej pod kadrem: K9_IDENTITY nie zna tego wzoru, a §6 zakazuje
-          dekoracji spoza referencji i specyfikacji. Karte K9 odroznia MATERIAL (czern,
+      {/* Bez siatki technicznej pod kadrem: PRO_IDENTITY nie zna tego wzoru, a §6 zakazuje
+          dekoracji spoza referencji i specyfikacji. Karte Dog Store Pro odroznia MATERIAL (czern,
           czerwony akcent, monospace w danych), a nie tapeta pod trescia. */}
       <div className="relative">
         <div
           className={
-            k9
+            pro
               ? "relative mx-auto max-w-[1440px] px-5 pb-16 pt-8 md:px-8 lg:px-12"
               : "relative mx-auto max-w-[1600px] px-4 pb-16 pt-8 md:px-6"
           }
         >
-          <Breadcrumbs items={crumbs} mono={k9} />
+          <Breadcrumbs items={crumbs} mono={pro} />
 
           <div className="mt-6 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)] xl:gap-16">
             <ProductGallery
@@ -137,12 +137,12 @@ export async function ProductPageView({ product }: { product: Product }) {
       {related.length > 0 && (
         <div className="border-t border-nf-border pb-20 pt-14">
           {/* variant, nie linia produktu w srodku rzedu: rzad ma jedna linie (getRelatedProducts
-              nie miesza sklepu z K9), wiec o ubraniu kafla decyduje trasa, na ktorej stoi */}
+              nie miesza sklepu z linia Pro), wiec o ubraniu kafla decyduje trasa, na ktorej stoi */}
           <ProductRow
-            title={k9 ? "Z tej samej linii" : "Podobne produkty"}
+            title={pro ? "Z tej samej linii" : "Podobne produkty"}
             products={related}
             exploreHref={backHref}
-            variant={k9 ? "k9" : "shop"}
+            variant={pro ? "pro" : "shop"}
           />
         </div>
       )}
@@ -152,7 +152,7 @@ export async function ProductPageView({ product }: { product: Product }) {
       <RecentlyViewed
         products={catalog}
         currentSlug={product.slug}
-        variant={k9 ? "k9" : "shop"}
+        variant={pro ? "pro" : "shop"}
       />
     </QuickViewProvider>
   );

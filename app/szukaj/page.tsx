@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SearchResults } from "@/components/search/SearchResults";
-import { getK9Products, getProducts } from "@/lib/data";
+import { getProProducts, getProducts } from "@/lib/data";
 import { searchProducts } from "@/lib/search";
 
 // Wyniki liczone na serwerze przez seam - przegladarka nie dostaje calego katalogu do
@@ -20,11 +20,11 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
   const query = readQuery((await searchParams).q);
 
   return {
-    // sufiks "| PAKT" dokłada szablon tytułu z app/layout.tsx
+    // sufiks "| Dog Store" dokłada szablon tytułu z app/layout.tsx
     title: query ? `Szukaj: ${query}` : "Szukaj",
     description: query
-      ? `Wyniki wyszukiwania dla frazy ${query} w sklepie PAKT i w katalogu PAKT-K9.`
-      : "Przeszukaj obroże ze sklepu PAKT i sprzęt służbowy z linii PAKT-K9.",
+      ? `Wyniki wyszukiwania dla frazy ${query} w sklepie Dog Store i w katalogu Dog Store Pro.`
+      : "Przeszukaj obroże ze sklepu Dog Store i sprzęt służbowy z linii Dog Store Pro.",
     // lista wynikow nie idzie do indeksu: kazda fraza tworzylaby osobny adres z ta sama trescia
     robots: { index: false, follow: true },
   };
@@ -33,17 +33,17 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const query = readQuery((await searchParams).q);
 
-  // obie linie naraz: sklep i K9 sa rozdzielone w wynikach, ale szuka sie raz
-  const [shopProducts, k9Products] = await Promise.all([
+  // obie linie naraz: sklep i sekcja Pro sa rozdzielone w wynikach, ale szuka sie raz
+  const [shopProducts, proProducts] = await Promise.all([
     getProducts("collars"),
-    getK9Products(),
+    getProProducts(),
   ]);
 
   return (
     <SearchResults
       query={query}
       shopHits={searchProducts(shopProducts, query)}
-      k9Hits={searchProducts(k9Products, query)}
+      proHits={searchProducts(proProducts, query)}
     />
   );
 }

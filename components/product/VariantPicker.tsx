@@ -21,9 +21,9 @@ export function defaultVariant(product: Product): ProductVariant {
   return product.variants.find((v) => v.inStock) ?? product.variants[0];
 }
 
-/** Skrzynka obslugujaca dana linie: sklep i K9 maja osobne adresy. */
+/** Skrzynka obslugujaca dana linie: sklep i sekcja Pro maja osobne adresy. */
 export function availabilityEmail(product: Product): string {
-  return product.line === "k9" ? COMPANY.k9Email : COMPANY.shopEmail;
+  return product.line === "pro" ? COMPANY.proEmail : COMPANY.shopEmail;
 }
 
 /** Zapytanie o dostepnosc dotyczy konkretnego rozmiaru, nie modelu: bez SKU wariantu
@@ -59,8 +59,8 @@ export function VariantPicker({
   selected: ProductVariant;
   onSelect: (variant: ProductVariant) => void;
   density?: "sm" | "md";
-  /** mono = rytm PAKT-K9 (oznaczenia techniczne). Ta sama kontrolka stoi na karcie sklepu
-   *  i na karcie sprzetu, a monospace nalezy wylacznie do K9. */
+  /** mono = rytm Dog Store Pro (oznaczenia techniczne). Ta sama kontrolka stoi na karcie sklepu
+   *  i na karcie sprzetu, a monospace nalezy wylacznie do sekcji Pro. */
   mono?: boolean;
   className?: string;
 }) {

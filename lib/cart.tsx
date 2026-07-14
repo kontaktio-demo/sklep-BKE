@@ -45,12 +45,7 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-const STORAGE_KEY = "pakt-cart-v2";
-
-/** Klucz sprzed wariantow. Zapis v1 nie mial SKU rozmiaru, wiec nie da sie go odczytac
- *  bez zgadywania, ktory wariant klient mial na mysli. Zamiast zgadywac, kasujemy: stary
- *  koszyk ma zostac odrzucony, a nie zle odtworzony. */
-const LEGACY_STORAGE_KEYS = ["pakt-cart-v1"] as const;
+const STORAGE_KEY = "dogstore-cart-v1";
 
 /** Gorny limit sztuk na pozycje. Chroni tez przed smieciem wczytanym z localStorage. */
 export const MAX_QTY = 99;
@@ -73,16 +68,6 @@ function lineKey(
   // SKU wariantu jest w kluczu obowiazkowo - inaczej rozmiar M i L tego samego modelu
   // ladowalyby na jednym wierszu. Kolor bywa pusty, wtedy zostaje myslnik jako miejsce.
   return `${product.id}:${variant.sku}:${color ? color.name : "-"}`;
-}
-
-/** Zapis w starym formacie nie jest wart odczytu, ale nie ma tez powodu, zeby zalegal
- *  w przegladarce klienta. */
-function dropLegacyStorage(): void {
-  try {
-    for (const key of LEGACY_STORAGE_KEYS) window.localStorage.removeItem(key);
-  } catch {
-    // wylaczone localStorage: nie ma czego sprzatac
-  }
 }
 
 /** Nieznany ksztalt z localStorage. Kazda pozycja przechodzi walidacje pola po polu,
@@ -148,8 +133,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   // Odczyt PO montazu, nie w initial state: serwer nie ma localStorage, wiec inicjalizacja
   // z dysku rozjechalaby pierwszy render z HTML-em z serwera (hydration mismatch).
   useEffect(() => {
-    dropLegacyStorage();
-
     const stored = readStored();
     if (stored.length === 0) {
       setHydrated(true);

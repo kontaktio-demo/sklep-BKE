@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useId, useState, type FormEvent } from "react";
 import { ProductGrid } from "@/components/collection/ProductGrid";
 import { QuickViewProvider } from "@/components/collection/QuickViewModal";
-import { K9ProductCard } from "@/components/k9/K9ProductCard";
+import { ProProductCard } from "@/components/pro/ProProductCard";
 import { Breadcrumbs } from "@/components/product/Breadcrumbs";
 import { Button } from "@/components/ui/Button";
 import { POPULAR_SEARCHES, searchHref } from "@/lib/search";
@@ -13,7 +13,7 @@ import type { Product } from "@/lib/types";
 import { cn, plural } from "@/lib/utils";
 
 // Wyniki z dwoch linii lezacych obok siebie, ale nie zmieszanych: sklep zostaje sklepem
-// (siatka kafli, szybki podglad), PAKT-K9 katalogiem (kafle techniczne, bez koszyka).
+// (siatka kafli, szybki podglad), Dog Store Pro katalogiem (kafle techniczne, bez koszyka).
 // Wspolna jest tylko fraza.
 
 // pigulka frazy to przycisk konturowy: jej ramka jest jedynym sygnalem kontrolki, wiec
@@ -24,8 +24,8 @@ const CHIP =
 function PopularSearches({ className }: { className?: string }) {
   return (
     <div className={className}>
-      {/* /szukaj to trasa sklepu cywilnego (takze sekcja z wynikami K9 na niej lezy),
-          wiec etykiety ida groteskiem - monospace zostaje w swiecie PAKT-K9 */}
+      {/* /szukaj to trasa sklepu cywilnego (takze sekcja z wynikami z linii Pro na niej lezy),
+          wiec etykiety ida groteskiem - monospace zostaje w swiecie Dog Store Pro */}
       <h2 className="type-label text-nf-dim">Popularne wyszukiwania</h2>
       <ul className="mt-3 flex flex-wrap justify-center gap-2">
         {POPULAR_SEARCHES.map((term) => (
@@ -76,11 +76,11 @@ function SectionHeading({
 export function SearchResults({
   query,
   shopHits,
-  k9Hits,
+  proHits,
 }: {
   query: string;
   shopHits: Product[];
-  k9Hits: Product[];
+  proHits: Product[];
 }) {
   const router = useRouter();
   const inputId = useId();
@@ -90,7 +90,7 @@ export function SearchResults({
   // wiec pole musi nadazyc za adresem
   useEffect(() => setDraft(query), [query]);
 
-  const total = shopHits.length + k9Hits.length;
+  const total = shopHits.length + proHits.length;
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -138,7 +138,7 @@ export function SearchResults({
         {query === "" && (
           <div className="py-20 text-center">
             <p className="text-lg font-semibold text-nf-white">
-              Wpisz frazę, żeby przeszukać sklep i katalog PAKT-K9.
+              Wpisz frazę, żeby przeszukać sklep i katalog Dog Store Pro.
             </p>
             <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-nf-muted">
               Szukamy po nazwie, opisie, SKU, kategorii, kolorze i specyfikacji.
@@ -154,12 +154,12 @@ export function SearchResults({
             </p>
             <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-nf-muted">
               Sprawdź pisownię albo skróć zapytanie do jednego słowa. Cały asortyment jest w
-              sklepie i w katalogu K9.
+              sklepie i w katalogu Dog Store Pro.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button href="/collections/collars">Przejdź do sklepu</Button>
-              <Button variant="ghost" href="/k9">
-                Katalog PAKT-K9
+              <Button variant="ghost" href="/pro">
+                Katalog Dog Store Pro
               </Button>
             </div>
             <PopularSearches className="mt-12" />
@@ -181,23 +181,23 @@ export function SearchResults({
           </section>
         )}
 
-        {k9Hits.length > 0 && (
+        {proHits.length > 0 && (
           <section
-            aria-labelledby="wyniki-k9"
+            aria-labelledby="wyniki-pro"
             className={cn("pt-16", shopHits.length === 0 && "pt-12")}
           >
             <SectionHeading
-              id="wyniki-k9"
-              title="PAKT-K9"
-              count={k9Hits.length}
-              href="/k9"
-              linkLabel="Katalog K9"
+              id="wyniki-pro"
+              title="Dog Store Pro"
+              count={proHits.length}
+              href="/pro"
+              linkLabel="Katalog Dog Store Pro"
             />
             {/* sprzet sluzbowy trzyma swoj jezyk: kafel techniczny, bez szybkiego podgladu */}
             <ul className="grid grid-cols-1 gap-4 pt-8 sm:grid-cols-2 xl:grid-cols-3">
-              {k9Hits.map((product) => (
+              {proHits.map((product) => (
                 <li key={product.id} className="flex">
-                  <K9ProductCard
+                  <ProProductCard
                     product={product}
                     className="w-full border border-nf-border hover:border-nf-border-strong"
                   />

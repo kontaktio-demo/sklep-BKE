@@ -135,7 +135,7 @@ export default function PrivacyPage() {
         />
         <Note>
           Zawartość koszyka trzymamy w pamięci Twojej przeglądarki (localStorage, klucz
-          pakt-cart-v1). Te dane nie trafiają na nasz serwer i nie są nikomu przekazywane.
+          dogstore-cart-v1). Te dane nie trafiają na nasz serwer i nie są nikomu przekazywane.
           Możesz je usunąć, czyszcząc dane witryny w ustawieniach przeglądarki.
         </Note>
         <P>

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 // komponentow, ktore trzymaja jeden rytm (naglowki, akapity, listy z myslnikiem)
 // i nie pozwalaja stronom rozjechac sie miedzy soba.
 //
-// ZERO MONOSPACE. Kroj maszynowy (type-meta) niesie oznaczenia techniczne sekcji PAKT-K9:
+// ZERO MONOSPACE. Kroj maszynowy (type-meta) niesie oznaczenia techniczne sekcji Dog Store Pro:
 // SKU, kody kategorii, klasyfikacje. Strony informacyjne naleza do sklepu cywilnego, wiec
 // etykiety jada zwykla etykieta sklepu (type-label), a teksty pomocnicze zwyklym tekstem.
 // Jedyny wyjatek w tym katalogu to blok <pre> z gotowa trescia maila w formularzu kontaktowym:

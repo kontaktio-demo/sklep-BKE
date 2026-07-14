@@ -24,9 +24,9 @@ import { cn } from "@/lib/utils";
 
 // Wspolny rytm etykiet i pol - ten sam co w BuyBox (karta produktu), lacznie z zasada,
 // ze o kroju etykiety decyduje linia produktu. Szybki podglad otwiera sie takze na karcie
-// K9 (rzad "Z tej samej linii"), wiec monospace ma tam zostac, a w sklepie ustepuje
+// Dog Store Pro (rzad "Z tej samej linii"), wiec monospace ma tam zostac, a w sklepie ustepuje
 // groteskowi.
-const LABEL_K9 = "block type-meta text-nf-dim";
+const LABEL_PRO = "block type-meta text-nf-dim";
 const LABEL_SHOP = "block type-label text-nf-dim";
 // pigulka szerokosci to ODCZYT, nie kontrolka - zostaje na linii dekoracyjnej
 const PILL =
@@ -86,8 +86,8 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
   const [variant, setVariant] = useState<ProductVariant>(() => defaultVariant(product));
   const [qty, setQty] = useState(1);
 
-  const k9 = product.line === "k9";
-  const label = k9 ? LABEL_K9 : LABEL_SHOP;
+  const pro = product.line === "pro";
+  const label = pro ? LABEL_PRO : LABEL_SHOP;
 
   const modelSoldOut = !product.inStock;
 
@@ -188,7 +188,7 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
           selected={variant}
           onSelect={setVariant}
           density="sm"
-          mono={k9}
+          mono={pro}
         />
 
         <div>

@@ -1,5 +1,5 @@
 import { SIZE_LABEL, WIDTH_LABEL } from "./sizes";
-import type { CollarCategory, CollarType, K9Category, Product } from "./types";
+import type { CollarCategory, CollarType, ProCategory, Product } from "./types";
 
 // Wyszukiwarka. Czysta funkcja nad tablica produktow - to samo wejscie daje to samo
 // wyjscie, wiec wynik liczy sie na serwerze (/szukaj) i nie wymaga zadnego stanu.
@@ -35,7 +35,7 @@ export function fold(text: string): string {
 
 /**
  * Slowa do porownania. Separatorem jest wszystko poza litera i cyfra, wiec SKU
- * "PAKT-RAN-175-L" rozpada sie tak samo, jak wpisane zapytanie - i dlatego oba pasuja.
+ * "DS-RAN-175-L" rozpada sie tak samo, jak wpisane zapytanie - i dlatego oba pasuja.
  */
 function words(text: string): string[] {
   return fold(text)
@@ -45,7 +45,7 @@ function words(text: string): string[] {
 
 // Tolerancja na polska fleksje. Zapytanie "lancuszkowa" ma trafic w etykiete
 // "Łańcuszkowe", a "panele" w "panel", ale "szary" nie moze trafic w "szablon".
-const EXACT_MAX = 2; // "id", "k9", "e" - za krotkie na cokolwiek poza rownoscia
+const EXACT_MAX = 2; // "id", "e", "m" - za krotkie na cokolwiek poza rownoscia
 const STEM_MIN = 6; // ponizej tej dlugosci liczy sie tylko fragment slowa
 const STEM_SLACK = 2; // tyle znakow moze roznic sie koncowka
 const STEM_FLOOR = 5; // ...ale wspolny prefiks nigdy nie schodzi ponizej 5 znakow
@@ -80,7 +80,7 @@ const TYPE_TEXT: Record<CollarType, string> = {
   chain: "łańcuszkowa łańcuszkowe łańcuszek stal",
 };
 
-const K9_TEXT: Record<K9Category, string> = {
+const PRO_TEXT: Record<ProCategory, string> = {
   patrol: "patrolowa patrol",
   handle: "z uchwytem uchwyt interwencja",
   "e-collar": "pod moduł e-obroża",
@@ -97,10 +97,14 @@ function facetText(product: Product): string {
   return [
     CATEGORY_TEXT[product.category],
     TYPE_TEXT[product.type],
-    product.k9Category ? K9_TEXT[product.k9Category] : "",
-    product.line === "k9" ? "PAKT-K9 sprzęt służbowy" : "",
+    product.proCategory ? PRO_TEXT[product.proCategory] : "",
+    // Sam znacznik linii, BEZ nazwy marki. Pelna nazwa wnosila do indeksu slowa "dog" i
+    // "store", a te sa czescia nazwy CALEGO serwisu: kazde z nich trafialo we wszystkie
+    // pozycje z linii Pro i w zadna pozycje sklepu, wiec fraza "dog" zwracala caly katalog sluzbowy
+    // przy pustym sklepie. Do wyszukiwarki nalezy to, co ODROZNIA linie, czyli "pro".
+    product.line === "pro" ? "pro sprzęt służbowy" : "",
     product.idPanelCompatible ? "panel ID" : "",
-    product.k9Standard ?? "",
+    product.proStandard ?? "",
     product.productType,
     // rozmiar jest wariantem: model wchodzi pod kazdy rozmiar, w ktorym istnieje.
     // SIZE_LABEL niesie juz obwod ("Mały (28-36 cm)"), wiec neck wariantu nic nie doklada.
@@ -123,7 +127,7 @@ function fields(product: Product): string[][] {
     words(product.name),
     words(product.tagline),
     // SKU modelu nie niesie juz kodu rozmiaru - kupowane SKU siedzi w wariancie.
-    // Bez SKU wariantow zapytanie "PAKT-RAN-175-M" nie trafialoby w nic.
+    // Bez SKU wariantow zapytanie "DS-RAN-175-M" nie trafialoby w nic.
     words([product.sku, ...product.variants.map((variant) => variant.sku)].join(" ")),
     words(facetText(product)),
   ];
@@ -135,7 +139,7 @@ function fields(product: Product): string[][] {
  * dzieki temu "obroża robocza" nie wyrzuca calego katalogu tylko dlatego, ze wszystko
  * nazywa sie "obroża".
  */
-/** Wyglada jak numer katalogowy: PAKT-RAN-175-M, K9-PAT-175-L, PAKT-RAN-175 */
+/** Wyglada jak numer katalogowy: DS-RAN-175-M, DSP-PAT-175-L, DS-RAN-175 */
 const SKU_RE = /^[a-z0-9]+(?:-[a-z0-9]+){2,}$/i;
 
 export function searchProducts(products: Product[], query: string): Product[] {
@@ -148,7 +152,7 @@ export function searchProducts(products: Product[], query: string): Product[] {
   if (SKU_RE.test(trimmed)) {
     const needle = trimmed.toUpperCase();
     // Brak trafienia = pusty wynik, NIE dopasowanie rozmyte. Wyszukiwarka pyta osobno
-    // o linie sklepu i K9, wiec fallback podsuwalby przypadkowy model z drugiej linii:
+    // o linie sklepu i linie Pro, wiec fallback podsuwalby przypadkowy model z drugiej linii:
     // token "175" trafia w kazda obroze 4,5 cm, a kod rozmiaru "M" w kazdy model.
     return products.filter(
       (product) =>

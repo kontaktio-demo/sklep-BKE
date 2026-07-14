@@ -69,7 +69,7 @@ export async function generateMetadata({
   }
 
   return {
-    // sufiks "| PAKT" dokłada szablon tytułu z app/layout.tsx
+    // sufiks "| Dog Store" dokłada szablon tytułu z app/layout.tsx
     title: collection.title,
     description: collection.description,
     alternates: { canonical: `/collections/${collection.handle}` },

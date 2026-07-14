@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  
+  <defs>
+    <linearGradient id="bg-mount-e-collar-1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#191919"/>
+      <stop offset="100%" stop-color="#0e0e0e"/>
+    </linearGradient>
+    <radialGradient id="floor-mount-e-collar-1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sheen-mount-e-collar-1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.04"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg-mount-e-collar-1)"/>
+  <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-mount-e-collar-1)"/>
+  
+  <g transform="translate(600 720) scale(1) rotate(10)">
+    <ellipse rx="396" ry="295" fill="none" stroke="#22271d" stroke-width="118"/>
+    <ellipse rx="396" ry="295" fill="none" stroke="#3E4634" stroke-width="108"/>
+    <ellipse rx="396" ry="295" fill="none" stroke="#686f61" stroke-width="19"
+      stroke-dasharray="475 1980" stroke-dashoffset="158" opacity="0.18"/>
+    <ellipse rx="396" ry="295" fill="none" stroke="#22271d" stroke-width="2"
+      stroke-dasharray="8 22" opacity="0.5" transform="scale(0.91 0.8791864406779661)"/>
+    <ellipse rx="396" ry="295" fill="none" stroke="#22271d" stroke-width="2"
+      stroke-dasharray="8 22" opacity="0.5" transform="scale(1.0899999999999999 1.1208135593220339)"/>
+    <g transform="rotate(-28) translate(0 -295)">
+      <rect x="-95" y="-70" width="190" height="140" rx="18" fill="#2b2d30" stroke="#54575c" stroke-width="5"/>
+      <rect x="-58" y="-50" width="116" height="84" rx="10" fill="#1a1b1d" stroke="#45484d" stroke-width="4"/>
+      <circle cx="72" cy="0" r="9" fill="#54575c"/>
+      <circle cx="-72" cy="0" r="9" fill="#54575c"/>
+    </g>
+    <g transform="rotate(152) translate(0 -295)">
+      <circle r="66.96" fill="none" stroke="#8f9399" stroke-width="16"/>
+      <circle r="66.96" fill="none" stroke="#c6cad0" stroke-width="6" stroke-dasharray="40 90"/>
+      <rect x="-59.400000000000006" y="-20" width="118.80000000000001" height="40" rx="12" fill="#22271d" stroke="#191c15" stroke-width="4"/>
+    </g>
+  </g>
+  <rect width="1200" height="1500" fill="url(#sheen-mount-e-collar-1)" opacity="0.5"/>
+</svg>

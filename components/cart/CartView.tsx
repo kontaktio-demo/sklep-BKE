@@ -21,7 +21,7 @@ const STEPPER_BUTTON =
 
 const SUMMARY_ROW = "flex items-baseline justify-between gap-4 text-sm";
 
-const ORDER_SUBJECT = "Zamówienie ze sklepu PAKT";
+const ORDER_SUBJECT = "Zamówienie ze sklepu Dog Store";
 
 /** Rozmiar w jednej linii: kod z przyciskow wyboru i obwod szyi, po ktorym sie mierzy.
  *  Ten sam ciag idzie na ekran i do maila z zamowieniem. */
@@ -69,14 +69,14 @@ function EmptyCart() {
           ktorego nie ma za nastepnym klknieciem */}
       <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-nf-muted">
         Nic tu jeszcze nie trafiło. Obroże nylonowe i łańcuszkowe znajdziesz w sklepie,
-        sprzęt służbowy w sekcji PAKT-K9.
+        sprzęt służbowy w sekcji Dog Store Pro.
       </p>
       <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
         {/* bez rounded-[2px]: cn() jedzie na twMerge, wiec klasa z wywolania BIJE promien
             z komponentu i przycisk po cichu wypisywal sie z jednego jezyka CTA */}
         <Button href="/collections/collars">Zobacz obroże</Button>
-        <Button href="/k9" variant="ghost">
-          Sprzęt PAKT-K9
+        <Button href="/pro" variant="ghost">
+          Sprzęt Dog Store Pro
         </Button>
       </div>
     </div>
@@ -113,8 +113,8 @@ export function CartView() {
                 key={line.key}
                 className="flex flex-col gap-4 border-b border-nf-border py-6 sm:flex-row"
               >
-                {/* productHref, nie sklejanie /products/<slug>: sprzet K9 ma wlasna
-                    przestrzen adresow (/k9/produkt/<slug>), wiec pozycja K9 w koszyku
+                {/* productHref, nie sklejanie /products/<slug>: sprzet Dog Store Pro ma wlasna
+                    przestrzen adresow (/pro/produkt/<slug>), wiec pozycja z tej linii w koszyku
                     linkowala w 404 */}
                 <Link
                   href={productHref(line.product)}

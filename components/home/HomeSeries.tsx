@@ -35,25 +35,25 @@ export function HomeSeries() {
       <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-20">
         <h2 className="type-h2 text-nf-white">Wybierz sklep</h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-nf-muted">
-          PAKT-K9 ma własny asortyment. Sprzętu z sekcji służbowej nie ma w zwykłym
+          Dog Store Pro ma własny asortyment. Sprzętu z sekcji służbowej nie ma w zwykłym
           sklepie i odwrotnie.
         </p>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
           <PhotoTile
             href="/collections/collars"
-            title="Sklep PAKT"
+            title="Sklep Dog Store"
             lead="Obroże nylonowe i łańcuszkowe dla każdego psa. Filtry po szerokości, obwodzie i kolorze. Wysyłka w 24 h."
             cta="Przejdź do sklepu"
             photoName="sklep.jpg"
             ratio="aspect-[4/3] md:aspect-[16/10]"
           />
           <PhotoTile
-            href="/k9"
-            title="PAKT-K9"
+            href="/pro"
+            title="Dog Store Pro"
             lead="Sprzęt służbowy: patrol, praca węchowa, szkolenie. Uchwyty kontrolne, prowadnice pod moduł, stalowe okucia."
-            cta="Wejdź do sekcji K9"
-            photoName="k9.jpg"
+            cta="Wejdź do sekcji Dog Store Pro"
+            photoName="pro.jpg"
             tone="dark"
             ratio="aspect-[4/3] md:aspect-[16/10]"
           />

@@ -2,7 +2,7 @@
 // dokladnie jak w koszyku (lib/cart.tsx). Dzieki temu pozycja wycofana ze sprzedazy
 // po prostu wypada z listy zamiast renderowac nieaktualna cene.
 
-const STORAGE_KEY = "pakt-recent-v1";
+const STORAGE_KEY = "dogstore-recent-v1";
 
 /** Gorny limit historii. Rzad pokazuje mniej, ale zapas trzyma liste zywa,
  *  gdy czesc slugow zniknie z katalogu. */

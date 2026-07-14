@@ -1,4 +1,4 @@
-export const BRAND = "PAKT";
+export const BRAND = "Dog Store";
 
 export interface NavLink {
   label: string;
@@ -18,25 +18,25 @@ export interface NavItem {
 
 const PLP = "/collections/collars";
 
-/** Korzen sekcji PAKT-K9. Osobny swiat: ciemna powloka, mono, katalog zamiast sklepu. */
-export const K9_ROOT = "/k9";
+/** Korzen sekcji Dog Store Pro. Osobny swiat: ciemna powloka, mono, katalog zamiast sklepu. */
+export const PRO_ROOT = "/pro";
 
-/** Powloka (pasek ogloszen, newsletter) zmienia tresc na trasach linii K9. */
-export function isK9Route(pathname: string): boolean {
-  return pathname === K9_ROOT || pathname.startsWith(`${K9_ROOT}/`);
+/** Powloka (pasek ogloszen, newsletter) zmienia tresc na trasach linii Pro. */
+export function isProRoute(pathname: string): boolean {
+  return pathname === PRO_ROOT || pathname.startsWith(`${PRO_ROOT}/`);
 }
 
-/** Jedno zrodlo linkow do kategorii K9: nawigacja, stopka i menu mobilne czytaja to samo. */
-export const K9_LINKS: NavLink[] = [
-  { label: "Patrol", href: `${K9_ROOT}/patrol` },
-  { label: "Z uchwytem", href: `${K9_ROOT}/handle` },
-  { label: "Pod moduł", href: `${K9_ROOT}/e-collar` },
-  { label: "Szkolenie", href: `${K9_ROOT}/training` },
-  { label: "Praca węchowa", href: `${K9_ROOT}/detection` },
+/** Jedno zrodlo linkow do kategorii Pro: nawigacja, stopka i menu mobilne czytaja to samo. */
+export const PRO_LINKS: NavLink[] = [
+  { label: "Patrol", href: `${PRO_ROOT}/patrol` },
+  { label: "Z uchwytem", href: `${PRO_ROOT}/handle` },
+  { label: "Pod moduł", href: `${PRO_ROOT}/e-collar` },
+  { label: "Szkolenie", href: `${PRO_ROOT}/training` },
+  { label: "Praca węchowa", href: `${PRO_ROOT}/detection` },
 ];
 
-/** Etykieta pozycji K9 w nawigacji - MegaMenu wyroznia ja po niej kolorem linii K9. */
-export const K9_NAV_LABEL = "PAKT-K9";
+/** Etykieta pozycji Dog Store Pro w nawigacji - MegaMenu wyroznia ja po niej kolorem linii Pro. */
+export const PRO_NAV_LABEL = "Dog Store Pro";
 
 // Menu opisuje sklep, ktory istnieje: katalog cywilny to wylacznie obroze, wiec nie ma tu
 // szelek, smyczy ani odziezy. Kazda pozycja prowadzi albo na strone, albo na filtr listy
@@ -75,11 +75,11 @@ export const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    label: K9_NAV_LABEL,
-    href: K9_ROOT,
+    label: PRO_NAV_LABEL,
+    href: PRO_ROOT,
     columns: [
-      { title: "Kategorie", links: K9_LINKS },
-      { title: "Linia K9", links: [{ label: "O linii", href: K9_ROOT }] },
+      { title: "Kategorie", links: PRO_LINKS },
+      { title: "Linia Pro", links: [{ label: "O linii", href: PRO_ROOT }] },
     ],
   },
   { label: "O nas", href: "/o-nas" },
@@ -91,16 +91,16 @@ export const ANNOUNCEMENTS = [
   { text: "60 DNI NA ZWROT I DOBÓR ROZMIARU", highlight: "60 DNI" },
 ];
 
-// Pasek nad trescia na /k9*: status linii zamiast promocji sklepu. Bez rotacji - to nie
+// Pasek nad trescia na /pro*: status linii zamiast promocji sklepu. Bez rotacji - to nie
 // jest komunikat sprzedazowy, tylko naglowek katalogu.
 // UWAGA: liczby sa statyczne. Seam (lib/data) jest asynchroniczny, a pasek to komponent
-// kliencki bez propsow, wiec nie ma tu dostepu do getK9Categories/getK9Products. Przy
+// kliencki bez propsow, wiec nie ma tu dostepu do getProCategories/getProProducts. Przy
 // zmianie liczby kategorii albo pozycji trzeba ruszyc te stala.
-export const K9_STATUS = {
-  line: "PAKT-K9",
+export const PRO_STATUS = {
+  line: "Dog Store Pro",
   scope: "5 kategorii / 12 pozycji",
   contactLabel: "Zapytania:",
-  contactEmail: "k9@pakt.pl",
+  contactEmail: "pro@dogstore.pl",
 };
 
 export const TRUST_TRIAD = ["2 lata gwarancji", "Wysyłka w 24 h", "60 dni na zwrot"];
@@ -148,8 +148,8 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
     ],
   },
   {
-    title: K9_NAV_LABEL,
-    links: [...K9_LINKS, { label: "O linii", href: K9_ROOT }],
+    title: PRO_NAV_LABEL,
+    links: [...PRO_LINKS, { label: "O linii", href: PRO_ROOT }],
   },
 ];
 
@@ -194,7 +194,7 @@ export const SHIPPING_OPTIONS: ShippingOption[] = [
 // Jedno zrodlo dla stron informacyjnych: kontakt, regulamin, polityka prywatnosci, zwroty.
 
 export const COMPANY = {
-  legalName: "PAKT sp. z o.o.",
+  legalName: "Dog Store sp. z o.o.",
   street: "ul. Rzemieślnicza 14",
   postalCode: "30-363",
   city: "Kraków",
@@ -205,12 +205,12 @@ export const COMPANY = {
   court:
     "Sąd Rejonowy dla Krakowa-Śródmieścia w Krakowie, XI Wydział Gospodarczy Krajowego Rejestru Sądowego",
   shareCapital: "50 000 zł",
-  shopEmail: "sklep@pakt.pl",
-  k9Email: "k9@pakt.pl",
-  privacyEmail: "iod@pakt.pl",
+  shopEmail: "sklep@dogstore.pl",
+  proEmail: "pro@dogstore.pl",
+  privacyEmail: "iod@dogstore.pl",
   phone: "+48 12 340 55 20",
   officeHours: "poniedziałek - piątek, 9:00 - 17:00",
   responseTime: "do 24 godzin w dni robocze",
   /** Adres do zwrotow i serwisu. Ten sam budynek co siedziba, ale inny odbiorca na paczce. */
-  returnsRecipient: "PAKT sp. z o.o. - zwroty",
+  returnsRecipient: "Dog Store sp. z o.o. - zwroty",
 };

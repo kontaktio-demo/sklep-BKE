@@ -12,7 +12,7 @@ interface Section {
 // karta produktu pokazuje rozne sekcje zaleznie od typu (zgodnosc tylko dla e-obrozy),
 // wiec twarda lista rozjezdzala sie z trescia strony.
 //
-// mono = rytm PAKT-K9. Spis stoi pod obiema kartami, a monospace nalezy do sprzetu
+// mono = rytm Dog Store Pro. Spis stoi pod obiema kartami, a monospace nalezy do sprzetu
 // sluzbowego: w sklepie cywilnym nazwy sekcji ida groteskiem (type-label).
 export function SectionNav({ mono = false }: { mono?: boolean }) {
   const [sections, setSections] = useState<Section[]>([]);

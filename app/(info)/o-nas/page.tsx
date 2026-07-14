@@ -5,7 +5,7 @@ import { Bullets, Facts, InfoHeader, InfoLink, Mail, P, Section } from "../_ui";
 export const metadata: Metadata = {
   title: "O nas",
   description:
-    "PAKT szyje obroże i sprzęt dla psów pracujących. Szwalnia w Krakowie, sprzęt testowany przez przewodników, linia PAKT-K9 dla służb i szkoleniowców.",
+    "Dog Store szyje obroże i sprzęt dla psów pracujących. Szwalnia w Krakowie, sprzęt testowany przez przewodników, linia Dog Store Pro dla służb i szkoleniowców.",
   alternates: { canonical: "/o-nas" },
 };
 
@@ -19,7 +19,7 @@ export default function AboutPage() {
 
       <Section title="Kim jesteśmy">
         <P>
-          PAKT powstał w 2019 roku w Krakowie, w warsztacie, w którym najpierw naprawialiśmy
+          Dog Store powstał w 2019 roku w Krakowie, w warsztacie, w którym najpierw naprawialiśmy
           cudze obroże. Przez rok widzieliśmy w kółko to samo: pękały klamry z tworzywa,
           rozchodziły się szwy przy pierścieniu, korodowały okucia po zimie z solą na
           chodnikach. Zaczęliśmy szyć własne, żeby te trzy rzeczy wyeliminować.
@@ -38,7 +38,7 @@ export default function AboutPage() {
         />
       </Section>
 
-      <Section title="Skąd wzięła się linia K9">
+      <Section title="Skąd wzięła się linia Dog Store Pro">
         <P>
           Pierwsze zamówienie od przewodnika psa służbowego dostaliśmy w 2021 roku. Chodziło
           o obrożę z uchwytem, która nie urwie się przy podnoszeniu psa przez płot. Zrobiliśmy
@@ -48,7 +48,7 @@ export default function AboutPage() {
           Okazało się, że sprzęt do pracy ma inne wymagania niż obroża na spacer: uchwyt
           zamiast smyczy, miejsce na moduł e-obroży, oznaczenie widoczne po zmroku, okucia
           o znanej wytrzymałości na zrywanie. Wydzieliliśmy to w osobną linię -{" "}
-          <InfoLink href="/k9">PAKT-K9</InfoLink> - żeby nie mieszać sprzętu służbowego
+          <InfoLink href="/pro">Dog Store Pro</InfoLink> - żeby nie mieszać sprzętu służbowego
           z asortymentem sklepu. Kupują z niej jednostki, szkoły przewodników, ratownicy
           i sportowcy z IGP.
         </P>
@@ -92,7 +92,7 @@ export default function AboutPage() {
         <P>
           Masz pytanie o materiał, wytrzymałość albo dobór sprzętu do konkretnego zadania:{" "}
           <InfoLink href="/kontakt">napisz do nas</InfoLink>. Zapytania służbowe i szkoleniowe
-          obsługujemy pod adresem <Mail address={COMPANY.k9Email} />.
+          obsługujemy pod adresem <Mail address={COMPANY.proEmail} />.
         </P>
       </Section>
     </>

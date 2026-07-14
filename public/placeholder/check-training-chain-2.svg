@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  
+  <defs>
+    <linearGradient id="bg-check-training-chain-2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#191919"/>
+      <stop offset="100%" stop-color="#0e0e0e"/>
+    </linearGradient>
+    <radialGradient id="floor-check-training-chain-2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sheen-check-training-chain-2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.04"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg-check-training-chain-2)"/>
+  <ellipse cx="600" cy="1150" rx="460" ry="110" fill="url(#floor-check-training-chain-2)"/>
+  
+  <g transform="translate(600 640) scale(1.5) rotate(3)">
+    <ellipse rx="376" ry="296" fill="none" stroke="#2d2f33" stroke-width="8" opacity="0.6"/>
+    <ellipse cx="376.0" cy="0.0" rx="52" ry="34"
+      transform="rotate(90.0 376.0 0.0)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="365.1" cy="70.8" rx="52" ry="34"
+      transform="rotate(72.6 365.1 70.8)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/><ellipse cx="332.9" cy="137.6" rx="52" ry="34"
+      transform="rotate(56.3 332.9 137.6)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="281.4" cy="196.3" rx="52" ry="34"
+      transform="rotate(41.6 281.4 196.3)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/><ellipse cx="213.6" cy="243.6" rx="52" ry="34"
+      transform="rotate(28.5 213.6 243.6)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="133.3" cy="276.8" rx="52" ry="34"
+      transform="rotate(16.6 133.3 276.8)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/><ellipse cx="45.3" cy="293.8" rx="52" ry="34"
+      transform="rotate(5.5 45.3 293.8)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="-45.3" cy="293.8" rx="52" ry="34"
+      transform="rotate(-5.5 -45.3 293.8)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/><ellipse cx="-133.3" cy="276.8" rx="52" ry="34"
+      transform="rotate(-16.6 -133.3 276.8)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="-213.6" cy="243.6" rx="52" ry="34"
+      transform="rotate(-28.5 -213.6 243.6)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/><ellipse cx="-281.4" cy="196.3" rx="52" ry="34"
+      transform="rotate(-41.6 -281.4 196.3)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="-332.9" cy="137.6" rx="52" ry="34"
+      transform="rotate(-56.3 -332.9 137.6)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/><ellipse cx="-365.1" cy="70.8" rx="52" ry="34"
+      transform="rotate(-72.6 -365.1 70.8)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="-376.0" cy="0.0" rx="52" ry="34"
+      transform="rotate(-90.0 -376.0 0.0)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/><ellipse cx="-365.1" cy="-70.8" rx="52" ry="34"
+      transform="rotate(252.6 -365.1 -70.8)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="-332.9" cy="-137.6" rx="52" ry="34"
+      transform="rotate(236.3 -332.9 -137.6)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/><ellipse cx="-281.4" cy="-196.3" rx="52" ry="34"
+      transform="rotate(221.6 -281.4 -196.3)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="-213.6" cy="-243.6" rx="52" ry="34"
+      transform="rotate(208.5 -213.6 -243.6)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/><ellipse cx="-133.3" cy="-276.8" rx="52" ry="34"
+      transform="rotate(196.6 -133.3 -276.8)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="-45.3" cy="-293.8" rx="52" ry="34"
+      transform="rotate(185.5 -45.3 -293.8)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/><ellipse cx="45.3" cy="-293.8" rx="52" ry="34"
+      transform="rotate(174.5 45.3 -293.8)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="133.3" cy="-276.8" rx="52" ry="34"
+      transform="rotate(163.4 133.3 -276.8)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/><ellipse cx="213.6" cy="-243.6" rx="52" ry="34"
+      transform="rotate(151.5 213.6 -243.6)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="281.4" cy="-196.3" rx="52" ry="34"
+      transform="rotate(138.4 281.4 -196.3)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/><ellipse cx="332.9" cy="-137.6" rx="52" ry="34"
+      transform="rotate(123.7 332.9 -137.6)"
+      fill="none" stroke="#8a8d91" stroke-width="17" opacity="0.97"/><ellipse cx="365.1" cy="-70.8" rx="52" ry="34"
+      transform="rotate(107.4 365.1 -70.8)"
+      fill="none" stroke="#4B4F55" stroke-width="17" opacity="0.97"/>
+    <g transform="translate(0 -296)">
+      <circle r="72" fill="none" stroke="#8a8d91" stroke-width="20"/>
+      <circle r="40" fill="none" stroke="#4B4F55" stroke-width="16"/>
+    </g>
+  </g>
+  <rect width="1200" height="1500" fill="url(#sheen-check-training-chain-2)" opacity="0.5"/>
+</svg>

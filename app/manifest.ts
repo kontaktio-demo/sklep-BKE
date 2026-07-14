@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "PAKT | Obroże i sprzęt dla psów pracujących",
-    short_name: "PAKT",
+    name: "Dog Store | Obroże i sprzęt dla psów pracujących",
+    short_name: "Dog Store",
     description:
       "Obroże klasy roboczej z nylonu i łańcuszka. Panel ID, zgodność z e-obrożą, wysyłka w 24 h.",
     lang: "pl",

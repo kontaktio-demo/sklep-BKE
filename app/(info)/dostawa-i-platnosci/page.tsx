@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/dostawa-i-platnosci" },
 };
 
-// type-label, nie monospace: kroj maszynowy nalezy do sekcji PAKT-K9, a to jest strona sklepu
+// type-label, nie monospace: kroj maszynowy nalezy do sekcji Dog Store Pro, a to jest strona sklepu
 const TH = "type-label px-4 py-3 text-left text-nf-dim";
 const TD = "px-4 py-3 text-sm text-nf-text";
 
@@ -127,7 +127,7 @@ export default function ShippingPage() {
         </P>
         <P>
           Zamówienia hurtowe i wysyłki na fakturę dla jednostek prowadzimy osobno:{" "}
-          <Mail address={COMPANY.k9Email} />.
+          <Mail address={COMPANY.proEmail} />.
         </P>
       </Section>
 

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
  *
  * Zdjecia jeszcze nie ma (public/foto jest puste, wlasciciel poda wlasne). Do tego czasu
  * baner stoi na materiale CYWILNYM: jasna plaszczyzna, tusz jako tekst. Wczesniej stal na
- * graficie z siatka techniczna, czyli na materiale sekcji K9 - jasny sklep otwieral sie
+ * graficie z siatka techniczna, czyli na materiale sekcji Pro - jasny sklep otwieral sie
  * wielkim czarnym prostokatem i pokazywal wzor, ktory nalezy do drugiego sklepu.
  *
  * Welon (ciemny gradient) wlacza sie WYLACZNIE nad zdjeciem: bez fotografii nie ma czego
@@ -73,7 +73,7 @@ export function HomeHero() {
             Przejdź do sklepu
           </Link>
           <Link
-            href="/k9"
+            href="/pro"
             className={cn(
               CTA_BASE,
               onPhoto
@@ -81,7 +81,7 @@ export function HomeHero() {
                 : "border border-nf-control text-nf-white hover:bg-nf-elevated"
             )}
           >
-            Sekcja PAKT-K9
+            Sekcja Dog Store Pro
           </Link>
         </div>
       </div>

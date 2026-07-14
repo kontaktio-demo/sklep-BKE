@@ -7,7 +7,7 @@ export interface BreadcrumbItem {
 }
 
 /**
- * mono = rytm sekcji PAKT-K9 (oznaczenia techniczne). Sklep cywilny zostaje na kroju
+ * mono = rytm sekcji Dog Store Pro (oznaczenia techniczne). Sklep cywilny zostaje na kroju
  * podstawowym, zeby okruszki nie udawaly karty katalogowej.
  */
 export function Breadcrumbs({
@@ -24,7 +24,7 @@ export function Breadcrumbs({
         className={cn(
           "flex flex-wrap items-center gap-x-2 gap-y-1 text-nf-dim",
           // type-meta = mono 11px uppercase 0.2em (globals.css), ten sam rytm co okruszki
-          // na /k9/[category] i pasek techniczny w BuyBox
+          // na /pro/[category] i pasek techniczny w BuyBox
           mono ? "type-meta" : "text-xs"
         )}
       >

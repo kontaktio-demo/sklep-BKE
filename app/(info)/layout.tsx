@@ -1,6 +1,6 @@
 // Wspolna powloka stron informacyjnych (kontakt, dostawa, zwroty, gwarancja, rozmiary,
 // regulamin, polityka prywatnosci, o nas). Jasny motyw jak reszta sklepu cywilnego - grafit
-// zostaje wylacznie sekcji PAKT-K9. Kolory nie sa tu ustawiane recznie: strony stoja na
+// zostaje wylacznie sekcji Dog Store Pro. Kolory nie sa tu ustawiane recznie: strony stoja na
 // tokenach nf-*, ktore odwracaja sie same zaleznie od swiata.
 //
 // Kontener jest ten sam co w calym serwisie (max-w-[1600px] px-4 md:px-6), zeby tytul

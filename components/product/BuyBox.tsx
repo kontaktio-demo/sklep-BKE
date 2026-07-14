@@ -29,17 +29,17 @@ const TRUST_ICONS = [ShieldIcon, TruckIcon, ReturnIcon] as const;
 const MAX_QTY = 10;
 
 // Jeden rytm dla wszystkich etykiet wyboru (Kolor / Rozmiar / Szerokość / Ilość), ale
-// krojem rozstrzyga linia produktu: ten sam BuyBox stoi na karcie sklepu i na karcie K9.
+// krojem rozstrzyga linia produktu: ten sam BuyBox stoi na karcie sklepu i na karcie Dog Store Pro.
 // Monospace jest oznaczeniem technicznym sprzetu sluzbowego - w sklepie cywilnym etykieta
 // pola ma byc etykieta pola (grotesk), a nie panelem katalogowym.
-const LABEL_K9 = "type-meta text-nf-dim";
+const LABEL_PRO = "type-meta text-nf-dim";
 const LABEL_SHOP = "type-label text-nf-dim";
 // pigulka szerokosci to ODCZYT, nie kontrolka - zostaje na linii dekoracyjnej
 const PILL =
   "inline-flex rounded-[2px] border border-nf-border-strong px-3 py-2 text-sm text-nf-text";
 
-/** Zapytania jednostek nie ida przez koszyk - strona zapytania zyje w sekcji K9. */
-const K9_INQUIRY_HREF = "/k9/zapytanie";
+/** Zapytania jednostek nie ida przez koszyk - strona zapytania zyje w sekcji Pro. */
+const PRO_INQUIRY_HREF = "/pro/zapytanie";
 
 export function BuyBox({ product }: { product: Product }) {
   const { addLine, openCart } = useCart();
@@ -51,8 +51,8 @@ export function BuyBox({ product }: { product: Product }) {
 
   const colorLabelId = useId();
 
-  const k9 = product.line === "k9";
-  const label = k9 ? LABEL_K9 : LABEL_SHOP;
+  const pro = product.line === "pro";
+  const label = pro ? LABEL_PRO : LABEL_SHOP;
 
   // Zapytanie o dostepnosc idzie na skrzynke, ktora obsluguje dana linie, i dotyczy
   // wybranego rozmiaru - inaczej odpowiedz nie mowilaby o tym, o co pytal klient
@@ -71,18 +71,18 @@ export function BuyBox({ product }: { product: Product }) {
   return (
     <div>
       <header>
-        {/* K9: pasek techniczny zamiast etykiety sklepowej. SKU i oznaczenie klasy to
-            pierwsze, czego szuka przewodnik - "Obroża służbowa / K9-PAT-175-L" nie niesie
+        {/* Pro: pasek techniczny zamiast etykiety sklepowej. SKU i oznaczenie klasy to
+            pierwsze, czego szuka przewodnik - "Obroża służbowa / DSP-PAT-175-L" nie niesie
             nic, czego nie ma w nazwie i tabeli */}
-        {k9 ? (
+        {pro ? (
           <p className={label}>
             {variant.sku}
-            {product.k9Standard && (
+            {product.proStandard && (
               <>
                 <span aria-hidden="true" className="px-2 text-nf-border-strong">
                   /
                 </span>
-                {product.k9Standard}
+                {product.proStandard}
               </>
             )}
           </p>
@@ -133,7 +133,7 @@ export function BuyBox({ product }: { product: Product }) {
             wykrzyczalby "OBWÓD 30-38 CM" wersalikami bez powodu */}
         <p
           aria-live="polite"
-          className={cn("text-nf-dim", k9 ? "type-meta" : "text-xs")}
+          className={cn("text-nf-dim", pro ? "type-meta" : "text-xs")}
         >
           Obwód {variant.neck} / waga {variant.weightGrams} g
         </p>
@@ -171,7 +171,7 @@ export function BuyBox({ product }: { product: Product }) {
             variants={product.variants}
             selected={variant}
             onSelect={setVariant}
-            mono={k9}
+            mono={pro}
           />
           <a
             href="#rozmiary"
@@ -257,9 +257,9 @@ export function BuyBox({ product }: { product: Product }) {
         {/* Jednostka nie kupuje sprzetu przez koszyk - kupuje na zapytanie. Link stoi pod
             CTA (nie obok), zeby nie rozbijac hierarchii, i dziala takze przy braku
             dostepnosci: wtedy zapytanie jest jedyna sensowna sciezka */}
-        {k9 && (
+        {pro && (
           <Link
-            href={K9_INQUIRY_HREF}
+            href={PRO_INQUIRY_HREF}
             className="type-meta mt-3 flex min-h-11 items-center justify-center rounded-[2px] text-nf-muted underline decoration-nf-border-strong underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white hover:decoration-nf-text motion-reduce:transition-none"
           >
             Zapytanie dla jednostki

@@ -1,11 +1,11 @@
 import { products } from "./products.mock";
 import { filterGroups } from "./filters.mock";
-import { k9Categories, k9Products } from "./k9.mock";
+import { proCategories, proProducts } from "./pro.mock";
 import type {
   Collection,
   FilterGroup,
-  K9Category,
-  K9CategoryInfo,
+  ProCategory,
+  ProCategoryInfo,
   Product,
 } from "../types";
 
@@ -23,10 +23,10 @@ const collections: Record<string, Omit<Collection, "productCount">> = {
   },
 };
 
-/** Zwykly sklep widzi wylacznie linie "shop". Sprzet K9 jest tylko w sekcji PAKT-K9. */
+/** Zwykly sklep widzi wylacznie linie "shop". Sprzet z tej linii jest tylko w sekcji Dog Store Pro. */
 const shopProducts = products.filter((p) => p.line === "shop");
 
-const allProducts = [...shopProducts, ...k9Products];
+const allProducts = [...shopProducts, ...proProducts];
 
 export async function getCollection(handle: string): Promise<Collection> {
   const collection = collections[handle];
@@ -51,12 +51,12 @@ export async function getProduct(slug: string): Promise<Product | null> {
 
 // getProductSlugs() zostal usuniety. Zwracal slugi OBU linii i nie mial juz zadnego
 // odbiorcy (obie trasy buduja generateStaticParams z wlasnego zrodla: sklep z getProducts,
-// K9 z getK9Products). Jako jedyna funkcja seamu mieszajaca linie byl gotowa pulapka:
-// pierwsze uzycie do budowy tras sklepu wygenerowaloby karty K9 pod adresem /products/<slug>,
+// Pro z getProProducts). Jako jedyna funkcja seamu mieszajaca linie byl gotowa pulapka:
+// pierwsze uzycie do budowy tras sklepu wygenerowaloby karty Dog Store Pro pod adresem /products/<slug>,
 // czyli sprzet sluzbowy w cywilnym motywie. Potrzebna lista slugow jednej linii? Bierz ja
-// z getProducts("collars") albo getK9Products() - te funkcje nie potrafia skrzyzowac swiatow.
+// z getProducts("collars") albo getProProducts() - te funkcje nie potrafia skrzyzowac swiatow.
 
-/** Powiazane produkty zawsze z tej samej linii: sklep nie podsuwa sprzetu K9 i odwrotnie. */
+/** Powiazane produkty zawsze z tej samej linii: sklep nie podsuwa sprzetu Dog Store Pro i odwrotnie. */
 export async function getRelatedProducts(slug: string, limit = 8): Promise<Product[]> {
   const current = allProducts.find((p) => p.slug === slug);
   if (!current) return [];
@@ -74,16 +74,16 @@ export async function getRelatedProducts(slug: string, limit = 8): Promise<Produ
     .slice(0, limit);
 }
 
-// ---- PAKT-K9 ----
+// ---- Dog Store Pro ----
 
-export async function getK9Categories(): Promise<K9CategoryInfo[]> {
-  return k9Categories;
+export async function getProCategories(): Promise<ProCategoryInfo[]> {
+  return proCategories;
 }
 
-export async function getK9Category(slug: string): Promise<K9CategoryInfo | null> {
-  return k9Categories.find((c) => c.slug === slug) ?? null;
+export async function getProCategory(slug: string): Promise<ProCategoryInfo | null> {
+  return proCategories.find((c) => c.slug === slug) ?? null;
 }
 
-export async function getK9Products(category?: K9Category): Promise<Product[]> {
-  return category ? k9Products.filter((p) => p.k9Category === category) : k9Products;
+export async function getProProducts(category?: ProCategory): Promise<Product[]> {
+  return category ? proProducts.filter((p) => p.proCategory === category) : proProducts;
 }

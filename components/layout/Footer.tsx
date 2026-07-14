@@ -25,11 +25,14 @@ export function Footer() {
             t.line
           )}
         >
+          {/* Stopka nosi znak calego serwisu (Dog Store) takze pod sekcja Pro: to blok
+              domykajacy strone, a nie naglowek sekcji. Do sklepu sluzbowego prowadzi
+              wlasna kolumna linkow obok. */}
           <Logo
             variant="lockup"
             onDark
-            markClassName="h-24 w-auto"
-            wordmarkClassName="h-8 w-auto"
+            markClassName="h-20 w-auto"
+            wordmarkClassName="h-11 w-auto"
             className="gap-4"
           />
           <p className={cn("max-w-sm text-sm leading-relaxed", t.lead)}>
@@ -37,13 +40,13 @@ export function Footer() {
             testujemy z przewodnikami.
           </p>
         </div>
-        {/* 5 kolumn od lg: doszla kolumna PAKT-K9 (FOOTER_COLUMNS). Przy grid-cols-4
+        {/* 5 kolumn od lg: doszla kolumna Dog Store Pro (FOOTER_COLUMNS). Przy grid-cols-4
             piata kolumna spadala do drugiego wiersza i wygladala jak dopisek */}
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-5">
           {FOOTER_COLUMNS.map((col) => (
             <nav key={col.title} aria-label={col.title}>
               {/* type-label, nie type-meta: monospace zostaje wylacznie na oznaczenia
-                  techniczne w sekcji K9 */}
+                  techniczne w sekcji Pro */}
               <h3 className={cn("type-label mb-4", t.heading)}>{col.title}</h3>
               <ul>
                 {col.links.map((link) => (
