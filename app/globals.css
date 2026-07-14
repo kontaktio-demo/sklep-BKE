@@ -146,34 +146,40 @@ html[data-theme="dark"] {
   color-scheme: dark;
 }
 
-/* Kroje w sekcji Pro. Selektor celuje w <body>, bo to na nim next/font stawia zmienne
-   fontow - regula na <html> przegralaby z klasa nasadzona przez next/font.
-   Skutek: kazdy komponent WSPOLDZIELONY (koszyk, karta produktu, okruszki, dialogi)
-   mowi w sekcji Pro jezykiem Dog Store Pro, bez rozgalezien w kodzie. */
-html[data-theme="dark"] body {
-  --font-inter: var(--font-pro-sans);
-  --font-mono-tech: var(--font-pro-mono);
+/* Jeden korpus i jeden mono w obu swiatach (General Sans + JetBrains Mono), wiec sekcja
+   Pro nie przepina juz zmiennych tekstu. Rozne zostaja wylacznie GLOSY DISPLAY:
+   cywilny serif (Fraunces) kontra bilbordowe Archivo - i to przepiecie robia reguly
+   ponizej. Aliasowanie --font-pro-* trzyma przy zyciu klasy type-pro-* bez ladowania
+   osobnych krojow. */
+body {
+  --font-pro-sans: var(--font-sans-brand);
+  --font-pro-mono: var(--font-mono-tech);
 }
 
-/* Naglowki komponentow wspoldzielonych w sekcji Pro: Archivo 800 zamiast kondensowanej Fjalli.
+/* Naglowki komponentow wspoldzielonych w sekcji Pro: Archivo 800 zamiast serifu.
    Reguly celowo BEZ warstwy - klasa uzytkowa (@utility type-h1) siedzi w @layer utilities,
-   a regula bezwarstwowa bije kazda regule z warstwy, wiec nadpisuje kroj i wage. */
+   a regula bezwarstwowa bije kazda regule z warstwy, wiec nadpisuje kroj i wage.
+   text-transform wraca tu jawnie: baza cywilna jest serifowa i sklada sie zdaniem,
+   a tozsamosc Pro krzyczy wersalikami. */
 html[data-theme="dark"] .type-display,
 html[data-theme="dark"] .type-h1 {
   font-family: var(--font-pro-display);
   font-weight: 800;
+  text-transform: uppercase;
   letter-spacing: -0.01em;
 }
 
 html[data-theme="dark"] .type-h2 {
   font-family: var(--font-pro-display);
   font-weight: 800;
+  text-transform: uppercase;
   letter-spacing: -0.01em;
 }
 
 html[data-theme="dark"] .type-h3 {
   font-family: var(--font-pro-display);
   font-weight: 800;
+  text-transform: uppercase;
   letter-spacing: 0;
 }
 
@@ -221,7 +227,7 @@ html {
 body {
   background-color: var(--color-nf-bg);
   color: var(--color-nf-text);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-sans-brand), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -246,11 +252,11 @@ body {
    ktore sam generuje. Wlasne reguly @utility ponizej nie sa przez niego generowane, wiec
    var(--font-display) bylo w nich puste i CALA typografia po cichu spadala na font systemowy
    (naglowki wygladaly jak zwykly grotesk, mono w sekcji Pro przestawal byc mono).
-   Dlatego @utility siega BEZPOSREDNIO po zmienne z next/font (--font-*-condensed, --font-inter,
-   --font-mono-tech), ktore stoja na <html> i istnieja naprawde. */
+   Dlatego @utility siega BEZPOSREDNIO po zmienne z next/font (--font-display-serif,
+   --font-sans-brand, --font-mono-tech), ktore stoja na <body> i istnieja naprawde. */
 @theme inline {
-  --font-display: var(--font-display-condensed);
-  --font-sans: var(--font-inter);
+  --font-display: var(--font-display-serif);
+  --font-sans: var(--font-sans-brand);
   --font-mono: var(--font-mono-tech);
 }
 
@@ -271,61 +277,77 @@ body {
 }
 
 /* ---- typografia -----------------------------------------------------------
-   Naglowki: kondensowany grotesk, UPPERCASE, jedna waga. Skala jest plaska
-   i sklepowa: najwiekszy naglowek na stronie to ~44 px, nie 120 px. Bilbordowa
-   typografia byla najmocniejszym sygnalem "to nie jest sklep".
+   Glos cywilny: editorialowy serif (Fraunces, variable z osia optyczna) skladany
+   ZDANIEM, nie wersalikami. Skala wraca do prawdziwej hierarchii - display na home
+   siega ~7.5rem, naglowek sekcji ~2.75rem - bo plaska skala 20/44 px odbierala oku
+   jakikolwiek punkt zaczepienia. Sklepowa dyscyplina zostaje nizej: ceny, etykiety
+   i kontrolki ida groteskiem, wiec strona wciaz czyta sie jak sklep, nie magazyn.
    Komponenty NIE definiuja wlasnych rozmiarow - inaczej wraca piatka roznych H1.
    --------------------------------------------------------------------------- */
 
-/* hero strony glownej i sekcji Pro */
+/* hero strony glownej; w /pro nadpisywany na bilbordowe Archivo */
 @utility type-display {
-  font-family: var(--font-display-condensed);
-  font-weight: 400;
-  text-transform: uppercase;
-  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
-  line-height: 1.05;
+  font-family: var(--font-display-serif);
+  font-optical-sizing: auto;
+  font-weight: 470;
+  font-size: clamp(2.75rem, 6.6vw, 7.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
 }
 
-/* tytuly stron: kolekcja, karta produktu, kategoria w sekcji Pro */
+/* tytuly stron: kolekcja, karta produktu, strony informacyjne */
 @utility type-h1 {
-  font-family: var(--font-display-condensed);
-  font-weight: 400;
-  text-transform: uppercase;
-  font-size: clamp(1.5rem, 2.4vw, 2rem);
-  line-height: 1.1;
+  font-family: var(--font-display-serif);
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: clamp(2rem, 3.8vw, 3.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
 }
 
 /* naglowki sekcji */
 @utility type-h2 {
-  font-family: var(--font-display-condensed);
-  font-weight: 400;
-  text-transform: uppercase;
-  font-size: 1.25rem;
-  line-height: 1.2;
+  font-family: var(--font-display-serif);
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+  line-height: 1.06;
+  letter-spacing: -0.01em;
 }
 
-/* karty i kafle */
+/* karty i kafle: grotesk, cicho - serif zostaje dla naglowkow REDAKCYJNYCH,
+   metka produktu ma byc metka */
 @utility type-h3 {
-  font-family: var(--font-display-condensed);
-  font-weight: 400;
-  text-transform: uppercase;
+  font-family: var(--font-sans-brand);
+  font-weight: 560;
   font-size: 1.0625rem;
-  line-height: 1.25;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
 }
 
 /* Etykieta pola i naglowek listy: zwykly grotesk, bez trackingu rozstrzelonego
-   na 0.2em. Monospace zostaje wylacznie na oznaczenia techniczne w sekcji Pro. */
+   na 0.2em. Monospace zostaje wylacznie na oznaczenia techniczne. */
 @utility type-label {
-  font-family: var(--font-inter);
+  font-family: var(--font-sans-brand);
   font-weight: 600;
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.04em;
 }
 
+/* Kicker nad naglowkiem redakcyjnym: mono, drobny, rozstrzelony. To on niesie
+   kontrast skali W DOL (11 px obok 2.6rem), zeby serif nie musial rosnac w bilbord. */
+@utility type-kicker {
+  font-family: var(--font-mono-tech);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+}
+
 /* ---- SKALA DOG STORE PRO (PRO_IDENTITY.md §2) - wartosci sa prawem ----------------
-   Archivo 800/900 na naglowki (uppercase, ciasny tracking), Geist Sans na tresc,
-   Geist Mono na KAZDY odczyt techniczny. To monospace w danych sprawia, ze sekcja
+   Archivo 800/900 na naglowki (uppercase, ciasny tracking), General Sans na tresc,
+   JetBrains Mono na KAZDY odczyt techniczny. To monospace w danych sprawia, ze sekcja
    czyta sie jak karta sprzetu, a nie jak zwykla strona sklepu.
    Klasy zyja WYLACZNIE w /pro - sklep cywilny ma wlasna skale powyzej.
    --------------------------------------------------------------------------- */
@@ -393,8 +415,8 @@ body {
 }
 
 /* Oznaczenia techniczne w komponentach WSPOLDZIELONYCH (koszyk, karta produktu,
-   okruszki): w sekcji Pro musza jechac tym samym monospace co reszta sekcji, wiec kroj bierze
-   sie ze zmiennej, ktora w /pro wskazuje Geist Mono, a poza nim JetBrains Mono. */
+   okruszki): jeden monospace (JetBrains Mono) w obu swiatach - to samo oznaczenie
+   katalogowe wyglada tak samo na papierze i na graficie. */
 @utility type-meta {
   font-family: var(--font-mono-tech);
   font-size: 11px;
