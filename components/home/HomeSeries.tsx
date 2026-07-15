@@ -107,10 +107,7 @@ export function HomeSeries() {
                 />
               )}
             </div>
-            <div className="mt-5 flex items-baseline justify-between gap-6">
-              <h3 className="type-h1 text-nf-white">Sklep Dog Store</h3>
-              <span className="type-meta shrink-0 text-nf-dim">26 modeli</span>
-            </div>
+            <h3 className="type-h1 mt-5 text-nf-white">Sklep Dog Store</h3>
             <p className="mt-2 max-w-md text-sm leading-relaxed text-nf-muted">
               Obroże nylonowe i łańcuszkowe dla każdego psa. Filtry po szerokości,
               obwodzie i kolorze, wysyłka w 24 h.
@@ -139,10 +136,6 @@ export function HomeSeries() {
               <div className="px-2 pb-7 pt-6 md:px-3">
                 {/* jezyk sekcji Pro w miniaturze: mono-eyebrow, czerwona linia, Archivo */}
                 <p className="type-pro-eyebrow text-pro-muted">
-                  Dog Store Pro
-                  <span aria-hidden="true" className="px-2 text-pro-red">
-                    {"//"}
-                  </span>
                   Sprzęt służbowy
                 </p>
                 <span aria-hidden="true" className="mt-4 block h-0.5 w-12 bg-pro-red" />

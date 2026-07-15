@@ -33,15 +33,7 @@ export function ProHero() {
       />
 
       <div className="relative mx-auto w-full max-w-[1440px] px-5 pb-16 pt-32 md:px-8 md:pb-24 lg:px-12">
-        <p className="type-pro-eyebrow text-pro-muted">
-          Dog Store Pro
-          {/* separator w wyrazeniu, nie jako tekst: dwa ukosniki w tresci JSX linter
-              (i czlowiek) czyta jako poczatek komentarza */}
-          <span aria-hidden="true" className="px-2 text-pro-red">
-            {"//"}
-          </span>
-          Sprzęt służbowy
-        </p>
+        <p className="type-pro-eyebrow text-pro-muted">Sprzęt służbowy</p>
 
         {/* 2 px czerwona linia jako znacznik sekcji - struktura rysowana LINIA, nie cieniem */}
         <span aria-hidden="true" className="mt-5 block h-0.5 w-16 bg-pro-red" />

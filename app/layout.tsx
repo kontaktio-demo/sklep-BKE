@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Fraunces, JetBrains_Mono } from "next/font/google";
+import { Archivo, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { SITE_URL } from "@/lib/site";
@@ -26,13 +26,15 @@ import { getProducts } from "@/lib/data";
 // (Fontshare, licencja FFL - plik obok fontu), mono to JetBrains Mono - jeden na caly
 // serwis, do kazdego odczytu technicznego (SKU, 1000D, ZERWANIE 380 KG, PRO-01).
 
-// ---- glos cywilny: serif display ----
-// Osie variable: opsz (optical size - duze naglowki dostaja ostrzejszy rysunek same z
-// siebie), SOFT/WONK zostaja w wartosciach domyslnych - charakter ma niesc skala i sklad.
-const display = Fraunces({
-  variable: "--font-display-serif",
-  subsets: ["latin", "latin-ext"],
-  axes: ["opsz", "SOFT", "WONK"],
+// ---- glos display: Satoshi (Fontshare, licencja FFL obok fontu) ----
+// Ten sam duet co na stronie referencyjnej wlasciciela (amico.kontaktio.pl):
+// Satoshi na naglowki, General Sans na korpus. Serif odszedl na zyczenie.
+const display = localFont({
+  src: [
+    { path: "./fonts/Satoshi-Variable.woff2", weight: "300 900", style: "normal" },
+    { path: "./fonts/Satoshi-VariableItalic.woff2", weight: "300 900", style: "italic" },
+  ],
+  variable: "--font-display-brand",
 });
 
 // ---- korpus obu swiatow ----

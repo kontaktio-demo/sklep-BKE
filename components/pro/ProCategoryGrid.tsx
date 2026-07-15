@@ -23,10 +23,6 @@ export function ProCategoryGrid({ categories }: { categories: ProCategoryInfo[] 
           <div>
             <p className="type-pro-eyebrow text-pro-muted">
               Katalog
-              <span aria-hidden="true" className="px-2 text-pro-red">
-                {"//"}
-              </span>
-              5 kategorii
             </p>
             <h2 id="kategorie-naglowek" className="type-pro-h2 mt-4 text-pro-white">
               Kategorie

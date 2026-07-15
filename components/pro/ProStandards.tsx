@@ -37,10 +37,6 @@ export function ProStandards() {
           <div>
             <p className="type-pro-eyebrow text-pro-muted">
               Standard
-              <span aria-hidden="true" className="px-2 text-pro-red">
-                {"//"}
-              </span>
-              Linia Pro
             </p>
             <span aria-hidden="true" className="mt-5 block h-0.5 w-16 bg-pro-red" />
             <h2 id="standard-naglowek" className="type-pro-h2 mt-6 text-pro-white">

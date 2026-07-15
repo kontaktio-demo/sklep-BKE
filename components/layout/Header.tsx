@@ -16,7 +16,7 @@ import {
   SearchIcon,
 } from "@/components/ui/icons";
 import { useCart } from "@/lib/cart";
-import { NAV_ITEMS, TRUST_TRIAD } from "@/lib/nav";
+import { NAV_ITEMS } from "@/lib/nav";
 import { POPULAR_SEARCHES, searchHref } from "@/lib/search";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
@@ -127,7 +127,6 @@ function MobileNav({
         /* §8-B: K9TG mobile nav is full-screen; cap the width only from sm upward */
         "max-w-none sm:max-w-sm"
       }
-      footer={<p className={cn("px-5 py-4 text-xs", t.meta)}>{TRUST_TRIAD.join(" · ")}</p>}
     >
       <nav aria-label="Nawigacja główna">
         <ul>

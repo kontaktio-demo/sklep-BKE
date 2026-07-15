@@ -71,26 +71,9 @@ export function BuyBox({ product }: { product: Product }) {
   return (
     <div>
       <header>
-        {/* Pro: pasek techniczny zamiast etykiety sklepowej. SKU i oznaczenie klasy to
-            pierwsze, czego szuka przewodnik - "Obroża służbowa / DSP-PAT-175-L" nie niesie
-            nic, czego nie ma w nazwie i tabeli */}
-        {pro ? (
-          <p className={label}>
-            {variant.sku}
-            {product.proStandard && (
-              <>
-                <span aria-hidden="true" className="px-2 text-nf-border-strong">
-                  /
-                </span>
-                {product.proStandard}
-              </>
-            )}
-          </p>
-        ) : (
-          <p className={label}>
-            {product.productType} / {variant.sku}
-          </p>
-        )}
+        {/* Nad nazwa stoi SAM numer katalogowy - zadnych doklejek z ukosnikami
+            (zyczenie wlasciciela: zero "dopiskow"). Klasa i kategoria sa w tabeli. */}
+        <p className={label}>{variant.sku}</p>
         {/* text-balance: nazwa lamie sie w kolumnie 440 px, wiec wiersze maja byc rowne */}
         <h1 className="type-h1 mt-3 text-balance text-nf-white">{product.name}</h1>
         <p className="mt-3 text-sm text-nf-muted">{product.tagline}</p>
@@ -135,7 +118,7 @@ export function BuyBox({ product }: { product: Product }) {
           aria-live="polite"
           className={cn("text-nf-dim", pro ? "type-meta" : "text-xs")}
         >
-          Obwód {variant.neck} / waga {variant.weightGrams} g
+          Obwód {variant.neck}, waga {variant.weightGrams} g
         </p>
       </div>
 

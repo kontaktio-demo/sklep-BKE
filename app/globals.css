@@ -153,7 +153,7 @@ html[data-theme="dark"] {
 
 /* Jeden korpus i jeden mono w obu swiatach (General Sans + JetBrains Mono), wiec sekcja
    Pro nie przepina juz zmiennych tekstu. Rozne zostaja wylacznie GLOSY DISPLAY:
-   cywilny serif (Fraunces) kontra bilbordowe Archivo - i to przepiecie robia reguly
+   display Satoshi kontra bilbordowe Archivo - i to przepiecie robia reguly
    ponizej. Aliasowanie --font-pro-* trzyma przy zyciu klasy type-pro-* bez ladowania
    osobnych krojow. */
 body {
@@ -161,10 +161,10 @@ body {
   --font-pro-mono: var(--font-mono-tech);
 }
 
-/* Naglowki komponentow wspoldzielonych w sekcji Pro: Archivo 800 zamiast serifu.
+/* Naglowki komponentow wspoldzielonych w sekcji Pro: Archivo 800 zamiast Satoshi.
    Reguly celowo BEZ warstwy - klasa uzytkowa (@utility type-h1) siedzi w @layer utilities,
    a regula bezwarstwowa bije kazda regule z warstwy, wiec nadpisuje kroj i wage.
-   text-transform wraca tu jawnie: baza cywilna jest serifowa i sklada sie zdaniem,
+   text-transform wraca tu jawnie: baza cywilna sklada sie zdaniem,
    a tozsamosc Pro krzyczy wersalikami. */
 html[data-theme="dark"] .type-display,
 html[data-theme="dark"] .type-h1 {
@@ -291,10 +291,10 @@ body::after {
    ktore sam generuje. Wlasne reguly @utility ponizej nie sa przez niego generowane, wiec
    var(--font-display) bylo w nich puste i CALA typografia po cichu spadala na font systemowy
    (naglowki wygladaly jak zwykly grotesk, mono w sekcji Pro przestawal byc mono).
-   Dlatego @utility siega BEZPOSREDNIO po zmienne z next/font (--font-display-serif,
+   Dlatego @utility siega BEZPOSREDNIO po zmienne z next/font (--font-display-brand,
    --font-sans-brand, --font-mono-tech), ktore stoja na <body> i istnieja naprawde. */
 @theme inline {
-  --font-display: var(--font-display-serif);
+  --font-display: var(--font-display-brand);
   --font-sans: var(--font-sans-brand);
   --font-mono: var(--font-mono-tech);
 }
@@ -316,46 +316,42 @@ body::after {
 }
 
 /* ---- typografia -----------------------------------------------------------
-   Glos cywilny: editorialowy serif (Fraunces, variable z osia optyczna) skladany
-   ZDANIEM, nie wersalikami. Skala wraca do prawdziwej hierarchii - display na home
-   siega ~7.5rem, naglowek sekcji ~2.75rem - bo plaska skala 20/44 px odbierala oku
-   jakikolwiek punkt zaczepienia. Sklepowa dyscyplina zostaje nizej: ceny, etykiety
-   i kontrolki ida groteskiem, wiec strona wciaz czyta sie jak sklep, nie magazyn.
+   Glos display: Satoshi (duet z amico.kontaktio.pl - Satoshi + General Sans),
+   skladany zdaniem. Skala trzyma prawdziwa hierarchie - display na home ~7rem,
+   naglowek sekcji ~2.6rem. Sklepowa dyscyplina zostaje nizej: ceny, etykiety
+   i kontrolki ida groteskiem tekstowym, wiec strona czyta sie jak sklep.
    Komponenty NIE definiuja wlasnych rozmiarow - inaczej wraca piatka roznych H1.
    --------------------------------------------------------------------------- */
 
 /* hero strony glownej; w /pro nadpisywany na bilbordowe Archivo */
 @utility type-display {
-  font-family: var(--font-display-serif);
-  font-optical-sizing: auto;
-  font-weight: 470;
-  font-size: clamp(2.75rem, 6.6vw, 7.25rem);
-  line-height: 0.98;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display-brand);
+  font-weight: 700;
+  font-size: clamp(2.75rem, 6.2vw, 6.5rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
 }
 
 /* tytuly stron: kolekcja, karta produktu, strony informacyjne */
 @utility type-h1 {
-  font-family: var(--font-display-serif);
-  font-optical-sizing: auto;
-  font-weight: 500;
+  font-family: var(--font-display-brand);
+  font-weight: 700;
   font-size: clamp(2rem, 3.8vw, 3.25rem);
   line-height: 1.04;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
 }
 
 /* naglowki sekcji */
 @utility type-h2 {
-  font-family: var(--font-display-serif);
-  font-optical-sizing: auto;
-  font-weight: 500;
+  font-family: var(--font-display-brand);
+  font-weight: 700;
   font-size: clamp(1.7rem, 3.2vw, 2.6rem);
   line-height: 1.06;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
-/* karty i kafle: grotesk, cicho - serif zostaje dla naglowkow REDAKCYJNYCH,
-   metka produktu ma byc metka */
+/* karty i kafle: grotesk tekstowy, cicho - display zostaje dla naglowkow
+   REDAKCYJNYCH, metka produktu ma byc metka */
 @utility type-h3 {
   font-family: var(--font-sans-brand);
   font-weight: 560;

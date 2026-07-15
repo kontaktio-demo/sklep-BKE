@@ -3,7 +3,6 @@ import { HomeSeries } from "@/components/home/HomeSeries";
 import { HomeBestsellers } from "@/components/home/HomeBestsellers";
 import { HomeManifest } from "@/components/home/HomeManifest";
 import { HomeIntro } from "@/components/home/HomeIntro";
-import { HomeTrust } from "@/components/home/HomeTrust";
 
 // Strona glowna prowadzi do dwoch osobnych sklepow: cywilnego Dog Store i sluzbowego
 // Dog Store Pro. Kolejnosc sekcji buduje RYTM WARTOSCI, nie stos rownych prostokatow:
@@ -16,7 +15,6 @@ export default function Home() {
   return (
     <>
       <HomeHero />
-      <HomeTrust />
       <HomeSeries />
       <HomeBestsellers />
       <HomeManifest />

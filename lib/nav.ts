@@ -92,7 +92,7 @@ export const NAV_ITEMS: NavItem[] = [
 // zmianie liczby kategorii albo pozycji trzeba ruszyc te stala.
 export const PRO_STATUS = {
   line: "Dog Store Pro",
-  scope: "5 kategorii / 12 pozycji",
+  scope: "5 kategorii, 12 pozycji",
   contactLabel: "Zapytania:",
   contactEmail: "pro@dogstore.pl",
 };
