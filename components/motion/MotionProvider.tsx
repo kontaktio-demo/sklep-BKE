@@ -1,27 +1,28 @@
 "use client";
 
-import { ReactLenis, type LenisRef } from "lenis/react";
+import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Smooth scroll zrobiony TAK, zeby nie wrocila "guma" sprzed usuniecia Lenisa:
+ * Smooth scroll zrobiony TAK, zeby nie wrocila "guma" sprzed usuniecia Lenisa - i tak,
+ * zeby NIE przemontowywac calej aplikacji:
  *
- *  1. Jeden zegar. Lenis NIE ma wlasnego rAF (autoRaf: false) - napedza go ticker
- *     GSAP z lagSmoothing(0). Poprzednio dwa niezalezne rAF-y (Lenis + ScrollTrigger)
- *     potrafily sie rozjezdzac przy ciezkich klatkach i scroll robil sie ciagliwy.
- *  2. Krotki lerp (0.12) i syncTouch wylaczone: na dotyku zostaje scroll natywny -
- *     przejmowanie scrolla na mobile to najszybsza droga do zacinania.
- *  3. Zadnych zywych filtrow ani animacji layoutu w tресci - wszystko, co scroll
- *     napotyka, to transform/opacity na kompozytorze.
- *  4. prefers-reduced-motion: Lenis w ogole sie nie montuje, strona zostaje na
- *     scrollu natywnym, a kazdy efekt GSAP owija gsap.matchMedia().
+ *  1. Korzen to ZAWSZE <>{children}</> (staly typ). Lenis powstaje i ginie IMPERATYWNIE
+ *     w efekcie, a nie przez podmiane elementu opakowujacego. Wczesniej korzen zmienial
+ *     sie z Fragmentu na <ReactLenis> po pierwszym efekcie klienta - React niszczyl i
+ *     montowal od nowa cale poddrzewo (blysk hero, restart reveali, reset stanu koszyka).
+ *  2. Jeden zegar. Lenis nie ma wlasnego rAF (autoRaf:false); napedza go ticker GSAP z
+ *     lagSmoothing(0). Dwa niezalezne rAF-y rozjezdzaly sie przy ciezkich klatkach i
+ *     scroll robil sie ciagliwy.
+ *  3. Krotki lerp (0.12) i syncTouch wylaczone - na dotyku zostaje scroll natywny.
+ *  4. prefers-reduced-motion (oraz pierwszy render/SSR): Lenis w ogole nie powstaje,
+ *     strona jedzie na scrollu natywnym. Nic do przemontowania, bo korzen sie nie zmienia.
  */
 export function MotionProvider({ children }: { children: ReactNode }) {
-  const lenisRef = useRef<LenisRef | null>(null);
   const [reduced, setReduced] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -35,28 +36,18 @@ export function MotionProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (reduced !== false) return;
 
-    const update = (time: number) => {
-      lenisRef.current?.lenis?.raf(time * 1000);
-    };
+    const lenis = new Lenis({ autoRaf: false, lerp: 0.12, syncTouch: false });
+    const update = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
-
-    const lenis = lenisRef.current?.lenis;
-    lenis?.on("scroll", ScrollTrigger.update);
+    lenis.on("scroll", ScrollTrigger.update);
 
     return () => {
       gsap.ticker.remove(update);
-      lenis?.off("scroll", ScrollTrigger.update);
+      lenis.off("scroll", ScrollTrigger.update);
+      lenis.destroy();
     };
   }, [reduced]);
 
-  // reduced === null (pierwszy render, SSR): scroll natywny, zero mrugniecia.
-  // reduced === true: scroll natywny na stale.
-  if (reduced !== false) return <>{children}</>;
-
-  return (
-    <ReactLenis root options={{ autoRaf: false, lerp: 0.12, syncTouch: false }} ref={lenisRef}>
-      {children}
-    </ReactLenis>
-  );
+  return <>{children}</>;
 }

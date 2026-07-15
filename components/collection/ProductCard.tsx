@@ -23,19 +23,19 @@ const DEFAULT_SIZES =
   "(min-width:1600px) 300px, (min-width:1280px) calc((100vw - 390px) / 4), (min-width:1024px) calc((100vw - 340px) / 3), (min-width:768px) 33vw, 50vw";
 const MAX_SWATCHES = 4;
 
-// Morf karta -> karta produktu (View Transitions API). Nazwe dostaje WYLACZNIE
-// klikana karta - dwa elementy z ta sama nazwa w drzewie wywracaja przejscie
-// w twardy swap, wiec przed nadaniem czyscimy poprzednika.
-let lastNamedFrame: HTMLElement | null = null;
-
+// Morf karta -> karta produktu (View Transitions API). Nazwe pdp-hero dostaje WYLACZNIE
+// klikana karta. Dwa elementy z ta sama nazwa na jednym snapshotcie wywracaja przejscie
+// w twardy swap - a na PDP kadr galerii tez nosi pdp-hero (ProductGallery). Nawigacja
+// PDP->PDP z rzedu "Podobne / Ostatnio ogladane" mialaby wiec DWA pdp-hero na wychodzacej
+// stronie (galeria + klikana karta) i morf sie nie odpalal. Dlatego przed nadaniem
+// czyscimy nazwe ze WSZYSTKICH elementow na stronie, nie tylko z poprzedniej karty.
 function armSharedTransition(frame: HTMLElement | null) {
-  if (lastNamedFrame && lastNamedFrame !== frame) {
-    lastNamedFrame.style.viewTransitionName = "";
-  }
-  if (frame) {
-    frame.style.viewTransitionName = "pdp-hero";
-    lastNamedFrame = frame;
-  }
+  document
+    .querySelectorAll<HTMLElement>('[style*="view-transition-name"]')
+    .forEach((el) => {
+      if (el.style.viewTransitionName === "pdp-hero") el.style.viewTransitionName = "";
+    });
+  if (frame) frame.style.viewTransitionName = "pdp-hero";
 }
 
 export function ProductCard({

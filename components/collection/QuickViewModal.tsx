@@ -169,6 +169,7 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
                   key={color.name}
                   color={color}
                   size="md"
+                  onElevated
                   selected={selectedColor?.name === color.name}
                   onSelect={() => setSelectedColor(color)}
                 />

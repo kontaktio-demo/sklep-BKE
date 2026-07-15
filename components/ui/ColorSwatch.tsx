@@ -8,11 +8,15 @@ export function ColorSwatch({
   selected = false,
   onSelect,
   size = "md",
+  onElevated = false,
 }: {
   color: ProductColor;
   selected?: boolean;
   onSelect?: () => void;
   size?: "sm" | "md";
+  /** true = probka lezy na kadrze/panelu (nf-elevated), nie na tle strony (nf-bg).
+   *  Przerwa pierscienia bierze wtedy kolor panelu, zeby nie bylo widac szwu. */
+  onElevated?: boolean;
 }) {
   const circle = (
     <span
@@ -25,7 +29,10 @@ export function ColorSwatch({
         // Zaznaczona: pierscien na tokenie maksymalnego kontrastu (tusz na papierze, biel na
         // graficie) plus przerwa w kolorze tla, zeby pierscien nie sklejal sie z kolorem probki.
         selected
-          ? "ring-2 ring-nf-white ring-offset-2 ring-offset-nf-bg"
+          ? cn(
+              "ring-2 ring-nf-white ring-offset-2",
+              onElevated ? "ring-offset-nf-elevated" : "ring-offset-nf-bg"
+            )
           : "ring-1 ring-nf-control"
       )}
       // hex comes from product data - the one sanctioned inline color source

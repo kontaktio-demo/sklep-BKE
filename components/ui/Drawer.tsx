@@ -163,7 +163,10 @@ export function Drawer({
             <CloseIcon />
           </button>
         </div>
-        <div className="flex-1 overflow-y-auto">{children}</div>
+        {/* data-lenis-prevent: kolko myszy przewija tresc szuflady, nie strone pod nia */}
+        <div data-lenis-prevent className="slim-scroll flex-1 overflow-y-auto">
+          {children}
+        </div>
         {footer && <div className={cn("border-t", surface.line)}>{footer}</div>}
       </div>
     </>

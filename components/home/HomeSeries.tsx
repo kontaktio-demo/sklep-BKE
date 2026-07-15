@@ -114,10 +114,14 @@ export function HomeSeries() {
             </p>
           </Link>
 
-          {/* swiat Pro: 5 kolumn, grafit, zsuniety - lamana linia bazowa */}
+          {/* swiat Pro: 5 kolumn, grafit, zsuniety - lamana linia bazowa.
+              BEZ data-shell="dark": kafel uzywa jawnych tokenow pro-* (bg-pro-bg,
+              border-pro-border, text-pro-white...), wiec nie potrzebuje inwersji nf-*.
+              Z data-shell obserwator naglowka (Header) traktowal ten waski kafel jak
+              pelnoszerokia ciemna wyspe i przelaczal CALY header w grafit nad jasna
+              trescia - migoczacy ciemny pasek. */}
           <Link
             href="/pro"
-            data-shell="dark"
             data-reveal
             className="group block rounded-[2px] lg:col-span-5 lg:mt-20"
           >

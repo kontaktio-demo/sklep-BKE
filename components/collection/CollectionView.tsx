@@ -213,7 +213,11 @@ export function CollectionView({ products, groups }: CollectionViewProps) {
   const clearAll = () => commit(EMPTY_FILTERS, sort);
 
   return (
-    <div className="flex items-start gap-8 xl:gap-10">
+    // BEZ items-start: domyslny stretch rozciaga <aside> do wysokosci wysokiej kolumny
+    // produktow. Bez tego aside zwijal sie do wysokosci wlasnej tresci (== wysokosc
+    // wewnetrznego sticky-diva), sticky nie mial toru i panel filtrow odjezdzal w gore
+    // po jednym ekranie scrolla. min-w-0 na kolumnie obok chroni przed overflow-em.
+    <div className="flex gap-8 xl:gap-10">
       <FilterSidebar
         groups={groups}
         state={filters}

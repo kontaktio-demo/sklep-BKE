@@ -16,7 +16,10 @@ export function FilterSidebar({
           Bez zapasu ginela od lewej (padding byl tylko z prawej, pod pasek przewijania)
           i na skrajnych kontrolkach od gory i dolu. p-2 daje zapas, -m-2 zdejmuje go
           z ukladu, wiec kolumna filtrow stoi tam, gdzie stała. */}
-      <div className="sticky top-24 -m-2 max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain p-2 [scrollbar-width:thin]">
+      <div
+        data-lenis-prevent
+        className="slim-scroll sticky top-24 -m-2 max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain p-2"
+      >
         <div className="flex min-h-11 items-center justify-between gap-3 border-b border-nf-border">
           <h2 className="type-h3 text-nf-white">Filtry</h2>
           {activeCount > 0 && (

@@ -183,7 +183,14 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
           {suggestions.length > 0 && (
             <section aria-label="Do kompletu" className="mt-2 border-t border-nf-border pt-5">
               <h3 className="type-label text-nf-dim">Do kompletu</h3>
-              <ul className="no-scrollbar mt-3 flex gap-3 overflow-x-auto">
+              {/* p-2 -m-2: overflow-x-auto wymusza obliczone overflow-y:auto, wiec bez
+                  wewnetrznego zapasu halo focusu na linku "Wybierz rozmiar" (ostatni
+                  element karty, przy krawedzi) bylo przycinane. Ujemny margines
+                  przywraca uklad. */}
+              <ul
+                data-lenis-prevent
+                className="no-scrollbar mt-3 -m-2 flex gap-3 overflow-x-auto p-2"
+              >
                 {suggestions.map((product) => (
                   <li key={product.id} className="w-32 shrink-0">
                     <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] bg-nf-elevated">
