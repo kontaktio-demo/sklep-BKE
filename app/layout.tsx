@@ -3,6 +3,7 @@ import { Archivo, Fraunces, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { SITE_URL } from "@/lib/site";
+import { ViewTransitions } from "next-view-transitions";
 import { CartProvider } from "@/lib/cart";
 import { MotionProvider } from "@/components/motion/MotionProvider";
 import { Reveals } from "@/components/motion/Reveals";
@@ -96,10 +97,15 @@ export default async function RootLayout({
     .slice(0, 6);
 
   return (
-    // suppressHydrationWarning: skrypt ponizej dopisuje data-theme do <html> PRZED
-    // hydracja (inaczej sekcja Pro mignelaby bielą sklepu). Serwer tego atrybutu nie zna,
-    // wiec React zglaszal rozjazd. Tlumimy go na tym jednym wezle - i tylko tu.
-    <html lang="pl" suppressHydrationWarning>
+    // ViewTransitions (next-view-transitions): owija nawigacje routera w
+    // document.startViewTransition. Morf wspolnego elementu robi para
+    // view-transition-name nadawana w ProductCard (klik) i ProductGallery (cel).
+    // Przegladarki bez API dostaja zwykla nawigacje - zero degradacji.
+    <ViewTransitions>
+      {/* suppressHydrationWarning: skrypt ponizej dopisuje data-theme do <html> PRZED
+          hydracja (inaczej sekcja Pro mignelaby biela sklepu). Serwer tego atrybutu nie
+          zna, wiec React zglaszal rozjazd. Tlumimy go na tym jednym wezle - i tylko tu. */}
+      <html lang="pl" suppressHydrationWarning>
       <head>
         {/* motyw ustawiany przed pierwszym malowaniem: inaczej sekcja Dog Store Pro
             mignie jasnym tlem sklepu cywilnego, zanim React zdazy sie uruchomic.
@@ -139,6 +145,7 @@ export default async function RootLayout({
           </CartProvider>
         </MotionProvider>
       </body>
-    </html>
+      </html>
+    </ViewTransitions>
   );
 }

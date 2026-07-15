@@ -83,7 +83,12 @@ export function ProductGallery({
       )}
 
       <div className="order-1 flex min-w-0 flex-col gap-2 lg:order-2 lg:flex-1">
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2px] border border-nf-border bg-nf-elevated">
+        {/* pdp-hero: cel morfu z karty listy (View Transitions). Nazwa stoi na stale -
+            na stronie jest tylko jeden glowny kadr */}
+        <div
+          style={{ viewTransitionName: "pdp-hero" }}
+          className="relative aspect-[4/5] w-full overflow-hidden rounded-[2px] border border-nf-border bg-nf-elevated"
+        >
           {images.map((src, i) => {
             const isActive = i === active;
             return (
