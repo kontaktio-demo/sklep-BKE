@@ -49,7 +49,10 @@ export async function HomeBestsellers() {
 
           {/* lamana linia bazowa: karty 2 i 4 zsuniete - rytm rozkladowki, nie tabela.
               Offsety tylko od lg, na wezszych ekranach siatka wraca do porzadku. */}
-          <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-6">
+          <div
+            data-reveal="group"
+            className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-6"
+          >
             {top.map((product, i) => (
               <ProductCard
                 key={product.id}

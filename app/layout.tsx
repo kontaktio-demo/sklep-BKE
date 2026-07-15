@@ -4,6 +4,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SITE_URL } from "@/lib/site";
 import { CartProvider } from "@/lib/cart";
+import { MotionProvider } from "@/components/motion/MotionProvider";
+import { Reveals } from "@/components/motion/Reveals";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { ThemeSync } from "@/components/layout/ThemeSync";
 import { Header } from "@/components/layout/Header";
@@ -121,18 +123,21 @@ export default async function RootLayout({
           Przejdź do treści
         </a>
         <ThemeSync />
-        {/* Bez smooth scrolla (Lenis). Biblioteka przejmowala kolko myszy i ANIMOWALA
-            przewijanie w JS, wiec kazda ciezsza klatka zamieniala scroll w gume. Natywne
-            przewijanie idzie po stronie kompozytora przegladarki i nie da sie go zaciac
-            renderem. */}
-        <CartProvider>
-          <AnnouncementBar />
-          <Header />
-          <main id="tresc">{children}</main>
-          <Newsletter />
-          <Footer />
-          <CartDrawer crossSell={crossSell} />
-        </CartProvider>
+        {/* Lenis wraca, ale W RYZACH (components/motion/MotionProvider): jeden zegar
+            GSAP, krotki lerp, scroll natywny na dotyku i pelne wylaczenie przy
+            prefers-reduced-motion. Poprzednia "guma" brala sie z dwoch niezaleznych
+            rAF-ow i zywych filtrow SVG w tresci - obu juz nie ma. */}
+        <MotionProvider>
+          <Reveals />
+          <CartProvider>
+            <AnnouncementBar />
+            <Header />
+            <main id="tresc">{children}</main>
+            <Newsletter />
+            <Footer />
+            <CartDrawer crossSell={crossSell} />
+          </CartProvider>
+        </MotionProvider>
       </body>
     </html>
   );

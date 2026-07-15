@@ -95,7 +95,7 @@ export function HomeSeries() {
 
         <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-6">
           {/* swiat cywilny: 7 kolumn, papier */}
-          <Link href="/collections/collars" className="group block lg:col-span-7">
+          <Link href="/collections/collars" data-reveal className="group block lg:col-span-7">
             <div className="relative aspect-[16/10] overflow-hidden rounded-[2px] border border-nf-border bg-nf-elevated-2">
               {shopSrc && (
                 <Image
@@ -121,6 +121,7 @@ export function HomeSeries() {
           <Link
             href="/pro"
             data-shell="dark"
+            data-reveal
             className="group block rounded-[2px] lg:col-span-5 lg:mt-20"
           >
             <div className="border border-pro-border bg-pro-bg p-3 pb-0 md:p-4 md:pb-0">
@@ -158,7 +159,7 @@ export function HomeSeries() {
         </div>
 
         {/* skroty: trzy kadry o LAMANEJ linii bazowej (offsety), nie rowny rzad */}
-        <div className="mt-16 grid gap-10 sm:grid-cols-3 sm:gap-6 lg:mt-20">
+        <div data-reveal="group" className="mt-16 grid gap-10 sm:grid-cols-3 sm:gap-6 lg:mt-20">
           {SHORTCUTS.map((tile) => (
             <EditorialTile
               key={tile.href}

@@ -70,14 +70,18 @@ export function HomeHero() {
         {src && (
           <div className="lg:col-span-6 lg:col-start-7 lg:row-start-1">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] border border-nf-border">
-              <Image
-                src={src}
-                alt="Owczarek belgijski malinois w czerwonej obroży"
-                fill
-                priority
-                sizes="(min-width:1024px) 42vw, 100vw"
-                className="object-cover"
-              />
+              {/* paralaksa CZYTA scroll (scrub na transformie), nigdy go nie przejmuje;
+                  scale-[1.12] daje kadru zapas, zeby przesuw nie odslanial krawedzi */}
+              <div data-parallax="0.06" className="absolute inset-0 scale-[1.12]">
+                <Image
+                  src={src}
+                  alt="Owczarek belgijski malinois w czerwonej obroży"
+                  fill
+                  priority
+                  sizes="(min-width:1024px) 42vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
             </div>
             {/* podpis jak w druku: u dolu kadru, mono, po prawej */}
             <p className="type-meta mt-3 text-right text-nf-dim">

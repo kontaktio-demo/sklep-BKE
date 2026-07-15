@@ -29,7 +29,7 @@ export function HomeIntro() {
         <p className="type-kicker text-nf-dim">Jak pracujemy</p>
         <div className="mt-10 grid gap-12 lg:grid-cols-12 lg:gap-y-0">
           {POINTS.map((point, i) => (
-            <div key={point.title} className={PLACEMENTS[i]}>
+            <div key={point.title} data-reveal className={PLACEMENTS[i]}>
               <div className="border-t border-nf-border pt-6">
                 <h3 className="type-h2 text-nf-white">{point.title}</h3>
                 <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-nf-text">
