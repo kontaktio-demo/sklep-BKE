@@ -6,8 +6,8 @@
 // Dodawanie do koszyka zostalo z karty usuniete - robi to szybki podglad i strona produktu.
 
 import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
+import { Link } from "next-view-transitions";
+import { useRef, useState } from "react";
 import { useQuickView } from "@/components/collection/QuickViewModal";
 import { Badge } from "@/components/ui/Badge";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
@@ -22,6 +22,21 @@ import { cn } from "@/lib/utils";
 const DEFAULT_SIZES =
   "(min-width:1600px) 300px, (min-width:1280px) calc((100vw - 390px) / 4), (min-width:1024px) calc((100vw - 340px) / 3), (min-width:768px) 33vw, 50vw";
 const MAX_SWATCHES = 4;
+
+// Morf karta -> karta produktu (View Transitions API). Nazwe dostaje WYLACZNIE
+// klikana karta - dwa elementy z ta sama nazwa w drzewie wywracaja przejscie
+// w twardy swap, wiec przed nadaniem czyscimy poprzednika.
+let lastNamedFrame: HTMLElement | null = null;
+
+function armSharedTransition(frame: HTMLElement | null) {
+  if (lastNamedFrame && lastNamedFrame !== frame) {
+    lastNamedFrame.style.viewTransitionName = "";
+  }
+  if (frame) {
+    frame.style.viewTransitionName = "pdp-hero";
+    lastNamedFrame = frame;
+  }
+}
 
 export function ProductCard({
   product,
@@ -41,6 +56,7 @@ export function ProductCard({
   // zdekodowac i trzymac w pamieci, a przy przewijaniu przemalowac.
   const [hoverLayer, setHoverLayer] = useState(false);
   const hasSecondImage = product.images.length > 1;
+  const frameRef = useRef<HTMLDivElement | null>(null);
 
   const armHoverLayer = () => {
     if (hasSecondImage) setHoverLayer(true);
@@ -52,7 +68,10 @@ export function ProductCard({
       onPointerEnter={armHoverLayer}
       onFocus={armHoverLayer}
     >
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[2px] border border-nf-border bg-nf-elevated transition-colors duration-300 ease-nf group-hover/card:border-nf-border-strong group-focus-within/card:border-nf-border-strong motion-reduce:transition-none">
+      <div
+        ref={frameRef}
+        className="relative aspect-[4/5] overflow-hidden rounded-[2px] border border-nf-border bg-nf-elevated transition-colors duration-300 ease-nf group-hover/card:border-nf-border-strong group-focus-within/card:border-nf-border-strong motion-reduce:transition-none"
+      >
         {/* rusza sie tylko warstwa ze zdjeciami - ramka, plakietki i pasek stoja w miejscu */}
         <div className="absolute inset-0 transition-transform duration-500 ease-out motion-safe:group-hover/card:scale-[1.03] motion-safe:group-focus-within/card:scale-[1.03] motion-reduce:transition-none">
           {/* Wyprzedane: odbarwienie + wygaszenie. Samo przyciemnienie (brightness) na jasnym
@@ -116,6 +135,7 @@ export function ProductCard({
         <h3 className="text-[15px] font-medium leading-snug">
           <Link
             href={productHref(product)}
+            onClick={() => armSharedTransition(frameRef.current)}
             className="rounded-[2px] text-nf-text transition-colors duration-250 ease-nf hover:text-nf-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nf-white"
           >
             {product.name}

@@ -29,6 +29,9 @@
   --color-nf-bg: #f0f0ee;
   --color-nf-elevated: #ffffff;
   --color-nf-elevated-2: #e5e5e2;
+  /* trzeci stopien drabiny papieru: sekcje "zatopione" ponizej tla strony.
+     Ta sama zielono-szara temperatura co #f0f0ee - inna temperatura = brud. */
+  --color-nf-sunken: #dcdcd8;
 
   --color-nf-red: #c20812;
   --color-nf-red-hover: #a30610;
@@ -108,6 +111,8 @@ html[data-theme="dark"] {
   --color-nf-bg: var(--color-pro-bg);
   --color-nf-elevated: var(--color-pro-surface);
   --color-nf-elevated-2: var(--color-pro-raised);
+  /* w graficie "zatopienie" idzie w czern absolutna */
+  --color-nf-sunken: #0a0a0a;
 
   --color-nf-red: var(--color-pro-red);
   --color-nf-red-hover: var(--color-pro-red-hover);
@@ -146,34 +151,40 @@ html[data-theme="dark"] {
   color-scheme: dark;
 }
 
-/* Kroje w sekcji Pro. Selektor celuje w <body>, bo to na nim next/font stawia zmienne
-   fontow - regula na <html> przegralaby z klasa nasadzona przez next/font.
-   Skutek: kazdy komponent WSPOLDZIELONY (koszyk, karta produktu, okruszki, dialogi)
-   mowi w sekcji Pro jezykiem Dog Store Pro, bez rozgalezien w kodzie. */
-html[data-theme="dark"] body {
-  --font-inter: var(--font-pro-sans);
-  --font-mono-tech: var(--font-pro-mono);
+/* Jeden korpus i jeden mono w obu swiatach (General Sans + JetBrains Mono), wiec sekcja
+   Pro nie przepina juz zmiennych tekstu. Rozne zostaja wylacznie GLOSY DISPLAY:
+   cywilny serif (Fraunces) kontra bilbordowe Archivo - i to przepiecie robia reguly
+   ponizej. Aliasowanie --font-pro-* trzyma przy zyciu klasy type-pro-* bez ladowania
+   osobnych krojow. */
+body {
+  --font-pro-sans: var(--font-sans-brand);
+  --font-pro-mono: var(--font-mono-tech);
 }
 
-/* Naglowki komponentow wspoldzielonych w sekcji Pro: Archivo 800 zamiast kondensowanej Fjalli.
+/* Naglowki komponentow wspoldzielonych w sekcji Pro: Archivo 800 zamiast serifu.
    Reguly celowo BEZ warstwy - klasa uzytkowa (@utility type-h1) siedzi w @layer utilities,
-   a regula bezwarstwowa bije kazda regule z warstwy, wiec nadpisuje kroj i wage. */
+   a regula bezwarstwowa bije kazda regule z warstwy, wiec nadpisuje kroj i wage.
+   text-transform wraca tu jawnie: baza cywilna jest serifowa i sklada sie zdaniem,
+   a tozsamosc Pro krzyczy wersalikami. */
 html[data-theme="dark"] .type-display,
 html[data-theme="dark"] .type-h1 {
   font-family: var(--font-pro-display);
   font-weight: 800;
+  text-transform: uppercase;
   letter-spacing: -0.01em;
 }
 
 html[data-theme="dark"] .type-h2 {
   font-family: var(--font-pro-display);
   font-weight: 800;
+  text-transform: uppercase;
   letter-spacing: -0.01em;
 }
 
 html[data-theme="dark"] .type-h3 {
   font-family: var(--font-pro-display);
   font-weight: 800;
+  text-transform: uppercase;
   letter-spacing: 0;
 }
 
@@ -185,6 +196,7 @@ html:not([data-theme="dark"]) [data-shell="dark"] {
   --color-nf-bg: #1c1f22;
   --color-nf-elevated: #24282c;
   --color-nf-elevated-2: #2e3338;
+  --color-nf-sunken: #16181b;
 
   --color-nf-red: #8f1d14;
   --color-nf-red-hover: #a82418;
@@ -221,8 +233,41 @@ html {
 body {
   background-color: var(--color-nf-bg);
   color: var(--color-nf-text);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-sans-brand), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ---- ZIARNO ---------------------------------------------------------------
+   Statyczna faktura na CALYM serwisie - bezposredni lek na "cyfrowa plaskosc"
+   jednolitych plaszczyzn. Szum to feTurbulence wypalone RAZ do kafelka SVG
+   (data-URI w background-image), NIE zywy filtr: filtr liczy sie przy pierwszej
+   rasteryzacji kafelka i nigdy wiecej ("precz z filtrami SVG" zostaje w mocy).
+
+   Dwie warstwy, obie globalne i obie fixed:
+     ::before  mix-blend-mode: screen    widoczna TYLKO na ciemnych polach
+     ::after   mix-blend-mode: multiply  widoczna TYLKO na jasnych polach
+   Multiply na czerni i screen na bieli sa matematycznie niemal neutralne, wiec
+   kazda plaszczyzna dostaje wlasciwe ziarno bez ani jednej linijki JS i bez
+   rozgraniczania sekcji. pointer-events: none - warstwa czysto optyczna. */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background-image: url("data:image/png;base64,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");
+  background-size: 128px 128px;
+}
+
+body::before {
+  mix-blend-mode: screen;
+  opacity: 0.055;
+}
+
+body::after {
+  mix-blend-mode: multiply;
+  opacity: 0.045;
 }
 
 /* W @layer base, nie bez warstwy: regula bezwarstwowa bije KAZDA klase uzytkowa
@@ -246,11 +291,11 @@ body {
    ktore sam generuje. Wlasne reguly @utility ponizej nie sa przez niego generowane, wiec
    var(--font-display) bylo w nich puste i CALA typografia po cichu spadala na font systemowy
    (naglowki wygladaly jak zwykly grotesk, mono w sekcji Pro przestawal byc mono).
-   Dlatego @utility siega BEZPOSREDNIO po zmienne z next/font (--font-*-condensed, --font-inter,
-   --font-mono-tech), ktore stoja na <html> i istnieja naprawde. */
+   Dlatego @utility siega BEZPOSREDNIO po zmienne z next/font (--font-display-serif,
+   --font-sans-brand, --font-mono-tech), ktore stoja na <body> i istnieja naprawde. */
 @theme inline {
-  --font-display: var(--font-display-condensed);
-  --font-sans: var(--font-inter);
+  --font-display: var(--font-display-serif);
+  --font-sans: var(--font-sans-brand);
   --font-mono: var(--font-mono-tech);
 }
 
@@ -271,61 +316,77 @@ body {
 }
 
 /* ---- typografia -----------------------------------------------------------
-   Naglowki: kondensowany grotesk, UPPERCASE, jedna waga. Skala jest plaska
-   i sklepowa: najwiekszy naglowek na stronie to ~44 px, nie 120 px. Bilbordowa
-   typografia byla najmocniejszym sygnalem "to nie jest sklep".
+   Glos cywilny: editorialowy serif (Fraunces, variable z osia optyczna) skladany
+   ZDANIEM, nie wersalikami. Skala wraca do prawdziwej hierarchii - display na home
+   siega ~7.5rem, naglowek sekcji ~2.75rem - bo plaska skala 20/44 px odbierala oku
+   jakikolwiek punkt zaczepienia. Sklepowa dyscyplina zostaje nizej: ceny, etykiety
+   i kontrolki ida groteskiem, wiec strona wciaz czyta sie jak sklep, nie magazyn.
    Komponenty NIE definiuja wlasnych rozmiarow - inaczej wraca piatka roznych H1.
    --------------------------------------------------------------------------- */
 
-/* hero strony glownej i sekcji Pro */
+/* hero strony glownej; w /pro nadpisywany na bilbordowe Archivo */
 @utility type-display {
-  font-family: var(--font-display-condensed);
-  font-weight: 400;
-  text-transform: uppercase;
-  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
-  line-height: 1.05;
+  font-family: var(--font-display-serif);
+  font-optical-sizing: auto;
+  font-weight: 470;
+  font-size: clamp(2.75rem, 6.6vw, 7.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
 }
 
-/* tytuly stron: kolekcja, karta produktu, kategoria w sekcji Pro */
+/* tytuly stron: kolekcja, karta produktu, strony informacyjne */
 @utility type-h1 {
-  font-family: var(--font-display-condensed);
-  font-weight: 400;
-  text-transform: uppercase;
-  font-size: clamp(1.5rem, 2.4vw, 2rem);
-  line-height: 1.1;
+  font-family: var(--font-display-serif);
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: clamp(2rem, 3.8vw, 3.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
 }
 
 /* naglowki sekcji */
 @utility type-h2 {
-  font-family: var(--font-display-condensed);
-  font-weight: 400;
-  text-transform: uppercase;
-  font-size: 1.25rem;
-  line-height: 1.2;
+  font-family: var(--font-display-serif);
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+  line-height: 1.06;
+  letter-spacing: -0.01em;
 }
 
-/* karty i kafle */
+/* karty i kafle: grotesk, cicho - serif zostaje dla naglowkow REDAKCYJNYCH,
+   metka produktu ma byc metka */
 @utility type-h3 {
-  font-family: var(--font-display-condensed);
-  font-weight: 400;
-  text-transform: uppercase;
+  font-family: var(--font-sans-brand);
+  font-weight: 560;
   font-size: 1.0625rem;
-  line-height: 1.25;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
 }
 
 /* Etykieta pola i naglowek listy: zwykly grotesk, bez trackingu rozstrzelonego
-   na 0.2em. Monospace zostaje wylacznie na oznaczenia techniczne w sekcji Pro. */
+   na 0.2em. Monospace zostaje wylacznie na oznaczenia techniczne. */
 @utility type-label {
-  font-family: var(--font-inter);
+  font-family: var(--font-sans-brand);
   font-weight: 600;
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.04em;
 }
 
+/* Kicker nad naglowkiem redakcyjnym: mono, drobny, rozstrzelony. To on niesie
+   kontrast skali W DOL (11 px obok 2.6rem), zeby serif nie musial rosnac w bilbord. */
+@utility type-kicker {
+  font-family: var(--font-mono-tech);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+}
+
 /* ---- SKALA DOG STORE PRO (PRO_IDENTITY.md §2) - wartosci sa prawem ----------------
-   Archivo 800/900 na naglowki (uppercase, ciasny tracking), Geist Sans na tresc,
-   Geist Mono na KAZDY odczyt techniczny. To monospace w danych sprawia, ze sekcja
+   Archivo 800/900 na naglowki (uppercase, ciasny tracking), General Sans na tresc,
+   JetBrains Mono na KAZDY odczyt techniczny. To monospace w danych sprawia, ze sekcja
    czyta sie jak karta sprzetu, a nie jak zwykla strona sklepu.
    Klasy zyja WYLACZNIE w /pro - sklep cywilny ma wlasna skale powyzej.
    --------------------------------------------------------------------------- */
@@ -393,8 +454,8 @@ body {
 }
 
 /* Oznaczenia techniczne w komponentach WSPOLDZIELONYCH (koszyk, karta produktu,
-   okruszki): w sekcji Pro musza jechac tym samym monospace co reszta sekcji, wiec kroj bierze
-   sie ze zmiennej, ktora w /pro wskazuje Geist Mono, a poza nim JetBrains Mono. */
+   okruszki): jeden monospace (JetBrains Mono) w obu swiatach - to samo oznaczenie
+   katalogowe wyglada tak samo na papierze i na graficie. */
 @utility type-meta {
   font-family: var(--font-mono-tech);
   font-size: 11px;

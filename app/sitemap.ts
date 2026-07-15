@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getProCategories, getProProducts, getProducts } from "@/lib/data";
 import { productHref } from "@/lib/routes";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+import { SITE_URL as BASE } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Adres karty zalezy od linii (Dog Store vs Dog Store Pro), wiec mapa strony czyta oba katalogi

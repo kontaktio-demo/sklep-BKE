@@ -85,12 +85,6 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "O nas", href: "/o-nas" },
 ];
 
-export const ANNOUNCEMENTS = [
-  { text: "WYSYŁKA W 24 H W DNI ROBOCZE", highlight: "24 H" },
-  { text: "DARMOWA DOSTAWA OD 299 ZŁ", highlight: "299 ZŁ" },
-  { text: "60 DNI NA ZWROT I DOBÓR ROZMIARU", highlight: "60 DNI" },
-];
-
 // Pasek nad trescia na /pro*: status linii zamiast promocji sklepu. Bez rotacji - to nie
 // jest komunikat sprzedazowy, tylko naglowek katalogu.
 // UWAGA: liczby sa statyczne. Seam (lib/data) jest asynchroniczny, a pasek to komponent

@@ -17,7 +17,8 @@ const SCRIM =
   "linear-gradient(90deg, #0E0E0E 0%, rgba(14,14,14,0.7) 35%, transparent 70%)";
 
 export function ProHero() {
-  const src = photo("hero.jpg");
+  // wlasny slot, nie hero.jpg sklepu: dwa swiaty, dwa kadry otwarcia
+  const src = photo("pro-hero.jpg");
 
   return (
     <section className="relative isolate flex min-h-[78svh] items-end overflow-hidden bg-pro-bg md:min-h-[86svh]">

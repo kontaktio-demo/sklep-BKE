@@ -34,24 +34,33 @@ export async function HomeBestsellers() {
     // W kolekcji dostarcza go CollectionView, na karcie produktu ProductPageView - tutaj
     // sekcja bierze go na siebie, zeby nie zmieniac karty.
     <QuickViewProvider>
-      <section className="border-t border-nf-border bg-nf-elevated">
-        <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-20">
-          <h2 className="type-h2 text-nf-white">Najczęściej wybierane</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-nf-muted">
-            Cztery modele, które schodzą z magazynu najszybciej. Ceny za rozmiar, wysyłka
-            w 24 h.
-          </p>
-
-          <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {top.map((product) => (
-              <ProductCard key={product.id} product={product} sizes={CARD_SIZES} />
-            ))}
-          </div>
-
-          <div className="mt-10">
+      {/* trzeci stopien drabiny papieru: sekcja handlowa "zatopiona" ponizej tla strony */}
+      <section className="border-t border-nf-border bg-nf-sunken">
+        <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-24">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <p className="type-kicker text-nf-dim">Bestsellery</p>
+              <h2 className="type-h2 mt-4 text-nf-white">Najczęściej wybierane</h2>
+            </div>
             <Button href={COLLECTION_HREF} variant="ghost" size="md">
               Zobacz wszystkie obroże
             </Button>
+          </div>
+
+          {/* lamana linia bazowa: karty 2 i 4 zsuniete - rytm rozkladowki, nie tabela.
+              Offsety tylko od lg, na wezszych ekranach siatka wraca do porzadku. */}
+          <div
+            data-reveal="group"
+            className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-6"
+          >
+            {top.map((product, i) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                sizes={CARD_SIZES}
+                className={i % 2 === 1 ? "lg:mt-14" : undefined}
+              />
+            ))}
           </div>
         </div>
       </section>

@@ -1,7 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Fjalla_One, Geist, Geist_Mono, Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo, Fraunces, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+import { SITE_URL } from "@/lib/site";
+import { ViewTransitions } from "next-view-transitions";
 import { CartProvider } from "@/lib/cart";
+import { MotionProvider } from "@/components/motion/MotionProvider";
+import { Reveals } from "@/components/motion/Reveals";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { ThemeSync } from "@/components/layout/ThemeSync";
 import { Header } from "@/components/layout/Header";
@@ -10,36 +15,45 @@ import { Newsletter } from "@/components/layout/Newsletter";
 import { Footer } from "@/components/layout/Footer";
 import { getProducts } from "@/lib/data";
 
-// DWA SKLEPY = DWA KROJE PISMA. To nie jest niekonsekwencja, tylko konsekwencja podzialu:
-// sklep cywilny idzie za referencja sklepowa (kondensowany Fjalla + Inter), a Dog Store Pro
-// ma wlasna tozsamosc wizualna (PRO_IDENTITY.md): Archivo 800/900 na naglowki, Geist Sans
-// na tresc, Geist Mono na kazdy odczyt techniczny.
+// DWA SKLEPY = DWA GLOSY TYPOGRAFICZNE, jeden korpus.
+//
+// Sklep cywilny mowi editorialowym serifem (Fraunces) - katalog terenowy zlozony jak
+// magazyn, nie landing. Dog Store Pro zostaje przy bilbordowym Archivo 800/900. Napiecie
+// miedzy tymi glosami to fundament calej dyrekcji (spec: 2026-07-15-awwwards-redesign).
+//
+// Inter i Geist odeszly SWIADOMIE: to najczestsze kroje stron generowanych automatycznie
+// i najsilniejszy pojedynczy sygnal "template". Korpus obu swiatow to General Sans
+// (Fontshare, licencja FFL - plik obok fontu), mono to JetBrains Mono - jeden na caly
+// serwis, do kazdego odczytu technicznego (SKU, 1000D, ZERWANIE 380 KG, PRO-01).
 
-// ---- sklep cywilny ----
-const display = Fjalla_One({
-  variable: "--font-display-condensed",
+// ---- glos cywilny: serif display ----
+// Osie variable: opsz (optical size - duze naglowki dostaja ostrzejszy rysunek same z
+// siebie), SOFT/WONK zostaja w wartosciach domyslnych - charakter ma niesc skala i sklad.
+const display = Fraunces({
+  variable: "--font-display-serif",
   subsets: ["latin", "latin-ext"],
-  weight: "400",
+  axes: ["opsz", "SOFT", "WONK"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin", "latin-ext"],
+// ---- korpus obu swiatow ----
+const sans = localFont({
+  src: [
+    { path: "./fonts/GeneralSans-Variable.woff2", weight: "200 700", style: "normal" },
+    { path: "./fonts/GeneralSans-VariableItalic.woff2", weight: "200 700", style: "italic" },
+  ],
+  variable: "--font-sans-brand",
 });
 
 // Monospace odczytow technicznych w komponentach WSPOLDZIELONYCH (SKU, kody, okruszki,
-// pasek zapowiedzi) - czyli klasa type-meta i font-mono. To jest wartosc DOMYSLNA, dla
-// sklepu cywilnego; w /pro globals.css przestawia --font-mono-tech na Geist Mono, zeby
-// sekcja Pro mowila jednym krojem. Bez tego wpisu zmienna nie istnieje POZA /pro, a
-// font-family: var(--font-mono-tech) jest wtedy niepoprawne w czasie wyliczania wartosci
-// i po cichu dziedziczy Inter - monospace znikal z calego sklepu, nie wywalajac buildu.
+// pasek zapowiedzi) - klasa type-meta i font-mono. Jeden kroj w obu swiatach: to samo
+// oznaczenie katalogowe ma wygladac tak samo na papierze i na graficie.
 const mono = JetBrains_Mono({
   variable: "--font-mono-tech",
   subsets: ["latin", "latin-ext"],
   weight: ["400", "500"],
 });
 
-// ---- Dog Store Pro ----
+// ---- glos Dog Store Pro: bilbord ----
 // Archivo: naglowki bilbordowe, uppercase, ciasny tracking (§2 PRO_IDENTITY)
 const archivo = Archivo({
   variable: "--font-pro-display",
@@ -47,25 +61,11 @@ const archivo = Archivo({
   weight: ["800", "900"],
 });
 
-// Geist Sans: tresc i interfejs Dog Store Pro. NIE Inter, NIE system-ui - zakazane w §6
-const geist = Geist({
-  variable: "--font-pro-sans",
-  subsets: ["latin", "latin-ext"],
-});
-
-// Geist Mono: kazdy odczyt techniczny (1000D, ZERWANIE 380 KG, 168 g, PRO-01).
-// To ten kroj sprawia, ze sekcja czyta sie jak karta sprzetu, a nie jak strona sklepu
-const geistMono = Geist_Mono({
-  variable: "--font-pro-mono",
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500"],
-});
-
 const DESCRIPTION =
   "Obroże klasy roboczej z nylonu i łańcuszka. Miejsce na panel ID, kompatybilność z e-obrożą, testy w terenie. Wysyłka w 24 h, 60 dni na zwrot.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Dog Store | Obroże i sprzęt dla psów pracujących",
     template: "%s | Dog Store",
@@ -97,10 +97,15 @@ export default async function RootLayout({
     .slice(0, 6);
 
   return (
-    // suppressHydrationWarning: skrypt ponizej dopisuje data-theme do <html> PRZED
-    // hydracja (inaczej sekcja Pro mignelaby bielą sklepu). Serwer tego atrybutu nie zna,
-    // wiec React zglaszal rozjazd. Tlumimy go na tym jednym wezle - i tylko tu.
-    <html lang="pl" suppressHydrationWarning>
+    // ViewTransitions (next-view-transitions): owija nawigacje routera w
+    // document.startViewTransition. Morf wspolnego elementu robi para
+    // view-transition-name nadawana w ProductCard (klik) i ProductGallery (cel).
+    // Przegladarki bez API dostaja zwykla nawigacje - zero degradacji.
+    <ViewTransitions>
+      {/* suppressHydrationWarning: skrypt ponizej dopisuje data-theme do <html> PRZED
+          hydracja (inaczej sekcja Pro mignelaby biela sklepu). Serwer tego atrybutu nie
+          zna, wiec React zglaszal rozjazd. Tlumimy go na tym jednym wezle - i tylko tu. */}
+      <html lang="pl" suppressHydrationWarning>
       <head>
         {/* motyw ustawiany przed pierwszym malowaniem: inaczej sekcja Dog Store Pro
             mignie jasnym tlem sklepu cywilnego, zanim React zdazy sie uruchomic.
@@ -113,7 +118,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${display.variable} ${inter.variable} ${mono.variable} ${archivo.variable} ${geist.variable} ${geistMono.variable} antialiased`}
+        className={`${display.variable} ${sans.variable} ${mono.variable} ${archivo.variable} antialiased`}
       >
         <a
           href="#tresc"
@@ -124,19 +129,23 @@ export default async function RootLayout({
           Przejdź do treści
         </a>
         <ThemeSync />
-        {/* Bez smooth scrolla (Lenis). Biblioteka przejmowala kolko myszy i ANIMOWALA
-            przewijanie w JS, wiec kazda ciezsza klatka zamieniala scroll w gume. Natywne
-            przewijanie idzie po stronie kompozytora przegladarki i nie da sie go zaciac
-            renderem. */}
-        <CartProvider>
-          <AnnouncementBar />
-          <Header />
-          <main id="tresc">{children}</main>
-          <Newsletter />
-          <Footer />
-          <CartDrawer crossSell={crossSell} />
-        </CartProvider>
+        {/* Lenis wraca, ale W RYZACH (components/motion/MotionProvider): jeden zegar
+            GSAP, krotki lerp, scroll natywny na dotyku i pelne wylaczenie przy
+            prefers-reduced-motion. Poprzednia "guma" brala sie z dwoch niezaleznych
+            rAF-ow i zywych filtrow SVG w tresci - obu juz nie ma. */}
+        <MotionProvider>
+          <Reveals />
+          <CartProvider>
+            <AnnouncementBar />
+            <Header />
+            <main id="tresc">{children}</main>
+            <Newsletter />
+            <Footer />
+            <CartDrawer crossSell={crossSell} />
+          </CartProvider>
+        </MotionProvider>
       </body>
-    </html>
+      </html>
+    </ViewTransitions>
   );
 }

@@ -85,6 +85,18 @@ export function Footer() {
           )}
         >
           <p>© 2026 {BRAND}. Wszystkie prawa zastrzeżone.</p>
+          {/* Zdjecia tymczasowe ida z Wikimedia Commons na licencjach CC BY /
+              CC BY-SA - te licencje WYMAGAJA widocznej atrybucji, stad ten link.
+              Po sesji wlasnej fotografki linia znika razem z plikami. */}
+          <a
+            href="/foto/PHOTO-CREDITS.md"
+            className={cn(
+              "flex min-h-11 items-center transition-colors duration-250 ease-nf",
+              t.legalLink
+            )}
+          >
+            Fotografie: Wikimedia Commons (CC) — autorzy
+          </a>
           <ul className="flex flex-wrap gap-x-4">
             {LEGAL_LINKS.map((link) => (
               <li key={link.label}>
