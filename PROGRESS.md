@@ -23,8 +23,29 @@ Cel: `dog-collar-store` (warstwa wizualna DogStore zostaje).
 - [ ] Faza 5 — Config Supabase + Render, .env.example, DEPLOY.md
 - [ ] Faza 6 — Bramka jakości (grep=0, build, typecheck, lint, smoke-testy)
 
+## Stan trwały (dla kontynuacji po kompaktacji — CZYTAJ TO NAJPIERW)
+- Gałąź `feat/kotecki-backend-migration`. Kotecki (źródło, tylko odczyt):
+  `../Strony internetowe/kotecki.pl`. Schemat Koteckiego już PRZECZYTANY w całości.
+- **Architektura docelowa: JEDEN Next.js + JEDNA baza Supabase.** Backend = `app/api/**`
+  + `lib/server/*` (service_role). Panel = `app/panel/**`. Bez Rendera, bez osobnego Vite.
+- **Zrobione:**
+  - Faza 0/1 docs: INVENTORY, MIGRATION_MAP, PLAN, PYTANIA-NA-RANO, DANE-DO-UZUPELNIENIA, PROGRESS.
+  - `supabase/schema.sql` — pełny schemat (port Koteckiego + rozdział `line` shop/pro na
+    products/categories/orders + tabela `product_variants` (rozmiar/SKU/stan) + kolory jsonb;
+    RLS, CHECK-i, RPC wariantowe: create_order/release_order/refund_order/delete_customer_account/
+    admin_account_stats). Statusy jak Kotecki.
+  - `scripts/gen-supabase-seed.ts` + `supabase/seed.sql` — 26 shop + 12 pro produktów,
+    81 wariantów, wygenerowane z lib/data/*.mock (żywy katalog). Kategorie shop = working/
+    non-working/e-collar; pro = patrol/handle/e-collar/training/detection.
+- **Następne (kolejność):** deps (@supabase/supabase-js, @supabase/ssr, zod, stripe, web-push)
+  → `lib/supabase/{browser,server}.ts` + `lib/server/*` (order, stripe, inpost, email, push,
+  metaCapi) → przepiąć SEAM `lib/data/index.ts` na Supabase (fallback mock) → `app/api/**`
+  → koszyk/checkout/konto → `/panel` → .env.example/DEPLOY.md → bramka+audyt.
+- **Zasady:** build zielony po każdym commicie; mock zostaje jako offline-fallback; dane
+  wymyślone → DANE-DO-UZUPELNIENIA.md; pytania → PYTANIA-NA-RANO.md; grep „kotecki/kot/…"=0.
+
 ## Dziennik
 - **Start**: potwierdzono ścieżki. Kotecki = Next.js App Router + Supabase + backend/ +
-  panel-mobile (Vite/React PWA). Supabase SQL: accounts, configurator, order_shipments,
-  reviews, meta_tracking, hardening, setup_all. Cel = dog-collar-store (Next.js + mock data,
-  seam `lib/data/index.ts` gotowy do podmiany na realny backend).
+  panel-mobile (Vite/React PWA). Cel = dog-collar-store.
+- **Faza 0/1 done**: dokumenty + decyzja jednej aplikacji/bazy.
+- **Faza 2 (baza) done**: schema.sql + seed.sql (generator z żywego katalogu).
