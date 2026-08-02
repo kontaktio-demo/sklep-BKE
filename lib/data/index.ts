@@ -1,6 +1,7 @@
 import { products } from "./products.mock";
 import { filterGroups } from "./filters.mock";
-import { proCategories, proProducts } from "./pro.mock";
+import { proCategories as mockProCategories, proProducts } from "./pro.mock";
+import { dbGetProCategories, dbGetProduct, dbGetProducts } from "./catalog";
 import type {
   Collection,
   FilterGroup,
@@ -9,9 +10,10 @@ import type {
   Product,
 } from "../types";
 
-// THE SEAM (§5). PHASE 2: replace the bodies below with Supabase
-// queries. Signatures stay identical - everything above this layer is
-// backend-agnostic and must never import the *.mock files directly.
+// THE SEAM (§5). Realny backend = Supabase (lib/data/catalog.ts). Gdy baza nieskonfigurowana
+// albo zapytanie padnie, wracamy na dane mockowe — dzięki temu build i dev DZIAŁAJĄ offline,
+// a produkcja czyta z bazy. Sygnatury identyczne: wszystko powyżej tej warstwy jest
+// niezależne od backendu i NIGDY nie importuje mocków ani Supabase bezpośrednio.
 
 const collections: Record<string, Omit<Collection, "productCount">> = {
   collars: {
@@ -23,46 +25,54 @@ const collections: Record<string, Omit<Collection, "productCount">> = {
   },
 };
 
-/** Zwykly sklep widzi wylacznie linie "shop". Sprzet z tej linii jest tylko w sekcji Dog Store Pro. */
-const shopProducts = products.filter((p) => p.line === "shop");
+// Mockowy katalog cywilny/pro jako fallback offline.
+const mockShop = products.filter((p) => p.line === "shop");
+const mockAll = [...mockShop, ...proProducts];
 
-const allProducts = [...shopProducts, ...proProducts];
+async function shopProducts(): Promise<Product[]> {
+  const db = await dbGetProducts("shop").catch(() => null);
+  return db ?? mockShop;
+}
+
+async function proProductsAll(): Promise<Product[]> {
+  const db = await dbGetProducts("pro").catch(() => null);
+  return db ?? proProducts;
+}
 
 export async function getCollection(handle: string): Promise<Collection> {
   const collection = collections[handle];
   if (!collection) throw new Error(`Unknown collection: ${handle}`);
-  return { ...collection, productCount: shopProducts.length };
+  const list = await shopProducts();
+  return { ...collection, productCount: list.length };
 }
 
 export async function getProducts(handle: string): Promise<Product[]> {
   if (!collections[handle]) throw new Error(`Unknown collection: ${handle}`);
-  return shopProducts;
+  return shopProducts();
 }
 
 export async function getFilters(handle: string): Promise<FilterGroup[]> {
   if (!collections[handle]) throw new Error(`Unknown collection: ${handle}`);
+  // Grupy filtrów pozostają statyczne (te same dane co katalog). Realne zliczanie
+  // z bazy — pozycja do dopracowania (PYTANIA-NA-RANO.md).
   return filterGroups;
 }
 
 /** PDP: null (not throw) so the route can render notFound() for unknown slugs. */
 export async function getProduct(slug: string): Promise<Product | null> {
-  return allProducts.find((p) => p.slug === slug) ?? null;
+  const fromDb = await dbGetProduct(slug).catch(() => undefined);
+  if (fromDb !== undefined) return fromDb; // DB odpowiedziała (produkt albo null=brak)
+  return mockAll.find((p) => p.slug === slug) ?? null;
 }
-
-// getProductSlugs() zostal usuniety. Zwracal slugi OBU linii i nie mial juz zadnego
-// odbiorcy (obie trasy buduja generateStaticParams z wlasnego zrodla: sklep z getProducts,
-// Pro z getProProducts). Jako jedyna funkcja seamu mieszajaca linie byl gotowa pulapka:
-// pierwsze uzycie do budowy tras sklepu wygenerowaloby karty Dog Store Pro pod adresem /products/<slug>,
-// czyli sprzet sluzbowy w cywilnym motywie. Potrzebna lista slugow jednej linii? Bierz ja
-// z getProducts("collars") albo getProProducts() - te funkcje nie potrafia skrzyzowac swiatow.
 
 /** Powiazane produkty zawsze z tej samej linii: sklep nie podsuwa sprzetu Dog Store Pro i odwrotnie. */
 export async function getRelatedProducts(slug: string, limit = 8): Promise<Product[]> {
-  const current = allProducts.find((p) => p.slug === slug);
+  const [shop, pro] = await Promise.all([shopProducts(), proProductsAll()]);
+  const all = [...shop, ...pro];
+  const current = all.find((p) => p.slug === slug);
   if (!current) return [];
 
-  const pool = allProducts.filter((p) => p.line === current.line);
-
+  const pool = all.filter((p) => p.line === current.line);
   const rank = (p: Product) =>
     (p.category === current.category ? 0 : 10) +
     (p.type === current.type ? 0 : 2) +
@@ -77,13 +87,16 @@ export async function getRelatedProducts(slug: string, limit = 8): Promise<Produ
 // ---- Dog Store Pro ----
 
 export async function getProCategories(): Promise<ProCategoryInfo[]> {
-  return proCategories;
+  const db = await dbGetProCategories().catch(() => null);
+  return db ?? mockProCategories;
 }
 
 export async function getProCategory(slug: string): Promise<ProCategoryInfo | null> {
-  return proCategories.find((c) => c.slug === slug) ?? null;
+  const cats = await getProCategories();
+  return cats.find((c) => c.slug === slug) ?? null;
 }
 
 export async function getProProducts(category?: ProCategory): Promise<Product[]> {
-  return category ? proProducts.filter((p) => p.proCategory === category) : proProducts;
+  const list = await proProductsAll();
+  return category ? list.filter((p) => p.proCategory === category) : list;
 }

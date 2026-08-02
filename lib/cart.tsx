@@ -8,7 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { getProduct } from "./data";
+import { getProduct } from "./data/client";
 import type { Product, ProductColor, ProductVariant } from "./types";
 
 // Koszyk przezywa odswiezenie: localStorage trzyma wskazniki (slug + SKU wariantu + kolor
