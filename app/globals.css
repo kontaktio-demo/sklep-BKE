@@ -274,6 +274,15 @@ body::after {
   opacity: 0.045;
 }
 
+/* Panel administracyjny ma PŁASKIE, jednolite tło — bez ziarna. Sklep (i jego ciemne
+   wyspy: stopka, newsletter) zostają z fakturą; wygaszamy ją tylko, gdy na stronie jest
+   panel (data-panel-root). :has działa w nowoczesnych przeglądarkach; brak wsparcia =
+   panel po prostu dostaje ziarno jak dawniej (degradacja bez błędu). */
+body:has([data-panel-root])::before,
+body:has([data-panel-root])::after {
+  display: none;
+}
+
 /* W @layer base, nie bez warstwy: regula bezwarstwowa bije KAZDA klase uzytkowa
    Tailwinda niezaleznie od specyficznosci, wiec bg-* postawione na tym samym elemencie
    (np. czarny pasek statusu linii Pro) bylo martwe. W warstwie base klasa wygrywa i element

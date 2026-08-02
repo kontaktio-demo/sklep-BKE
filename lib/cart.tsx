@@ -41,6 +41,7 @@ interface CartContextValue {
   addLine: (product: Product, variant: ProductVariant, color?: ProductColor) => void;
   removeLine: (key: string) => void;
   setQty: (key: string, qty: number) => void;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -233,12 +234,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     );
   }, []);
 
+  // Czyszczenie koszyka po złożeniu zamówienia.
+  const clearCart = useCallback(() => setLines([]), []);
+
   const value = useMemo<CartContextValue>(() => {
     const count = lines.reduce((n, l) => n + l.qty, 0);
     // cena wariantu, nie cena "od" z produktu: rozmiar L kosztuje wiecej niz S
     const subtotal = lines.reduce((n, l) => n + l.variant.price * l.qty, 0);
-    return { lines, count, subtotal, isOpen, openCart, closeCart, addLine, removeLine, setQty };
-  }, [lines, isOpen, openCart, closeCart, addLine, removeLine, setQty]);
+    return { lines, count, subtotal, isOpen, openCart, closeCart, addLine, removeLine, setQty, clearCart };
+  }, [lines, isOpen, openCart, closeCart, addLine, removeLine, setQty, clearCart]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

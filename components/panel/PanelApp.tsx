@@ -51,7 +51,7 @@ export function PanelApp() {
 
   if (!booted) {
     return (
-      <div data-shell="dark" className="grid min-h-screen place-items-center bg-nf-bg text-nf-dim">
+      <div data-shell="dark" data-panel-root className="grid min-h-screen place-items-center bg-[#16181c] text-nf-dim">
         Wczytywanie panelu…
       </div>
     );
@@ -59,7 +59,7 @@ export function PanelApp() {
 
   if (needKey) {
     return (
-      <div data-shell="dark" className="grid min-h-screen place-items-center bg-nf-bg px-4">
+      <div data-shell="dark" data-panel-root className="grid min-h-screen place-items-center bg-[#16181c] px-4">
         <div className={`${CARD} w-full max-w-sm p-6`}>
           <p className="type-kicker text-nf-red">Dog Store · Panel</p>
           <h1 className="type-h3 mt-3 text-nf-white">Logowanie</h1>
@@ -86,8 +86,8 @@ export function PanelApp() {
   }
 
   return (
-    <div data-shell="dark" className="min-h-screen bg-nf-bg text-nf-text">
-      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-nf-border bg-nf-bg px-4 py-3">
+    <div data-shell="dark" data-panel-root className="min-h-screen bg-[#16181c] text-nf-text">
+      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-nf-border bg-[#16181c] px-4 py-3">
         <div className="flex items-center gap-3">
           <span className="type-h3 text-nf-white">Dog Store</span>
           <span className="type-meta text-nf-red">PANEL</span>
