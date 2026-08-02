@@ -13,6 +13,7 @@ import { Header } from "@/components/layout/Header";
 import { CartDrawer } from "@/components/layout/CartDrawer";
 import { Newsletter } from "@/components/layout/Newsletter";
 import { Footer } from "@/components/layout/Footer";
+import { StoreChrome } from "@/components/layout/StoreChrome";
 import { getProducts } from "@/lib/data";
 
 // DWA SKLEPY = DWA GLOSY TYPOGRAFICZNE, jeden korpus.
@@ -138,12 +139,16 @@ export default async function RootLayout({
         <MotionProvider>
           <Reveals />
           <CartProvider>
-            <AnnouncementBar />
-            <Header />
+            <StoreChrome>
+              <AnnouncementBar />
+              <Header />
+            </StoreChrome>
             <main id="tresc">{children}</main>
-            <Newsletter />
-            <Footer />
-            <CartDrawer crossSell={crossSell} />
+            <StoreChrome>
+              <Newsletter />
+              <Footer />
+              <CartDrawer crossSell={crossSell} />
+            </StoreChrome>
           </CartProvider>
         </MotionProvider>
       </body>
