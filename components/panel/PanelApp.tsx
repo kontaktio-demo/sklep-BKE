@@ -90,22 +90,25 @@ export function PanelApp() {
           <p className="type-kicker text-nf-red">Dog Store · Panel</p>
           <h1 className="type-h3 mt-3 text-nf-white">Logowanie</h1>
           <p className="mt-2 text-sm text-nf-muted">Podaj klucz administratora (ADMIN_API_KEY).</p>
-          <input
-            type="password"
-            value={keyInput}
-            onChange={(e) => setKeyInput(e.target.value)}
-            placeholder="Klucz admina"
-            className={`${INPUT} mt-4 w-full`}
-          />
-          <Button
-            className="mt-4 w-full"
-            onClick={() => {
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
               setKey(keyInput.trim());
               void boot();
             }}
           >
-            Wejdź
-          </Button>
+            <input
+              type="password"
+              value={keyInput}
+              onChange={(e) => setKeyInput(e.target.value)}
+              placeholder="Klucz admina"
+              autoComplete="current-password"
+              className={`${INPUT} mt-4 w-full`}
+            />
+            <Button type="submit" className="mt-4 w-full">
+              Wejdź
+            </Button>
+          </form>
         </div>
       </div>
     );
