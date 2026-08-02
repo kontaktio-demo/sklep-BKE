@@ -25,8 +25,34 @@ const INPUT =
   "h-10 rounded-[2px] border border-nf-control bg-nf-bg px-3 text-sm text-nf-white outline-none focus:border-nf-white";
 const LABEL = "type-label text-nf-dim";
 
+function urlBase64ToUint8Array(base64String: string): Uint8Array {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+  const raw = atob(base64);
+  const arr = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
+  return arr;
+}
+
+// PWA: rejestracja service workera + subskrypcja push (nowe zamówienie „dzwoni" w panelu).
+async function enablePush(): Promise<string> {
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) return "Brak wsparcia push.";
+  const reg = await navigator.serviceWorker.register("/panel-sw.js");
+  const perm = await Notification.requestPermission();
+  if (perm !== "granted") return "Brak zgody na powiadomienia.";
+  const keyRes = await adminFetch("/push");
+  if (!keyRes.publicKey) return "Powiadomienia niedostępne (brak VAPID).";
+  const sub = await reg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(keyRes.publicKey) as BufferSource,
+  });
+  const save = await adminFetch("/push", { method: "POST", body: JSON.stringify({ subscription: sub }) });
+  return save.ok ? "Powiadomienia włączone ✓" : "Nie udało się zapisać subskrypcji.";
+}
+
 export function PanelApp() {
   const [booted, setBooted] = useState(false);
+  const [pushMsg, setPushMsg] = useState<string | null>(null);
   const [needKey, setNeedKey] = useState(false);
   const [access, setAccess] = useState<"ok" | "demo" | null>(null);
   const [hasDb, setHasDb] = useState(false);
@@ -92,7 +118,16 @@ export function PanelApp() {
           <span className="type-h3 text-nf-white">Dog Store</span>
           <span className="type-meta text-nf-red">PANEL</span>
         </div>
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-3 text-sm">
+          {pushMsg && <span className="hidden text-xs text-nf-dim sm:inline">{pushMsg}</span>}
+          <button
+            type="button"
+            onClick={() => enablePush().then(setPushMsg)}
+            className="text-nf-muted transition-colors hover:text-nf-white"
+            title="Powiadomienia o nowych zamówieniach"
+          >
+            Powiadomienia
+          </button>
           <Link href="/" className="text-nf-muted transition-colors hover:text-nf-white">
             ← Sklep
           </Link>

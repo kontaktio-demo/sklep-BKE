@@ -14,6 +14,14 @@ Cel: `dog-collar-store` (warstwa wizualna DogStore zostaje).
 - Zero śladów po Koteckim. Zero danych testowych/placeholderów w stanie produkcyjnym.
 - Rzeczy wymyślone (dane firmowe, klucze) → `DANE-DO-UZUPELNIENIA.md` do podmiany rano.
 
+## STAN: migracja funkcjonalna UKOŃCZONA (parytet Kotecki, styl DogStore, jedna aplikacja)
+Wszystko na gałęzi `feat/kotecki-backend-migration`, build/tsc/lint zielone, grep „kotecki"=0.
+Sklep działa bez konfiguracji (mock); realny backend włącza ENV (DEPLOY.md). Zbudowane:
+baza (schema+seed), katalog z bazy (SEAM+fallback), koszyk→kasa→Stripe→webhook→mail/push/CAPI,
+zamówienia (create_order), konto (magic-link), recenzje/newsletter/kontakt, panel /panel
+(DogStore/Pro, płaskie tło, PWA+push). Otwarte kwestie: MIGRATION_NOTES.md; pytania:
+PYTANIA-NA-RANO.md; dane do wklejenia: DANE-DO-UZUPELNIENIA.md.
+
 ## Status faz
 - [~] Faza 0 — Rozpoznanie (2 agenci Explore inwentaryzują Kotecki; lokalizacja potwierdzona)
 - [ ] Faza 1 — PLAN.md + MIGRATION_MAP.md

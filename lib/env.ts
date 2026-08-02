@@ -1,8 +1,8 @@
 /**
  * Jedno miejsce na dostęp do zmiennych środowiskowych + flagi „czy skonfigurowane".
  * Dzięki temu build i dev DZIAŁAJĄ bez żadnych sekretów (storefront wpada na mock),
- * a produkcja włącza realny backend, gdy ENV są ustawione. Wzorzec z Koteckiego:
- * brak konfiguracji != błąd, tylko tryb ograniczony.
+ * a produkcja włącza realny backend, gdy ENV są ustawione. Zasada: brak konfiguracji
+ * to nie błąd, tylko tryb ograniczony (sklep jedzie na mocku).
  */
 
 // --- publiczne (bezpieczne w przeglądarce) ---
