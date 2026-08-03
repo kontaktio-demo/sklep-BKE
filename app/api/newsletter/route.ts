@@ -4,6 +4,7 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendNewsletterConfirm } from "@/lib/server/email";
 import { checkRate } from "@/lib/server/rateLimit";
+import { getUserLocale } from "@/i18n/locale";
 import { PUBLIC } from "@/lib/env";
 
 const Body = z.object({ email: z.string().email(), source: z.string().max(60).optional() });
@@ -16,6 +17,7 @@ export async function POST(req: Request) {
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ ok: false, error: "BAD_EMAIL" }, { status: 400 });
   const email = parsed.data.email.toLowerCase();
+  const locale = await getUserLocale();
 
   const db = supabaseAdmin();
   if (!db) {
@@ -34,7 +36,7 @@ export async function POST(req: Request) {
   if (existing?.confirmed) return NextResponse.json({ ok: true, already: true });
 
   if (existing) {
-    await db.from("newsletter_subscribers").update({ confirm_token: confirmToken }).eq("id", existing.id);
+    await db.from("newsletter_subscribers").update({ confirm_token: confirmToken, locale }).eq("id", existing.id);
   } else {
     await db.from("newsletter_subscribers").insert({
       email,
@@ -42,9 +44,10 @@ export async function POST(req: Request) {
       confirmed: false,
       confirm_token: confirmToken,
       unsub_token: unsubToken,
+      locale,
     });
   }
 
-  await sendNewsletterConfirm(email, `${PUBLIC.siteUrl}/api/newsletter/confirm?token=${confirmToken}`);
+  await sendNewsletterConfirm(email, `${PUBLIC.siteUrl}/api/newsletter/confirm?token=${confirmToken}`, locale);
   return NextResponse.json({ ok: true });
 }

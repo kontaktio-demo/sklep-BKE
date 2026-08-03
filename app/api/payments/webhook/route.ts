@@ -16,7 +16,7 @@ async function finalizePaid(orderId: string) {
   if (!db) return;
   const { data: order } = await db
     .from("orders")
-    .select("id,number,email,payment_status,subtotal_grosze,shipping_grosze,discount_grosze,total_grosze,meta_tracking")
+    .select("id,number,email,payment_status,subtotal_grosze,shipping_grosze,discount_grosze,total_grosze,meta_tracking,locale")
     .eq("id", orderId)
     .maybeSingle();
   if (!order || order.payment_status === "paid") return;
@@ -33,6 +33,7 @@ async function finalizePaid(orderId: string) {
       shipping_grosze: order.shipping_grosze as number,
       discount_grosze: order.discount_grosze as number,
       total_grosze: order.total_grosze as number,
+      locale: (order.locale as "pl" | "en") ?? "pl",
     }),
     notifyPanel("Nowe zamówienie", `${order.number} · ${((order.total_grosze as number) / 100).toFixed(2)} zł`),
     sendPurchase({

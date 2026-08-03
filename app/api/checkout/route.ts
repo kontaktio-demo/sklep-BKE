@@ -8,6 +8,7 @@ import { createOrder, genOrderNumber, upsertCustomer } from "@/lib/server/order"
 import { createPaymentIntent } from "@/lib/server/stripe";
 import { getCustomerFromRequest } from "@/lib/server/customerAuth";
 import { checkRate } from "@/lib/server/rateLimit";
+import { getUserLocale } from "@/i18n/locale";
 
 const Item = z.object({
   slug: z.string().min(1),
@@ -124,6 +125,7 @@ export async function POST(req: Request) {
       shipping_address: body.shipping_address ?? null,
       parcel_locker: body.parcel_locker ?? null,
       items: lines,
+      locale: await getUserLocale(),
     });
     orderId = created.order_id;
   } catch (e) {

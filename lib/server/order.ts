@@ -44,6 +44,7 @@ export interface CreateOrderInput {
   shipping_address: Record<string, unknown> | null;
   parcel_locker: string | null;
   items: ResolvedLine[];
+  locale?: "pl" | "en";
 }
 
 /** Atomowe złożenie zamówienia przez RPC (rezerwuje stan, licznik promocji). */
@@ -80,7 +81,12 @@ export async function createOrder(input: CreateOrderInput): Promise<{ order_id: 
   };
   const { data, error } = await db.rpc("create_order", { p: payload });
   if (error) throw error;
-  return data as { order_id: string; number: string };
+  const result = data as { order_id: string; number: string };
+  // Język klienta zapisujemy po utworzeniu (RPC nie zna tego pola) — decyduje o języku maila.
+  if (input.locale && input.locale !== "pl") {
+    await db.from("orders").update({ locale: input.locale }).eq("id", result.order_id);
+  }
+  return result;
 }
 
 export async function releaseOrder(orderId: string): Promise<void> {

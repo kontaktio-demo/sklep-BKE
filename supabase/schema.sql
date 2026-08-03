@@ -183,6 +183,8 @@ alter table orders add column if not exists shipping_ref text;
 alter table orders add column if not exists shipments jsonb not null default '[]';
 alter table orders add column if not exists meta_tracking jsonb;
 alter table orders add column if not exists review_token uuid not null default gen_random_uuid();
+-- Język klienta (pl/en) wybrany na stronie — decyduje o języku maili transakcyjnych.
+alter table orders add column if not exists locale text not null default 'pl';
 create index if not exists orders_status_idx on orders (status);
 create index if not exists orders_created_idx on orders (created_at);
 create index if not exists orders_customer_idx on orders (customer_id);
@@ -316,8 +318,10 @@ create table if not exists newsletter_subscribers (
   confirmed     boolean not null default false,
   confirm_token text,
   unsub_token   text,
+  locale        text not null default 'pl',
   created_at    timestamptz not null default now()
 );
+alter table newsletter_subscribers add column if not exists locale text not null default 'pl';
 create unique index if not exists newsletter_email_uidx on newsletter_subscribers (lower(email));
 
 -- ── Recenzje ─────────────────────────────────────────────────

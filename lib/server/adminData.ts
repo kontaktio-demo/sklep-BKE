@@ -300,6 +300,24 @@ export async function updateOrder(id: string, patch: Record<string, unknown>) {
   for (const k of allowed) if (k in patch) clean[k] = patch[k];
   const { error } = await db().from("orders").update(clean).eq("id", id);
   if (error) throw error;
+
+  // Po oznaczeniu jako dostarczone wysyłamy prośbę o opinię (link z tokenem, w języku klienta).
+  if (clean.status === "delivered") {
+    const { data: o } = await db()
+      .from("orders")
+      .select("email,number,review_token,locale")
+      .eq("id", id)
+      .maybeSingle();
+    if (o?.email && o.review_token) {
+      const { sendReviewRequest } = await import("./email");
+      await sendReviewRequest({
+        to: o.email as string,
+        number: o.number as string,
+        reviewToken: o.review_token as string,
+        locale: (o.locale as "pl" | "en") ?? "pl",
+      }).catch(() => {});
+    }
+  }
 }
 
 // ---------- WYSYŁKA (InPost ShipX) ----------
