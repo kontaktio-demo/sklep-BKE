@@ -2,27 +2,23 @@
 
 Data: 2026-08-03. 33 znaleziska, 12 poważnych POTWIERDZONYCH. `[ ]` = do zrobienia, `[x]` = zrobione.
 
-## KRYTYCZNE / copy (naprawiane przy tłumaczeniu stron — jeden przebieg PL+EN)
-- [ ] **dostawa-i-platnosci**: sekcja „Płatności" opisuje zamówienia mailem / przelew / za pobraniem —
-      SPRZECZNE z działającym Stripe (karta/BLIK/P24). Przepisać na płatność online Stripe. (KRYTYCZNE)
-- [ ] **dostawa-i-platnosci**: `metadata.description` ma stare ceny (12,99/15,99/299 + „mailem/pobraniem").
-      Złożyć ze stałych SHIPPING_OPTIONS + FREE_SHIPPING_THRESHOLD.
-- [ ] **dostawa-i-platnosci**: `COD`/`EU` = `find(...)` po nieistniejących pozycjach → renderuje „koszt ."
-      i „kurier , .". Usunąć wątki pobranie/UE (albo dać realne pozycje).
-- [ ] **ProductSections.tsx:9**: lokalna `FREE_SHIPPING_THRESHOLD = 299` vs 149 w reszcie sklepu.
-      Import z `@/lib/nav`.
-- [ ] **Newsletter.tsx**: copy „na maila"/„bez rabatów"/„Zapisz się mailem" sprzeczne z double opt-in +
-      kodem powitalnym. Przepisać; usunąć martwe pola email/mailto.
-- [ ] **Footer.tsx:98**: widoczny link do surowego `/foto/PHOTO-CREDITS.md` („— autorzy"). Ukryć/HTML.
-- [ ] **strony info**: łącznik `-` zamiast pauzy `—` (o-nas:50, gwarancja:30/63, zwroty:26, kontakt:78).
+## KRYTYCZNE / copy — ZROBIONE (przy tłumaczeniu stron, jeden przebieg PL+EN)
+- [x] **dostawa-i-platnosci**: sekcja „Płatności" przepisana na płatność online Stripe (karta/BLIK/P24).
+- [x] **dostawa-i-platnosci**: `metadata.description` złożony ze stałych (16,99/29,99/149, online).
+- [x] **dostawa-i-platnosci**: usunięte urwane „koszt ." / „kurier , ." (wątki COD/UE wycięte).
+- [x] **ProductSections**: 299 → import FREE_SHIPPING_THRESHOLD z `@/lib/nav` (149).
+- [x] **cart meta**: 299 → 149 (pl+en).
+- [x] **Newsletter.tsx**: copy pod realny double opt-in + kod -10%; usunięte martwe pola mailto.
+- [x] **Footer.tsx**: usunięty link do surowego `.md`; profesjonalna atrybucja CC (tekst).
+- [x] **strony info/prawne**: łącznik `-` → pauza `—` w prozie.
 - [ ] **PanelApp/ProductEditor**: glify `✓` w statusach — usunąć (panel PL, niski prio).
 
-## BEZPIECZEŃSTWO
-- [ ] **Rate-limiting** /api/* (checkout, contact, newsletter, promo/validate, reviews, magic-link).
-      Per-IP limiter. + ujednolicić komunikaty `promo/validate` (usunąć enumerację kodów). (WYSOKI)
-- [ ] **email.ts**: `escapeHtml()` na WSZYSTKich polach usera w mailu kontaktowym (name/email/subject/
-      message) — HTML injection/XSS w skrzynce właściciela + panelu. (ŚREDNI)
-- [ ] **upload zdjęć**: whitelist rastrowych typów, ODRZUCAĆ svg, magic-bytes, walidacja productId=UUID. (ŚREDNI)
+## BEZPIECZEŃSTWO — ZROBIONE
+- [x] **Rate-limiting** /api/* (checkout 12/min, contact 5/h, newsletter 5/h, promo 15/min, reviews 10/h)
+      + generyczny komunikat `promo/validate` (anty-enumeracja). (WYSOKI)
+- [x] **email.ts**: `esc()` na wszystkich polach usera (contact + nazwy pozycji). (ŚREDNI)
+- [x] **upload zdjęć**: whitelist rastrów, odrzucenie svg, magic-bytes, walidacja productId=UUID. (ŚREDNI)
+## BEZPIECZEŃSTWO — pozostaje
 - [ ] **account/addresses/[id] PATCH**: brak zod → mass assignment własnego wiersza. `AddressBody.partial()`. (NISKI)
 - [ ] **account/orders .or()**: interpolacja e-maila do filtra PostgREST → dwa sparametryzowane zapytania. (NISKI)
 - [ ] **promo .ilike(code)**: `%`/`_` działają jak wildcardy → `eq`/escape. (NISKI)
