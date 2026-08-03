@@ -210,26 +210,67 @@ interface Stats {
   pending: number;
   products: number;
 }
+interface MonthlyStats {
+  revenueByDay: { day: string; grosze: number }[];
+  topProducts: { name: string; qty: number }[];
+  newCustomers: number;
+}
 function Dashboard() {
   const [s, setS] = useState<Stats | null>(null);
+  const [m, setM] = useState<MonthlyStats | null>(null);
   useEffect(() => {
     void adminFetch<Stats>("/stats").then((r) => r.ok && setS(r.data ?? null));
+    void adminFetch<MonthlyStats>("/stats/monthly").then((r) => r.ok && setM(r.data ?? null));
   }, []);
   const tiles = [
     { label: "Przychód (opłacone)", value: s ? zl(s.revenueGrosze) : "—" },
     { label: "Zamówienia", value: s?.orders ?? "—" },
     { label: "Opłacone", value: s?.paid ?? "—" },
     { label: "Oczekujące", value: s?.pending ?? "—" },
+    { label: "Nowi klienci (mies.)", value: m?.newCustomers ?? "—" },
     { label: "Produkty", value: s?.products ?? "—" },
   ];
+  const maxRev = Math.max(1, ...(m?.revenueByDay.map((d) => d.grosze) ?? [1]));
   return (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-      {tiles.map((t) => (
-        <div key={t.label} className={`${CARD} p-4`}>
-          <p className={LABEL}>{t.label}</p>
-          <p className="type-h2 mt-2 text-nf-white">{t.value}</p>
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+        {tiles.map((t) => (
+          <div key={t.label} className={`${CARD} p-4`}>
+            <p className={LABEL}>{t.label}</p>
+            <p className="type-h2 mt-2 text-nf-white">{t.value}</p>
+          </div>
+        ))}
+      </div>
+
+      {m && m.revenueByDay.length > 0 && (
+        <div className={`${CARD} p-4`}>
+          <p className={LABEL}>Przychód — ostatnie 30 dni</p>
+          <div className="mt-3 flex h-28 items-end gap-1">
+            {m.revenueByDay.map((d) => (
+              <div
+                key={d.day}
+                title={`${d.day}: ${zl(d.grosze)}`}
+                className="flex-1 rounded-t bg-nf-red"
+                style={{ height: `${Math.max(4, (d.grosze / maxRev) * 100)}%` }}
+              />
+            ))}
+          </div>
         </div>
-      ))}
+      )}
+
+      {m && m.topProducts.length > 0 && (
+        <div className={`${CARD} p-4`}>
+          <p className={LABEL}>Top produkty (30 dni)</p>
+          <ul className="mt-2 space-y-1 text-sm">
+            {m.topProducts.map((p) => (
+              <li key={p.name} className="flex justify-between gap-4">
+                <span className="text-nf-text">{p.name}</span>
+                <span className="shrink-0 text-nf-dim">{p.qty} szt.</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

@@ -410,6 +410,39 @@ export async function stats() {
   return { orders: ordersRes.count ?? orders.length, revenueGrosze, paid, pending, products: products ?? 0 };
 }
 
+// Statystyki 30-dniowe: przychód po dniach, top produkty (sztuki), nowi klienci w tym miesiącu.
+export async function statsMonthly() {
+  if (!hasDb()) return { revenueByDay: [], topProducts: [], newCustomers: 0 };
+  const c = db();
+  const since = new Date(Date.now() - 30 * 24 * 3_600_000).toISOString();
+  const monthStart = new Date();
+  monthStart.setDate(1);
+  monthStart.setHours(0, 0, 0, 0);
+
+  const [paidRes, custRes] = await Promise.all([
+    c.from("orders").select("id,total_grosze,created_at").eq("payment_status", "paid").gte("created_at", since),
+    c.from("customers").select("id", { count: "exact", head: true }).gte("created_at", monthStart.toISOString()),
+  ]);
+  const paid = (paidRes.data ?? []) as { id: string; total_grosze: number; created_at: string }[];
+
+  const byDay = new Map<string, number>();
+  for (const o of paid) {
+    const day = o.created_at.slice(0, 10);
+    byDay.set(day, (byDay.get(day) ?? 0) + (o.total_grosze ?? 0));
+  }
+  const revenueByDay = [...byDay.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([day, grosze]) => ({ day, grosze }));
+
+  const ids = paid.map((o) => o.id);
+  const items = ids.length
+    ? (((await c.from("order_items").select("name,qty").in("order_id", ids)).data ?? []) as { name: string; qty: number }[])
+    : [];
+  const byProduct = new Map<string, number>();
+  for (const it of items) if (it.name) byProduct.set(it.name, (byProduct.get(it.name) ?? 0) + (it.qty ?? 0));
+  const topProducts = [...byProduct.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5).map(([name, qty]) => ({ name, qty }));
+
+  return { revenueByDay, topProducts, newCustomers: custRes.count ?? 0 };
+}
+
 // ---------- KLIENCI ----------
 export async function listCustomers() {
   if (!hasDb()) return [];
