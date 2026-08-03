@@ -13,6 +13,8 @@ import { Header } from "@/components/layout/Header";
 import { CartDrawer } from "@/components/layout/CartDrawer";
 import { Newsletter } from "@/components/layout/Newsletter";
 import { Footer } from "@/components/layout/Footer";
+import { StoreChrome } from "@/components/layout/StoreChrome";
+import { AuthProvider } from "@/components/account/AuthProvider";
 import { getProducts } from "@/lib/data";
 
 // DWA SKLEPY = DWA GLOSY TYPOGRAFICZNE, jeden korpus.
@@ -137,14 +139,20 @@ export default async function RootLayout({
             rAF-ow i zywych filtrow SVG w tresci - obu juz nie ma. */}
         <MotionProvider>
           <Reveals />
-          <CartProvider>
-            <AnnouncementBar />
-            <Header />
-            <main id="tresc">{children}</main>
-            <Newsletter />
-            <Footer />
-            <CartDrawer crossSell={crossSell} />
-          </CartProvider>
+          <AuthProvider>
+            <CartProvider>
+              <StoreChrome>
+                <AnnouncementBar />
+                <Header />
+              </StoreChrome>
+              <main id="tresc">{children}</main>
+              <StoreChrome>
+                <Newsletter />
+                <Footer />
+                <CartDrawer crossSell={crossSell} />
+              </StoreChrome>
+            </CartProvider>
+          </AuthProvider>
         </MotionProvider>
       </body>
       </html>

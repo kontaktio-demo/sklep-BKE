@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/Button";
 import { CartIcon, MinusIcon, PlusIcon, TrashIcon } from "@/components/ui/icons";
 import type { CartLine } from "@/lib/cart";
 import { useCart } from "@/lib/cart";
-import { COMPANY, FREE_SHIPPING_THRESHOLD, SHIPPING_FROM } from "@/lib/nav";
+import { FREE_SHIPPING_THRESHOLD, SHIPPING_FROM } from "@/lib/nav";
 import { productHref } from "@/lib/routes";
 import { SIZE_SHORT } from "@/lib/sizes";
 import { formatPrice, plural } from "@/lib/utils";
@@ -21,42 +21,9 @@ const STEPPER_BUTTON =
 
 const SUMMARY_ROW = "flex items-baseline justify-between gap-4 text-sm";
 
-const ORDER_SUBJECT = "Zamówienie ze sklepu Dog Store";
-
-/** Rozmiar w jednej linii: kod z przyciskow wyboru i obwod szyi, po ktorym sie mierzy.
- *  Ten sam ciag idzie na ekran i do maila z zamowieniem. */
+/** Rozmiar w jednej linii: kod z przyciskow wyboru i obwod szyi, po ktorym sie mierzy. */
 function sizeLabel(line: CartLine): string {
   return `${SIZE_SHORT[line.variant.size]} (${line.variant.neck})`;
-}
-
-/** Zamowienie sklada sie mailem, wiec przycisk musi wyjsc z pelna trescia koszyka:
- *  pozycje, rozmiary, kolory, SKU wariantow, ilosci, wartosci i suma. Bez rozmiaru i SKU
- *  wariantu wiadomosc nie mowi, co spakowac. Klient dopisuje adres i wysyla. */
-function orderMailHref(lines: CartLine[], subtotal: number, total: number, freeShipping: boolean): string {
-  const body = [
-    "Dzień dobry,",
-    "składam zamówienie na poniższe pozycje.",
-    "",
-    ...lines.map((line) => {
-      const color = line.color ? `, kolor: ${line.color.name}` : "";
-      const value = formatPrice(line.variant.price * line.qty, line.product.currency);
-      return `- ${line.product.name} (SKU ${line.variant.sku}), rozmiar: ${sizeLabel(line)}${color}, sztuk: ${line.qty}, wartość: ${value}`;
-    }),
-    "",
-    `Suma częściowa: ${formatPrice(subtotal)}`,
-    `Dostawa: ${freeShipping ? "gratis" : `od ${formatPrice(SHIPPING_FROM)}`}`,
-    `Razem: ${formatPrice(total)}`,
-    "",
-    "Dane do wysyłki:",
-    "Imię i nazwisko:",
-    "Adres:",
-    "Telefon:",
-    "Sposób dostawy (paczkomat albo kurier):",
-  ].join("\n");
-
-  return `mailto:${COMPANY.shopEmail}?subject=${encodeURIComponent(
-    ORDER_SUBJECT
-  )}&body=${encodeURIComponent(body)}`;
 }
 
 function EmptyCart() {
@@ -250,23 +217,16 @@ export function CartView() {
 
           <div className="mt-6 space-y-3">
             <Button
-              href={orderMailHref(lines, subtotal, total, freeShipping)}
+              href="/kasa"
               variant="danger"
               size="lg"
               className="w-full"
             >
-              Złóż zamówienie mailem
+              Przejdź do kasy
             </Button>
             <p className="text-xs leading-relaxed text-nf-muted">
-              Zamówienie składasz mailem:{" "}
-              <a
-                href={`mailto:${COMPANY.shopEmail}`}
-                className="text-nf-text underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
-              >
-                {COMPANY.shopEmail}
-              </a>
-              . Przycisk otwiera wiadomość z pozycjami, rozmiarami i sumą. Dopisz adres wysyłki,
-              a odpiszemy z potwierdzeniem i danymi do przelewu.
+              Bezpieczna płatność online: karta, BLIK, Przelewy24 (Stripe). Sposób dostawy
+              i adres podasz w kolejnym kroku.
             </p>
           </div>
 
