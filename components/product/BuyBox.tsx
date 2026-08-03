@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useId, useState } from "react";
 import {
   VariantPicker,
@@ -43,6 +44,7 @@ const PRO_INQUIRY_HREF = "/pro/zapytanie";
 
 export function BuyBox({ product }: { product: Product }) {
   const { addLine, openCart } = useCart();
+  const tTrust = useTranslations("common");
   const [color, setColor] = useState<ProductColor | undefined>(product.colors[0]);
   // Cena, SKU i stan magazynowy naleza do WARIANTU, nie do produktu: naglowek karty
   // pokazuje to, co faktycznie trafi do koszyka, a nie cene "od".
@@ -256,7 +258,7 @@ export function BuyBox({ product }: { product: Product }) {
           return (
             <li key={item} className="flex items-center gap-2 text-xs text-nf-muted">
               <Icon width={16} height={16} className="shrink-0 text-nf-dim" />
-              {item}
+              {tTrust(item)}
             </li>
           );
         })}

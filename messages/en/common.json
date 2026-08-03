@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Dog Store | Working-dog collars and gear",
+    "titleTemplate": "%s | Dog Store",
+    "description": "Working-grade collars in nylon and chain. Room for an ID panel, e-collar compatibility, field-tested. Ships within 24 h, 60-day returns.",
+    "ogAlt": "Dog Store — collars and gear for dogs"
+  },
+  "lang": {
+    "label": "Language",
+    "pl": "Polski",
+    "en": "English",
+    "switchAria": "Switch language to {name}"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
+  "common": {
+    "search": "Search",
+    "searchPlaceholder": "What are you looking for?",
+    "popularSearches": "Popular searches",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "close": "Close",
+    "mainNav": "Main navigation",
+    "openCart": "Open cart",
+    "openCartCount": "Open cart, {count} item(s)",
+    "addToCart": "Add to cart",
+    "loading": "Loading…",
+    "back": "Back",
+    "readMore": "Read more",
+    "required": "Required field",
+    "send": "Send",
+    "save": "Save",
+    "currency": "zł"
+  },
+  "trust": {
+    "warranty": "2-year warranty",
+    "shipping24": "Ships within 24 h",
+    "returns60": "60-day returns"
+  },
+  "payment": {
+    "aria": "Accepted payment methods",
+    "card": "Card",
+    "blik": "BLIK",
+    "przelewy24": "Przelewy24"
+  }
+}

@@ -5,6 +5,7 @@
 // Kolory siedza w slowniku SHELL - struktura i logika komponentow zostaja te same.
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { Dialog } from "@/components/ui/Dialog";
@@ -35,6 +36,7 @@ const PANEL_HEADING = "type-label";
 
 function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) {
   const t = SHELL[theme];
+  const tc = useTranslations("common");
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const inputId = useId();
@@ -62,7 +64,7 @@ function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) 
         }}
       >
         <label htmlFor={inputId} className="sr-only">
-          Czego szukasz?
+          {tc("searchPlaceholder")}
         </label>
         <input
           ref={inputRef}
@@ -71,18 +73,18 @@ function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) 
           autoFocus
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Czego szukasz?"
+          placeholder={tc("searchPlaceholder")}
           className={cn(
             "h-12 min-w-0 flex-1 rounded-[2px] border px-4 text-sm",
             t.field
           )}
         />
         <Button type="submit" className="h-12 shrink-0">
-          Szukaj
+          {tc("search")}
         </Button>
       </form>
       <div className="mt-5">
-        <h3 className={cn(PANEL_HEADING, t.meta)}>Popularne wyszukiwania</h3>
+        <h3 className={cn(PANEL_HEADING, t.meta)}>{tc("popularSearches")}</h3>
         <ul className="mt-2 flex flex-wrap gap-2">
           {POPULAR_SEARCHES.map((term) => (
             <li key={term}>
@@ -115,6 +117,8 @@ function MobileNav({
   onClose: () => void;
 }) {
   const t = SHELL[theme];
+  const tn = useTranslations("nav");
+  const tc = useTranslations("common");
   const [expanded, setExpanded] = useState<string | null>(null);
 
   return (
@@ -122,14 +126,14 @@ function MobileNav({
       open={open}
       onClose={onClose}
       side="left"
-      title="Menu"
+      title={tc("menu")}
       theme={theme}
       widthClassName={
         /* §8-B: K9TG mobile nav is full-screen; cap the width only from sm upward */
         "max-w-none sm:max-w-sm"
       }
     >
-      <nav aria-label="Nawigacja główna">
+      <nav aria-label={tc("mainNav")}>
         <ul>
           {NAV_ITEMS.map((item) => {
             const columns = item.columns ?? [];
@@ -144,7 +148,7 @@ function MobileNav({
                       t.mobileItem
                     )}
                   >
-                    {item.label}
+                    {tn(item.label)}
                   </Link>
                 </li>
               );
@@ -161,7 +165,7 @@ function MobileNav({
                     t.mobileItem
                   )}
                 >
-                  {item.label}
+                  {tn(item.label)}
                   <ChevronDownIcon
                     className={cn(
                       "transition-transform duration-250 ease-nf",
@@ -174,7 +178,7 @@ function MobileNav({
                   <div className="space-y-5 px-5 pb-5">
                     {columns.map((col) => (
                       <div key={col.title}>
-                        <h3 className={cn(PANEL_HEADING, "mb-1", t.panelHeading)}>{col.title}</h3>
+                        <h3 className={cn(PANEL_HEADING, "mb-1", t.panelHeading)}>{tn(col.title)}</h3>
                         <ul>
                           {col.links.map((link) => (
                             <li key={link.label}>
@@ -186,7 +190,7 @@ function MobileNav({
                                   t.panelLink
                                 )}
                               >
-                                {link.label}
+                                {tn(link.label)}
                               </Link>
                             </li>
                           ))}
@@ -209,6 +213,7 @@ function MobileNav({
 
 export function Header() {
   const { count, openCart } = useCart();
+  const tc = useTranslations("common");
   const pathname = usePathname();
   const [hasHero, setHasHero] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -333,7 +338,7 @@ export function Header() {
         <div className="mx-auto flex h-16 w-full max-w-[1600px] items-center gap-2 px-4 md:px-6 lg:h-[72px]">
           <button
             type="button"
-            aria-label="Otwórz menu"
+            aria-label={tc("openMenu")}
             onClick={() => setMobileOpen(true)}
             className={cn(ICON_BUTTON_BASE, t.iconButton, "-ml-2 lg:hidden")}
           >
@@ -352,7 +357,7 @@ export function Header() {
             <LanguageSwitcher tone="auto" className="mr-1 hidden sm:flex" />
             <button
               type="button"
-              aria-label="Szukaj"
+              aria-label={tc("search")}
               onClick={() => setSearchOpen(true)}
               className={cn(ICON_BUTTON_BASE, t.iconButton)}
             >
@@ -362,7 +367,7 @@ export function Header() {
                 przycisk obiecywalby funkcje, ktora nie istnieje. Wroci razem z kontami. */}
             <button
               type="button"
-              aria-label={count > 0 ? `Otwórz koszyk, ${count} szt.` : "Otwórz koszyk"}
+              aria-label={count > 0 ? tc("openCartCount", { count }) : tc("openCart")}
               onClick={openCart}
               className={cn(ICON_BUTTON_BASE, t.iconButton)}
             >
@@ -388,7 +393,7 @@ export function Header() {
       <Dialog
         open={searchOpen}
         onClose={() => setSearchOpen(false)}
-        title="Szukaj"
+        title={tc("search")}
         theme={overlayTheme}
       >
         <SearchPanel theme={overlayTheme} onClose={() => setSearchOpen(false)} />

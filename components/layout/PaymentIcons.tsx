@@ -1,5 +1,6 @@
 // neutral text badges - no trademark artwork (§12)
 
+import { getTranslations } from "next-intl/server";
 import { PAYMENT_METHODS } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import type { Theme } from "./theme";
@@ -12,16 +13,17 @@ const BADGE: Record<Theme, string> = {
   light: "border-nf-border bg-nf-elevated text-nf-muted",
 };
 
-export function PaymentIcons({
+export async function PaymentIcons({
   className,
   theme = "dark",
 }: {
   className?: string;
   theme?: Theme;
 }) {
+  const t = await getTranslations("common");
   return (
     <ul
-      aria-label="Akceptowane metody płatności"
+      aria-label={t("payment.aria")}
       className={cn("flex flex-row flex-wrap gap-1.5", className)}
     >
       {PAYMENT_METHODS.map((method) => (
@@ -32,7 +34,7 @@ export function PaymentIcons({
             BADGE[theme]
           )}
         >
-          {method}
+          {t(`payment.${method}`)}
         </li>
       ))}
     </ul>

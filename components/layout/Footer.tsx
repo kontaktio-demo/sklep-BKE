@@ -1,7 +1,8 @@
 // §8-K [VERDICT: NSDW mega-footer] - komponent serwerowy
 
 import Link from "next/link";
-import { BRAND, FOOTER_COLUMNS, LEGAL_LINKS } from "@/lib/nav";
+import { getTranslations } from "next-intl/server";
+import { FOOTER_COLUMNS, LEGAL_LINKS } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
 import { PaymentIcons } from "./PaymentIcons";
@@ -10,9 +11,10 @@ import { FOOTER, type Theme } from "./theme";
 // Stopka jest zawsze grafitowa, takze pod jasnym sklepem: to blok domykajacy strone,
 // nie kolejna sekcja tresci. data-shell="dark" przelacza tokeny w calym poddrzewie,
 // wiec te same klasy (nf-*) renderuja sie tu ciemno niezaleznie od trasy.
-export function Footer() {
+export async function Footer() {
   const theme: Theme = "dark";
   const t = FOOTER[theme];
+  const tn = await getTranslations("nav");
 
   return (
     <footer data-shell="dark" className={cn("border-t", t.shell)}>
@@ -36,18 +38,17 @@ export function Footer() {
             className="gap-4"
           />
           <p className={cn("max-w-sm text-sm leading-relaxed", t.lead)}>
-            Obroże i sprzęt dla psów pracujących. Projektujemy i szyjemy w Polsce,
-            testujemy z przewodnikami.
+            {tn("footer.tagline")}
           </p>
         </div>
         {/* 5 kolumn od lg: doszla kolumna Dog Store Pro (FOOTER_COLUMNS). Przy grid-cols-4
             piata kolumna spadala do drugiego wiersza i wygladala jak dopisek */}
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-5">
           {FOOTER_COLUMNS.map((col) => (
-            <nav key={col.title} aria-label={col.title}>
+            <nav key={col.title} aria-label={tn(col.title)}>
               {/* type-label, nie type-meta: monospace zostaje wylacznie na oznaczenia
                   techniczne w sekcji Pro */}
-              <h3 className={cn("type-label mb-4", t.heading)}>{col.title}</h3>
+              <h3 className={cn("type-label mb-4", t.heading)}>{tn(col.title)}</h3>
               <ul>
                 {col.links.map((link) => (
                   <li key={link.label}>
@@ -58,7 +59,7 @@ export function Footer() {
                         t.link
                       )}
                     >
-                      {link.label}
+                      {tn(link.label)}
                     </Link>
                   </li>
                 ))}
@@ -75,7 +76,7 @@ export function Footer() {
           {/* Byl tu selektor regionu i waluty z EUR, USD i GBP - martwy (bez stanu, bez
               obslugi) i klamliwy: sklep liczy w zlotowkach i wysyla do Polski oraz Unii.
               Zostaje sama informacja, bo tyle jest prawda. */}
-          <p className={cn("text-sm", t.lead)}>Polska (PLN)</p>
+          <p className={cn("text-sm", t.lead)}>{tn("footer.region")}</p>
           <PaymentIcons theme={theme} />
         </div>
         <div
@@ -84,19 +85,11 @@ export function Footer() {
             t.legal
           )}
         >
-          <p>© 2026 {BRAND}. Wszystkie prawa zastrzeżone.</p>
-          {/* Zdjecia tymczasowe ida z Wikimedia Commons na licencjach CC BY /
-              CC BY-SA - te licencje WYMAGAJA widocznej atrybucji, stad ten link.
-              Po sesji wlasnej fotografki linia znika razem z plikami. */}
-          <a
-            href="/foto/PHOTO-CREDITS.md"
-            className={cn(
-              "flex min-h-11 items-center transition-colors duration-250 ease-nf",
-              t.legalLink
-            )}
-          >
-            Fotografie: Wikimedia Commons (CC) — autorzy
-          </a>
+          <p>{tn("footer.rights")}</p>
+          {/* Atrybucja zdjęć tymczasowych (Wikimedia Commons, CC BY / CC BY-SA). Zwykły
+              tekst, nie link do surowego pliku. Znika razem z placeholderami po sesji
+              własnej fotografki. */}
+          <p>{tn("footer.photoCredits")}</p>
           <ul className="flex flex-wrap gap-x-4">
             {LEGAL_LINKS.map((link) => (
               <li key={link.label}>
@@ -109,7 +102,7 @@ export function Footer() {
                     t.legalLink
                   )}
                 >
-                  {link.label}
+                  {tn(link.label)}
                 </Link>
               </li>
             ))}

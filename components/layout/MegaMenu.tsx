@@ -6,9 +6,10 @@
 // no ancestor between here and the header may be `relative`.
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDownIcon } from "@/components/ui/icons";
-import { PRO_NAV_LABEL, NAV_ITEMS } from "@/lib/nav";
+import { NAV_ITEMS, PRO_ROOT } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import { SHELL, type Theme } from "./theme";
 
@@ -23,8 +24,9 @@ const PRO_LINK = "text-nf-red-bright";
 
 export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
   const t = SHELL[theme];
-  const linkFor = (label: string) =>
-    cn(LINK_BASE, t.navLink, label === PRO_NAV_LABEL && PRO_LINK);
+  const tn = useTranslations("nav");
+  const tc = useTranslations("common");
+  const linkFor = (isPro: boolean) => cn(LINK_BASE, t.navLink, isPro && PRO_LINK);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const closeTimer = useRef<number | null>(null);
   const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -42,10 +44,11 @@ export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
   useEffect(() => cancelClose, []);
 
   return (
-    <nav aria-label="Nawigacja główna">
+    <nav aria-label={tc("mainNav")}>
       <ul className="flex items-center gap-1">
         {NAV_ITEMS.map((item, i) => {
           const columns = item.columns ?? [];
+          const isPro = item.href === PRO_ROOT;
           if (columns.length === 0) {
             return (
               <li
@@ -55,8 +58,8 @@ export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
                   setOpenIndex(null);
                 }}
               >
-                <Link href={item.href} className={linkFor(item.label)}>
-                  {item.label}
+                <Link href={item.href} className={linkFor(isPro)}>
+                  {tn(item.label)}
                 </Link>
               </li>
             );
@@ -94,9 +97,9 @@ export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
                 href={item.href}
                 aria-haspopup="true"
                 aria-expanded={open}
-                className={linkFor(item.label)}
+                className={linkFor(isPro)}
               >
-                {item.label}
+                {tn(item.label)}
                 <ChevronDownIcon
                   width={14}
                   height={14}
@@ -120,7 +123,7 @@ export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
                     {columns.map((col) => (
                       <div key={col.title}>
                         {/* type-label, nie type-meta: mono zostaje w swiecie Dog Store Pro */}
-                        <h3 className={cn("type-label mb-3", t.panelHeading)}>{col.title}</h3>
+                        <h3 className={cn("type-label mb-3", t.panelHeading)}>{tn(col.title)}</h3>
                         <ul>
                           {col.links.map((link) => (
                             <li key={link.label}>
@@ -132,7 +135,7 @@ export function MegaMenu({ theme = "dark" }: { theme?: Theme }) {
                                   t.panelLink
                                 )}
                               >
-                                {link.label}
+                                {tn(link.label)}
                               </Link>
                             </li>
                           ))}

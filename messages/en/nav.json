@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "collars": "Collars",
+    "proLine": "Dog Store Pro",
+    "about": "About us",
+    "cat": {
+      "categories": "Categories",
+      "allCollars": "All collars",
+      "working": "Working collars",
+      "everyday": "Everyday collars",
+      "eCollar": "E-collar compatible",
+      "type": "Material",
+      "nylon": "Nylon",
+      "chain": "Chain",
+      "featured": "Featured",
+      "bestsellers": "Bestsellers",
+      "new": "New arrivals",
+      "withIdPanel": "With ID-panel slot",
+      "inStock": "In stock now",
+      "patrol": "Patrol",
+      "handle": "With handle",
+      "module": "Module-ready",
+      "training": "Training",
+      "detection": "Scent work",
+      "proLineCol": "Pro line",
+      "aboutLine": "About the line"
+    },
+    "footer": {
+      "helpContact": "Help & contact",
+      "contact": "Contact",
+      "shippingPayments": "Shipping & payments",
+      "returns": "Returns & complaints",
+      "sizeChart": "Size chart",
+      "serviceWarranty": "Service & warranty",
+      "warranty2y": "2-year warranty",
+      "repairs": "Service & repairs",
+      "care": "Product care",
+      "shop": "Shop",
+      "cart": "Cart",
+      "company": "Company",
+      "terms": "Terms & conditions",
+      "privacy": "Privacy policy",
+      "returnsShort": "Complaints & returns",
+      "tagline": "Collars and gear for working dogs. Designed and sewn in Poland, tested with handlers.",
+      "region": "Poland (PLN)",
+      "rights": "© 2026 Dog Store. All rights reserved.",
+      "photoCredits": "Photography: Wikimedia Commons — CC BY / CC BY-SA licences."
+    },
+    "announce": {
+      "freeShipping": "Free shipping over <b>{amount}</b>",
+      "proScope": "5 categories, 12 items",
+      "proContact": "Enquiries:"
+    }
+  }
+}

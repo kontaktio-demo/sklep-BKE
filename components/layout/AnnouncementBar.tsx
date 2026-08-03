@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
-import { Fragment } from "react";
+import { Fragment, type ReactNode } from "react";
 import { FREE_SHIPPING_THRESHOLD, PRO_STATUS, TRUST_TRIAD, isProRoute } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 
@@ -29,6 +30,7 @@ function Sep({ className }: { className?: string }) {
 function ProStatusBar() {
   // type-meta = mono 11px uppercase 0.12em (globals.css)
   // Czern na graficie: pasek jest juz w swiecie Dog Store Pro, wiec tokeny nf-* czytaja sie jasno
+  const tn = useTranslations("nav");
   return (
     <div
       className={cn(
@@ -51,11 +53,11 @@ function ProStatusBar() {
         {/* scope znika ponizej 480 px - mono z trackingiem nie miesci obu segmentow
             obok powrotu na najwezszych telefonach i pasek rozpychal sie w poziomie */}
         <Sep className="hidden border-white/20 min-[480px]:inline" />
-        <span className="hidden shrink-0 min-[480px]:inline">{PRO_STATUS.scope}</span>
+        <span className="hidden shrink-0 min-[480px]:inline">{tn("announce.proScope")}</span>
         {/* adres znika ponizej lg */}
         <Sep className="hidden border-white/20 lg:inline" />
         <span className="hidden shrink-0 lg:inline">
-          {PRO_STATUS.contactLabel}{" "}
+          {tn("announce.proContact")}{" "}
           <span className="normal-case text-nf-muted">{PRO_STATUS.contactEmail}</span>
         </span>
       </span>
@@ -65,24 +67,25 @@ function ProStatusBar() {
 
 export function AnnouncementBar() {
   const pathname = usePathname();
+  const tn = useTranslations("nav");
+  const tc = useTranslations("common");
   if (isProRoute(pathname)) return <ProStatusBar />;
+
+  const amount = `${FREE_SHIPPING_THRESHOLD} ${tc("currency")}`;
+  const bold = (chunks: ReactNode) => (
+    <span className="font-semibold text-white">{chunks}</span>
+  );
 
   return (
     <div className={cn(BAR, "bg-nf-black text-[12px] tracking-[0.02em] text-white/80")}>
       {/* mobile: jeden fakt, ten z progiem - reszta wraca na wiekszych ekranach */}
-      <p className="lg:hidden">
-        Darmowa dostawa od{" "}
-        <span className="font-semibold text-white">{FREE_SHIPPING_THRESHOLD} zł</span>
-      </p>
+      <p className="lg:hidden">{tn.rich("announce.freeShipping", { amount, b: bold })}</p>
       <p className="hidden items-center lg:flex">
-        <span>
-          Darmowa dostawa od{" "}
-          <span className="font-semibold text-white">{FREE_SHIPPING_THRESHOLD} zł</span>
-        </span>
+        <span>{tn.rich("announce.freeShipping", { amount, b: bold })}</span>
         {TRUST_TRIAD.map((item) => (
           <Fragment key={item}>
             <Sep />
-            <span>{item}</span>
+            <span>{tc(item)}</span>
           </Fragment>
         ))}
       </p>

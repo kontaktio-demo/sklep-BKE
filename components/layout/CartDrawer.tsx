@@ -7,6 +7,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { FreeShippingBar } from "@/components/cart/FreeShippingBar";
 import { Button } from "@/components/ui/Button";
 import { Drawer } from "@/components/ui/Drawer";
@@ -49,6 +50,7 @@ function EmptyState({ onShop }: { onShop: () => void }) {
 }
 
 function CartFooter({ subtotal, onGoToCart }: { subtotal: number; onGoToCart: () => void }) {
+  const tc = useTranslations("common");
   return (
     <div className="space-y-4 px-5 py-4">
       <ul className="flex items-center justify-between gap-2 text-[10px] text-nf-muted">
@@ -57,7 +59,7 @@ function CartFooter({ subtotal, onGoToCart }: { subtotal: number; onGoToCart: ()
           return (
             <li key={label} className="flex items-center gap-1.5">
               <Icon width={14} height={14} className="shrink-0 text-nf-dim" />
-              {label}
+              {tc(label)}
             </li>
           );
         })}

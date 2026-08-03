@@ -1,5 +1,8 @@
 export const BRAND = "Dog Store";
 
+// UWAGA i18n: pola `label`/`title` poniżej to KLUCZE słownika w namespace `nav`
+// (messages/<locale>/nav.json), nie gotowe teksty. Komponenty tłumaczą je przez
+// useTranslations("nav")/getTranslations("nav"). Hrefy i marki są językowo neutralne.
 export interface NavLink {
   label: string;
   href: string;
@@ -28,14 +31,15 @@ export function isProRoute(pathname: string): boolean {
 
 /** Jedno zrodlo linkow do kategorii Pro: nawigacja, stopka i menu mobilne czytaja to samo. */
 export const PRO_LINKS: NavLink[] = [
-  { label: "Patrol", href: `${PRO_ROOT}/patrol` },
-  { label: "Z uchwytem", href: `${PRO_ROOT}/handle` },
-  { label: "Pod moduł", href: `${PRO_ROOT}/e-collar` },
-  { label: "Szkolenie", href: `${PRO_ROOT}/training` },
-  { label: "Praca węchowa", href: `${PRO_ROOT}/detection` },
+  { label: "cat.patrol", href: `${PRO_ROOT}/patrol` },
+  { label: "cat.handle", href: `${PRO_ROOT}/handle` },
+  { label: "cat.module", href: `${PRO_ROOT}/e-collar` },
+  { label: "cat.training", href: `${PRO_ROOT}/training` },
+  { label: "cat.detection", href: `${PRO_ROOT}/detection` },
 ];
 
-/** Etykieta pozycji Dog Store Pro w nawigacji - MegaMenu wyroznia ja po niej kolorem linii Pro. */
+/** Marka linii służbowej (językowo neutralna) — używa jej Logo. W nawigacji pozycja Pro
+ *  jest wykrywana po href === PRO_ROOT, nie po etykiecie. */
 export const PRO_NAV_LABEL = "Dog Store Pro";
 
 // Menu opisuje sklep, ktory istnieje: katalog cywilny to wylacznie obroze, wiec nie ma tu
@@ -44,45 +48,45 @@ export const PRO_NAV_LABEL = "Dog Store Pro";
 // Zakladka obiecujaca kategorie, ktorej nie ma, kosztuje wiecej niz jej brak.
 export const NAV_ITEMS: NavItem[] = [
   {
-    label: "Obroże",
+    label: "collars",
     href: PLP,
     columns: [
       {
-        title: "Kategorie",
+        title: "cat.categories",
         links: [
-          { label: "Wszystkie obroże", href: PLP },
-          { label: "Obroże robocze", href: `${PLP}?kategoria=working` },
-          { label: "Obroże codzienne", href: `${PLP}?kategoria=non-working` },
-          { label: "Kompatybilne z e-obrożą", href: `${PLP}?kategoria=e-collar` },
+          { label: "cat.allCollars", href: PLP },
+          { label: "cat.working", href: `${PLP}?kategoria=working` },
+          { label: "cat.everyday", href: `${PLP}?kategoria=non-working` },
+          { label: "cat.eCollar", href: `${PLP}?kategoria=e-collar` },
         ],
       },
       {
-        title: "Rodzaj",
+        title: "cat.type",
         links: [
-          { label: "Nylonowe", href: `${PLP}?rodzaj=nylon` },
-          { label: "Łańcuszkowe", href: `${PLP}?rodzaj=chain` },
+          { label: "cat.nylon", href: `${PLP}?rodzaj=nylon` },
+          { label: "cat.chain", href: `${PLP}?rodzaj=chain` },
         ],
       },
       {
-        title: "Wyróżnione",
+        title: "cat.featured",
         links: [
-          { label: "Bestsellery", href: `${PLP}?sort=best-selling` },
-          { label: "Nowości", href: `${PLP}?sort=date-desc` },
-          { label: "Z miejscem na panel ID", href: `${PLP}?panel=1` },
-          { label: "Dostępne od ręki", href: `${PLP}?dostepnosc=in-stock` },
+          { label: "cat.bestsellers", href: `${PLP}?sort=best-selling` },
+          { label: "cat.new", href: `${PLP}?sort=date-desc` },
+          { label: "cat.withIdPanel", href: `${PLP}?panel=1` },
+          { label: "cat.inStock", href: `${PLP}?dostepnosc=in-stock` },
         ],
       },
     ],
   },
   {
-    label: PRO_NAV_LABEL,
+    label: "proLine",
     href: PRO_ROOT,
     columns: [
-      { title: "Kategorie", links: PRO_LINKS },
-      { title: "Linia Pro", links: [{ label: "O linii", href: PRO_ROOT }] },
+      { title: "cat.categories", links: PRO_LINKS },
+      { title: "cat.proLineCol", links: [{ label: "cat.aboutLine", href: PRO_ROOT }] },
     ],
   },
-  { label: "O nas", href: "/o-nas" },
+  { label: "about", href: "/o-nas" },
 ];
 
 // Pasek nad trescia na /pro*: status linii zamiast promocji sklepu. Bez rotacji - to nie
@@ -92,12 +96,11 @@ export const NAV_ITEMS: NavItem[] = [
 // zmianie liczby kategorii albo pozycji trzeba ruszyc te stala.
 export const PRO_STATUS = {
   line: "Dog Store Pro",
-  scope: "5 kategorii, 12 pozycji",
-  contactLabel: "Zapytania:",
   contactEmail: "pro@dogstore.pl",
 };
 
-export const TRUST_TRIAD = ["2 lata gwarancji", "Wysyłka w 24 h", "60 dni na zwrot"];
+/** Klucze słownika `common` (t("common"): trust.*). Renderowane w pasku, karcie i koszyku. */
+export const TRUST_TRIAD = ["trust.warranty", "trust.shipping24", "trust.returns60"];
 
 export interface FooterColumn {
   title: string;
@@ -110,55 +113,56 @@ export interface FooterColumn {
 // kosztuje wiecej niz jego brak.
 export const FOOTER_COLUMNS: FooterColumn[] = [
   {
-    title: "Pomoc i kontakt",
+    title: "footer.helpContact",
     links: [
-      { label: "Kontakt", href: "/kontakt" },
-      { label: "Dostawa i płatności", href: "/dostawa-i-platnosci" },
-      { label: "Zwroty i reklamacje", href: "/zwroty-i-reklamacje" },
-      { label: "Tabela rozmiarów", href: "/tabela-rozmiarow" },
+      { label: "footer.contact", href: "/kontakt" },
+      { label: "footer.shippingPayments", href: "/dostawa-i-platnosci" },
+      { label: "footer.returns", href: "/zwroty-i-reklamacje" },
+      { label: "footer.sizeChart", href: "/tabela-rozmiarow" },
     ],
   },
   {
-    title: "Serwis i gwarancja",
+    title: "footer.serviceWarranty",
     links: [
-      { label: "2 lata gwarancji", href: "/gwarancja-i-serwis" },
-      { label: "Serwis i naprawy", href: "/gwarancja-i-serwis#serwis" },
-      { label: "Pielęgnacja produktu", href: "/gwarancja-i-serwis#pielegnacja" },
+      { label: "footer.warranty2y", href: "/gwarancja-i-serwis" },
+      { label: "footer.repairs", href: "/gwarancja-i-serwis#serwis" },
+      { label: "footer.care", href: "/gwarancja-i-serwis#pielegnacja" },
     ],
   },
   {
-    title: "Sklep",
+    title: "footer.shop",
     links: [
-      { label: "Obroże", href: PLP },
-      { label: "Koszyk", href: "/koszyk" },
+      { label: "collars", href: PLP },
+      { label: "footer.cart", href: "/koszyk" },
     ],
   },
   {
-    title: "Firma",
+    title: "footer.company",
     links: [
-      { label: "O nas", href: "/o-nas" },
-      { label: "Regulamin", href: "/regulamin" },
-      { label: "Polityka prywatności", href: "/polityka-prywatnosci" },
+      { label: "about", href: "/o-nas" },
+      { label: "footer.terms", href: "/regulamin" },
+      { label: "footer.privacy", href: "/polityka-prywatnosci" },
     ],
   },
   {
-    title: PRO_NAV_LABEL,
-    links: [...PRO_LINKS, { label: "O linii", href: PRO_ROOT }],
+    title: "proLine",
+    links: [...PRO_LINKS, { label: "cat.aboutLine", href: PRO_ROOT }],
   },
 ];
 
 // Badge z metoda platnosci: pasek pokazuje, czym da sie u nas zaplacic. Platnosc online
 // przez Stripe (karta / BLIK / Przelewy24).
-export const PAYMENT_METHODS = ["Karta", "BLIK", "Przelewy24"];
+// Klucze słownika `common` (payment.*). "Karta"→"Card" po EN; BLIK/Przelewy24 to marki.
+export const PAYMENT_METHODS = ["card", "blik", "przelewy24"];
 
 // REGIONS usuniete razem z selektorem regionu w stopce: wszystkie ceny sa w zlotowkach,
 // a wysylka idzie tylko do Polski i Unii (SHIPPING_OPTIONS). Lista walut obiecywala
 // przeliczanie, ktorego nie ma.
 
 export const LEGAL_LINKS: NavLink[] = [
-  { label: "Polityka prywatności", href: "/polityka-prywatnosci" },
-  { label: "Regulamin", href: "/regulamin" },
-  { label: "Reklamacje i zwroty", href: "/zwroty-i-reklamacje" },
+  { label: "footer.privacy", href: "/polityka-prywatnosci" },
+  { label: "footer.terms", href: "/regulamin" },
+  { label: "footer.returnsShort", href: "/zwroty-i-reklamacje" },
 ];
 
 // ---- handel: progi i koszty ----

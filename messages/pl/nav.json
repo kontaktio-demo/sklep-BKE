@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "collars": "Obroże",
+    "proLine": "Dog Store Pro",
+    "about": "O nas",
+    "cat": {
+      "categories": "Kategorie",
+      "allCollars": "Wszystkie obroże",
+      "working": "Obroże robocze",
+      "everyday": "Obroże codzienne",
+      "eCollar": "Kompatybilne z e-obrożą",
+      "type": "Rodzaj",
+      "nylon": "Nylonowe",
+      "chain": "Łańcuszkowe",
+      "featured": "Wyróżnione",
+      "bestsellers": "Bestsellery",
+      "new": "Nowości",
+      "withIdPanel": "Z miejscem na panel ID",
+      "inStock": "Dostępne od ręki",
+      "patrol": "Patrol",
+      "handle": "Z uchwytem",
+      "module": "Pod moduł",
+      "training": "Szkolenie",
+      "detection": "Praca węchowa",
+      "proLineCol": "Linia Pro",
+      "aboutLine": "O linii"
+    },
+    "footer": {
+      "helpContact": "Pomoc i kontakt",
+      "contact": "Kontakt",
+      "shippingPayments": "Dostawa i płatności",
+      "returns": "Zwroty i reklamacje",
+      "sizeChart": "Tabela rozmiarów",
+      "serviceWarranty": "Serwis i gwarancja",
+      "warranty2y": "2 lata gwarancji",
+      "repairs": "Serwis i naprawy",
+      "care": "Pielęgnacja produktu",
+      "shop": "Sklep",
+      "cart": "Koszyk",
+      "company": "Firma",
+      "terms": "Regulamin",
+      "privacy": "Polityka prywatności",
+      "returnsShort": "Reklamacje i zwroty",
+      "tagline": "Obroże i sprzęt dla psów pracujących. Projektujemy i szyjemy w Polsce, testujemy z przewodnikami.",
+      "region": "Polska (PLN)",
+      "rights": "© 2026 Dog Store. Wszystkie prawa zastrzeżone.",
+      "photoCredits": "Zdjęcia: Wikimedia Commons — licencje CC BY / CC BY-SA."
+    },
+    "announce": {
+      "freeShipping": "Darmowa dostawa od <b>{amount}</b>",
+      "proScope": "5 kategorii, 12 pozycji",
+      "proContact": "Zapytania:"
+    }
+  }
+}
