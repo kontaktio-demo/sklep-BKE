@@ -34,12 +34,25 @@
 - ADMIN_API_KEY (32 bajty hex) — gotowy.
 - Klucze VAPID (public/private) — gotowe.
 
-## DO ZBUDOWANIA po tej sesji (wg decyzji)
-- [ ] Pusty katalog: seed bez produktów (opcja) + PEŁNY edytor produktu w panelu
-      (warianty rozmiar/cena/stan, kolory, ZDJĘCIA→Storage, kategorie, ZESTAWY).
-- [ ] Zestawy jak Kotecki: bundle_config (pick/slots) + BundleConfigurator na PDP + walidacja.
-- [ ] Wysyłka jak Kotecki: InPost ShipX — tworzenie przesyłek z panelu, etykiety PDF, multi-paczka.
-- [ ] Dostawa: stawki Kotecki (16,99/29,99), darmowa od 149; metody paczkomat+kurier.
-- [ ] Wpiąć formularze kontakt + newsletter pod API; recenzje na PDP (formularz + JSON-LD).
-- [ ] Panel: widoki kategorie/klienci/recenzje; tryb „sklep zamknięty" (middleware→wkrótce).
-- [ ] Meta Pixel (przeglądarka) + GA4 + cookie consent.
+## ZBUDOWANE w tej sesji (wg decyzji)
+- [x] Pusty katalog na start (uruchamiasz tylko schema.sql, bez seed) + **pełny edytor
+      produktu w panelu**: pola, warianty (rozmiar/cena/stan/obwód/waga), kolory,
+      zdjęcia → Supabase Storage, kategoria, pole zestawu (bundle_config JSON).
+- [x] Wysyłka jak Kotecki: **InPost ShipX** — tworzenie przesyłek z panelu (paczkomat/kurier),
+      etykiety PDF, zapis tracking/status. (pełny test wymaga kluczy InPost)
+- [x] Dostawa: stawki Kotecki (paczkomat 16,99 / kurier 29,99), darmowa od 149; paczkomat+kurier.
+- [x] Formularze kontakt + newsletter (double opt-in) wpięte pod API.
+- [x] Tryb „sklep zamknięty" (middleware → /wkrotce, sterowane w panelu Ustawienia).
+- [x] Meta Pixel (przeglądarka) + GA4 + baner zgody na cookies. Maile z logo, styl profesjonalny.
+
+## POZOSTAJE (schemat + API już gotowe — do dobudowania UI)
+- [ ] **Zestawy — konfigurator na PDP** (pick/slots): kolumna `bundle_config` istnieje,
+      panel pozwala ją ustawić (JSON), checkout przyjmuje `order_items.config`. Brakuje
+      widgetu wyboru na karcie produktu + walidacji picków w wycenie. (wzór: Kotecki
+      `components/shop/BundleConfigurator.tsx` + `backend/src/routes/checkout.ts`)
+- [ ] **Recenzje na karcie produktu**: API gotowe (`/api/reviews/*`, weryfikacja tokenem
+      zamówienia). Brakuje sekcji wyświetlania + JSON-LD aggregateRating na PDP i formularza
+      „dodaj opinię" (link z tokenem z maila/konta). (wzór: Kotecki `ProductReviews.tsx`)
+- [ ] **Panel — widoki**: kategorie CRUD, klienci, moderacja recenzji (API `admin/*` gotowe).
+- [ ] **Kasa — geowidget InPost** do wyboru paczkomatu (dziś pole na kod).
+- [ ] **Konto — strony „Adresy"/„Dane"** (API `account/*` gotowe).

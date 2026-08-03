@@ -150,12 +150,9 @@ export function PanelApp() {
         </div>
       </header>
 
-      {(access === "demo" || !hasDb) && (
+      {!hasDb && (
         <div className="border-b border-nf-border bg-nf-red/10 px-4 py-2 text-center text-xs text-nf-red-bright">
-          {access === "demo"
-            ? "Tryb demo (brak ADMIN_API_KEY) — podgląd. "
-            : ""}
-          {!hasDb ? "Baza nieskonfigurowana: dane demo, zapisy wyłączone." : ""}
+          Połącz bazę danych, aby zapisywać zmiany. Do tego czasu panel pokazuje podgląd katalogu.
         </div>
       )}
 

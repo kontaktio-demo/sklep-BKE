@@ -8,9 +8,12 @@ Sklep DZIAŁA bez konfiguracji (na danych mockowych). Poniższe kroki włączaj�
 ## 1. Supabase (baza)
 1. Załóż projekt na https://supabase.com.
 2. SQL Editor → wklej i uruchom **`supabase/schema.sql`** (tabele, RLS, RPC, CHECK-i).
-3. SQL Editor → wklej i uruchom **`supabase/seed.sql`** (katalog: 26 DogStore + 12 Pro).
-   - Regeneracja seedu z katalogu front-endu: `npx tsx scripts/gen-supabase-seed.ts`.
-4. Storage → utwórz publiczny bucket na zdjęcia produktów (np. `product-images`).
+3. **Katalog:** wybór właściciela to **pusty start** — produkty dodajesz w panelu
+   (Panel → Produkty → „Dodaj produkt"). Dlatego **NIE uruchamiaj** `supabase/seed.sql`.
+   (Seed z 26+12 przykładowymi obrożami jest dostępny, gdyby przydał się jako materiał —
+   `npx tsx scripts/gen-supabase-seed.ts` regeneruje go z katalogu front-endu.)
+4. Storage → utwórz **publiczny** bucket **`product-images`** (edytor produktu wgrywa tam
+   zdjęcia). Ustaw politykę public read.
 5. Settings → API: skopiuj `Project URL`, `anon key`, `service_role key`, `JWT secret`.
 
 ## 2. Zmienne środowiskowe (Vercel → Project → Settings → Environment Variables)
