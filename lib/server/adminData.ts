@@ -77,6 +77,7 @@ export interface VariantInput {
 
 const PRODUCT_FIELDS = [
   "name",
+  "name_en",
   "slug",
   "line",
   "pro_category",
@@ -85,10 +86,15 @@ const PRODUCT_FIELDS = [
   "sale_price_grosze",
   "currency",
   "tagline",
+  "tagline_en",
   "short_description",
+  "short_description_en",
   "description",
+  "description_en",
   "details",
+  "details_en",
   "highlights",
+  "highlights_en",
   "badges",
   "colors",
   "width",

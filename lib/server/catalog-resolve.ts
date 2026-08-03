@@ -53,14 +53,14 @@ function resolveFromMock(items: CartInput[]): ResolvedLine[] {
   return out;
 }
 
-export async function resolveCart(items: CartInput[]): Promise<ResolvedLine[]> {
+export async function resolveCart(items: CartInput[], locale: "pl" | "en" = "pl"): Promise<ResolvedLine[]> {
   const db = supabaseAdmin();
   if (!db) return resolveFromMock(items);
 
   const slugs = [...new Set(items.map((i) => i.slug))];
   const { data, error } = await db
     .from("products")
-    .select("id,slug,name,line,price_grosze,in_stock,active,product_variants(id,sku,price_grosze,in_stock),product_images(url,sort_order)")
+    .select("id,slug,name,name_en,line,price_grosze,in_stock,active,product_variants(id,sku,price_grosze,in_stock),product_images(url,sort_order)")
     .in("slug", slugs)
     .eq("active", true);
   if (error || !data) return resolveFromMock(items);
@@ -69,6 +69,7 @@ export async function resolveCart(items: CartInput[]): Promise<ResolvedLine[]> {
     id: string;
     slug: string;
     name: string;
+    name_en: string | null;
     line: string;
     price_grosze: number;
     product_variants: { id: string; sku: string; price_grosze: number; in_stock: boolean }[];
@@ -87,7 +88,7 @@ export async function resolveCart(items: CartInput[]): Promise<ResolvedLine[]> {
       product_id: r.id,
       variant_id: variant?.id ?? null,
       slug: r.slug,
-      name: r.name,
+      name: locale === "en" && r.name_en ? r.name_en : r.name,
       variant_sku: variant?.sku ?? null,
       price_grosze: priceG,
       qty: Math.max(1, Math.min(99, Math.floor(it.qty))),

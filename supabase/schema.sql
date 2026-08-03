@@ -30,6 +30,9 @@ create table if not exists categories (
   created_at  timestamptz not null default now()
 );
 alter table categories add column if not exists line text not null default 'shop';
+-- EN kategorii (i18n): tytuł + opis linii Pro po angielsku (puste => fallback PL).
+alter table categories add column if not exists name_en text;
+alter table categories add column if not exists tagline_en text;
 do $$ begin alter table categories add constraint categories_line_chk check (line in ('shop','pro')); exception when duplicate_object then null; end $$;
 
 -- ── Produkty (model; jednostka kupna to wariant) ─────────────
@@ -76,6 +79,14 @@ alter table products add column if not exists id_panel_compatible boolean not nu
 alter table products add column if not exists pro_standard text;
 alter table products add column if not exists bestseller_rank int;
 alter table products add column if not exists bundle_config jsonb;
+-- Angielskie wersje treści (i18n). Puste => front pokazuje polskie (fallback). Panel wypełnia
+-- ręcznie lub przyciskiem „Przetłumacz na EN".
+alter table products add column if not exists name_en text;
+alter table products add column if not exists tagline_en text;
+alter table products add column if not exists short_description_en text;
+alter table products add column if not exists description_en text;
+alter table products add column if not exists details_en text[];
+alter table products add column if not exists highlights_en text[];
 do $$ begin alter table products add constraint products_line_chk check (line in ('shop','pro')); exception when duplicate_object then null; end $$;
 create index if not exists products_category_idx on products (category_id);
 create index if not exists products_active_idx on products (active);

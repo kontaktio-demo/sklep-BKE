@@ -32,34 +32,34 @@
     "required": "Pole wymagane",
     "send": "Wyślij",
     "save": "Zapisz",
-    "currency": "zł"
-  },
-  "size": {
-    "small": "Mały",
-    "medium": "Średni",
-    "large": "Duży",
-    "weightLarge": "30 kg i więcej"
-  },
-  "company": {
-    "officeHours": "poniedziałek – piątek, 9:00–17:00",
-    "responseTime": "do 24 godzin w dni robocze",
-    "country": "Polska",
-    "returnsRecipient": "Dog Store sp. z o.o. — zwroty"
-  },
-  "shipping": {
-    "locker": "Paczkomat InPost",
-    "courier": "Kurier InPost",
-    "time": "1–2 dni robocze"
-  },
-  "trust": {
-    "warranty": "2 lata gwarancji",
-    "shipping24": "Wysyłka w 24 h",
-    "returns60": "60 dni na zwrot"
-  },
-  "payment": {
-    "aria": "Akceptowane metody płatności",
-    "card": "Karta",
-    "blik": "BLIK",
-    "przelewy24": "Przelewy24"
+    "currency": "zł",
+    "size": {
+      "small": "Mały",
+      "medium": "Średni",
+      "large": "Duży",
+      "weightLarge": "30 kg i więcej"
+    },
+    "company": {
+      "officeHours": "poniedziałek – piątek, 9:00–17:00",
+      "responseTime": "do 24 godzin w dni robocze",
+      "country": "Polska",
+      "returnsRecipient": "Dog Store sp. z o.o. — zwroty"
+    },
+    "shipping": {
+      "locker": "Paczkomat InPost",
+      "courier": "Kurier InPost",
+      "time": "1–2 dni robocze"
+    },
+    "trust": {
+      "warranty": "2 lata gwarancji",
+      "shipping24": "Wysyłka w 24 h",
+      "returns60": "60 dni na zwrot"
+    },
+    "payment": {
+      "aria": "Akceptowane metody płatności",
+      "card": "Karta",
+      "blik": "BLIK",
+      "przelewy24": "Przelewy24"
+    }
   }
 }

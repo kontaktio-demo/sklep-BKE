@@ -2,6 +2,7 @@ import { products } from "./products.mock";
 import { filterGroups } from "./filters.mock";
 import { proCategories as mockProCategories, proProducts } from "./pro.mock";
 import { dbGetProCategories, dbGetProduct, dbGetProducts } from "./catalog";
+import { getUserLocale } from "@/i18n/locale";
 import type {
   Collection,
   FilterGroup,
@@ -30,12 +31,14 @@ const mockShop = products.filter((p) => p.line === "shop");
 const mockAll = [...mockShop, ...proProducts];
 
 async function shopProducts(): Promise<Product[]> {
-  const db = await dbGetProducts("shop").catch(() => null);
+  const locale = await getUserLocale();
+  const db = await dbGetProducts("shop", locale).catch(() => null);
   return db ?? mockShop;
 }
 
 async function proProductsAll(): Promise<Product[]> {
-  const db = await dbGetProducts("pro").catch(() => null);
+  const locale = await getUserLocale();
+  const db = await dbGetProducts("pro", locale).catch(() => null);
   return db ?? proProducts;
 }
 
@@ -60,7 +63,8 @@ export async function getFilters(handle: string): Promise<FilterGroup[]> {
 
 /** PDP: null (not throw) so the route can render notFound() for unknown slugs. */
 export async function getProduct(slug: string): Promise<Product | null> {
-  const fromDb = await dbGetProduct(slug).catch(() => undefined);
+  const locale = await getUserLocale();
+  const fromDb = await dbGetProduct(slug, locale).catch(() => undefined);
   if (fromDb !== undefined) return fromDb; // DB odpowiedziała (produkt albo null=brak)
   return mockAll.find((p) => p.slug === slug) ?? null;
 }
@@ -87,7 +91,8 @@ export async function getRelatedProducts(slug: string, limit = 8): Promise<Produ
 // ---- Dog Store Pro ----
 
 export async function getProCategories(): Promise<ProCategoryInfo[]> {
-  const db = await dbGetProCategories().catch(() => null);
+  const locale = await getUserLocale();
+  const db = await dbGetProCategories(locale).catch(() => null);
   return db ?? mockProCategories;
 }
 

@@ -32,34 +32,34 @@
     "required": "Required field",
     "send": "Send",
     "save": "Save",
-    "currency": "zł"
-  },
-  "size": {
-    "small": "Small",
-    "medium": "Medium",
-    "large": "Large",
-    "weightLarge": "30 kg and over"
-  },
-  "company": {
-    "officeHours": "Monday–Friday, 9:00–17:00",
-    "responseTime": "within 24 hours on business days",
-    "country": "Poland",
-    "returnsRecipient": "Dog Store sp. z o.o. — returns"
-  },
-  "shipping": {
-    "locker": "InPost Parcel Locker",
-    "courier": "InPost Courier",
-    "time": "1–2 business days"
-  },
-  "trust": {
-    "warranty": "2-year warranty",
-    "shipping24": "Ships within 24 h",
-    "returns60": "60-day returns"
-  },
-  "payment": {
-    "aria": "Accepted payment methods",
-    "card": "Card",
-    "blik": "BLIK",
-    "przelewy24": "Przelewy24"
+    "currency": "zł",
+    "size": {
+      "small": "Small",
+      "medium": "Medium",
+      "large": "Large",
+      "weightLarge": "30 kg and over"
+    },
+    "company": {
+      "officeHours": "Monday–Friday, 9:00–17:00",
+      "responseTime": "within 24 hours on business days",
+      "country": "Poland",
+      "returnsRecipient": "Dog Store sp. z o.o. — returns"
+    },
+    "shipping": {
+      "locker": "InPost Parcel Locker",
+      "courier": "InPost Courier",
+      "time": "1–2 business days"
+    },
+    "trust": {
+      "warranty": "2-year warranty",
+      "shipping24": "Ships within 24 h",
+      "returns60": "60-day returns"
+    },
+    "payment": {
+      "aria": "Accepted payment methods",
+      "card": "Card",
+      "blik": "BLIK",
+      "przelewy24": "Przelewy24"
+    }
   }
 }

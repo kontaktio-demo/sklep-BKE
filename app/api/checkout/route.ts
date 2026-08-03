@@ -58,8 +58,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "ADDRESS_REQUIRED" }, { status: 400 });
   }
 
-  // 1) Wycena z ZAUFANEGO źródła (baza/mock) — nie z klienta.
-  const lines = await resolveCart(body.items);
+  // 1) Wycena z ZAUFANEGO źródła (baza/mock) — nie z klienta. Nazwy pozycji w języku klienta.
+  const locale = await getUserLocale();
+  const lines = await resolveCart(body.items, locale);
   if (lines.length === 0) return NextResponse.json({ ok: false, error: "EMPTY_CART" }, { status: 400 });
   const subtotal = lines.reduce((s, l) => s + l.price_grosze * l.qty, 0);
 
@@ -125,7 +126,7 @@ export async function POST(req: Request) {
       shipping_address: body.shipping_address ?? null,
       parcel_locker: body.parcel_locker ?? null,
       items: lines,
-      locale: await getUserLocale(),
+      locale,
     });
     orderId = created.order_id;
   } catch (e) {

@@ -9,8 +9,14 @@ import { defaultLocale, isLocale, LOCALE_COOKIE, type Locale } from "./config";
  * Czytane wyłącznie po stronie serwera (request config, komponenty serwerowe).
  */
 export async function getUserLocale(): Promise<Locale> {
-  const fromHeader = (await headers()).get("x-dogstore-locale");
-  if (isLocale(fromHeader)) return fromHeader;
-  const fromCookie = (await cookies()).get(LOCALE_COOKIE)?.value;
-  return isLocale(fromCookie) ? fromCookie : defaultLocale;
+  // Poza kontekstem żądania (build-time: generateStaticParams / prerender) headers()/cookies()
+  // rzucają — wtedy spadamy na język domyślny. W żądaniu czytamy nagłówek /en, potem cookie.
+  try {
+    const fromHeader = (await headers()).get("x-dogstore-locale");
+    if (isLocale(fromHeader)) return fromHeader;
+    const fromCookie = (await cookies()).get(LOCALE_COOKIE)?.value;
+    return isLocale(fromCookie) ? fromCookie : defaultLocale;
+  } catch {
+    return defaultLocale;
+  }
 }

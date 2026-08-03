@@ -49,6 +49,12 @@ export function ProductEditor({ productId, defaultLine, onClose }: { productId: 
   const [tagline, setTagline] = useState("");
   const [shortDesc, setShortDesc] = useState("");
   const [description, setDescription] = useState("");
+  // Angielskie wersje treści (i18n). Puste => front pokazuje polskie.
+  const [nameEn, setNameEn] = useState("");
+  const [taglineEn, setTaglineEn] = useState("");
+  const [shortDescEn, setShortDescEn] = useState("");
+  const [descriptionEn, setDescriptionEn] = useState("");
+  const [translating, setTranslating] = useState(false);
   const [width, setWidth] = useState("");
   const [collarType, setCollarType] = useState("nylon");
   const [idPanel, setIdPanel] = useState(false);
@@ -82,6 +88,10 @@ export function ProductEditor({ productId, defaultLine, onClose }: { productId: 
       setTagline((p.tagline as string) ?? "");
       setShortDesc((p.short_description as string) ?? "");
       setDescription((p.description as string) ?? "");
+      setNameEn((p.name_en as string) ?? "");
+      setTaglineEn((p.tagline_en as string) ?? "");
+      setShortDescEn((p.short_description_en as string) ?? "");
+      setDescriptionEn((p.description_en as string) ?? "");
       setWidth((p.width as string) ?? "");
       setCollarType((p.collar_type as string) ?? "nylon");
       setIdPanel(Boolean(p.id_panel_compatible));
@@ -137,6 +147,10 @@ export function ProductEditor({ productId, defaultLine, onClose }: { productId: 
       tagline,
       short_description: shortDesc,
       description,
+      name_en: nameEn || null,
+      tagline_en: taglineEn || null,
+      short_description_en: shortDescEn || null,
+      description_en: descriptionEn || null,
       width: width || null,
       collar_type: collarType,
       id_panel_compatible: idPanel,
@@ -191,6 +205,26 @@ export function ProductEditor({ productId, defaultLine, onClose }: { productId: 
   const removeImage = async (imageId: string) => {
     await adminFetch(`/products/images/${imageId}`, { method: "DELETE" });
     setImages((prev) => prev.filter((i) => i.id !== imageId));
+  };
+
+  // Auto-tłumaczenie treści PL -> EN (model Claude). Wypełnia pola EN, właściciel może poprawić.
+  const translateEn = async () => {
+    setTranslating(true);
+    setMsg(null);
+    const r = await adminFetch<{ name?: string; tagline?: string; short_description?: string; description?: string }>(
+      "/translate",
+      { method: "POST", body: JSON.stringify({ name, tagline, short_description: shortDesc, description }) }
+    );
+    setTranslating(false);
+    if (r.ok && r.data) {
+      if (r.data.name) setNameEn(r.data.name);
+      if (r.data.tagline) setTaglineEn(r.data.tagline);
+      if (r.data.short_description) setShortDescEn(r.data.short_description);
+      if (r.data.description) setDescriptionEn(r.data.description);
+      setMsg("Przetłumaczono na EN — sprawdź i zapisz.");
+    } else {
+      setMsg("Tłumaczenie niedostępne (skonfiguruj ANTHROPIC_API_KEY) — pola EN możesz wpisać ręcznie.");
+    }
   };
 
   return (
@@ -263,6 +297,28 @@ export function ProductEditor({ productId, defaultLine, onClose }: { productId: 
           <div>
             <label className={LABEL}>Opis</label>
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} className={`${INPUT} h-auto py-2`} />
+          </div>
+          {/* Wersja angielska treści — wypełniana ręcznie lub przyciskiem auto-tłumaczenia. */}
+          <div className="rounded-[2px] border border-nf-control p-3">
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <span className="type-label text-nf-dim">Wersja angielska (EN)</span>
+              <button
+                type="button"
+                onClick={translateEn}
+                disabled={translating}
+                className="shrink-0 rounded-[2px] border border-nf-control px-3 py-1 text-xs text-nf-white transition-colors hover:border-nf-white disabled:opacity-50"
+              >
+                {translating ? "Tłumaczę…" : "Przetłumacz na EN"}
+              </button>
+            </div>
+            <label className={LABEL}>Nazwa (EN)</label>
+            <input value={nameEn} onChange={(e) => setNameEn(e.target.value)} className={INPUT} placeholder="Name (English)" />
+            <label className={`${LABEL} mt-2`}>Tagline (EN)</label>
+            <input value={taglineEn} onChange={(e) => setTaglineEn(e.target.value)} className={INPUT} />
+            <label className={`${LABEL} mt-2`}>Krótki opis (EN)</label>
+            <input value={shortDescEn} onChange={(e) => setShortDescEn(e.target.value)} className={INPUT} />
+            <label className={`${LABEL} mt-2`}>Opis (EN)</label>
+            <textarea value={descriptionEn} onChange={(e) => setDescriptionEn(e.target.value)} rows={4} className={`${INPUT} h-auto py-2`} />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
