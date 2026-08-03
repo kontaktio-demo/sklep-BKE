@@ -63,7 +63,7 @@ async function enablePush(): Promise<string> {
     applicationServerKey: urlBase64ToUint8Array(keyRes.publicKey) as BufferSource,
   });
   const save = await adminFetch("/push", { method: "POST", body: JSON.stringify({ subscription: sub }) });
-  return save.ok ? "Powiadomienia włączone ✓" : "Nie udało się zapisać subskrypcji.";
+  return save.ok ? "Powiadomienia włączone" : "Nie udało się zapisać subskrypcji.";
 }
 
 export function PanelApp() {
@@ -347,7 +347,7 @@ function OrderDetail({ id, onBack }: { id: string; onBack: () => void }) {
     setMsg(null);
     const r = await adminFetch<unknown>(`/orders/${id}/label`, { method: "POST" });
     setBusy(false);
-    setMsg(r.ok ? "Etykieta utworzona ✓" : r.error === "INPOST_NOT_CONFIGURED" ? "InPost nieskonfigurowany (uzupełnij ENV)." : `Błąd: ${r.error ?? ""}`);
+    setMsg(r.ok ? "Etykieta utworzona" : r.error === "INPOST_NOT_CONFIGURED" ? "InPost nieskonfigurowany (uzupełnij ENV)." : `Błąd: ${r.error ?? ""}`);
     void load();
   };
   const downloadLabel = async () => {
@@ -680,7 +680,7 @@ function Settings({ writable }: { writable: boolean }) {
         Sklep otwarty
       </label>
       {writable ? (
-        <Button onClick={save}>{saved ? "Zapisano ✓" : "Zapisz"}</Button>
+        <Button onClick={save}>{saved ? "Zapisano" : "Zapisz"}</Button>
       ) : (
         <p className="text-xs text-nf-dim">Zapis wymaga konfiguracji bazy.</p>
       )}

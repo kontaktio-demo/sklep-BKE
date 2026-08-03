@@ -176,7 +176,7 @@ export function ProductEditor({ productId, defaultLine, onClose }: { productId: 
       : await adminFetch<{ id: string }>("/products", { method: "POST", body: JSON.stringify(payload) });
     setBusy(false);
     if (res.ok) {
-      setMsg("Zapisano ✓");
+      setMsg("Zapisano");
       if (!id && res.data?.id) setId(res.data.id);
     } else {
       setMsg(res.message ?? "Nie udało się zapisać.");

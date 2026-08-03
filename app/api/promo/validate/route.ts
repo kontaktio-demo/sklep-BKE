@@ -32,7 +32,7 @@ export async function POST(req: Request) {
   const { data } = await db
     .from("promotions")
     .select("id,code,kind,value,min_order_grosze,active,starts_at,ends_at,usage_limit,used_count")
-    .ilike("code", parsed.data.code)
+    .eq("code", parsed.data.code.toUpperCase())
     .maybeSingle();
 
   const result = evaluatePromo((data as PromoRow) ?? null, parsed.data.subtotal_grosze);

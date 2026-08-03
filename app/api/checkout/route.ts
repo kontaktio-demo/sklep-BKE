@@ -77,7 +77,7 @@ export async function POST(req: Request) {
     const { data } = await db
       .from("promotions")
       .select("id,code,kind,value,min_order_grosze,active,starts_at,ends_at,usage_limit,used_count")
-      .ilike("code", body.promo_code)
+      .eq("code", body.promo_code.toUpperCase())
       .maybeSingle();
     const res = evaluatePromo((data as PromoRow) ?? null, subtotal);
     if (res.ok) {
