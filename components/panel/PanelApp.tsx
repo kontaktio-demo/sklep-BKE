@@ -362,6 +362,8 @@ interface OrderFull {
   phone: string | null;
   status: string;
   payment_status: string;
+  subtotal_grosze: number;
+  discount_grosze: number;
   total_grosze: number;
   shipping_grosze: number;
   shipping_method: string | null;
@@ -426,6 +428,20 @@ function OrderDetail({ id, onBack }: { id: string; onBack: () => void }) {
               <span className="tabular-nums text-nf-text">{zl(it.price_grosze * it.qty)}</span>
             </div>
           ))}
+          <div className="mt-1 flex justify-between border-t border-nf-border pt-2 text-nf-dim">
+            <span>Wartość produktów</span>
+            <span className="tabular-nums">{zl(order.subtotal_grosze)}</span>
+          </div>
+          {order.discount_grosze > 0 && (
+            <div className="flex justify-between text-nf-dim">
+              <span>Rabat</span>
+              <span className="tabular-nums">-{zl(order.discount_grosze)}</span>
+            </div>
+          )}
+          <div className="flex justify-between text-nf-dim">
+            <span>Wysyłka</span>
+            <span className="tabular-nums">{zl(order.shipping_grosze)}</span>
+          </div>
           <div className="flex justify-between border-t border-nf-border pt-2 font-semibold text-nf-white">
             <span>Razem</span>
             <span>{zl(order.total_grosze)}</span>
