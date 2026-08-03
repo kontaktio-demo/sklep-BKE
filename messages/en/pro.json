@@ -1,1 +1,133 @@
-{}
+{
+  "pro": {
+    "meta": {
+      "title": "Dog Store Pro",
+      "description": "Duty equipment for working dogs. Patrol, scent work, training."
+    },
+    "hero": {
+      "eyebrow": "Duty equipment",
+      "title": "Dogs that work under <accent>load</accent>",
+      "body": "Equipment for patrol duty, scent work and training. A service dog loads a collar differently than a family dog — so the webbing, hardware and stitching here are specified to different figures.",
+      "ctaCategories": "View categories",
+      "ctaInquiry": "Unit inquiry"
+    },
+    "nav": {
+      "aria": "Dog Store Pro categories",
+      "all": "All"
+    },
+    "grid": {
+      "eyebrow": "Catalog",
+      "heading": "Categories",
+      "productCount": "{count, plural, one {# item} other {# items}}"
+    },
+    "standards": {
+      "eyebrow": "Standard",
+      "heading": "Equipment returns<br></br>to duty",
+      "ctaPatrol": "Go to patrol",
+      "entries": {
+        "field": {
+          "label": "Field testing",
+          "body": "A new item goes to handlers first and works with dogs through a full season. Only what comes back without a burst seam or a battered fitting goes on sale."
+        },
+        "spec": {
+          "label": "Specifications",
+          "body": "For every item we state break strength and weight in grams. If a collar weighs 168 g and lets go at 380 kg, that stands in the spec sheet — not behind the word durable."
+        },
+        "service": {
+          "label": "Service",
+          "body": "We repair seams and replace hardware in-house, with no need to send gear back to the maker. The collar returns to duty instead of waiting out a quarter in a warranty queue."
+        }
+      }
+    },
+    "categoryPage": {
+      "breadcrumbAria": "Breadcrumb",
+      "sectionLabel": "Duty equipment",
+      "metaUnavailable": "Category unavailable",
+      "emptyTitle": "No items in this category",
+      "emptyBody": "You will find the rest of the Dog Store Pro line in the categories on the bar above.",
+      "positionsHeading": "Items in the {title} category",
+      "positionsCount": "Items: {count}"
+    },
+    "card": {
+      "badgeOut": "Out",
+      "badgeNew": "New",
+      "sizes": "Sizes",
+      "available": "in stock",
+      "unavailable": "out of stock",
+      "cta": "Product page"
+    },
+    "inquiry": {
+      "meta": {
+        "title": "Request for quote",
+        "description": "Request for quote on Dog Store Pro equipment for units, kennels and training schools. Pricing, lead times, marking."
+      },
+      "breadcrumb": "Request for quote",
+      "heading": "Request for quote",
+      "intro": "A form for units, kennels and training schools ordering equipment in larger quantities or needing marking. Single catalog items you buy the usual way, through the cart.",
+      "terms": {
+        "pricing": {
+          "title": "Pricing",
+          "body": "We reply within two business days. The quote states unit price, lead time and the cost of marking."
+        },
+        "marking": {
+          "title": "Marking",
+          "body": "Unit patches, numbers and ID panels are sewn in-house. We confirm the design before production."
+        },
+        "leadTime": {
+          "title": "Lead times",
+          "body": "Catalog items ship from stock. Orders with marking are fulfilled in 10 to 15 business days."
+        },
+        "settlement": {
+          "title": "Payment terms",
+          "body": "Invoice with deferred payment for units and institutions. Prepayment for everyone else."
+        }
+      }
+    },
+    "form": {
+      "dataHeading": "Details",
+      "unitLabel": "Unit or company",
+      "personLabel": "Contact person",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "deadlineLabel": "Expected deadline",
+      "deadlinePlaceholder": "e.g. by the end of the quarter",
+      "notesLabel": "Notes, marking, requirements",
+      "catalogHeading": "Catalog items",
+      "catalogIntro": "Set quantities on the items you want in the quote. You can leave them empty and describe your needs in the notes.",
+      "qtyGroup": "Quantity: {name}",
+      "qtyMinus": "Decrease quantity: {name}",
+      "qtyPlus": "Increase quantity: {name}",
+      "qtyNone": "{name}: none selected",
+      "qtyAnnounce": "{name}: {count, plural, one {# unit} other {# units}}",
+      "consent": "I agree to be contacted about this inquiry and to the processing of my data in accordance with the <privacy>privacy policy</privacy>.",
+      "submit": "Prepare inquiry",
+      "chosenSome": "Selected items: {count}",
+      "chosenNone": "No catalog items selected",
+      "validation": {
+        "unit": "Enter the name of your unit or company.",
+        "person": "Enter a contact person.",
+        "emailRequired": "Enter an email address.",
+        "emailInvalid": "The email address format is invalid.",
+        "consent": "Without consent we have no basis to reply."
+      },
+      "success": {
+        "heading": "Inquiry prepared",
+        "body": "This form does not send a message. Copy the text below and send it to <email>pro@dogstore.pl</email>. We reply within two business days.",
+        "back": "Back to the form"
+      },
+      "summary": {
+        "unit": "Unit: {value}",
+        "person": "Contact person: {value}",
+        "email": "Email: {value}",
+        "phone": "Phone: {value}",
+        "deadline": "Deadline: {value}",
+        "notEntered": "not provided",
+        "itemsLabel": "Items:",
+        "itemLine": "- {name} ({sku}), qty: {qty}",
+        "itemsNone": "- no catalog items selected",
+        "notes": "Notes: {value}",
+        "notesNone": "none"
+      }
+    }
+  }
+}

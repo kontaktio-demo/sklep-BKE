@@ -1,1 +1,7 @@
-{}
+{
+  "cookies": {
+    "message": "Używamy plików cookie do statystyk i marketingu. Możesz zaakceptować albo zostać przy niezbędnych. <link>Polityka prywatności</link>.",
+    "acceptEssential": "Tylko niezbędne",
+    "accept": "Akceptuję"
+  }
+}

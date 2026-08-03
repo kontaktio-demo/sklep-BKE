@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { SearchResults } from "@/components/search/SearchResults";
 import { getProProducts, getProducts } from "@/lib/data";
 import { searchProducts } from "@/lib/search";
@@ -18,13 +19,14 @@ function readQuery(raw: string | string[] | undefined): string {
 
 export async function generateMetadata({ searchParams }: SearchPageProps): Promise<Metadata> {
   const query = readQuery((await searchParams).q);
+  const t = await getTranslations("catalog");
 
   return {
     // sufiks "| Dog Store" dokłada szablon tytułu z app/layout.tsx
-    title: query ? `Szukaj: ${query}` : "Szukaj",
+    title: query ? t("meta.searchTitleQuery", { query }) : t("meta.searchTitle"),
     description: query
-      ? `Wyniki wyszukiwania dla frazy ${query} w sklepie Dog Store i w katalogu Dog Store Pro.`
-      : "Przeszukaj obroże ze sklepu Dog Store i sprzęt służbowy z linii Dog Store Pro.",
+      ? t("meta.searchDescriptionQuery", { query })
+      : t("meta.searchDescription"),
     // lista wynikow nie idzie do indeksu: kazda fraza tworzylaby osobny adres z ta sama trescia
     robots: { index: false, follow: true },
   };

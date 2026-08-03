@@ -1,161 +1,133 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { COMPANY } from "@/lib/nav";
 import { Bullets, Facts, InfoHeader, InfoLink, Mail, Note, P, Section } from "../_ui";
 
-export const metadata: Metadata = {
-  title: "Polityka prywatności",
-  description:
-    "Kto jest administratorem danych, jakie dane zbieramy, po co, na jakiej podstawie prawnej, jak długo je trzymamy i jakie masz prawa. Cookies i kontakt w sprawach RODO.",
-  alternates: { canonical: "/polityka-prywatnosci" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("infoLegal.polityka.meta");
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: { canonical: "/polityka-prywatnosci" },
+  };
+}
 
 const ADDRESS = `${COMPANY.street}, ${COMPANY.postalCode} ${COMPANY.city}`;
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
+  const t = await getTranslations("infoLegal.polityka");
+
   return (
     <>
       <InfoHeader
-        title="Polityka prywatności"
-        lead="Zbieramy tyle danych, ile potrzeba, żeby wysłać paczkę, wystawić dokument i odpowiedzieć na wiadomość. Poniżej wprost: co, po co i na jak długo."
-        updated="Obowiązuje od 1 lipca 2026 r."
+        title={t("header.title")}
+        lead={t("header.lead")}
+        updated={t("header.updated")}
       />
 
-      <Section title="Administrator danych">
+      <Section title={t("admin.title")}>
         <Facts
           rows={[
-            { label: "Administrator", value: COMPANY.legalName },
-            { label: "Adres", value: `${ADDRESS}, ${COMPANY.country}` },
-            { label: "NIP", value: COMPANY.nip },
-            { label: "Kontakt w sprawie danych", value: <Mail address={COMPANY.privacyEmail} /> },
+            { label: t("admin.labelAdmin"), value: COMPANY.legalName },
+            { label: t("admin.labelAddress"), value: `${ADDRESS}, ${COMPANY.country}` },
+            { label: t("admin.labelNip"), value: COMPANY.nip },
+            { label: t("admin.labelContact"), value: <Mail address={COMPANY.privacyEmail} /> },
           ]}
         />
-        <P>
-          Nie powołaliśmy inspektora ochrony danych - nie mamy takiego obowiązku. Wszystkie
-          sprawy dotyczące danych osobowych obsługujemy pod adresem {COMPANY.privacyEmail}.
-        </P>
+        <P>{t("admin.note", { email: COMPANY.privacyEmail })}</P>
       </Section>
 
-      <Section title="Jakie dane zbieramy">
+      <Section title={t("collect.title")}>
         <Bullets
           items={[
-            "Zamówienie: imię i nazwisko, adres dostawy, e-mail, telefon, treść zamówienia. Przy fakturze także nazwa firmy i NIP.",
-            "Kontakt: imię, adres e-mail i treść wiadomości, którą wysyłasz do nas pocztą elektroniczną. Formularze na stronie nie przesyłają danych na nasz serwer, tylko przygotowują treść wiadomości po Twojej stronie.",
-            "Newsletter: adres e-mail.",
-            "Techniczne: adres IP, typ przeglądarki, zdarzenia w sklepie zapisywane w logach serwera.",
-            "Płatności: numeru karty nie widzimy i nie przechowujemy. Obsługuje ją operator płatności, my dostajemy tylko status transakcji.",
+            t("collect.b1"),
+            t("collect.b2"),
+            t("collect.b3"),
+            t("collect.b4"),
+            t("collect.b5"),
           ]}
         />
       </Section>
 
-      <Section title="Cele i podstawy prawne">
+      <Section title={t("purposes.title")}>
         <Facts
           rows={[
-            {
-              label: "Realizacja zamówienia",
-              value: "Art. 6 ust. 1 lit. b RODO - wykonanie umowy sprzedaży.",
-            },
-            {
-              label: "Faktury i księgowość",
-              value: "Art. 6 ust. 1 lit. c RODO - obowiązek prawny wynikający z przepisów podatkowych.",
-            },
-            {
-              label: "Zwroty i reklamacje",
-              value: "Art. 6 ust. 1 lit. c RODO - obowiązki wynikające z ustawy o prawach konsumenta.",
-            },
-            {
-              label: "Newsletter",
-              value: "Art. 6 ust. 1 lit. a RODO - zgoda, którą można wycofać w każdej chwili.",
-            },
-            {
-              label: "Odpowiedź na wiadomość",
-              value: "Art. 6 ust. 1 lit. a i f RODO - zgoda oraz nasz uzasadniony interes: obsługa zapytania.",
-            },
-            {
-              label: "Dochodzenie roszczeń",
-              value: "Art. 6 ust. 1 lit. f RODO - uzasadniony interes administratora.",
-            },
+            { label: t("purposes.orderLabel"), value: t("purposes.orderValue") },
+            { label: t("purposes.invoiceLabel"), value: t("purposes.invoiceValue") },
+            { label: t("purposes.returnsLabel"), value: t("purposes.returnsValue") },
+            { label: t("purposes.newsletterLabel"), value: t("purposes.newsletterValue") },
+            { label: t("purposes.replyLabel"), value: t("purposes.replyValue") },
+            { label: t("purposes.claimsLabel"), value: t("purposes.claimsValue") },
           ]}
         />
       </Section>
 
-      <Section title="Komu przekazujemy dane">
+      <Section title={t("recipients.title")}>
         <Bullets
           items={[
-            "Przewoźnicy: InPost i firmy kurierskie realizujące dostawę.",
-            "Operator płatności: obsługa BLIK, przelewów online, kart i PayPal.",
-            "Biuro rachunkowe: księgowanie sprzedaży i archiwizacja dokumentów.",
-            "Dostawca hostingu i poczty: przechowywanie danych sklepu i korespondencji.",
-            "Organy publiczne, gdy przepis prawa tego wymaga.",
+            t("recipients.b1"),
+            t("recipients.b2"),
+            t("recipients.b3"),
+            t("recipients.b4"),
+            t("recipients.b5"),
+          ]}
+        />
+        <P>{t("recipients.outro")}</P>
+      </Section>
+
+      <Section title={t("retention.title")}>
+        <Bullets
+          items={[
+            t("retention.b1"),
+            t("retention.b2"),
+            t("retention.b3"),
+            t("retention.b4"),
+            t("retention.b5"),
+          ]}
+        />
+      </Section>
+
+      <Section title={t("rights.title")}>
+        <Bullets
+          items={[
+            t("rights.b1"),
+            t("rights.b2"),
+            t("rights.b3"),
+            t("rights.b4"),
+            t("rights.b5"),
+            t("rights.b6"),
+            t("rights.b7"),
           ]}
         />
         <P>
-          Nie sprzedajemy danych i nie udostępniamy ich do celów marketingowych innych firm.
-          Nie przekazujemy danych poza Europejski Obszar Gospodarczy.
+          {t.rich("rights.outro", {
+            email: COMPANY.privacyEmail,
+            mail: () => <Mail address={COMPANY.privacyEmail} />,
+          })}
         </P>
       </Section>
 
-      <Section title="Jak długo trzymamy dane">
+      <Section title={t("cookies.title")}>
         <Bullets
           items={[
-            "Dane zamówień i dokumenty księgowe: 5 lat licząc od końca roku, w którym upłynął termin płatności podatku.",
-            "Dane potrzebne do obrony przed roszczeniami: do upływu terminu przedawnienia, zwykle 6 lat.",
-            "Newsletter: do wycofania zgody.",
-            "Korespondencja: 12 miesięcy od zakończenia sprawy.",
-            "Logi serwera: 12 miesięcy.",
+            t("cookies.b1"),
+            t("cookies.b2"),
+            t("cookies.b3"),
           ]}
         />
+        <Note>{t("cookies.note")}</Note>
+        <P>{t("cookies.outro")}</P>
       </Section>
 
-      <Section title="Twoje prawa">
-        <Bullets
-          items={[
-            "Dostęp do danych i otrzymanie ich kopii.",
-            "Sprostowanie danych nieprawidłowych i uzupełnienie niepełnych.",
-            "Usunięcie danych, o ile nie stoi temu na przeszkodzie obowiązek prawny (na przykład przechowywanie faktur).",
-            "Ograniczenie przetwarzania.",
-            "Przeniesienie danych do innego administratora.",
-            "Sprzeciw wobec przetwarzania opartego na uzasadnionym interesie.",
-            "Wycofanie zgody w każdej chwili, bez wpływu na zgodność z prawem przetwarzania sprzed wycofania.",
-          ]}
-        />
-        <P>
-          Żądanie zgłaszasz na <Mail address={COMPANY.privacyEmail} />. Odpowiadamy w terminie
-          miesiąca. Masz też prawo wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych,
-          ul. Stawki 2, 00-193 Warszawa.
-        </P>
+      <Section title={t("profiling.title")}>
+        <P>{t("profiling.body")}</P>
       </Section>
 
-      <Section title="Cookies i pamięć przeglądarki">
-        <Bullets
-          items={[
-            "Niezbędne: utrzymanie sesji i działanie sklepu. Nie wymagają zgody.",
-            "Analityczne: statystyka odwiedzin, zbierane wyłącznie za zgodą i tylko w formie zbiorczej.",
-            "Marketingowe: nie stosujemy.",
-          ]}
-        />
-        <Note>
-          Zawartość koszyka trzymamy w pamięci Twojej przeglądarki (localStorage, klucz
-          dogstore-cart-v1). Te dane nie trafiają na nasz serwer i nie są nikomu przekazywane.
-          Możesz je usunąć, czyszcząc dane witryny w ustawieniach przeglądarki.
-        </Note>
+      <Section title={t("changes.title")}>
         <P>
-          Zgody na cookies analityczne zmienisz w ustawieniach przeglądarki. Zablokowanie
-          plików niezbędnych może uniemożliwić złożenie zamówienia.
-        </P>
-      </Section>
-
-      <Section title="Profilowanie">
-        <P>
-          Nie podejmujemy decyzji w sposób zautomatyzowany i nie profilujemy klientów. Nie
-          budujemy profili zachowań ani nie targetujemy reklam na podstawie Twoich zakupów.
-        </P>
-      </Section>
-
-      <Section title="Zmiany polityki">
-        <P>
-          Politykę aktualizujemy, gdy zmienia się zakres usług albo przepisy. Data
-          obowiązywania jest podana na górze strony. Zasady zamawiania opisuje{" "}
-          <InfoLink href="/regulamin">regulamin</InfoLink>.
+          {t.rich("changes.body", {
+            link: (chunks) => <InfoLink href="/regulamin">{chunks}</InfoLink>,
+          })}
         </P>
       </Section>
     </>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useAuth } from "@/components/account/AuthProvider";
 import { accountFetch } from "@/lib/account";
 import { Button } from "@/components/ui/Button";
@@ -11,14 +12,15 @@ const WRAP = "mx-auto max-w-3xl px-4 py-12";
 const CARD = "rounded-[3px] border border-nf-border bg-nf-elevated p-6";
 
 function NotConfigured() {
+  const t = useTranslations("account");
   return (
     <div className={WRAP}>
-      <h1 className="type-h1 text-nf-white">Konto</h1>
+      <h1 className="type-h1 text-nf-white">{t("accountTitle")}</h1>
       <p className="mt-3 text-nf-muted">
-        Logowanie do konta będzie dostępne wkrótce. Zakupy jako gość działają bez konta.
+        {t("notConfigured.body")}
       </p>
       <Button href="/collections/collars" className="mt-6">
-        Przejdź do sklepu
+        {t("notConfigured.cta")}
       </Button>
     </div>
   );
@@ -26,6 +28,7 @@ function NotConfigured() {
 
 // ---------- LOGOWANIE ----------
 export function LoginClient() {
+  const t = useTranslations("account");
   const { configured, signIn, user } = useAuth();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
@@ -36,9 +39,9 @@ export function LoginClient() {
   if (user)
     return (
       <div className={WRAP}>
-        <h1 className="type-h1 text-nf-white">Jesteś zalogowany</h1>
+        <h1 className="type-h1 text-nf-white">{t("login.alreadyTitle")}</h1>
         <Button href="/konto" className="mt-6">
-          Przejdź do konta
+          {t("login.goToAccount")}
         </Button>
       </div>
     );
@@ -50,33 +53,33 @@ export function LoginClient() {
     const res = await signIn(email.trim());
     setBusy(false);
     if (res.ok) setSent(true);
-    else setErr("Nie udało się wysłać linku. Sprawdź adres i spróbuj ponownie.");
+    else setErr(t("login.error"));
   };
 
   return (
     <div className={WRAP}>
-      <p className="type-kicker text-nf-dim">Konto</p>
-      <h1 className="type-h1 mt-2 text-nf-white">Logowanie</h1>
+      <p className="type-kicker text-nf-dim">{t("kicker")}</p>
+      <h1 className="type-h1 mt-2 text-nf-white">{t("login.title")}</h1>
       {sent ? (
         <div className={`${CARD} mt-6`}>
           <p className="text-nf-text">
-            Wysłaliśmy link do logowania na <strong>{email}</strong>. Kliknij go, aby się zalogować.
+            {t.rich("login.sent", { email, b: (c) => <strong>{c}</strong> })}
           </p>
         </div>
       ) : (
         <form onSubmit={submit} className={`${CARD} mt-6 space-y-4`}>
-          <p className="text-sm text-nf-muted">Podaj e-mail — wyślemy link do logowania bez hasła.</p>
+          <p className="text-sm text-nf-muted">{t("login.hint")}</p>
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="twój@email.pl"
+            placeholder={t("login.emailPlaceholder")}
             className="h-11 w-full rounded-[2px] border border-nf-control bg-nf-bg px-3 text-sm text-nf-text"
           />
           {err && <p className="text-sm text-nf-red-bright">{err}</p>}
           <Button type="submit" disabled={busy} className="w-full">
-            {busy ? "Wysyłanie…" : "Wyślij link"}
+            {busy ? t("login.sending") : t("login.submit")}
           </Button>
         </form>
       )}
@@ -94,6 +97,8 @@ interface OrderRow {
   created_at: string;
 }
 export function AccountOverview() {
+  const t = useTranslations("account");
+  const tc = useTranslations("common");
   const { configured, user, loading, signOut } = useAuth();
   const [orders, setOrders] = useState<OrderRow[]>([]);
   useEffect(() => {
@@ -101,14 +106,14 @@ export function AccountOverview() {
   }, [user]);
 
   if (!configured) return <NotConfigured />;
-  if (loading) return <div className={WRAP}>Wczytywanie…</div>;
+  if (loading) return <div className={WRAP}>{tc("loading")}</div>;
   if (!user)
     return (
       <div className={WRAP}>
-        <h1 className="type-h1 text-nf-white">Konto</h1>
-        <p className="mt-3 text-nf-muted">Zaloguj się, aby zobaczyć swoje zamówienia i adresy.</p>
+        <h1 className="type-h1 text-nf-white">{t("accountTitle")}</h1>
+        <p className="mt-3 text-nf-muted">{t("overview.signInPrompt")}</p>
         <Button href="/logowanie" className="mt-6">
-          Zaloguj się
+          {t("signIn")}
         </Button>
       </div>
     );
@@ -117,18 +122,18 @@ export function AccountOverview() {
     <div className={WRAP}>
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="type-kicker text-nf-dim">Konto</p>
-          <h1 className="type-h1 mt-2 text-nf-white">Twoje konto</h1>
+          <p className="type-kicker text-nf-dim">{t("kicker")}</p>
+          <h1 className="type-h1 mt-2 text-nf-white">{t("overview.title")}</h1>
           <p className="mt-1 text-sm text-nf-muted">{user.email}</p>
         </div>
         <button type="button" onClick={() => signOut()} className="type-label text-nf-dim hover:text-nf-white">
-          Wyloguj
+          {t("overview.signOut")}
         </button>
       </div>
 
-      <h2 className="type-h3 mt-10 text-nf-white">Ostatnie zamówienia</h2>
+      <h2 className="type-h3 mt-10 text-nf-white">{t("overview.recentOrders")}</h2>
       {orders.length === 0 ? (
-        <p className="mt-3 text-sm text-nf-muted">Brak zamówień.</p>
+        <p className="mt-3 text-sm text-nf-muted">{t("orders.empty")}</p>
       ) : (
         <ul className="mt-4 space-y-2">
           {orders.slice(0, 5).map((o) => (
@@ -142,7 +147,7 @@ export function AccountOverview() {
       )}
       <div className="mt-6 flex gap-3">
         <Button href="/konto/zamowienia" variant="ghost">
-          Wszystkie zamówienia
+          {t("overview.allOrders")}
         </Button>
       </div>
     </div>
@@ -151,6 +156,8 @@ export function AccountOverview() {
 
 // ---------- ZAMÓWIENIA ----------
 export function OrdersView() {
+  const t = useTranslations("account");
+  const tc = useTranslations("common");
   const { configured, user, loading } = useAuth();
   const [orders, setOrders] = useState<OrderRow[]>([]);
   useEffect(() => {
@@ -158,13 +165,13 @@ export function OrdersView() {
   }, [user]);
 
   if (!configured) return <NotConfigured />;
-  if (loading) return <div className={WRAP}>Wczytywanie…</div>;
+  if (loading) return <div className={WRAP}>{tc("loading")}</div>;
   if (!user)
     return (
       <div className={WRAP}>
-        <p className="text-nf-muted">Zaloguj się, aby zobaczyć zamówienia.</p>
+        <p className="text-nf-muted">{t("orders.signInPrompt")}</p>
         <Button href="/logowanie" className="mt-4">
-          Zaloguj się
+          {t("signIn")}
         </Button>
       </div>
     );
@@ -172,11 +179,11 @@ export function OrdersView() {
   return (
     <div className={WRAP}>
       <Link href="/konto" className="type-label text-nf-dim hover:text-nf-white">
-        ← Konto
+        {t("orders.back")}
       </Link>
-      <h1 className="type-h1 mt-3 text-nf-white">Zamówienia</h1>
+      <h1 className="type-h1 mt-3 text-nf-white">{t("orders.title")}</h1>
       {orders.length === 0 ? (
-        <p className="mt-4 text-nf-muted">Brak zamówień.</p>
+        <p className="mt-4 text-nf-muted">{t("orders.empty")}</p>
       ) : (
         <ul className="mt-6 space-y-2">
           {orders.map((o) => (

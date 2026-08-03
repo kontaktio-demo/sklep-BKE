@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { ProCategoryNav } from "@/components/pro/ProCategoryNav";
 import { ProProductCard } from "@/components/pro/ProProductCard";
 import { getProCategories, getProCategory, getProProducts } from "@/lib/data";
@@ -43,7 +44,8 @@ export async function generateMetadata({
 
   // nieznany slug: strona renderuje notFound(), metadane nie moga rzucic bledem
   if (!category) {
-    return { title: { absolute: "Kategoria niedostępna | Dog Store Pro" } };
+    const t = await getTranslations("pro");
+    return { title: { absolute: `${t("categoryPage.metaUnavailable")} | Dog Store Pro` } };
   }
 
   return {
@@ -64,6 +66,8 @@ export default async function ProCategoryPage({
   const category = await getProCategory(slug);
   if (!category) notFound();
 
+  const t = await getTranslations("pro");
+
   // category.slug jest juz typu ProCategory - zadnego rzutowania z params nie trzeba
   const [products, categories] = await Promise.all([
     getProProducts(category.slug),
@@ -77,7 +81,7 @@ export default async function ProCategoryPage({
           Strukture rysuja WLOSOWE LINIE i czerwona linia sekcji - i tyle. */}
       <header className="border-b border-pro-border bg-pro-bg">
         <div className={cn(CONTAINER, "pb-10 pt-8 lg:pb-14")}>
-          <nav aria-label="Ścieżka nawigacji">
+          <nav aria-label={t("categoryPage.breadcrumbAria")}>
             <ol className="type-pro-spec flex flex-wrap items-center gap-x-2 text-pro-muted">
               <li>
                 <Link
@@ -105,7 +109,7 @@ export default async function ProCategoryPage({
               <span aria-hidden="true" className="px-2 text-pro-red">
                 {"//"}
               </span>
-              Sprzęt służbowy
+              {t("categoryPage.sectionLabel")}
             </p>
 
             <h1 className="type-pro-h2 mt-4 text-pro-white">{category.title}</h1>
@@ -126,9 +130,9 @@ export default async function ProCategoryPage({
       <div className={cn(CONTAINER, "pb-20 pt-10")}>
         {products.length === 0 ? (
           <div className="border border-pro-border p-10">
-            <p className="type-pro-spec text-pro-muted">Brak pozycji w tej kategorii</p>
+            <p className="type-pro-spec text-pro-muted">{t("categoryPage.emptyTitle")}</p>
             <p className="type-pro-body mt-3 text-pro-text">
-              Pozostały sprzęt z linii Dog Store Pro znajdziesz w kategoriach na pasku powyżej.
+              {t("categoryPage.emptyBody")}
             </p>
           </div>
         ) : (
@@ -136,7 +140,7 @@ export default async function ProCategoryPage({
             {/* h1 (tytul kategorii) -> h3 (nazwy pozycji) bylo przeskokiem poziomu.
                 Naglowek jest sr-only: uklad zostaje, konspekt sie domyka */}
             <h2 id="pro-pozycje" className="sr-only">
-              Pozycje w kategorii {category.title}
+              {t("categoryPage.positionsHeading", { title: category.title })}
             </h2>
 
             {/* katalog renderuje sie od razu: animacja wjazdu trzymala kafle na opacity 0
@@ -165,7 +169,7 @@ export default async function ProCategoryPage({
             </ul>
 
             <div className="type-pro-spec mt-4 flex items-center justify-between text-pro-muted">
-              <span>Pozycji: {products.length}</span>
+              <span>{t("categoryPage.positionsCount", { count: products.length })}</span>
               <span aria-hidden="true">{category.code}</span>
             </div>
           </>

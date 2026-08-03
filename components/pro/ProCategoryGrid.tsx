@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { photo } from "@/lib/photos";
 import type { ProCategoryInfo } from "@/lib/types";
-import { cn, plural } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 /**
  * Siatka kategorii (PRO_IDENTITY.md §4 "product / category card").
@@ -15,6 +16,7 @@ import { cn, plural } from "@/lib/utils";
  * powierzchnia karty: zaden zastepnik nie udaje fotografii.
  */
 export function ProCategoryGrid({ categories }: { categories: ProCategoryInfo[] }) {
+  const t = useTranslations("pro");
   return (
     <section id="kategorie" aria-labelledby="kategorie-naglowek" className="bg-pro-bg">
       {/* sekcja gesta: rytm 56-88 px, nie ten sam padding co wszedzie (§3) */}
@@ -22,10 +24,10 @@ export function ProCategoryGrid({ categories }: { categories: ProCategoryInfo[] 
         <div className="flex items-end justify-between gap-6">
           <div>
             <p className="type-pro-eyebrow text-pro-muted">
-              Katalog
+              {t("grid.eyebrow")}
             </p>
             <h2 id="kategorie-naglowek" className="type-pro-h2 mt-4 text-pro-white">
-              Kategorie
+              {t("grid.heading")}
             </h2>
           </div>
         </div>
@@ -68,8 +70,7 @@ export function ProCategoryGrid({ categories }: { categories: ProCategoryInfo[] 
 
                     <p className="type-pro-spec mt-4 flex items-center gap-2 text-pro-text">
                       <span aria-hidden="true" className="size-1 bg-pro-red" />
-                      {cat.productCount}{" "}
-                      {plural(cat.productCount, "pozycja", "pozycje", "pozycji")}
+                      {t("grid.productCount", { count: cat.productCount })}
                     </p>
                   </div>
                 </Link>

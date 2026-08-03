@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { countActiveFilters } from "@/lib/filtering";
 import { FilterControls, type FilterControlsProps } from "./FilterControls";
 
@@ -7,10 +8,11 @@ export function FilterSidebar({
   onClearAll,
   ...controls
 }: FilterControlsProps & { onClearAll: () => void }) {
+  const t = useTranslations("catalog");
   const activeCount = countActiveFilters(controls.state);
 
   return (
-    <aside aria-label="Filtry" className="hidden w-64 shrink-0 lg:block xl:w-72">
+    <aside aria-label={t("filters.heading")} className="hidden w-64 shrink-0 lg:block xl:w-72">
       {/* Kontener przewijany przycina wszystko poza swoim polem wypelnienia, a obwodka
           fokusu wychodzi 8px poza kontrolke (2px linii + 2px odstepu + 4px otoczki).
           Bez zapasu ginela od lewej (padding byl tylko z prawej, pod pasek przewijania)
@@ -21,14 +23,14 @@ export function FilterSidebar({
         className="slim-scroll sticky top-24 -m-2 max-h-[calc(100vh-7rem)] overflow-y-auto overscroll-contain p-2"
       >
         <div className="flex min-h-11 items-center justify-between gap-3 border-b border-nf-border">
-          <h2 className="type-h3 text-nf-white">Filtry</h2>
+          <h2 className="type-h3 text-nf-white">{t("filters.heading")}</h2>
           {activeCount > 0 && (
             <button
               type="button"
               onClick={onClearAll}
               className="type-label inline-flex min-h-11 items-center text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white"
             >
-              Wyczyść wszystko
+              {t("filters.clearAll")}
             </button>
           )}
         </div>

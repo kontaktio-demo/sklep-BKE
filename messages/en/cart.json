@@ -1,1 +1,67 @@
-{}
+{
+  "cart": {
+    "meta": {
+      "title": "Cart",
+      "description": "Review your cart items, quantities and order value. Free shipping over 299 zł — 60 days to return."
+    },
+    "title": "Cart",
+    "breadcrumb": {
+      "shop": "Shop",
+      "cart": "Cart"
+    },
+    "itemsRegion": "Cart items",
+    "summaryRegion": "Order summary",
+    "positions": "{count, plural, one {# item} other {# items}}",
+    "pieces": "{count, plural, one {# piece} other {# pieces}}",
+    "itemName": "{name}, size {size}",
+    "sizeLabel": "Size: {size}",
+    "colorLabel": "Color: {color}",
+    "perUnit": "{price} each",
+    "outOfStock": "This size is temporarily out of stock. We'll confirm the timeline when we handle your order.",
+    "outOfStockShort": "Size temporarily unavailable",
+    "decreaseAria": "Decrease quantity: {name}",
+    "increaseAria": "Increase quantity: {name}",
+    "remove": "Remove",
+    "removeAria": "Remove {name}",
+    "continueShopping": "Continue shopping",
+    "summary": {
+      "heading": "Summary",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "shippingFree": "Free",
+      "shippingFrom": "from {price}",
+      "total": "Total",
+      "vatIncluded": "Price includes VAT.",
+      "freeShippingNote": "Shipping on this order is free.",
+      "shippingNote": "The amount includes the cheapest shipping option (locker). The final cost depends on the carrier you choose at checkout."
+    },
+    "checkout": "Proceed to checkout",
+    "checkoutNote": "Secure online payment: card, BLIK, Przelewy24 (Stripe). You'll enter the delivery method and address in the next step.",
+    "links": {
+      "shipping": "Shipping costs and times",
+      "returns": "60 days to return or exchange a size"
+    },
+    "empty": {
+      "title": "Your cart is empty",
+      "body": "Nothing here yet. You'll find nylon and chain collars in the shop, and duty gear in the Dog Store Pro section.",
+      "ctaCollars": "Browse collars",
+      "ctaPro": "Dog Store Pro gear"
+    },
+    "freeShipping": {
+      "reached": "Free shipping",
+      "remaining": "<b>{amount}</b> away from free shipping",
+      "progressAria": "Progress toward free shipping",
+      "remainingAria": "{amount} away from free shipping"
+    },
+    "drawer": {
+      "title": "Your cart",
+      "emptyTitle": "Your cart is empty",
+      "paymentNote": "Secure online payment: card, BLIK, Przelewy24. Shipping calculated at checkout.",
+      "goToCart": "Go to cart"
+    },
+    "crossSell": {
+      "title": "Complete the set",
+      "chooseSize": "Choose size"
+    }
+  }
+}

@@ -1,12 +1,11 @@
+import { useTranslations } from "next-intl";
 import { SectionNav } from "@/components/product/SectionNav";
 import { CheckIcon } from "@/components/ui/icons";
 import { getProductFaq } from "@/lib/data/faq";
+import { FREE_SHIPPING_THRESHOLD } from "@/lib/nav";
 import { SIZE_NAME, SIZE_NECK, SIZE_ORDER, SIZE_SHORT, SIZE_WEIGHT } from "@/lib/sizes";
 import type { Product } from "@/lib/types";
 import { cn, formatPrice } from "@/lib/utils";
-
-// tabela czyta zakresy z lib/sizes - ten sam slownik, ktory zasila filtry i BuyBox
-const FREE_SHIPPING_THRESHOLD = 299;
 
 const SECTION = "border-t border-nf-border pt-10 mt-12";
 const HEADING = "type-h2 text-nf-white";
@@ -14,20 +13,14 @@ const CELL = "px-4 py-3.5 text-left";
 
 /** Zgodnosc rozstrzyga sie na szerokosci obudowy modulu, nie na marce nadajnika:
  *  prowadnice pasa maja staly przeswit, wiec tabela jest ta sama dla kazdego pasa. */
-const MODULE_FIT: { width: string; fits: boolean }[] = [
-  { width: "do 35 mm", fits: true },
-  { width: "36-45 mm", fits: true },
-  { width: "powyżej 45 mm", fits: false },
-];
-
-const CARE: string[] = [
-  "Pranie ręczne w letniej wodzie, bez wybielaczy i bez płynów zmiękczających.",
-  "Suszenie z dala od grzejnika. Wysoka temperatura usztywnia taśmę i rozkleja rzep.",
-  "Okucia przemywaj czystą wodą po pracy w błocie i w soli, potem wytrzyj do sucha.",
-  "Kontrola szwów przy klamrze co kilka tygodni. Rozprute obszycie oznacza wymianę, nie naprawę.",
+const MODULE_FIT: { widthKey: string; fits: boolean }[] = [
+  { widthKey: "widthUpTo", fits: true },
+  { widthKey: "widthMid", fits: true },
+  { widthKey: "widthOver", fits: false },
 ];
 
 export function ProductSections({ product }: { product: Product }) {
+  const t = useTranslations("product");
   // pas pod modul e-obrozy: jedyna karta, na ktorej tabela zgodnosci cokolwiek znaczy.
   // Sekcja Pro trzyma te sama kategorie (lib/data/pro.mock), wiec drugi warunek jest zabezpieczeniem
   // na wypadek rozejscia sie obu slownikow
@@ -44,14 +37,21 @@ export function ProductSections({ product }: { product: Product }) {
   // wiec stoja w wierszu swojego rozmiaru, a nie jako jedna liczba dla calego modelu
   const variantBySize = new Map(product.variants.map((v) => [v.size, v] as const));
 
+  const care = [
+    t("sections.care.step1"),
+    t("sections.care.step2"),
+    t("sections.care.step3"),
+    t("sections.care.step4"),
+  ];
+
   return (
     <div className="grid gap-10 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-16">
       <SectionNav mono={pro} />
       <div className="min-w-0">
         <section id="opis"
-          data-section-label="Opis" className="scroll-mt-28" aria-labelledby="opis-heading">
+          data-section-label={t("sections.description.label")} className="scroll-mt-28" aria-labelledby="opis-heading">
           <h2 id="opis-heading" className={HEADING}>
-            Opis
+            {t("sections.description.heading")}
           </h2>
           <p className="mt-4 max-w-3xl leading-relaxed text-nf-text">{product.description}</p>
           <ul className="mt-6 grid gap-x-8 gap-y-2 sm:grid-cols-2">
@@ -67,12 +67,12 @@ export function ProductSections({ product }: { product: Product }) {
 
         <section
           id="specyfikacja"
-          data-section-label="Specyfikacja"
+          data-section-label={t("sections.specs.label")}
           className={cn(SECTION, "scroll-mt-28")}
           aria-labelledby="specyfikacja-heading"
         >
           <h2 id="specyfikacja-heading" className={HEADING}>
-            Specyfikacja
+            {t("sections.specs.heading")}
           </h2>
           <dl className="mt-4 max-w-3xl">
             {product.specs.map((spec) => (
@@ -86,51 +86,52 @@ export function ProductSections({ product }: { product: Product }) {
             ))}
           </dl>
           <p className="mt-4 max-w-3xl text-sm leading-relaxed text-nf-muted">
-            Obwód szyi i waga zależą od rozmiaru.{" "}
-            <a
-              href="#rozmiary"
-              className="text-nf-text underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
-            >
-              Sprawdź je w tabeli rozmiarów
-            </a>
-            .
+            {t.rich("sections.specs.note", {
+              link: (chunks) => (
+                <a
+                  href="#rozmiary"
+                  className="text-nf-text underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
           </p>
         </section>
 
         <section
           id="rozmiary"
-          data-section-label="Rozmiary"
+          data-section-label={t("sections.sizes.label")}
           className={cn(SECTION, "scroll-mt-28")}
           aria-labelledby="rozmiary-heading"
         >
           <h2 id="rozmiary-heading" className={HEADING}>
-            Rozmiary
+            {t("sections.sizes.heading")}
           </h2>
           <p className="mt-4 max-w-3xl leading-relaxed text-nf-text">
-            Zmierz obwód szyi w najszerszym miejscu i dodaj 2-3 cm luzu. Waga psa jest tylko
-            orientacyjna, decyduje pomiar.
+            {t("sections.sizes.intro")}
           </p>
           {/* focusable so the scroll container is reachable from the keyboard (WCAG 2.1.1) */}
           <div
             tabIndex={0}
             role="region"
-            aria-label="Tabela rozmiarów"
+            aria-label={t("sections.sizes.tableAria")}
             className="mt-6 max-w-3xl overflow-x-auto"
           >
             <table className="w-full min-w-[560px] text-sm">
               <thead>
                 <tr className="border-b border-nf-border-strong">
                   <th scope="col" className={cn(CELL, "font-medium text-nf-dim")}>
-                    Rozmiar
+                    {t("sections.sizes.colSize")}
                   </th>
                   <th scope="col" className={cn(CELL, "font-medium text-nf-dim")}>
-                    Obwód szyi
+                    {t("sections.sizes.colNeck")}
                   </th>
                   <th scope="col" className={cn(CELL, "font-medium text-nf-dim")}>
-                    Waga psa (orientacyjnie)
+                    {t("sections.sizes.colWeight")}
                   </th>
                   <th scope="col" className={cn(CELL, "font-medium text-nf-dim")}>
-                    Waga obroży
+                    {t("sections.sizes.colCollarWeight")}
                   </th>
                 </tr>
               </thead>
@@ -156,10 +157,10 @@ export function ProductSections({ product }: { product: Product }) {
                         <span className={cn(META, "ml-2 text-nf-dim")}>{SIZE_SHORT[size]}</span>
                         {variant && !variant.inStock && (
                           <span className="mt-1 block text-xs font-normal text-nf-muted">
-                            chwilowo niedostępny
+                            {t("sections.sizes.variantSoldOut")}
                           </span>
                         )}
-                        {!offered && <span className="sr-only"> (brak w tym modelu)</span>}
+                        {!offered && <span className="sr-only">{t("sections.sizes.notOfferedSr")}</span>}
                       </th>
                       {/* obwod bierzemy z wariantu - model moze miec wlasne zakresy, a nie
                           zawsze te ze slownika */}
@@ -170,7 +171,7 @@ export function ProductSections({ product }: { product: Product }) {
                         {SIZE_WEIGHT[size]}
                       </td>
                       <td className={cn(CELL, offered ? "text-nf-white" : "text-nf-dim")}>
-                        {variant ? `${variant.weightGrams} g` : "brak w tym modelu"}
+                        {variant ? `${variant.weightGrams} g` : t("sections.sizes.notOffered")}
                       </td>
                     </tr>
                   );
@@ -179,39 +180,36 @@ export function ProductSections({ product }: { product: Product }) {
             </table>
           </div>
           <p className="mt-3 max-w-3xl text-xs leading-relaxed text-nf-dim">
-            Wyróżnione wiersze to rozmiary, które ma ten model. Waga obroży dotyczy wersji
-            w danym rozmiarze.
+            {t("sections.sizes.footnote")}
           </p>
         </section>
 
         <section
           id="dostawa"
-          data-section-label="Dostawa i zwroty"
+          data-section-label={t("sections.shipping.label")}
           className={cn(SECTION, "scroll-mt-28")}
           aria-labelledby="dostawa-heading"
         >
           <h2 id="dostawa-heading" className={HEADING}>
-            Dostawa i zwroty
+            {t("sections.shipping.heading")}
           </h2>
           <div className="mt-4 grid max-w-4xl gap-6 sm:grid-cols-3">
             <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-nf-text">Wysyłka</h3>
+              <h3 className="text-sm font-semibold text-nf-text">{t("sections.shipping.shippingTitle")}</h3>
               <p className="text-sm leading-relaxed text-nf-muted">
-                Wysyłka w 24 h w dni robocze. Do wyboru kurier lub paczkomat, sposób dostawy
-                wskazujesz w koszyku.
+                {t("sections.shipping.shippingBody")}
               </p>
             </div>
             <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-nf-text">Koszt dostawy</h3>
+              <h3 className="text-sm font-semibold text-nf-text">{t("sections.shipping.costTitle")}</h3>
               <p className="text-sm leading-relaxed text-nf-muted">
-                Darmowa dostawa od {formatPrice(FREE_SHIPPING_THRESHOLD)}. Poniżej tej kwoty koszt
-                zależy od przewoźnika i widać go w koszyku.
+                {t("sections.shipping.costBody", { amount: formatPrice(FREE_SHIPPING_THRESHOLD) })}
               </p>
             </div>
             <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-nf-text">Zwroty i gwarancja</h3>
+              <h3 className="text-sm font-semibold text-nf-text">{t("sections.shipping.returnsTitle")}</h3>
               <p className="text-sm leading-relaxed text-nf-muted">
-                60 dni na zwrot lub wymianę rozmiaru. Na szwy i okucia udzielamy 2 lat gwarancji.
+                {t("sections.shipping.returnsBody")}
               </p>
             </div>
           </div>
@@ -220,43 +218,42 @@ export function ProductSections({ product }: { product: Product }) {
         {showCompatibility && (
           <section
             id="zgodnosc"
-          data-section-label="Zgodność"
+          data-section-label={t("sections.compatibility.label")}
             className={cn(SECTION, "scroll-mt-28")}
             aria-labelledby="zgodnosc-heading"
           >
             <h2 id="zgodnosc-heading" className={HEADING}>
-              Zgodność
+              {t("sections.compatibility.heading")}
             </h2>
             <p className="mt-4 max-w-3xl leading-relaxed text-nf-text">
-              Zmierz obudowę modułu w miejscu, w którym przechodzi przez pas. Marka nadajnika nie
-              ma znaczenia, liczy się szerokość obudowy.
+              {t("sections.compatibility.intro")}
             </p>
             <div
               tabIndex={0}
               role="region"
-              aria-label="Tabela zgodności z modułami e-obroży"
+              aria-label={t("sections.compatibility.tableAria")}
               className="mt-6 max-w-xl overflow-x-auto"
             >
               <table className="w-full min-w-[340px] text-sm">
                 <thead>
                   <tr className="border-b border-nf-border-strong">
                     <th scope="col" className={cn(CELL, "font-medium text-nf-dim")}>
-                      Szerokość obudowy modułu
+                      {t("sections.compatibility.colWidth")}
                     </th>
                     <th scope="col" className={cn(CELL, "font-medium text-nf-dim")}>
-                      Pasuje
+                      {t("sections.compatibility.colFits")}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {MODULE_FIT.map((row) => (
-                    <tr key={row.width} className="border-b border-nf-border">
+                    <tr key={row.widthKey} className="border-b border-nf-border">
                       <th scope="row" className={cn(CELL, "font-medium text-nf-muted")}>
-                        {row.width}
+                        {t(`sections.compatibility.${row.widthKey}`)}
                       </th>
                       {/* czerwien zostaje dla CTA i alarmu - odpowiedz niesie samo slowo */}
                       <td className={cn(CELL, row.fits ? "text-nf-white" : "text-nf-dim")}>
-                        {row.fits ? "Tak" : "Nie"}
+                        {row.fits ? t("sections.compatibility.yes") : t("sections.compatibility.no")}
                       </td>
                     </tr>
                   ))}
@@ -264,22 +261,22 @@ export function ProductSections({ product }: { product: Product }) {
               </table>
             </div>
             <p className="mt-6 max-w-3xl text-sm leading-relaxed text-nf-muted">
-              Moduł montujemy na prowadnicach, elektrody muszą mieć stały kontakt ze skórą.
+              {t("sections.compatibility.footnote")}
             </p>
           </section>
         )}
 
         <section
           id="pielegnacja"
-          data-section-label="Pielęgnacja"
+          data-section-label={t("sections.care.label")}
           className={cn(SECTION, "scroll-mt-28")}
           aria-labelledby="pielegnacja-heading"
         >
           <h2 id="pielegnacja-heading" className={HEADING}>
-            Pielęgnacja
+            {t("sections.care.heading")}
           </h2>
           <ol className="mt-6 max-w-3xl">
-            {CARE.map((step, i) => (
+            {care.map((step, i) => (
               <li
                 key={step}
                 className="flex items-baseline gap-4 border-b border-nf-border py-3.5"
@@ -295,12 +292,12 @@ export function ProductSections({ product }: { product: Product }) {
 
         <section
           id="pytania"
-          data-section-label="Pytania"
+          data-section-label={t("sections.faq.label")}
           className={cn(SECTION, "scroll-mt-28")}
           aria-labelledby="pytania-heading"
         >
           <h2 id="pytania-heading" className={HEADING}>
-            Pytania
+            {t("sections.faq.heading")}
           </h2>
           {/* natywne details/summary: rozwijanie dziala bez JS, klawiatura i czytnik ekranu
               dostaja obsluge od przegladarki. Wskaznik +/- steruje sam atrybut [open] */}

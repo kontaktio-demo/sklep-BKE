@@ -6,6 +6,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { FreeShippingBar } from "@/components/cart/FreeShippingBar";
 import { Button } from "@/components/ui/Button";
 import { CartIcon, MinusIcon, PlusIcon, TrashIcon } from "@/components/ui/icons";
@@ -14,7 +15,7 @@ import { useCart } from "@/lib/cart";
 import { FREE_SHIPPING_THRESHOLD, SHIPPING_FROM } from "@/lib/nav";
 import { productHref } from "@/lib/routes";
 import { SIZE_SHORT } from "@/lib/sizes";
-import { formatPrice, plural } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 
 const STEPPER_BUTTON =
   "flex h-11 w-11 items-center justify-center text-nf-muted transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none";
@@ -27,23 +28,23 @@ function sizeLabel(line: CartLine): string {
 }
 
 function EmptyCart() {
+  const t = useTranslations("cart");
   return (
     <div className="border border-nf-border px-6 py-16 text-center">
       <CartIcon width={40} height={40} className="mx-auto text-nf-dim" />
-      <h2 className="type-h2 mt-6 text-nf-white">Koszyk jest pusty</h2>
+      <h2 className="type-h2 mt-6 text-nf-white">{t("empty.title")}</h2>
       {/* Tekst mowil o smyczach, ktorych sklep nie sprzedaje: katalog to same obroze
           (nylonowe i lancuszkowe). Pusty koszyk nie ma prawa obiecywac asortymentu,
           ktorego nie ma za nastepnym klknieciem */}
       <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-nf-muted">
-        Nic tu jeszcze nie trafiło. Obroże nylonowe i łańcuszkowe znajdziesz w sklepie,
-        sprzęt służbowy w sekcji Dog Store Pro.
+        {t("empty.body")}
       </p>
       <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
         {/* bez rounded-[2px]: cn() jedzie na twMerge, wiec klasa z wywolania BIJE promien
             z komponentu i przycisk po cichu wypisywal sie z jednego jezyka CTA */}
-        <Button href="/collections/collars">Zobacz obroże</Button>
+        <Button href="/collections/collars">{t("empty.ctaCollars")}</Button>
         <Button href="/pro" variant="ghost">
-          Sprzęt Dog Store Pro
+          {t("empty.ctaPro")}
         </Button>
       </div>
     </div>
@@ -51,6 +52,8 @@ function EmptyCart() {
 }
 
 export function CartView() {
+  const t = useTranslations("cart");
+  const tn = useTranslations("nav");
   const { lines, count, subtotal, removeLine, setQty } = useCart();
 
   if (lines.length === 0) return <EmptyCart />;
@@ -60,21 +63,22 @@ export function CartView() {
 
   return (
     <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
-      <section aria-label="Pozycje w koszyku" className="lg:col-span-7 xl:col-span-8">
+      <section aria-label={t("itemsRegion")} className="lg:col-span-7 xl:col-span-8">
         {/* pozycja = wariant (wiersz), nie sztuka: wczesniej licznik bral sume ilosci,
             wiec jeden wiersz z dwiema sztukami pokazywal "2 pozycje" */}
         <p className="type-label text-nf-dim">
-          {lines.length} {plural(lines.length, "pozycja", "pozycje", "pozycji")}
-          {count !== lines.length
-            ? `, ${count} ${plural(count, "sztuka", "sztuki", "sztuk")}`
-            : ""}
+          {t("positions", { count: lines.length })}
+          {count !== lines.length ? `, ${t("pieces", { count })}` : ""}
         </p>
 
         <ul className="mt-4 border-t border-nf-border">
           {lines.map((line) => {
             // rozmiar jest czescia tozsamosci pozycji, wiec wchodzi tez do etykiet
             // przyciskow: dwa wiersze tego samego modelu roznia sie wylacznie nim
-            const name = `${line.product.name}, rozmiar ${SIZE_SHORT[line.variant.size]}`;
+            const name = t("itemName", {
+              name: line.product.name,
+              size: SIZE_SHORT[line.variant.size],
+            });
             return (
               <li
                 key={line.key}
@@ -107,20 +111,25 @@ export function CartView() {
                           {line.product.name}
                         </Link>
                       </h2>
-                      <p className="mt-1 text-xs text-nf-muted">Rozmiar: {sizeLabel(line)}</p>
+                      <p className="mt-1 text-xs text-nf-muted">
+                        {t("sizeLabel", { size: sizeLabel(line) })}
+                      </p>
                       {line.color && (
-                        <p className="mt-1 text-xs text-nf-muted">Kolor: {line.color.name}</p>
+                        <p className="mt-1 text-xs text-nf-muted">
+                          {t("colorLabel", { color: line.color.name })}
+                        </p>
                       )}
                       <p className="type-label mt-1 text-nf-dim">SKU {line.variant.sku}</p>
                       <p className="mt-2 text-xs text-nf-dim">
-                        {formatPrice(line.variant.price, line.product.currency)} za sztukę
+                        {t("perUnit", {
+                          price: formatPrice(line.variant.price, line.product.currency),
+                        })}
                       </p>
                       {/* stan magazynowy mogl sie zmienic, odkad pozycja trafila do koszyka:
                           mail z zamowieniem i tak by ja zawieral, wiec musi to byc widoczne */}
                       {!line.variant.inStock && (
                         <p className="mt-2 text-xs text-nf-red-bright">
-                          Ten rozmiar jest chwilowo niedostępny. Potwierdzimy termin w odpowiedzi
-                          na zamówienie.
+                          {t("outOfStock")}
                         </p>
                       )}
                     </div>
@@ -136,7 +145,7 @@ export function CartView() {
                     <div className="flex items-center rounded-[2px] border border-nf-control">
                       <button
                         type="button"
-                        aria-label={`Zmniejsz ilość: ${name}`}
+                        aria-label={t("decreaseAria", { name })}
                         onClick={() => setQty(line.key, line.qty - 1)}
                         className={STEPPER_BUTTON}
                       >
@@ -150,7 +159,7 @@ export function CartView() {
                       </span>
                       <button
                         type="button"
-                        aria-label={`Zwiększ ilość: ${name}`}
+                        aria-label={t("increaseAria", { name })}
                         onClick={() => setQty(line.key, line.qty + 1)}
                         className={STEPPER_BUTTON}
                       >
@@ -164,7 +173,7 @@ export function CartView() {
                       className="flex h-11 items-center gap-2 px-2 text-xs text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
                     >
                       <TrashIcon width={16} height={16} aria-hidden="true" />
-                      <span>Usuń</span>
+                      <span>{t("remove")}</span>
                       <span className="sr-only">{name}</span>
                     </button>
                   </div>
@@ -179,25 +188,27 @@ export function CartView() {
             href="/collections/collars"
             className="inline-flex min-h-11 items-center text-sm text-nf-muted underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
           >
-            Kontynuuj zakupy
+            {t("continueShopping")}
           </Link>
         </div>
       </section>
 
-      <aside aria-label="Podsumowanie zamówienia" className="lg:col-span-5 xl:col-span-4">
+      <aside aria-label={t("summaryRegion")} className="lg:col-span-5 xl:col-span-4">
         <div className="border border-nf-border bg-nf-elevated p-6 lg:sticky lg:top-24">
           {/* karta, nie sekcja strony - stopien nizej niz H1 koszyka */}
-          <h2 className="type-h3 text-nf-white">Podsumowanie</h2>
+          <h2 className="type-h3 text-nf-white">{t("summary.heading")}</h2>
 
           <dl className="mt-6 space-y-3">
             <div className={SUMMARY_ROW}>
-              <dt className="text-nf-muted">Suma częściowa</dt>
+              <dt className="text-nf-muted">{t("summary.subtotal")}</dt>
               <dd className="font-medium text-nf-text">{formatPrice(subtotal)}</dd>
             </div>
             <div className={SUMMARY_ROW}>
-              <dt className="text-nf-muted">Dostawa</dt>
+              <dt className="text-nf-muted">{t("summary.shipping")}</dt>
               <dd className="font-medium text-nf-text">
-                {freeShipping ? "Gratis" : `od ${formatPrice(SHIPPING_FROM)}`}
+                {freeShipping
+                  ? t("summary.shippingFree")
+                  : t("summary.shippingFrom", { price: formatPrice(SHIPPING_FROM) })}
               </dd>
             </div>
           </dl>
@@ -205,14 +216,14 @@ export function CartView() {
           <FreeShippingBar subtotal={subtotal} className="mt-5" />
 
           <div className="mt-6 flex items-baseline justify-between gap-4 border-t border-nf-border pt-4">
-            <span className="type-label text-nf-white">Razem</span>
+            <span className="type-label text-nf-white">{t("summary.total")}</span>
             <span className="text-lg font-semibold text-nf-white">{formatPrice(total)}</span>
           </div>
           <p className="mt-2 text-xs leading-relaxed text-nf-dim">
-            Cena zawiera VAT.{" "}
+            {t("summary.vatIncluded")}{" "}
             {freeShipping
-              ? "Dostawa w tym zamówieniu jest bezpłatna."
-              : "Kwota zawiera najtańszą dostawę (paczkomat). Ostateczny koszt zależy od przewoźnika wybranego przy zamówieniu."}
+              ? t("summary.freeShippingNote")
+              : t("summary.shippingNote")}
           </p>
 
           <div className="mt-6 space-y-3">
@@ -222,11 +233,10 @@ export function CartView() {
               size="lg"
               className="w-full"
             >
-              Przejdź do kasy
+              {t("checkout")}
             </Button>
             <p className="text-xs leading-relaxed text-nf-muted">
-              Bezpieczna płatność online: karta, BLIK, Przelewy24 (Stripe). Sposób dostawy
-              i adres podasz w kolejnym kroku.
+              {t("checkoutNote")}
             </p>
           </div>
 
@@ -236,7 +246,7 @@ export function CartView() {
                 href="/dostawa-i-platnosci"
                 className="inline-flex min-h-11 items-center transition-colors duration-250 ease-nf hover:text-nf-text motion-reduce:transition-none"
               >
-                Koszty i czasy dostawy
+                {t("links.shipping")}
               </Link>
             </li>
             <li>
@@ -244,7 +254,7 @@ export function CartView() {
                 href="/zwroty-i-reklamacje"
                 className="inline-flex min-h-11 items-center transition-colors duration-250 ease-nf hover:text-nf-text motion-reduce:transition-none"
               >
-                60 dni na zwrot i wymianę rozmiaru
+                {t("links.returns")}
               </Link>
             </li>
             <li>
@@ -252,7 +262,7 @@ export function CartView() {
                 href="/tabela-rozmiarow"
                 className="inline-flex min-h-11 items-center transition-colors duration-250 ease-nf hover:text-nf-text motion-reduce:transition-none"
               >
-                Tabela rozmiarów
+                {tn("footer.sizeChart")}
               </Link>
             </li>
           </ul>

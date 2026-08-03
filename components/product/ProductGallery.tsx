@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +17,7 @@ export function ProductGallery({
   alt: string;
   badges?: ReactNode;
 }) {
+  const t = useTranslations("product");
   const [active, setActive] = useState(0);
   const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -43,7 +45,7 @@ export function ProductGallery({
       {hasThumbs && (
         <div
           role="group"
-          aria-label="Miniatury zdjęć produktu"
+          aria-label={t("gallery.thumbnails")}
           onKeyDown={handleThumbKeys}
           className="no-scrollbar order-2 flex gap-3 overflow-x-auto lg:order-1 lg:w-20 lg:shrink-0 lg:flex-col lg:overflow-visible"
         >
@@ -57,7 +59,7 @@ export function ProductGallery({
                   thumbRefs.current[i] = node;
                 }}
                 onClick={() => setActive(i)}
-                aria-label={`Zdjęcie ${i + 1} z ${count}`}
+                aria-label={t("gallery.thumb", { index: i + 1, count })}
                 aria-pressed={isActive}
                 className={cn(
                   // nieaktywna miniatura jest wygaszona w całości (ramka + zdjęcie),

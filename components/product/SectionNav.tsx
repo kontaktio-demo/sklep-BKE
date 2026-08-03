@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +16,7 @@ interface Section {
 // mono = rytm Dog Store Pro. Spis stoi pod obiema kartami, a monospace nalezy do sprzetu
 // sluzbowego: w sklepie cywilnym nazwy sekcji ida groteskiem (type-label).
 export function SectionNav({ mono = false }: { mono?: boolean }) {
+  const t = useTranslations("product");
   const [sections, setSections] = useState<Section[]>([]);
   const [active, setActive] = useState<string>("");
 
@@ -60,7 +62,7 @@ export function SectionNav({ mono = false }: { mono?: boolean }) {
   if (sections.length === 0) return null;
 
   return (
-    <nav aria-label="Sekcje produktu" className="hidden lg:block">
+    <nav aria-label={t("sectionNav.aria")} className="hidden lg:block">
       <ul className="sticky top-28 space-y-1 border-l border-nf-border">
         {sections.map((section) => {
           const isActive = active === section.id;

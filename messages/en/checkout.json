@@ -1,1 +1,67 @@
-{}
+{
+  "checkout": {
+    "meta": {
+      "title": "Checkout",
+      "paymentTitle": "Payment",
+      "thankYouTitle": "Thank you"
+    },
+    "heading": {
+      "kicker": "Order",
+      "title": "Checkout"
+    },
+    "empty": {
+      "title": "Your cart is empty",
+      "text": "Add products to continue to checkout.",
+      "cta": "Go to the shop"
+    },
+    "contact": {
+      "title": "Contact details",
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "shipping": {
+      "title": "Delivery",
+      "free": "free",
+      "lockerLabel": "Parcel locker code",
+      "lockerPlaceholder": "e.g. KRA010",
+      "methods": {
+        "inpost_locker": "InPost Parcel Locker",
+        "inpost_courier": "InPost Courier"
+      }
+    },
+    "address": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "street": "Street",
+      "building": "House / apartment no.",
+      "postalCode": "Postal code",
+      "city": "City"
+    },
+    "promo": {
+      "title": "Discount code",
+      "placeholder": "Code",
+      "apply": "Apply",
+      "applied": "Code applied: -{amount}",
+      "invalid": "Invalid code."
+    },
+    "summary": {
+      "title": "Summary",
+      "value": "Subtotal",
+      "discount": "Discount",
+      "shipping": "Delivery",
+      "total": "Total"
+    },
+    "submit": {
+      "processing": "Processing…",
+      "pay": "Place order · {amount}",
+      "note": "Payment: card, BLIK, Przelewy24 (Stripe)."
+    },
+    "errors": {
+      "OUT_OF_STOCK": "One of the sizes is out of stock.",
+      "STORE_CLOSED": "The shop is temporarily closed.",
+      "ADDRESS_REQUIRED": "Please complete your delivery address.",
+      "LOCKER_REQUIRED": "Please select a parcel locker.",
+      "generic": "We couldn't place your order. Please try again."
+    }
+  }
+}

@@ -2,8 +2,9 @@
 
 // §8-C [VERDICT: NSDW] - right drawer, cross-sell strip, trust row
 //
-// Bez paska metod platnosci: w sklepie nie ma kasy, zamowienie skladamy mailem. Ikony
-// BLIK-a i kart nad przyciskiem obiecywalyby platnosc, ktorej nie ma.
+// Bez paska metod platnosci nad przyciskiem: pelna kasa (z metodami) zyje pod /kasa.
+// Platnosc jest online przez Stripe (karta / BLIK / Przelewy24), a koszt dostawy nalicza
+// sie w kasie - szuflada tylko prowadzi do koszyka.
 
 import Image from "next/image";
 import Link from "next/link";
@@ -22,7 +23,7 @@ import {
 } from "@/components/ui/icons";
 import { PriceTag } from "@/components/ui/PriceTag";
 import { useCart } from "@/lib/cart";
-import { COMPANY, TRUST_TRIAD } from "@/lib/nav";
+import { TRUST_TRIAD } from "@/lib/nav";
 import { productHref } from "@/lib/routes";
 import { SIZE_SHORT } from "@/lib/sizes";
 import type { Product } from "@/lib/types";
@@ -34,22 +35,24 @@ const STEPPER_BUTTON_CLASSES =
   "flex h-11 w-11 items-center justify-center text-nf-muted transition-colors duration-250 ease-nf hover:text-nf-white";
 
 function EmptyState({ onShop }: { onShop: () => void }) {
+  const t = useTranslations("cart");
   return (
     <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
       <CartIcon width={48} height={48} className="text-nf-dim" />
       {/* bez font-bold: Fjalla One ma jedna wage, wiec przegladarka robila tu sztuczne
           pogrubienie (rozmyty, rozlazly krój) */}
-      <p className="font-display text-xl uppercase text-nf-white">Twój koszyk jest pusty</p>
+      <p className="font-display text-xl uppercase text-nf-white">{t("drawer.emptyTitle")}</p>
       {/* Button renders a Link when href is set and drops onClick - the wrapper
           catches the bubbled click (mouse and keyboard) to close the drawer */}
       <span onClick={onShop}>
-        <Button href="/collections/collars">Zobacz obroże</Button>
+        <Button href="/collections/collars">{t("empty.ctaCollars")}</Button>
       </span>
     </div>
   );
 }
 
 function CartFooter({ subtotal, onGoToCart }: { subtotal: number; onGoToCart: () => void }) {
+  const t = useTranslations("cart");
   const tc = useTranslations("common");
   return (
     <div className="space-y-4 px-5 py-4">
@@ -66,24 +69,22 @@ function CartFooter({ subtotal, onGoToCart }: { subtotal: number; onGoToCart: ()
       </ul>
       <FreeShippingBar subtotal={subtotal} />
       <div className="flex items-center justify-between text-sm font-semibold text-nf-white">
-        <span>Razem</span>
+        <span>{t("summary.total")}</span>
         <span>{formatPrice(subtotal)}</span>
       </div>
-      <p className="text-xs leading-relaxed text-nf-dim">
-        Cena zawiera VAT. Koszt dostawy naliczany przy zamówieniu. Zamówienie składasz mailem
-        na {COMPANY.shopEmail} - wiadomość z pozycjami i sumą przygotujesz w koszyku.
-      </p>
+      <p className="text-xs leading-relaxed text-nf-dim">{t("drawer.paymentNote")}</p>
       {/* Przycisk prowadzi tam, gdzie zamowienie da sie zlozyc: na strone koszyka. Button
           z href renderuje Link i przekazuje onClick - szuflada zamyka sie przy przejsciu,
           zeby nie zostac otwarta nad strona koszyka */}
       <Button href="/koszyk" onClick={onGoToCart} className="w-full">
-        Przejdź do koszyka
+        {t("drawer.goToCart")}
       </Button>
     </div>
   );
 }
 
 export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
+  const t = useTranslations("cart");
   const { lines, subtotal, isOpen, closeCart, removeLine, setQty } = useCart();
 
   const inCart = new Set(lines.map((line) => line.product.id));
@@ -95,7 +96,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
       open={isOpen}
       onClose={closeCart}
       side="right"
-      title="Twój koszyk"
+      title={t("drawer.title")}
       footer={
         isEmpty ? undefined : <CartFooter subtotal={subtotal} onGoToCart={closeCart} />
       }
@@ -106,7 +107,10 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
         <div className="px-5 pb-6">
           <ul className="divide-y divide-nf-border">
             {lines.map((line) => {
-              const name = `${line.product.name}, rozmiar ${SIZE_SHORT[line.variant.size]}`;
+              const name = t("itemName", {
+                name: line.product.name,
+                size: SIZE_SHORT[line.variant.size],
+              });
               return (
                 <li key={line.key} className="flex gap-4 py-4">
                   <div className="relative h-20 w-16 shrink-0 overflow-hidden rounded-[2px] bg-nf-elevated">
@@ -134,7 +138,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                         </p>
                         {!line.variant.inStock && (
                           <p className="mt-1 text-xs text-nf-red-bright">
-                            Rozmiar chwilowo niedostępny
+                            {t("outOfStockShort")}
                           </p>
                         )}
                       </div>
@@ -150,7 +154,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                       <div className="flex items-center rounded-[2px] border border-nf-control">
                         <button
                           type="button"
-                          aria-label={`Zmniejsz ilość: ${name}`}
+                          aria-label={t("decreaseAria", { name })}
                           onClick={() => setQty(line.key, line.qty - 1)}
                           className={STEPPER_BUTTON_CLASSES}
                         >
@@ -161,7 +165,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                         </span>
                         <button
                           type="button"
-                          aria-label={`Zwiększ ilość: ${name}`}
+                          aria-label={t("increaseAria", { name })}
                           onClick={() => setQty(line.key, line.qty + 1)}
                           className={STEPPER_BUTTON_CLASSES}
                         >
@@ -170,7 +174,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                       </div>
                       <button
                         type="button"
-                        aria-label={`Usuń ${name}`}
+                        aria-label={t("removeAria", { name })}
                         onClick={() => removeLine(line.key)}
                         className="flex h-11 w-11 items-center justify-center text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white"
                       >
@@ -183,8 +187,8 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
             })}
           </ul>
           {suggestions.length > 0 && (
-            <section aria-label="Do kompletu" className="mt-2 border-t border-nf-border pt-5">
-              <h3 className="type-label text-nf-dim">Do kompletu</h3>
+            <section aria-label={t("crossSell.title")} className="mt-2 border-t border-nf-border pt-5">
+              <h3 className="type-label text-nf-dim">{t("crossSell.title")}</h3>
               {/* p-2 -m-2: overflow-x-auto wymusza obliczone overflow-y:auto, wiec bez
                   wewnetrznego zapasu halo focusu na linku "Wybierz rozmiar" (ostatni
                   element karty, przy krawedzi) bylo przycinane. Ujemny margines
@@ -222,7 +226,7 @@ export function CartDrawer({ crossSell }: { crossSell: Product[] }) {
                       onClick={closeCart}
                       className="mt-2 flex h-11 w-full items-center justify-center rounded-[2px] border border-nf-control text-xs font-semibold text-nf-white transition-colors duration-250 ease-nf hover:border-nf-control-hover hover:bg-nf-elevated-2 motion-reduce:transition-none"
                     >
-                      Wybierz rozmiar
+                      {t("crossSell.chooseSize")}
                     </Link>
                   </li>
                 ))}

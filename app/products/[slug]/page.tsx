@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ProductPageView } from "@/components/product/ProductPageView";
 import { getProduct, getProducts } from "@/lib/data";
@@ -27,9 +28,10 @@ export async function generateMetadata({
 
   // nieznany slug albo pozycja z linii Pro: strona renderuje notFound(), metadane nie moga rzucic
   if (!product || product.line !== "shop") {
+    const t = await getTranslations("product");
     return {
-      title: "Produkt niedostępny",
-      description: "Ten produkt zmienił adres lub został wycofany ze sprzedaży.",
+      title: t("meta.unavailableTitle"),
+      description: t("meta.unavailableDescription"),
     };
   }
 

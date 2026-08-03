@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { photo } from "@/lib/photos";
 import { cn } from "@/lib/utils";
 
@@ -12,25 +13,24 @@ import { cn } from "@/lib/utils";
  * Karta jest editorialowa: kadr, a POD nim tytul i tekst - zadnych welonow
  * z przyciskiem na zdjeciu. Caly kafel jest linkiem.
  */
+// Tytul i lead kazdego skrotu siedza w slowniku (home.series.shortcuts.<key>);
+// tu zostaja tylko dane niejezykowe (href, zdjecie, offset linii bazowej).
 const SHORTCUTS = [
   {
+    key: "working",
     href: "/collections/collars?kategoria=working",
-    title: "Robocze",
-    lead: "Szerokie taśmy, uchwyt, panel ID.",
     photoName: "robocze.jpg",
     offset: "",
   },
   {
+    key: "nonWorking",
     href: "/collections/collars?kategoria=non-working",
-    title: "Codzienne",
-    lead: "Lżejsze obroże na spacer i dom.",
     photoName: "codzienne.jpg",
     offset: "lg:mt-12",
   },
   {
+    key: "eCollar",
     href: "/collections/collars?kategoria=e-collar",
-    title: "Pod e-obrożę",
-    lead: "Prowadnice i paski pod moduł.",
     photoName: "e-obroza.jpg",
     offset: "lg:mt-4",
   },
@@ -40,6 +40,7 @@ function EditorialTile({
   href,
   title,
   lead,
+  cta,
   photoName,
   ratio,
   sizes,
@@ -48,6 +49,7 @@ function EditorialTile({
   href: string;
   title: string;
   lead: string;
+  cta: string;
   photoName: string;
   ratio: string;
   sizes: string;
@@ -75,22 +77,23 @@ function EditorialTile({
       <h3 className="type-h3 mt-4 text-nf-white">{title}</h3>
       <p className="mt-1 text-sm leading-relaxed text-nf-muted">{lead}</p>
       <span className="mt-2 inline-block text-[13px] font-semibold text-nf-white underline decoration-nf-border-strong underline-offset-4 transition-colors duration-250 ease-nf group-hover:decoration-nf-white">
-        Zobacz
+        {cta}
       </span>
     </Link>
   );
 }
 
-export function HomeSeries() {
+export async function HomeSeries() {
+  const t = await getTranslations("home");
   const shopSrc = photo("sklep.jpg");
   const proSrc = photo("pro.jpg");
 
   return (
     <section className="bg-nf-bg">
       <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-24">
-        <p className="type-kicker text-nf-dim">Dwa sklepy, jedna robota</p>
+        <p className="type-kicker text-nf-dim">{t("series.kicker")}</p>
         <h2 className="type-h2 mt-4 max-w-2xl text-nf-white">
-          Sklep dla każdego psa. Sekcja Pro dla tych, które pracują w służbie.
+          {t("series.heading")}
         </h2>
 
         <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-6">
@@ -107,10 +110,9 @@ export function HomeSeries() {
                 />
               )}
             </div>
-            <h3 className="type-h1 mt-5 text-nf-white">Sklep Dog Store</h3>
+            <h3 className="type-h1 mt-5 text-nf-white">{t("series.shop.title")}</h3>
             <p className="mt-2 max-w-md text-sm leading-relaxed text-nf-muted">
-              Obroże nylonowe i łańcuszkowe dla każdego psa. Filtry po szerokości,
-              obwodzie i kolorze, wysyłka w 24 h.
+              {t("series.shop.lead")}
             </p>
           </Link>
 
@@ -140,15 +142,14 @@ export function HomeSeries() {
               <div className="px-2 pb-7 pt-6 md:px-3">
                 {/* jezyk sekcji Pro w miniaturze: mono-eyebrow, czerwona linia, Archivo */}
                 <p className="type-pro-eyebrow text-pro-muted">
-                  Sprzęt służbowy
+                  {t("series.pro.eyebrow")}
                 </p>
                 <span aria-hidden="true" className="mt-4 block h-0.5 w-12 bg-pro-red" />
                 <h3 className="type-pro-h2 mt-5 text-pro-white">
-                  Patrol, węch, szkolenie
+                  {t("series.pro.title")}
                 </h3>
                 <p className="type-pro-meta mt-3 max-w-sm text-pro-muted">
-                  Uchwyty kontrolne, prowadnice pod moduł, stalowe okucia. Katalog
-                  i zapytania ofertowe dla jednostek.
+                  {t("series.pro.lead")}
                 </p>
               </div>
             </div>
@@ -161,8 +162,9 @@ export function HomeSeries() {
             <EditorialTile
               key={tile.href}
               href={tile.href}
-              title={tile.title}
-              lead={tile.lead}
+              title={t(`series.shortcuts.${tile.key}.title`)}
+              lead={t(`series.shortcuts.${tile.key}.lead`)}
+              cta={t("series.tileCta")}
               photoName={tile.photoName}
               ratio="aspect-[3/2]"
               sizes="(min-width:640px) 33vw, 100vw"

@@ -1,0 +1,293 @@
+{
+  "infoLegal": {
+    "regulamin": {
+      "meta": {
+        "title": "Regulamin",
+        "description": "Regulamin sklepu Dog Store: strony umowy, składanie zamówień, ceny, płatności, dostawa, odstąpienie od umowy, reklamacje, dane osobowe."
+      },
+      "header": {
+        "title": "Regulamin",
+        "lead": "Regulamin sklepu internetowego dogstore.pl. Określa zasady sprzedaży, dostawy, odstąpienia od umowy i reklamacji.",
+        "updated": "Obowiązuje od 1 lipca 2026 r."
+      },
+      "seller": {
+        "title": "1. Sprzedawca",
+        "labelSeller": "Sprzedawca",
+        "labelOffice": "Siedziba",
+        "labelNip": "NIP",
+        "labelRegon": "REGON",
+        "labelKrs": "KRS",
+        "labelShareCapital": "Kapitał zakładowy",
+        "labelContact": "Kontakt",
+        "labelPhone": "Telefon",
+        "shareCapital": "{value}, wpłacony w całości"
+      },
+      "definitions": {
+        "title": "2. Definicje",
+        "shop": "Sklep — serwis internetowy dogstore.pl prowadzony przez Sprzedawcę.",
+        "client": "Klient — osoba fizyczna, prawna lub jednostka organizacyjna składająca zamówienie.",
+        "consumer": "Konsument — osoba fizyczna dokonująca zakupu w celu niezwiązanym bezpośrednio z jej działalnością gospodarczą lub zawodową.",
+        "consumerEntrepreneur": "Przedsiębiorca na prawach konsumenta — osoba fizyczna prowadząca działalność gospodarczą, dla której zakup nie ma charakteru zawodowego. Przysługują jej te same uprawnienia co Konsumentowi w zakresie odstąpienia od umowy i rękojmi.",
+        "order": "Zamówienie — oświadczenie woli Klienta zmierzające do zawarcia umowy sprzedaży."
+      },
+      "orders": {
+        "title": "3. Zamówienia",
+        "intro": "Zamówienie składa się przez koszyk w Sklepie. Klient wybiera produkty, sposób dostawy i płatności, podaje dane do wysyłki i potwierdza zamówienie z obowiązkiem zapłaty.",
+        "b1": "Po złożeniu zamówienia Klient dostaje e-mail z potwierdzeniem przyjęcia i podsumowaniem. Ten e-mail oznacza zawarcie umowy sprzedaży.",
+        "b2": "Umowa jest zawierana w języku polskim.",
+        "b3": "Sprzedawca może odmówić realizacji zamówienia, jeśli dane są niepełne lub błędne, a kontakt z Klientem jest niemożliwy. Wpłaconą kwotę zwraca wtedy w całości.",
+        "b4": "Informacje o produktach w Sklepie są zaproszeniem do zawarcia umowy, nie ofertą w rozumieniu Kodeksu cywilnego."
+      },
+      "prices": {
+        "title": "4. Ceny",
+        "b1": "Ceny podane są w złotych polskich i zawierają podatek VAT w stawce 23 procent.",
+        "b2": "Cena nie zawiera kosztu dostawy. Koszt dostawy Klient widzi przed potwierdzeniem zamówienia.",
+        "freeShipping": "Zamówienia o wartości od {amount} zł objęte są bezpłatną dostawą na zasadach opisanych w <link>dostawie i płatnościach</link>.",
+        "b4": "Wiążąca jest cena z chwili złożenia zamówienia. Późniejsza zmiana cennika nie ma wpływu na zamówienia już przyjęte.",
+        "b5": "Do każdego zamówienia dołączamy dowód sprzedaży. Faktura na dane firmy wymaga podania NIP przy składaniu zamówienia."
+      },
+      "payments": {
+        "title": "5. Płatności",
+        "b1": "Dostępne metody: BLIK, szybki przelew Przelewy24, karta płatnicza, PayPal, przelew tradycyjny, płatność przy odbiorze.",
+        "b2": "Płatności elektroniczne obsługuje zewnętrzny operator. Sprzedawca nie przechowuje danych kart płatniczych.",
+        "b3": "Przy przelewie tradycyjnym Klient ma 7 dni na wpłatę. Po tym terminie zamówienie zostaje anulowane bez skutków dla Klienta.",
+        "b4": "Zamówienie realizujemy po zaksięgowaniu wpłaty, a przy płatności za pobraniem — po potwierdzeniu zamówienia."
+      },
+      "delivery": {
+        "title": "6. Dostawa",
+        "b1": "Wysyłamy na terenie Polski i do krajów Unii Europejskiej.",
+        "b2": "Zamówienia opłacone do 14:00 w dni robocze nadajemy tego samego dnia, pozostałe w następnym dniu roboczym.",
+        "b3": "Czas dostawy zależy od przewoźnika. Terminy i koszty są podane w zakładce dostawy.",
+        "b4": "Ryzyko przypadkowej utraty towaru przechodzi na Konsumenta z chwilą wydania mu przesyłki przez przewoźnika."
+      },
+      "withdrawal": {
+        "title": "7. Odstąpienie od umowy",
+        "intro": "Konsument i przedsiębiorca na prawach konsumenta może odstąpić od umowy w terminie 14 dni od odbioru towaru, bez podania przyczyny. Sprzedawca wydłuża ten termin umownie do 60 dni od odbioru.",
+        "b1": "Oświadczenie o odstąpieniu wystarczy wysłać e-mailem na adres sklepu przed upływem terminu.",
+        "b2": "Towar należy odesłać w ciągu 14 dni od złożenia oświadczenia. Koszt odesłania pokrywa Klient.",
+        "b3": "Sprzedawca zwraca cenę towaru i koszt najtańszej oferowanej dostawy w ciągu 14 dni od otrzymania zwrotu, tą samą metodą płatności.",
+        "b4": "Prawo odstąpienia nie przysługuje przy towarach wykonanych na indywidualne zamówienie, w tym z oznaczeniem na wymiar (art. 38 ustawy o prawach konsumenta).",
+        "b5": "Klient odpowiada za zmniejszenie wartości towaru wynikające z korzystania z niego w sposób wykraczający poza sprawdzenie jego cech i funkcjonowania."
+      },
+      "complaints": {
+        "title": "8. Reklamacje",
+        "b1": "Sprzedawca odpowiada za zgodność towaru z umową na zasadach rękojmi przez 2 lata od wydania rzeczy.",
+        "b2": "Niezależnie od rękojmi Sprzedawca udziela 24 miesięcy gwarancji na szwy i okucia.",
+        "b3": "Reklamację składa się e-mailem: numer zamówienia, opis wady i zdjęcia. Sprzedawca rozpatruje ją w terminie 14 dni.",
+        "b4": "Brak odpowiedzi w terminie 14 dni oznacza uznanie reklamacji za uzasadnioną.",
+        "b5": "Koszt dostarczenia towaru reklamowanego i odesłania go po naprawie pokrywa Sprzedawca, jeśli reklamacja jest uzasadniona.",
+        "outro": "Procedurę krok po kroku opisaliśmy w <link1>zwrotach i reklamacjach</link1>, a zakres gwarancji w <link2>gwarancji i serwisie</link2>."
+      },
+      "data": {
+        "title": "9. Dane osobowe",
+        "body": "Administratorem danych osobowych jest {company}. Dane przetwarzamy w zakresie niezbędnym do realizacji zamówienia i wykonania obowiązków prawnych. Zakres, cele, podstawy prawne i prawa osoby, której dane dotyczą, opisuje <link>polityka prywatności</link>."
+      },
+      "final": {
+        "title": "10. Postanowienia końcowe",
+        "b1": "W sprawach nieuregulowanych stosuje się prawo polskie, w szczególności Kodeks cywilny i ustawę o prawach konsumenta.",
+        "b2": "Konsument może skorzystać z pozasądowych sposobów rozpatrywania sporów: powiatowy rzecznik konsumentów, wojewódzki inspektorat Inspekcji Handlowej, platforma ODR Komisji Europejskiej. Udział w nich jest dobrowolny dla obu stron.",
+        "b3": "Sprzedawca może zmienić regulamin z ważnych przyczyn, w tym zmiany przepisów lub zakresu usług. Zamówienia złożone przed zmianą realizujemy według regulaminu obowiązującego w chwili ich złożenia.",
+        "b4": "Do korzystania ze Sklepu wystarczy urządzenie z dostępem do internetu, aktualna przeglądarka i czynne konto e-mail."
+      }
+    },
+    "polityka": {
+      "meta": {
+        "title": "Polityka prywatności",
+        "description": "Kto jest administratorem danych, jakie dane zbieramy, po co, na jakiej podstawie prawnej, jak długo je trzymamy i jakie masz prawa. Cookies i kontakt w sprawach RODO."
+      },
+      "header": {
+        "title": "Polityka prywatności",
+        "lead": "Zbieramy tyle danych, ile potrzeba, żeby wysłać paczkę, wystawić dokument i odpowiedzieć na wiadomość. Poniżej wprost: co, po co i na jak długo.",
+        "updated": "Obowiązuje od 1 lipca 2026 r."
+      },
+      "admin": {
+        "title": "Administrator danych",
+        "labelAdmin": "Administrator",
+        "labelAddress": "Adres",
+        "labelNip": "NIP",
+        "labelContact": "Kontakt w sprawie danych",
+        "note": "Nie powołaliśmy inspektora ochrony danych — nie mamy takiego obowiązku. Wszystkie sprawy dotyczące danych osobowych obsługujemy pod adresem {email}."
+      },
+      "collect": {
+        "title": "Jakie dane zbieramy",
+        "b1": "Zamówienie: imię i nazwisko, adres dostawy, e-mail, telefon, treść zamówienia. Przy fakturze także nazwa firmy i NIP.",
+        "b2": "Kontakt: imię, adres e-mail i treść wiadomości, którą wysyłasz do nas pocztą elektroniczną. Formularze na stronie nie przesyłają danych na nasz serwer, tylko przygotowują treść wiadomości po Twojej stronie.",
+        "b3": "Newsletter: adres e-mail.",
+        "b4": "Techniczne: adres IP, typ przeglądarki, zdarzenia w sklepie zapisywane w logach serwera.",
+        "b5": "Płatności: numeru karty nie widzimy i nie przechowujemy. Obsługuje ją operator płatności, my dostajemy tylko status transakcji."
+      },
+      "purposes": {
+        "title": "Cele i podstawy prawne",
+        "orderLabel": "Realizacja zamówienia",
+        "orderValue": "Art. 6 ust. 1 lit. b RODO — wykonanie umowy sprzedaży.",
+        "invoiceLabel": "Faktury i księgowość",
+        "invoiceValue": "Art. 6 ust. 1 lit. c RODO — obowiązek prawny wynikający z przepisów podatkowych.",
+        "returnsLabel": "Zwroty i reklamacje",
+        "returnsValue": "Art. 6 ust. 1 lit. c RODO — obowiązki wynikające z ustawy o prawach konsumenta.",
+        "newsletterLabel": "Newsletter",
+        "newsletterValue": "Art. 6 ust. 1 lit. a RODO — zgoda, którą można wycofać w każdej chwili.",
+        "replyLabel": "Odpowiedź na wiadomość",
+        "replyValue": "Art. 6 ust. 1 lit. a i f RODO — zgoda oraz nasz uzasadniony interes: obsługa zapytania.",
+        "claimsLabel": "Dochodzenie roszczeń",
+        "claimsValue": "Art. 6 ust. 1 lit. f RODO — uzasadniony interes administratora."
+      },
+      "recipients": {
+        "title": "Komu przekazujemy dane",
+        "b1": "Przewoźnicy: InPost i firmy kurierskie realizujące dostawę.",
+        "b2": "Operator płatności: obsługa BLIK, przelewów online, kart i PayPal.",
+        "b3": "Biuro rachunkowe: księgowanie sprzedaży i archiwizacja dokumentów.",
+        "b4": "Dostawca hostingu i poczty: przechowywanie danych sklepu i korespondencji.",
+        "b5": "Organy publiczne, gdy przepis prawa tego wymaga.",
+        "outro": "Nie sprzedajemy danych i nie udostępniamy ich do celów marketingowych innych firm. Nie przekazujemy danych poza Europejski Obszar Gospodarczy."
+      },
+      "retention": {
+        "title": "Jak długo trzymamy dane",
+        "b1": "Dane zamówień i dokumenty księgowe: 5 lat licząc od końca roku, w którym upłynął termin płatności podatku.",
+        "b2": "Dane potrzebne do obrony przed roszczeniami: do upływu terminu przedawnienia, zwykle 6 lat.",
+        "b3": "Newsletter: do wycofania zgody.",
+        "b4": "Korespondencja: 12 miesięcy od zakończenia sprawy.",
+        "b5": "Logi serwera: 12 miesięcy."
+      },
+      "rights": {
+        "title": "Twoje prawa",
+        "b1": "Dostęp do danych i otrzymanie ich kopii.",
+        "b2": "Sprostowanie danych nieprawidłowych i uzupełnienie niepełnych.",
+        "b3": "Usunięcie danych, o ile nie stoi temu na przeszkodzie obowiązek prawny (na przykład przechowywanie faktur).",
+        "b4": "Ograniczenie przetwarzania.",
+        "b5": "Przeniesienie danych do innego administratora.",
+        "b6": "Sprzeciw wobec przetwarzania opartego na uzasadnionym interesie.",
+        "b7": "Wycofanie zgody w każdej chwili, bez wpływu na zgodność z prawem przetwarzania sprzed wycofania.",
+        "outro": "Żądanie zgłaszasz na <mail>{email}</mail>. Odpowiadamy w terminie miesiąca. Masz też prawo wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych, ul. Stawki 2, 00-193 Warszawa."
+      },
+      "cookies": {
+        "title": "Cookies i pamięć przeglądarki",
+        "b1": "Niezbędne: utrzymanie sesji i działanie sklepu. Nie wymagają zgody.",
+        "b2": "Analityczne: statystyka odwiedzin, zbierane wyłącznie za zgodą i tylko w formie zbiorczej.",
+        "b3": "Marketingowe: nie stosujemy.",
+        "note": "Zawartość koszyka trzymamy w pamięci Twojej przeglądarki (localStorage, klucz dogstore-cart-v1). Te dane nie trafiają na nasz serwer i nie są nikomu przekazywane. Możesz je usunąć, czyszcząc dane witryny w ustawieniach przeglądarki.",
+        "outro": "Zgody na cookies analityczne zmienisz w ustawieniach przeglądarki. Zablokowanie plików niezbędnych może uniemożliwić złożenie zamówienia."
+      },
+      "profiling": {
+        "title": "Profilowanie",
+        "body": "Nie podejmujemy decyzji w sposób zautomatyzowany i nie profilujemy klientów. Nie budujemy profili zachowań ani nie targetujemy reklam na podstawie Twoich zakupów."
+      },
+      "changes": {
+        "title": "Zmiany polityki",
+        "body": "Politykę aktualizujemy, gdy zmienia się zakres usług albo przepisy. Data obowiązywania jest podana na górze strony. Zasady zamawiania opisuje <link>regulamin</link>."
+      }
+    },
+    "zwroty": {
+      "meta": {
+        "title": "Zwroty i reklamacje",
+        "description": "60 dni na zwrot zamiast ustawowych 14. Pierwsza wymiana rozmiaru na nasz koszt. Procedura zwrotu, reklamacja z rękojmi i gwarancji, terminy."
+      },
+      "header": {
+        "title": "Zwroty i reklamacje",
+        "lead": "Ustawa daje konsumentowi 14 dni na odstąpienie od umowy. My dajemy 60 dni, bo dobór obroży na psa rzadko wychodzi za pierwszym razem."
+      },
+      "return60": {
+        "title": "Zwrot w 60 dni",
+        "intro": "Masz 60 dni od odbioru paczki na odesłanie towaru bez podania przyczyny. Termin ustawowy to 14 dni — pozostałe 46 dni to nasza polityka i możesz z niej korzystać na tych samych zasadach.",
+        "b1": "Obrożę można przymierzyć i sprawdzić na psie w domu.",
+        "b2": "Nie przyjmujemy zwrotu sprzętu noszonego w terenie: z zabrudzeniami, sierścią wtartą w taśmę, śladami gryzienia, zapachem.",
+        "b3": "E-obrożę i sprzęt elektroniczny odsyłasz z kompletem: nadajnik, odbiornik, ładowarka, elektrody, opakowanie.",
+        "b4": "Produkty szyte na wymiar i z indywidualnym oznaczeniem nie podlegają zwrotowi (art. 38 ustawy o prawach konsumenta)."
+      },
+      "howto": {
+        "title": "Jak zwrócić",
+        "s1": "Napisz na <mail>{email}</mail> z tematem: Zwrot. W treści podaj numer zamówienia, nazwę produktu i numer rachunku do przelewu.",
+        "s2": "Odeślemy potwierdzenie przyjęcia zgłoszenia i adres do wysyłki. Zgłoszenie mailem jest jednocześnie oświadczeniem o odstąpieniu od umowy.",
+        "s3": "Włóż do paczki kartkę z numerem zamówienia. Bez niej nie wiemy, czyja to przesyłka i zwrot się przeciąga.",
+        "s4": "Wyślij paczkę na adres zwrotów. Nie wysyłaj za pobraniem, takich przesyłek nie odbieramy.",
+        "s5": "Pieniądze zwracamy do 14 dni od otrzymania paczki, tą samą metodą, którą płaciłeś. Zwracamy też koszt najtańszej dostawy do Ciebie.",
+        "labelAddress": "Adres do zwrotów",
+        "labelCost": "Koszt odesłania",
+        "costValue": "Po stronie kupującego",
+        "labelRefund": "Zwrot pieniędzy",
+        "refundValue": "Do 14 dni od otrzymania paczki"
+      },
+      "exchange": {
+        "title": "Wymiana rozmiaru",
+        "p1": "Zła długość obroży to najczęstszy powód zwrotu, więc traktujemy ją osobno. Pierwszą wymianę rozmiaru w tym samym modelu wysyłamy na nasz koszt: dostajesz mailem etykietę zwrotną, odsyłasz starą sztukę, my nadajemy nową po jej odbiorze.",
+        "p2": "Zanim zamówisz wymianę, zmierz psa jeszcze raz według <link>tabeli rozmiarów</link>. Jeśli obwód wypada na granicy dwóch rozmiarów, bierz większy — regulacja jest po to, żeby go zebrać."
+      },
+      "complaint": {
+        "title": "Reklamacja",
+        "intro": "Reklamację składasz z rękojmi (2 lata od wydania towaru, odpowiada za nią sprzedawca) albo z gwarancji Dog Store (2 lata na szwy i okucia). Wybór należy do Ciebie i jedno nie wyklucza drugiego.",
+        "s1": "Wyślij zgłoszenie na <mail>{email}</mail>: numer zamówienia, opis wady, zdjęcia uszkodzenia z bliska i całego produktu.",
+        "s2": "Odpowiadamy do 14 dni. Brak odpowiedzi w tym terminie oznacza uznanie reklamacji.",
+        "s3": "Jeśli reklamacja jest zasadna, wysyłamy etykietę zwrotną. Wymieniamy produkt, naprawiamy go albo zwracamy pieniądze.",
+        "s4": "Koszt wysyłki reklamowanego produktu i odesłania naprawionego pokrywamy my.",
+        "note": "Czego gwarancja nie obejmuje: przegryzienia, przetarcia taśmy od pracy, korozji po kąpieli w soli bez wypłukania, cięcia i przeróbek. Szczegóły na stronie <link>gwarancja i serwis</link>."
+      },
+      "disputes": {
+        "title": "Spory",
+        "body": "Jeśli nie dogadamy się bezpośrednio, konsument może skorzystać z pozasądowego rozwiązywania sporów: powiatowy rzecznik konsumentów, wojewódzki inspektorat Inspekcji Handlowej albo platforma ODR Komisji Europejskiej. Skorzystanie z tych dróg jest dobrowolne dla obu stron."
+      }
+    },
+    "gwarancja": {
+      "meta": {
+        "title": "Gwarancja i serwis",
+        "description": "2 lata gwarancji na szwy i okucia. Co obejmuje, czego nie obejmuje, cennik serwisu: wymiana klamry, karabińczyka, przeszycie. Naprawa do 10 dni roboczych."
+      },
+      "header": {
+        "title": "Gwarancja i serwis",
+        "lead": "Dwa lata gwarancji na szwy i okucia. Po gwarancji naprawiamy dalej, tylko odpłatnie — obroża, której pękła klamra, nie jest do wyrzucenia."
+      },
+      "scope": {
+        "title": "Zakres gwarancji",
+        "intro": "Gwarancja obejmuje 24 miesiące od daty zakupu i dotyczy wykonania: szwów, okuć, zgrzewów i połączeń. Podstawą jest dowód zakupu, wystarczy numer zamówienia.",
+        "b1": "Pęknięta lub wyłamana klamra przy normalnym użytkowaniu.",
+        "b2": "Rozejście szwu, wysunięcie nici, rozwarstwienie taśmy.",
+        "b3": "Urwany pierścień D, karabińczyk, nit lub złącze.",
+        "b4": "Korozja okucia stalowego w ciągu 24 miesięcy przy pielęgnacji zgodnej z zaleceniami.",
+        "b5": "E-obroże: 24 miesiące na elektronikę i wodoszczelność, 6 miesięcy na akumulator."
+      },
+      "exclusions": {
+        "title": "Czego gwarancja nie obejmuje",
+        "b1": "Zużycia eksploatacyjnego: przetarcia taśmy, zarysowania okuć, wyblakłego koloru po sezonie w słońcu.",
+        "b2": "Przegryzienia i uszkodzeń zrobionych przez psa, własnego lub cudzego.",
+        "b3": "Cięcia, przewiercania, wszywania własnych elementów i innych przeróbek.",
+        "b4": "Kontaktu z rozpuszczalnikami, wybielaczem, kwasem, olejem napędowym.",
+        "b5": "Korozji po kąpieli w wodzie morskiej bez wypłukania słodką wodą.",
+        "b6": "Akumulatora, który po roku pracy trzyma krócej. Utrata pojemności ogniwa to normalne zjawisko, nie wada.",
+        "b7": "Uszkodzeń elektroniki po samodzielnym otwarciu obudowy.",
+        "note": "Gwarancja nie wyłącza rękojmi. Jeśli produkt ma wadę, możesz zamiast gwarancji skorzystać z rękojmi u sprzedawcy — opisaliśmy to w <link>zwrotach i reklamacjach</link>."
+      },
+      "serwis": {
+        "title": "Serwis i naprawy",
+        "intro": "Naprawiamy sprzęt Dog Store także po gwarancji i niezależnie od tego, czy uszkodzenie jest wadą, czy skutkiem pracy psa. Wymiana klamry jest tańsza niż nowa obroża.",
+        "caption": "Cennik napraw pogwarancyjnych",
+        "thJob": "Naprawa",
+        "thCost": "Koszt",
+        "thScope": "Zakres",
+        "repairs": {
+          "buckle": { "job": "Wymiana klamry", "note": "Klamra z tej samej serii, montaż i przeszycie" },
+          "snap": { "job": "Wymiana karabińczyka lub pierścienia", "note": "Okucie stalowe lub aluminiowe" },
+          "seam": { "job": "Przeszycie rozejścia", "note": "Nić poliestrowa 40, szew krzyżowy" },
+          "idPanel": { "job": "Wymiana panelu ID", "note": "Panel rzepowy, bez ingerencji w taśmę" },
+          "shorten": { "job": "Skrócenie taśmy", "note": "Cięcie, zgrzanie krawędzi, nowe przeszycie" }
+        },
+        "s1": "Wyślij zdjęcia uszkodzenia na <mail>{email}</mail> z numerem zamówienia. Odpowiadamy z wyceną i decyzją, czy sprawa idzie z gwarancji, czy z cennika.",
+        "s2": "Wyślij sprzęt na adres serwisu. Wysyłkę do nas opłaca właściciel, odsyłkę po naprawie pokrywamy my.",
+        "s3": "Naprawa trwa do 10 dni roboczych od dostarczenia paczki. Jeśli brakuje części, informujemy o terminie przed rozpoczęciem pracy.",
+        "s4": "Naprawa gwarancyjna jest bezpłatna razem z wysyłką w obie strony.",
+        "labelAddress": "Adres serwisu",
+        "labelTime": "Czas naprawy",
+        "timeValue": "Do 10 dni roboczych od dostarczenia",
+        "labelContact": "Zgłoszenie"
+      },
+      "care": {
+        "title": "Pielęgnacja",
+        "intro": "Obroża z nylonu 1000D wytrzyma lata, jeśli nie zostawisz jej brudnej i mokrej. Kilka zasad, które przedłużają życie sprzętu i chronią gwarancję.",
+        "b1": "Myj ręcznie: letnia woda, szare mydło, szczotka o średniej twardości. Wypłucz i wysusz w cieniu.",
+        "b2": "Nie pierz w pralce. Okucia obijają bęben, a wysoka temperatura rozmiękcza klej pod wyściółką.",
+        "b3": "Nie susz na kaloryferze i nie susz suszarką. Nylon się kurczy, taśma traci wymiar.",
+        "b4": "Po pracy w wodzie słonej wypłucz obrożę słodką wodą. Sól zjada stal i zostawia ślad w szwach.",
+        "b5": "Łańcuszek przetrzyj do sucha i raz na sezon przetrzyj szmatką z odrobiną oleju maszynowego.",
+        "b6": "Nie używaj wybielaczy, acetonu ani rozpuszczalników. Nylon zbieleje i straci wytrzymałość.",
+        "b7": "Raz w miesiącu sprawdź okucia: luz na nicie, rysa na klamrze i skrzywiony pierścień to sygnały do wymiany, zanim puszczą w terenie."
+      }
+    }
+  }
+}

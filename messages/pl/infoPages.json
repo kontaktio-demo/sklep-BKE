@@ -1,1 +1,235 @@
-{}
+{
+  "infoPages": {
+    "onas": {
+      "meta": {
+        "title": "O nas",
+        "description": "Dog Store szyje obroże i sprzęt dla psów pracujących. Szwalnia w Krakowie, sprzęt testowany przez przewodników, linia Dog Store Pro dla służb i szkoleniowców."
+      },
+      "header": {
+        "title": "O nas",
+        "lead": "Szyjemy obroże i sprzęt dla psów, które pracują. Firma stoi na jednej zasadzie: sprzęt ma wytrzymać dzień pracy przewodnika, a nie sesję zdjęciową."
+      },
+      "kim": {
+        "title": "Kim jesteśmy",
+        "p1": "Dog Store powstał w 2019 roku w Krakowie, w warsztacie, w którym najpierw naprawialiśmy cudze obroże. Przez rok widzieliśmy w kółko to samo: pękały klamry z tworzywa, rozchodziły się szwy przy pierścieniu, korodowały okucia po zimie z solą na chodnikach. Zaczęliśmy szyć własne, żeby te trzy rzeczy wyeliminować.",
+        "p2": "Dziś pracuje u nas dziewięć osób: szwalnia, magazyn i obsługa zamówień. Nie mamy działu marketingu i nie zlecamy produkcji na zewnątrz.",
+        "facts": {
+          "foundedLabel": "Rok założenia",
+          "hqLabel": "Siedziba i szwalnia",
+          "teamLabel": "Zespół",
+          "teamValue": "9 osób",
+          "contactLabel": "Kontakt"
+        }
+      },
+      "proline": {
+        "title": "Skąd wzięła się linia Dog Store Pro",
+        "p1": "Pierwsze zamówienie od przewodnika psa służbowego dostaliśmy w 2021 roku. Chodziło o obrożę z uchwytem, która nie urwie się przy podnoszeniu psa przez płot. Zrobiliśmy jedną sztukę. Po miesiącu odezwała się cała grupa z tej samej jednostki.",
+        "p2": "Okazało się, że sprzęt do pracy ma inne wymagania niż obroża na spacer: uchwyt zamiast smyczy, miejsce na moduł e-obroży, oznaczenie widoczne po zmroku, okucia o znanej wytrzymałości na zrywanie. Wydzieliliśmy to w osobną linię — <link>Dog Store Pro</link> — żeby nie mieszać sprzętu służbowego z asortymentem sklepu. Kupują z niej jednostki, szkoły przewodników, ratownicy i sportowcy z IGP."
+      },
+      "test": {
+        "title": "Jak testujemy sprzęt",
+        "i1": "Każdy prototyp trafia na trzy miesiące do przewodnika, który używa go w pracy. Nie do domu, do pracy.",
+        "i2": "Okucia sprawdzamy na maszynie wytrzymałościowej pod obciążeniem statycznym. Klamra, która puszcza poniżej deklarowanej wartości, nie wchodzi do produkcji.",
+        "i3": "Po sezonie zbieramy sprzęt z powrotem i patrzymy, gdzie przetarła się taśma i który szew się poluzował. To decyduje o kolejnej wersji, nie opinia z ankiety.",
+        "i4": "Nowe okucie wprowadzamy dopiero, gdy przejdzie testy w dwóch niezależnych jednostkach.",
+        "p": "Dlatego katalog rośnie wolno. Model wchodzi do sprzedaży rok po pierwszym szkicu, a nie miesiąc."
+      },
+      "material": {
+        "title": "Gdzie i z czego szyjemy",
+        "i1": "Szyjemy w Krakowie, we własnej szwalni. Nie zlecamy produkcji podwykonawcom.",
+        "i2": "Taśmy nylonowe 1000D kupujemy w Polsce i w Niemczech. Neopren na wyściółkę: Włochy.",
+        "i3": "Okucia stalowe i aluminiowe: dostawcy z Niemiec i Włoch, z atestem wytrzymałości.",
+        "i4": "Nić poliestrowa, szew krzyżowy na wszystkich połączeniach nośnych.",
+        "i5": "Elektronikę do e-obroży kupujemy gotową od producenta z Unii Europejskiej. Sami projektujemy i szyjemy paski oraz mocowania modułów."
+      },
+      "notdo": {
+        "title": "Czego nie robimy",
+        "i1": "Nie sprzedajemy sprzętu, którego sami nie przetestowaliśmy w pracy z psem.",
+        "i2": "Nie wypuszczamy kolekcji sezonowych. Kolor dochodzi wtedy, gdy ma sens w terenie, a nie wtedy, gdy jest modny.",
+        "i3": "Nie ukrywamy składu i pochodzenia materiałów. Są w specyfikacji każdego produktu.",
+        "p": "Masz pytanie o materiał, wytrzymałość albo dobór sprzętu do konkretnego zadania: <link>napisz do nas</link>. Zapytania służbowe i szkoleniowe obsługujemy pod adresem"
+      }
+    },
+    "dostawa": {
+      "meta": {
+        "title": "Dostawa i płatności",
+        "description": "Wysyłka InPost w 24 h w dni robocze: paczkomat {paczkomat}, kurier {kurier}, darmowa dostawa od {threshold} zł. Płatność online kartą, BLIK-iem lub przez Przelewy24."
+      },
+      "header": {
+        "title": "Dostawa i płatności",
+        "lead": "Zamówienia opłacone do 14:00 w dni robocze pakujemy i nadajemy tego samego dnia. Złożone później wychodzą następnego dnia roboczego."
+      },
+      "ship": {
+        "title": "Kiedy wysyłamy",
+        "i1": "Zamówienie opłacone do 14:00 w dzień roboczy: nadanie tego samego dnia.",
+        "i2": "Zamówienie opłacone po 14:00, w sobotę, niedzielę lub święto: nadanie w najbliższy dzień roboczy.",
+        "i3": "Numer listu przewozowego wysyłamy mailem w chwili nadania paczki."
+      },
+      "carriers": {
+        "title": "Przewoźnicy i koszty",
+        "p": "Czas dostawy liczymy od nadania paczki, nie od złożenia zamówienia. Podane terminy to deklaracja przewoźnika."
+      },
+      "table": {
+        "caption": "Koszty i czasy dostawy według przewoźnika",
+        "carrier": "Przewoźnik",
+        "cost": "Koszt",
+        "time": "Czas",
+        "fromThreshold": "Od {threshold} zł",
+        "free": "gratis",
+        "unchanged": "bez zmian"
+      },
+      "free": {
+        "title": "Darmowa dostawa",
+        "p1": "Od {threshold} zł wartości koszyka paczkomat i kurier przedpłacony są bezpłatne. Liczy się wartość produktów po rabatach, bez kosztu dostawy.",
+        "p2": "Postęp do progu widzisz w koszyku i w podglądzie koszyka: pokazujemy, ile brakuje do darmowej dostawy."
+      },
+      "pay": {
+        "title": "Płatności",
+        "p1": "Płacisz online od razu w kasie: kartą, BLIK-iem albo przez Przelewy24. Płatności obsługuje Stripe — danych Twojej karty nie widzimy ani nie przechowujemy.",
+        "p2": "Sposób dostawy i adres wybierasz w kasie, w jednym kroku z płatnością. Po zaksięgowaniu płatności dostajesz mailem potwierdzenie zamówienia, a numer listu przewozowego wysyłamy w chwili nadania paczki."
+      },
+      "pickup": {
+        "title": "Odbiór paczki",
+        "i1": "Sprawdź paczkę przy kurierze. Widoczne uszkodzenie opakowania: spisz protokół i wyślij nam zdjęcia.",
+        "i2": "Paczkomat przechowuje przesyłkę 48 godzin, potem wraca do nadawcy.",
+        "i3": "Paczka nieodebrana i zwrócona do nas: wysyłamy ponownie po dopłacie za drugą wysyłkę albo zwracamy pieniądze za produkty.",
+        "p": "Zwroty i wymiany rozmiaru opisaliśmy osobno: <link>zwroty i reklamacje</link>."
+      }
+    },
+    "kontakt": {
+      "meta": {
+        "title": "Kontakt",
+        "description": "Kontakt do sklepu Dog Store: e-mail, telefon, godziny pracy, dane firmy i adres do zwrotów. Odpisujemy do 24 godzin w dni robocze."
+      },
+      "header": {
+        "title": "Kontakt",
+        "lead": "Piszemy i odbieramy telefon w dni robocze. Na wiadomości odpowiadamy do 24 godzin roboczych, zwykle szybciej."
+      },
+      "shop": {
+        "title": "Sklep i zamówienia",
+        "p": "Sprawy dotyczące zamówień, wysyłki, doboru rozmiaru i dostępności modeli.",
+        "emailLabel": "E-mail",
+        "phoneLabel": "Telefon",
+        "hoursLabel": "Godziny pracy",
+        "responseLabel": "Czas odpowiedzi"
+      },
+      "pro": {
+        "title": "Dog Store Pro",
+        "p": "Jednostki, szkoły przewodników, kluby sportowe i firmy ochrony. Zapytania ofertowe, faktury z odroczonym terminem płatności, dobór sprzętu do zadania i oznaczenia na zamówienie.",
+        "emailLabel": "E-mail"
+      },
+      "returns": {
+        "title": "Zwroty i reklamacje",
+        "p": "Zwrot lub reklamację zgłoś mailem na {email}, zanim wyślesz paczkę. Procedura i lista rzeczy, które musimy dostać, są opisane na stronie <link>Zwroty i reklamacje</link>.",
+        "addressLabel": "Adres do zwrotów",
+        "note": "Nie przyjmujemy przesyłek za pobraniem. Koszt odesłania towaru pokrywa kupujący, poza wymianą rozmiaru — pierwszą wymianę wysyłamy na nasz koszt."
+      },
+      "company": {
+        "title": "Dane firmy",
+        "nameLabel": "Nazwa",
+        "addressLabel": "Adres",
+        "nipLabel": "NIP",
+        "regonLabel": "REGON",
+        "krsLabel": "KRS",
+        "courtLabel": "Rejestr",
+        "capitalLabel": "Kapitał zakładowy",
+        "paidUp": "wpłacony w całości",
+        "privacyLabel": "Dane osobowe"
+      },
+      "before": {
+        "title": "Zanim napiszesz",
+        "p": "Najczęstsze sprawy mają własne strony i tam odpowiedź jest od ręki.",
+        "i1": "Nie wiesz, jaki rozmiar wybrać: <link>tabela rozmiarów</link>",
+        "i2": "Pytanie o koszt i czas dostawy: <link>dostawa i płatności</link>",
+        "i3": "Pękła klamra albo rozeszedł się szew: <link>gwarancja i serwis</link>"
+      },
+      "form": {
+        "title": "Formularz kontaktowy",
+        "nameLabel": "Imię i nazwisko",
+        "emailLabel": "Adres e-mail",
+        "subjectLabel": "Temat",
+        "messageLabel": "Wiadomość",
+        "messagePlaceholder": "Numer zamówienia, model obroży, obwód szyi psa — im konkretniej, tym szybciej odpiszemy.",
+        "consent": "Zgadzam się na przetwarzanie moich danych w celu odpowiedzi na wiadomość. Administratorem danych jest {legalName}. Szczegóły w <link>polityce prywatności</link>.",
+        "submit": "Wyślij wiadomość",
+        "sending": "Wysyłanie…",
+        "footer": "Odpisujemy {responseTime}. Możesz też napisać bezpośrednio na {email}.",
+        "sendError": "Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz na {email}.",
+        "subjects": {
+          "order": "Zamówienie i wysyłka",
+          "return": "Zwrot lub reklamacja",
+          "sizing": "Dobór rozmiaru",
+          "pro": "Sprzęt Dog Store Pro",
+          "other": "Inna sprawa"
+        },
+        "errors": {
+          "name": "Podaj imię i nazwisko.",
+          "emailRequired": "Podaj adres e-mail.",
+          "emailInvalid": "Adres e-mail ma niepoprawny format.",
+          "message": "Wpisz treść wiadomości.",
+          "consent": "Bez zgody nie mamy podstawy, żeby odpisać."
+        },
+        "sent": {
+          "title": "Wiadomość wysłana",
+          "body": "Dziękujemy — odpiszemy {responseTime} na {email}. W pilnej sprawie zadzwoń: {phone}.",
+          "again": "Wyślij kolejną wiadomość"
+        }
+      }
+    },
+    "rozmiary": {
+      "meta": {
+        "title": "Tabela rozmiarów",
+        "description": "Jak zmierzyć obwód szyi psa i dobrać rozmiar obroży: Mały 28-36 cm, Średni 38-46 cm, Duży 48-60 cm. Szerokości taśm 2,5 / 4 / 4,5 cm i do jakich psów pasują."
+      },
+      "header": {
+        "title": "Tabela rozmiarów",
+        "lead": "Obrożę dobiera się do obwodu szyi, nie do wagi psa. Waga w tabeli jest tylko podpowiedzią, bo malinois i labrador o tej samej masie mają inną szyję."
+      },
+      "measure": {
+        "title": "Jak mierzyć",
+        "s1": "Weź krawiecki centymetr. Bez centymetra: owiń szyję sznurkiem, zaznacz miejsce styku i zmierz sznurek linijką.",
+        "s2": "Mierz w połowie szyi, w miejscu, w którym obroża naprawdę leży: mniej więcej dwa palce za uszami, nad barkiem.",
+        "s3": "Taśma ma przylegać, ale nie wciskać się w sierść. Nie zaciągaj.",
+        "s4": "Sprawdź regułę dwóch palców: między taśmą a szyją muszą swobodnie wejść dwa palce ułożone płasko. Jeśli wchodzą trzy, obroża zsunie się przez głowę.",
+        "s5": "Zapisz wynik w centymetrach i dobierz rozmiar z tabeli. Obwód na granicy dwóch rozmiarów: bierz większy, regulacja go zbierze."
+      },
+      "dogs": {
+        "small": "Beagle, border collie, cocker spaniel, mniejszy owczarek australijski",
+        "medium": "Owczarek belgijski malinois, owczarek niemiecki, labrador, boxer",
+        "large": "Rottweiler, dog niemiecki, cane corso, duży owczarek kaukaski"
+      },
+      "sizes": {
+        "title": "Rozmiary",
+        "caption": "Rozmiary obroży: obwód szyi, orientacyjna waga psa i typowe rasy",
+        "size": "Rozmiar",
+        "neck": "Obwód szyi",
+        "weight": "Waga psa",
+        "breeds": "Typowe rasy",
+        "p": "Waga jest orientacyjna. Decyduje zmierzony obwód szyi: chart o wadze labradora ma szyję o dwa rozmiary mniejszą."
+      },
+      "width": {
+        "title": "Szerokość taśmy",
+        "p": "Szerokość dobiera się do siły psa i długości jego szyi. Im szersza taśma, tym mniejszy nacisk na centymetr kwadratowy przy szarpnięciu — ale tym mniej swobody ruchu głowy.",
+        "caption": "Szerokości taśm i przeznaczenie",
+        "widthCol": "Szerokość",
+        "useCol": "Do jakich psów",
+        "u1": "Psy do 20 kg i codzienne noszenie. Lekka, nie przeszkadza przy krótkiej szyi, wystarczy do spaceru i panelu ID.",
+        "u2": "Psy pracujące 20-40 kg. Rozkłada nacisk przy szarpnięciu, standard do pracy na smyczy i do obroży z uchwytem.",
+        "u3": "Psy powyżej 40 kg i praca na lince. Największy rozkład nacisku, ale wymaga dłuższej szyi — przy krępym psie ociera o żuchwę."
+      },
+      "ecollar": {
+        "title": "E-obroże",
+        "p": "Obwód mierzysz tak samo, ale liczy się jeszcze jedno: elektrody muszą dotykać skóry, a nie leżeć na sierści. Pasek e-obroży dopina się ciaśniej niż obrożę codzienną, o jeden palec zamiast dwóch.",
+        "i1": "Pies z gęstym podszerstkiem: użyj dłuższych elektrod z zestawu albo rozgarnij sierść pod odbiornikiem.",
+        "i2": "Odbiornik noś z boku szyi, nie na tchawicy. Zmieniaj stronę co kilka godzin.",
+        "i3": "Nie zostawiaj e-obroży na psie dłużej niż 8 godzin dziennie. Stały ucisk elektrod powoduje odparzenia.",
+        "i4": "E-obroża nie zastępuje obroży codziennej z panelem ID. To osobny sprzęt do konkretnej pracy.",
+        "i5": "Zakres regulacji paska podajemy w karcie każdego modułu. Sprawdź go przed zamówieniem."
+      },
+      "sizeFail": {
+        "title": "Rozmiar nie pasuje",
+        "note": "Pierwszą wymianę rozmiaru w tym samym modelu wysyłamy na nasz koszt. Zgłoszenie i procedura: <link>zwroty i reklamacje</link>. Masz 60 dni od odbioru paczki."
+      }
+    }
+  }
+}

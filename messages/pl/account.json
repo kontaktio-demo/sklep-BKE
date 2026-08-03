@@ -1,1 +1,40 @@
-{}
+{
+  "account": {
+    "meta": {
+      "account": "Konto",
+      "orders": "Zamówienia",
+      "login": "Logowanie"
+    },
+    "accountTitle": "Konto",
+    "kicker": "Konto",
+    "signIn": "Zaloguj się",
+    "notConfigured": {
+      "body": "Logowanie do konta będzie dostępne wkrótce. Zakupy jako gość działają bez konta.",
+      "cta": "Przejdź do sklepu"
+    },
+    "login": {
+      "title": "Logowanie",
+      "alreadyTitle": "Jesteś zalogowany",
+      "goToAccount": "Przejdź do konta",
+      "error": "Nie udało się wysłać linku. Sprawdź adres i spróbuj ponownie.",
+      "hint": "Podaj e-mail — wyślemy link do logowania bez hasła.",
+      "sent": "Wysłaliśmy link do logowania na <b>{email}</b>. Kliknij go, aby się zalogować.",
+      "emailPlaceholder": "twój@email.pl",
+      "sending": "Wysyłanie…",
+      "submit": "Wyślij link"
+    },
+    "overview": {
+      "title": "Twoje konto",
+      "signOut": "Wyloguj",
+      "recentOrders": "Ostatnie zamówienia",
+      "allOrders": "Wszystkie zamówienia",
+      "signInPrompt": "Zaloguj się, aby zobaczyć swoje zamówienia i adresy."
+    },
+    "orders": {
+      "title": "Zamówienia",
+      "back": "← Konto",
+      "empty": "Brak zamówień.",
+      "signInPrompt": "Zaloguj się, aby zobaczyć zamówienia."
+    }
+  }
+}

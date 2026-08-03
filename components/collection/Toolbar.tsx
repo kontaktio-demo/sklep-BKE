@@ -1,9 +1,9 @@
 "use client";
 
 import { useId } from "react";
+import { useTranslations } from "next-intl";
 import { SORT_OPTIONS, type SortOption } from "@/lib/filtering";
 import { Button } from "@/components/ui/Button";
-import { plural } from "@/lib/utils";
 
 export function Toolbar({
   count,
@@ -19,16 +19,17 @@ export function Toolbar({
   activeFilterCount: number;
 }) {
   const sortId = useId();
+  const t = useTranslations("catalog");
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-nf-border py-4">
       <p aria-live="polite" className="text-sm text-nf-muted">
-        {count} {plural(count, "produkt", "produkty", "produktów")}
+        {t("toolbar.count", { count })}
       </p>
 
       <div className="flex items-center gap-3">
         <Button variant="ghost" size="sm" className="h-11 lg:hidden" onClick={onOpenFilters}>
-          Filtruj
+          {t("toolbar.filter")}
           {activeFilterCount > 0 && (
             <>
               {/* Licznik dziedziczyl kolor liter po przycisku. Na jasnym tle przycisk ma
@@ -41,8 +42,7 @@ export function Toolbar({
                 {activeFilterCount}
               </span>
               <span className="sr-only">
-                {activeFilterCount}{" "}
-                {plural(activeFilterCount, "aktywny filtr", "aktywne filtry", "aktywnych filtrów")}
+                {t("toolbar.activeFilters", { count: activeFilterCount })}
               </span>
             </>
           )}
@@ -52,7 +52,7 @@ export function Toolbar({
           {/* type-label zamiast rozstrzelonego uppercase 0.1em: pasek narzedzi sklepu
               cywilnego przestaje udawac panel techniczny */}
           <label htmlFor={sortId} className="type-label whitespace-nowrap text-nf-dim">
-            Sortuj
+            {t("toolbar.sort")}
           </label>
           {/* nf-control: krawedz jest jedynym sygnalem, ze to lista wyboru (WCAG 1.4.11) */}
           <select

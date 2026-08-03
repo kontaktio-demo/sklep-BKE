@@ -1,1 +1,91 @@
-{}
+{
+  "catalog": {
+    "meta": {
+      "unavailableTitle": "Kolekcja niedostępna",
+      "unavailableDescription": "Ta kolekcja zmieniła adres lub została wycofana.",
+      "searchTitle": "Szukaj",
+      "searchTitleQuery": "Szukaj: {query}",
+      "searchDescriptionQuery": "Wyniki wyszukiwania dla frazy {query} w sklepie Dog Store i w katalogu Dog Store Pro.",
+      "searchDescription": "Przeszukaj obroże ze sklepu Dog Store i sprzęt służbowy z linii Dog Store Pro."
+    },
+    "breadcrumb": {
+      "home": "Strona główna"
+    },
+    "hero": {
+      "breadcrumbAria": "Ścieżka nawigacji",
+      "eyebrow": "Kolekcja",
+      "browse": "Przeglądaj",
+      "bestsellers": "Bestsellery"
+    },
+    "skeleton": {
+      "loading": "Wczytywanie listy produktów"
+    },
+    "rows": {
+      "bestsellers": "Top 10 bestsellerów",
+      "working": "Obroże robocze",
+      "everyday": "Na co dzień",
+      "eCollar": "Kompatybilne z e-obrożą",
+      "seeAll": "Zobacz wszystkie",
+      "rank": "Miejsce {rank}"
+    },
+    "scroller": {
+      "prev": "Przewiń w lewo",
+      "next": "Przewiń w prawo"
+    },
+    "filters": {
+      "heading": "Filtry",
+      "clear": "Wyczyść",
+      "clearAll": "Wyczyść wszystko",
+      "price": "Cena",
+      "priceFrom": "Od",
+      "priceTo": "Do",
+      "show": "Pokaż {count, plural, one {# wynik} few {# wyniki} many {# wyników} other {# wyników}}"
+    },
+    "toolbar": {
+      "count": "{count, plural, one {# produkt} few {# produkty} many {# produktów} other {# produktów}}",
+      "filter": "Filtruj",
+      "activeFilters": "{count, plural, one {# aktywny filtr} few {# aktywne filtry} many {# aktywnych filtrów} other {# aktywnych filtrów}}",
+      "sort": "Sortuj"
+    },
+    "grid": {
+      "resultsHeading": "Wyniki",
+      "emptyTitle": "Nic nie pasuje do wybranych filtrów.",
+      "emptyBody": "Usuń jeden z filtrów lub wyczyść wszystkie, aby zobaczyć całą kolekcję.",
+      "clearFilters": "Wyczyść filtry"
+    },
+    "card": {
+      "quickView": "Szybki podgląd",
+      "quickViewAria": "Szybki podgląd: {name}",
+      "sizes": "Rozmiary",
+      "sizeAvailable": "dostępny",
+      "sizeUnavailable": "brak"
+    },
+    "quickView": {
+      "titleFallback": "Szybki podgląd",
+      "imageAria": "Zdjęcie {index}",
+      "color": "Kolor",
+      "width": "Szerokość",
+      "quantity": "Ilość",
+      "decrease": "Zmniejsz ilość",
+      "increase": "Zwiększ ilość",
+      "soldOut": "Chwilowo niedostępna",
+      "sizeUnavailable": "Rozmiar {size} niedostępny",
+      "askAvailability": "Napisz w sprawie dostępności",
+      "viewFull": "Zobacz pełny opis"
+    },
+    "search": {
+      "title": "Szukaj",
+      "resultsSummary": "{total, plural, one {# wynik} few {# wyniki} many {# wyników} other {# wyników}} dla frazy: {query}",
+      "noResultsSummary": "Brak wyników dla frazy: {query}",
+      "emptyTitle": "Wpisz frazę, żeby przeszukać sklep i katalog Dog Store Pro.",
+      "emptyBody": "Szukamy po nazwie, opisie, SKU, kategorii, kolorze i specyfikacji.",
+      "noResultsTitle": "Nic nie pasuje do frazy: {query}",
+      "noResultsBody": "Sprawdź pisownię albo skróć zapytanie do jednego słowa. Cały asortyment jest w sklepie i w katalogu Dog Store Pro.",
+      "goToShop": "Przejdź do sklepu",
+      "proCatalog": "Katalog Dog Store Pro",
+      "shopSection": "Sklep",
+      "allCollars": "Wszystkie obroże",
+      "resultCount": "{count, plural, one {# wynik} few {# wyniki} many {# wyników} other {# wyników}}"
+    }
+  }
+}

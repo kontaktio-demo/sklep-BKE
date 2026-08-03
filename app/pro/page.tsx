@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { getProCategories } from "@/lib/data";
 import { ProHero } from "@/components/pro/ProHero";
 import { ProCategoryGrid } from "@/components/pro/ProCategoryGrid";
 import { ProStandards } from "@/components/pro/ProStandards";
 
-export const metadata: Metadata = {
-  title: "Dog Store Pro",
-  description:
-    "Sprzęt służbowy dla psów pracujących. Patrol, praca węchowa, szkolenie.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("pro");
+  return {
+    title: t("meta.title"),
+    description: t("meta.description"),
+  };
+}
 
 // Kolejnosc sekcji: hero (bilbord) -> siatka kategorii -> standard (editorial).
 // Pas parametrow (ProSpecStrip) odszedl na zyczenie wlasciciela - zadnych

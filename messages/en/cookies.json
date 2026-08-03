@@ -1,1 +1,7 @@
-{}
+{
+  "cookies": {
+    "message": "We use cookies for analytics and marketing. You can accept them or stick with essential only. <link>Privacy Policy</link>.",
+    "acceptEssential": "Essential only",
+    "accept": "Accept"
+  }
+}

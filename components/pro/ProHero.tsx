@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { photo } from "@/lib/photos";
 
@@ -17,6 +18,7 @@ const SCRIM =
   "linear-gradient(90deg, #0E0E0E 0%, rgba(14,14,14,0.7) 35%, transparent 70%)";
 
 export function ProHero() {
+  const t = useTranslations("pro");
   // wlasny slot, nie hero.jpg sklepu: dwa swiaty, dwa kadry otwarcia
   const src = photo("pro-hero.jpg");
 
@@ -33,28 +35,27 @@ export function ProHero() {
       />
 
       <div className="relative mx-auto w-full max-w-[1440px] px-5 pb-16 pt-32 md:px-8 md:pb-24 lg:px-12">
-        <p className="type-pro-eyebrow text-pro-muted">Sprzęt służbowy</p>
+        <p className="type-pro-eyebrow text-pro-muted">{t("hero.eyebrow")}</p>
 
         {/* 2 px czerwona linia jako znacznik sekcji - struktura rysowana LINIA, nie cieniem */}
         <span aria-hidden="true" className="mt-5 block h-0.5 w-16 bg-pro-red" />
 
         <h1 className="type-pro-hero mt-6 max-w-[16ch] text-pro-white">
-          Psy, które pracują pod{" "}
-          <span className="text-pro-red">obciążeniem</span>
+          {t.rich("hero.title", {
+            accent: (chunks) => <span className="text-pro-red">{chunks}</span>,
+          })}
         </h1>
 
         <p className="type-pro-body mt-6 max-w-xl text-pro-text">
-          Sprzęt do służby patrolowej, pracy węchowej i szkolenia. Pies służbowy obciąża
-          obrożę inaczej niż pies rodzinny, więc taśma, okucia i przeszycia są tu dobierane
-          pod inne wartości.
+          {t("hero.body")}
         </p>
 
         <div className="mt-10 flex flex-wrap gap-3">
           <Button size="lg" variant="danger" href="#kategorie">
-            Zobacz kategorie
+            {t("hero.ctaCategories")}
           </Button>
           <Button size="lg" variant="ghost" href="/pro/zapytanie">
-            Zapytanie dla jednostki
+            {t("hero.ctaInquiry")}
           </Button>
         </div>
       </div>

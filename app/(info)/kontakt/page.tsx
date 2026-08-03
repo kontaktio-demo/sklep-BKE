@@ -1,34 +1,34 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { COMPANY } from "@/lib/nav";
 import { Bullets, Facts, InfoHeader, InfoLink, Mail, Note, P, Section } from "../_ui";
 import { ContactForm } from "./ContactForm";
 
-export const metadata: Metadata = {
-  title: "Kontakt",
-  description:
-    "Kontakt do sklepu Dog Store: e-mail, telefon, godziny pracy, dane firmy i adres do zwrotów. Odpisujemy do 24 godzin w dni robocze.",
-  alternates: { canonical: "/kontakt" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("infoPages");
+  return {
+    title: t("kontakt.meta.title"),
+    description: t("kontakt.meta.description"),
+    alternates: { canonical: "/kontakt" },
+  };
+}
 
 const ADDRESS = `${COMPANY.street}, ${COMPANY.postalCode} ${COMPANY.city}`;
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const t = await getTranslations("infoPages");
+
   return (
     <>
-      <InfoHeader
-        title="Kontakt"
-        lead="Piszemy i odbieramy telefon w dni robocze. Na wiadomości odpowiadamy do 24 godzin roboczych, zwykle szybciej."
-      />
+      <InfoHeader title={t("kontakt.header.title")} lead={t("kontakt.header.lead")} />
 
-      <Section title="Sklep i zamówienia">
-        <P>
-          Sprawy dotyczące zamówień, wysyłki, doboru rozmiaru i dostępności modeli.
-        </P>
+      <Section title={t("kontakt.shop.title")}>
+        <P>{t("kontakt.shop.p")}</P>
         <Facts
           rows={[
-            { label: "E-mail", value: <Mail address={COMPANY.shopEmail} /> },
+            { label: t("kontakt.shop.emailLabel"), value: <Mail address={COMPANY.shopEmail} /> },
             {
-              label: "Telefon",
+              label: t("kontakt.shop.phoneLabel"),
               value: (
                 <a
                   href={`tel:${COMPANY.phone.replace(/\s/g, "")}`}
@@ -38,31 +38,30 @@ export default function ContactPage() {
                 </a>
               ),
             },
-            { label: "Godziny pracy", value: COMPANY.officeHours },
-            { label: "Czas odpowiedzi", value: COMPANY.responseTime },
+            { label: t("kontakt.shop.hoursLabel"), value: COMPANY.officeHours },
+            { label: t("kontakt.shop.responseLabel"), value: COMPANY.responseTime },
           ]}
         />
       </Section>
 
-      <Section title="Dog Store Pro">
-        <P>
-          Jednostki, szkoły przewodników, kluby sportowe i firmy ochrony. Zapytania ofertowe,
-          faktury z odroczonym terminem płatności, dobór sprzętu do zadania i oznaczenia na
-          zamówienie.
-        </P>
-        <Facts rows={[{ label: "E-mail", value: <Mail address={COMPANY.proEmail} /> }]} />
+      <Section title={t("kontakt.pro.title")}>
+        <P>{t("kontakt.pro.p")}</P>
+        <Facts rows={[{ label: t("kontakt.pro.emailLabel"), value: <Mail address={COMPANY.proEmail} /> }]} />
       </Section>
 
-      <Section title="Zwroty i reklamacje">
+      <Section title={t("kontakt.returns.title")}>
         <P>
-          Zwrot lub reklamację zgłoś mailem na {COMPANY.shopEmail}, zanim wyślesz paczkę.
-          Procedura i lista rzeczy, które musimy dostać, są opisane na stronie{" "}
-          <InfoLink href="/zwroty-i-reklamacje">Zwroty i reklamacje</InfoLink>.
+          {t.rich("kontakt.returns.p", {
+            email: COMPANY.shopEmail,
+            link: (chunks) => (
+              <InfoLink href="/zwroty-i-reklamacje">{chunks}</InfoLink>
+            ),
+          })}
         </P>
         <Facts
           rows={[
             {
-              label: "Adres do zwrotów",
+              label: t("kontakt.returns.addressLabel"),
               value: (
                 <>
                   {COMPANY.returnsRecipient}
@@ -73,48 +72,45 @@ export default function ContactPage() {
             },
           ]}
         />
-        <Note>
-          Nie przyjmujemy przesyłek za pobraniem. Koszt odesłania towaru pokrywa kupujący,
-          poza wymianą rozmiaru - pierwszą wymianę wysyłamy na nasz koszt.
-        </Note>
+        <Note>{t("kontakt.returns.note")}</Note>
       </Section>
 
-      <Section title="Dane firmy">
+      <Section title={t("kontakt.company.title")}>
         <Facts
           rows={[
-            { label: "Nazwa", value: COMPANY.legalName },
-            { label: "Adres", value: `${ADDRESS}, ${COMPANY.country}` },
-            { label: "NIP", value: COMPANY.nip },
-            { label: "REGON", value: COMPANY.regon },
-            { label: "KRS", value: COMPANY.krs },
-            { label: "Rejestr", value: COMPANY.court },
-            { label: "Kapitał zakładowy", value: `${COMPANY.shareCapital}, wpłacony w całości` },
-            { label: "Dane osobowe", value: <Mail address={COMPANY.privacyEmail} /> },
+            { label: t("kontakt.company.nameLabel"), value: COMPANY.legalName },
+            { label: t("kontakt.company.addressLabel"), value: `${ADDRESS}, ${COMPANY.country}` },
+            { label: t("kontakt.company.nipLabel"), value: COMPANY.nip },
+            { label: t("kontakt.company.regonLabel"), value: COMPANY.regon },
+            { label: t("kontakt.company.krsLabel"), value: COMPANY.krs },
+            { label: t("kontakt.company.courtLabel"), value: COMPANY.court },
+            {
+              label: t("kontakt.company.capitalLabel"),
+              value: `${COMPANY.shareCapital}, ${t("kontakt.company.paidUp")}`,
+            },
+            { label: t("kontakt.company.privacyLabel"), value: <Mail address={COMPANY.privacyEmail} /> },
           ]}
         />
       </Section>
 
-      <Section title="Zanim napiszesz">
-        <P>Najczęstsze sprawy mają własne strony i tam odpowiedź jest od ręki.</P>
+      <Section title={t("kontakt.before.title")}>
+        <P>{t("kontakt.before.p")}</P>
         <Bullets
           items={[
-            <>
-              Nie wiesz, jaki rozmiar wybrać:{" "}
-              <InfoLink href="/tabela-rozmiarow">tabela rozmiarów</InfoLink>
-            </>,
-            <>
-              Pytanie o koszt i czas dostawy:{" "}
-              <InfoLink href="/dostawa-i-platnosci">dostawa i płatności</InfoLink>
-            </>,
-            <>
-              Pękła klamra albo rozeszedł się szew:{" "}
-              <InfoLink href="/gwarancja-i-serwis">gwarancja i serwis</InfoLink>
-            </>,
+            t.rich("kontakt.before.i1", {
+              link: (chunks) => <InfoLink href="/tabela-rozmiarow">{chunks}</InfoLink>,
+            }),
+            t.rich("kontakt.before.i2", {
+              link: (chunks) => <InfoLink href="/dostawa-i-platnosci">{chunks}</InfoLink>,
+            }),
+            t.rich("kontakt.before.i3", {
+              link: (chunks) => <InfoLink href="/gwarancja-i-serwis">{chunks}</InfoLink>,
+            }),
           ]}
         />
       </Section>
 
-      <Section title="Formularz kontaktowy">
+      <Section title={t("kontakt.form.title")}>
         <ContactForm />
       </Section>
     </>

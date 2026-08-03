@@ -1,1 +1,67 @@
-{}
+{
+  "cart": {
+    "meta": {
+      "title": "Koszyk",
+      "description": "Sprawdź pozycje w koszyku, ilości i wartość zamówienia. Darmowa dostawa od 299 zł, 60 dni na zwrot."
+    },
+    "title": "Koszyk",
+    "breadcrumb": {
+      "shop": "Sklep",
+      "cart": "Koszyk"
+    },
+    "itemsRegion": "Pozycje w koszyku",
+    "summaryRegion": "Podsumowanie zamówienia",
+    "positions": "{count, plural, one {# pozycja} few {# pozycje} many {# pozycji} other {# pozycji}}",
+    "pieces": "{count, plural, one {# sztuka} few {# sztuki} many {# sztuk} other {# sztuk}}",
+    "itemName": "{name}, rozmiar {size}",
+    "sizeLabel": "Rozmiar: {size}",
+    "colorLabel": "Kolor: {color}",
+    "perUnit": "{price} za sztukę",
+    "outOfStock": "Ten rozmiar jest chwilowo niedostępny. Potwierdzimy termin w odpowiedzi na zamówienie.",
+    "outOfStockShort": "Rozmiar chwilowo niedostępny",
+    "decreaseAria": "Zmniejsz ilość: {name}",
+    "increaseAria": "Zwiększ ilość: {name}",
+    "remove": "Usuń",
+    "removeAria": "Usuń {name}",
+    "continueShopping": "Kontynuuj zakupy",
+    "summary": {
+      "heading": "Podsumowanie",
+      "subtotal": "Suma częściowa",
+      "shipping": "Dostawa",
+      "shippingFree": "Gratis",
+      "shippingFrom": "od {price}",
+      "total": "Razem",
+      "vatIncluded": "Cena zawiera VAT.",
+      "freeShippingNote": "Dostawa w tym zamówieniu jest bezpłatna.",
+      "shippingNote": "Kwota zawiera najtańszą dostawę (paczkomat). Ostateczny koszt zależy od przewoźnika wybranego przy zamówieniu."
+    },
+    "checkout": "Przejdź do kasy",
+    "checkoutNote": "Bezpieczna płatność online: karta, BLIK, Przelewy24 (Stripe). Sposób dostawy i adres podasz w kolejnym kroku.",
+    "links": {
+      "shipping": "Koszty i czasy dostawy",
+      "returns": "60 dni na zwrot i wymianę rozmiaru"
+    },
+    "empty": {
+      "title": "Koszyk jest pusty",
+      "body": "Nic tu jeszcze nie trafiło. Obroże nylonowe i łańcuszkowe znajdziesz w sklepie, sprzęt służbowy w sekcji Dog Store Pro.",
+      "ctaCollars": "Zobacz obroże",
+      "ctaPro": "Sprzęt Dog Store Pro"
+    },
+    "freeShipping": {
+      "reached": "Dostawa gratis",
+      "remaining": "Do darmowej dostawy brakuje <b>{amount}</b>",
+      "progressAria": "Postęp do darmowej dostawy",
+      "remainingAria": "Brakuje {amount} do darmowej dostawy"
+    },
+    "drawer": {
+      "title": "Twój koszyk",
+      "emptyTitle": "Twój koszyk jest pusty",
+      "paymentNote": "Bezpieczna płatność online: karta, BLIK, Przelewy24. Koszt dostawy naliczany w kasie.",
+      "goToCart": "Przejdź do koszyka"
+    },
+    "crossSell": {
+      "title": "Do kompletu",
+      "chooseSize": "Wybierz rozmiar"
+    }
+  }
+}

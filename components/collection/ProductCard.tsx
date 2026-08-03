@@ -7,6 +7,7 @@
 
 import Image from "next/image";
 import { Link } from "next-view-transitions";
+import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { useQuickView } from "@/components/collection/QuickViewModal";
 import { Badge } from "@/components/ui/Badge";
@@ -48,6 +49,7 @@ export function ProductCard({
   sizes?: string;
 }) {
   const { openQuickView } = useQuickView();
+  const t = useTranslations("catalog");
 
   // Druga warstwa zdjecia montuje sie DOPIERO, gdy kursor wejdzie na TE karte (albo gdy
   // karta dostanie fokus z klawiatury). Wczesniej wystarczylo, ze urzadzenie ma kursor,
@@ -99,7 +101,7 @@ export function ProductCard({
         {/* touch/keyboard path (§7-4): the whole image is the quick-view trigger */}
         <button
           type="button"
-          aria-label={`Szybki podgląd: ${product.name}`}
+          aria-label={t("card.quickViewAria", { name: product.name })}
           onClick={() => openQuickView(product)}
           // obwodka wcieta do srodka: przycisk pokrywa caly kadr, a kadr ma overflow-hidden,
           // wiec zwykly pierscien na zewnatrz byl w calosci przycinany i fokus znikal.
@@ -127,7 +129,7 @@ export function ProductCard({
           // a przegladarka nie musi rozmywac zdjecia pod nim przy kazdym przemalowaniu
           className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-11 w-full translate-y-1 border-t border-nf-border bg-nf-bg text-sm text-nf-text opacity-0 transition duration-300 ease-nf hover:text-nf-white focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-nf-white focus-visible:shadow-none group-hover/card:pointer-events-auto group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100 motion-reduce:transition-none"
         >
-          Szybki podgląd
+          {t("card.quickView")}
         </button>
       </div>
 
@@ -159,7 +161,7 @@ export function ProductCard({
             zaburzeniach rozroznienia barw. Przekreslenie widzi tylko oko, wiec ten sam stan
             niesie odczyt w sr-only. */}
         {product.variants.length > 0 && (
-          <ul aria-label="Rozmiary" className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <ul aria-label={t("card.sizes")} className="flex flex-wrap items-center gap-x-2 gap-y-1">
             {product.variants.map((variant) => (
               <li
                 key={variant.size}
@@ -170,7 +172,8 @@ export function ProductCard({
               >
                 <span aria-hidden="true">{SIZE_SHORT[variant.size]}</span>
                 <span className="sr-only">
-                  {SIZE_NAME[variant.size]}: {variant.inStock ? "dostępny" : "brak"}
+                  {SIZE_NAME[variant.size]}:{" "}
+                  {variant.inStock ? t("card.sizeAvailable") : t("card.sizeUnavailable")}
                 </span>
               </li>
             ))}

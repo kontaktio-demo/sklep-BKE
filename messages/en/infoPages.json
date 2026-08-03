@@ -1,1 +1,235 @@
-{}
+{
+  "infoPages": {
+    "onas": {
+      "meta": {
+        "title": "About us",
+        "description": "Dog Store sews collars and gear for working dogs. A workshop in Kraków, gear tested by handlers, and the Dog Store Pro line for services and trainers."
+      },
+      "header": {
+        "title": "About us",
+        "lead": "We sew collars and gear for dogs that work. The company stands on one principle — gear should survive a handler's working day, not a photo shoot."
+      },
+      "kim": {
+        "title": "Who we are",
+        "p1": "Dog Store started in 2019 in Kraków, in a workshop where we first repaired other people's collars. For a year we saw the same thing over and over — plastic buckles cracking, seams splitting at the ring, hardware corroding after a winter of road salt. We began sewing our own to eliminate those three problems.",
+        "p2": "Today nine people work here — the sewing floor, the warehouse and order support. We have no marketing department and we do not outsource production.",
+        "facts": {
+          "foundedLabel": "Founded",
+          "hqLabel": "Head office and workshop",
+          "teamLabel": "Team",
+          "teamValue": "9 people",
+          "contactLabel": "Contact"
+        }
+      },
+      "proline": {
+        "title": "How the Dog Store Pro line came about",
+        "p1": "Our first order from a service-dog handler came in 2021. It was for a handle collar that would not tear off when lifting a dog over a fence. We made a single unit. A month later the whole group from that same unit got in touch.",
+        "p2": "It turned out that working gear has different requirements than a walking collar — a handle instead of a leash, room for an e-collar module, markings visible after dark, hardware with a known breaking strength. We split it into a separate line — <link>Dog Store Pro</link> — so as not to mix service gear with the shop's range. It is bought by units, handler schools, rescue teams and IGP competitors."
+      },
+      "test": {
+        "title": "How we test our gear",
+        "i1": "Every prototype goes to a handler for three months, who uses it on the job. Not at home — on the job.",
+        "i2": "We test hardware on a tensile machine under static load. A buckle that gives out below its declared rating does not go into production.",
+        "i3": "After the season we collect the gear back and look at where the webbing wore through and which seam worked loose. That decides the next version — not a survey response.",
+        "i4": "We introduce new hardware only once it has passed testing in two independent units.",
+        "p": "That is why the catalogue grows slowly. A model goes on sale a year after the first sketch, not a month."
+      },
+      "material": {
+        "title": "Where and what we sew from",
+        "i1": "We sew in Kraków, in our own workshop. We do not subcontract production.",
+        "i2": "We source 1000D nylon webbing in Poland and Germany. Neoprene for padding — Italy.",
+        "i3": "Steel and aluminium hardware — suppliers in Germany and Italy, with strength certification.",
+        "i4": "Polyester thread, box-stitch on every load-bearing joint.",
+        "i5": "We buy e-collar electronics ready-made from an EU manufacturer. We design and sew the straps and module mounts ourselves."
+      },
+      "notdo": {
+        "title": "What we don't do",
+        "i1": "We do not sell gear we have not tested ourselves in work with a dog.",
+        "i2": "We do not release seasonal collections. A colour is added when it makes sense in the field, not when it is fashionable.",
+        "i3": "We do not hide the composition and origin of our materials. They are in every product's specification.",
+        "p": "Have a question about a material, its strength or choosing gear for a specific task: <link>write to us</link>. Service and training enquiries are handled at"
+      }
+    },
+    "dostawa": {
+      "meta": {
+        "title": "Shipping and payment",
+        "description": "InPost shipping within 24 h on business days: parcel locker {paczkomat}, courier {kurier}, free delivery from {threshold} zł. Pay online by card, BLIK or Przelewy24."
+      },
+      "header": {
+        "title": "Shipping and payment",
+        "lead": "Orders paid by 2:00 pm on business days are packed and dispatched the same day. Orders placed later go out the next business day."
+      },
+      "ship": {
+        "title": "When we ship",
+        "i1": "Order paid by 2:00 pm on a business day — dispatch the same day.",
+        "i2": "Order paid after 2:00 pm, on a Saturday, Sunday or public holiday — dispatch on the next business day.",
+        "i3": "We email the tracking number the moment the parcel is dispatched."
+      },
+      "carriers": {
+        "title": "Carriers and costs",
+        "p": "Delivery time is counted from dispatch, not from when the order is placed. The times shown are the carrier's own estimate."
+      },
+      "table": {
+        "caption": "Delivery costs and times by carrier",
+        "carrier": "Carrier",
+        "cost": "Cost",
+        "time": "Time",
+        "fromThreshold": "From {threshold} zł",
+        "free": "free",
+        "unchanged": "unchanged"
+      },
+      "free": {
+        "title": "Free delivery",
+        "p1": "From {threshold} zł in cart value, the parcel locker and prepaid courier are free. What counts is the value of the products after discounts, excluding the shipping cost.",
+        "p2": "You can see your progress toward the threshold in the cart and the cart preview — we show how much is left to reach free delivery."
+      },
+      "pay": {
+        "title": "Payment",
+        "p1": "You pay online right at checkout — by card, BLIK or Przelewy24. Payments are handled by Stripe; we neither see nor store your card details.",
+        "p2": "You choose the delivery method and address at checkout, in the same step as payment. Once the payment clears you receive an order confirmation by email, and we send the tracking number the moment the parcel is dispatched."
+      },
+      "pickup": {
+        "title": "Collecting the parcel",
+        "i1": "Check the parcel while the courier is there. If the packaging is visibly damaged — file a report and send us photos.",
+        "i2": "A parcel locker holds the shipment for 48 hours, then it returns to the sender.",
+        "i3": "A parcel left uncollected and returned to us — we resend it once the second shipment is paid for, or refund the products.",
+        "p": "Returns and size exchanges are covered separately: <link>returns and complaints</link>."
+      }
+    },
+    "kontakt": {
+      "meta": {
+        "title": "Contact",
+        "description": "Contact Dog Store: email, phone, opening hours, company details and the returns address. We reply within 24 business hours."
+      },
+      "header": {
+        "title": "Contact",
+        "lead": "We write and answer the phone on business days. We reply to messages within 24 business hours, usually sooner."
+      },
+      "shop": {
+        "title": "Shop and orders",
+        "p": "Matters concerning orders, shipping, sizing and model availability.",
+        "emailLabel": "Email",
+        "phoneLabel": "Phone",
+        "hoursLabel": "Opening hours",
+        "responseLabel": "Response time"
+      },
+      "pro": {
+        "title": "Dog Store Pro",
+        "p": "Units, handler schools, sport clubs and security firms. Requests for quotes, invoices with deferred payment terms, matching gear to the task and custom markings.",
+        "emailLabel": "Email"
+      },
+      "returns": {
+        "title": "Returns and complaints",
+        "p": "Report a return or complaint by email at {email} before you send the parcel. The procedure and the list of what we need are described on the <link>Returns and complaints</link> page.",
+        "addressLabel": "Returns address",
+        "note": "We do not accept cash-on-delivery parcels. The buyer covers the cost of returning goods, except for a size exchange — we ship the first exchange at our expense."
+      },
+      "company": {
+        "title": "Company details",
+        "nameLabel": "Legal name",
+        "addressLabel": "Address",
+        "nipLabel": "NIP",
+        "regonLabel": "REGON",
+        "krsLabel": "KRS",
+        "courtLabel": "Register",
+        "capitalLabel": "Share capital",
+        "paidUp": "paid in full",
+        "privacyLabel": "Personal data"
+      },
+      "before": {
+        "title": "Before you write",
+        "p": "The most common matters have their own pages, where the answer is immediate.",
+        "i1": "Not sure which size to choose: <link>size chart</link>",
+        "i2": "A question about delivery cost and time: <link>shipping and payment</link>",
+        "i3": "A buckle broke or a seam came apart: <link>warranty and service</link>"
+      },
+      "form": {
+        "title": "Contact form",
+        "nameLabel": "First and last name",
+        "emailLabel": "Email address",
+        "subjectLabel": "Subject",
+        "messageLabel": "Message",
+        "messagePlaceholder": "Order number, collar model, dog's neck circumference — the more specific, the faster we reply.",
+        "consent": "I consent to the processing of my data in order to respond to this message. The data controller is {legalName}. Details in the <link>privacy policy</link>.",
+        "submit": "Send message",
+        "sending": "Sending…",
+        "footer": "We reply {responseTime}. You can also write directly to {email}.",
+        "sendError": "The message could not be sent. Try again or write to {email}.",
+        "subjects": {
+          "order": "Order and shipping",
+          "return": "Return or complaint",
+          "sizing": "Sizing",
+          "pro": "Dog Store Pro gear",
+          "other": "Something else"
+        },
+        "errors": {
+          "name": "Enter your first and last name.",
+          "emailRequired": "Enter your email address.",
+          "emailInvalid": "The email address is not in a valid format.",
+          "message": "Enter your message.",
+          "consent": "Without consent we have no basis to reply."
+        },
+        "sent": {
+          "title": "Message sent",
+          "body": "Thank you — we will reply {responseTime} at {email}. For urgent matters, call: {phone}.",
+          "again": "Send another message"
+        }
+      }
+    },
+    "rozmiary": {
+      "meta": {
+        "title": "Size chart",
+        "description": "How to measure your dog's neck and choose a collar size: Small 28-36 cm, Medium 38-46 cm, Large 48-60 cm. Webbing widths 2.5 / 4 / 4.5 cm and the dogs they suit."
+      },
+      "header": {
+        "title": "Size chart",
+        "lead": "A collar is chosen by neck circumference, not by the dog's weight. The weight in the table is only a hint, because a Malinois and a Labrador of the same mass have different necks."
+      },
+      "measure": {
+        "title": "How to measure",
+        "s1": "Take a tailor's tape. Without one: wrap a string around the neck, mark where it meets and measure the string with a ruler.",
+        "s2": "Measure at the middle of the neck, where the collar actually sits: roughly two fingers behind the ears, above the shoulder.",
+        "s3": "The tape should lie flush but not press into the fur. Do not pull it tight.",
+        "s4": "Check the two-finger rule: two fingers laid flat must slide freely between the tape and the neck. If three fit, the collar will slip over the head.",
+        "s5": "Note the result in centimetres and pick a size from the table. If the circumference falls between two sizes, take the larger — the adjustment will take it up."
+      },
+      "dogs": {
+        "small": "Beagle, Border Collie, Cocker Spaniel, smaller Australian Shepherd",
+        "medium": "Belgian Malinois, German Shepherd, Labrador, Boxer",
+        "large": "Rottweiler, Great Dane, Cane Corso, large Caucasian Shepherd"
+      },
+      "sizes": {
+        "title": "Sizes",
+        "caption": "Collar sizes: neck circumference, approximate dog weight and typical breeds",
+        "size": "Size",
+        "neck": "Neck circumference",
+        "weight": "Dog weight",
+        "breeds": "Typical breeds",
+        "p": "Weight is only approximate. The measured neck circumference decides: a sighthound the weight of a Labrador has a neck two sizes smaller."
+      },
+      "width": {
+        "title": "Webbing width",
+        "p": "Width is matched to the dog's strength and the length of its neck. The wider the webbing, the lower the pressure per square centimetre on a jerk — but the less freedom of head movement.",
+        "caption": "Webbing widths and their use",
+        "widthCol": "Width",
+        "useCol": "Which dogs",
+        "u1": "Dogs up to 20 kg and everyday wear. Light, unobtrusive on a short neck, enough for a walk and an ID panel.",
+        "u2": "Working dogs 20-40 kg. Spreads the load on a jerk — the standard for leash work and handle collars.",
+        "u3": "Dogs over 40 kg and long-line work. The greatest load spread, but it needs a longer neck — on a stocky dog it rubs against the jaw."
+      },
+      "ecollar": {
+        "title": "E-collars",
+        "p": "You measure the circumference the same way, but one more thing matters: the contact points must touch skin, not sit on fur. An e-collar strap is fastened tighter than an everyday collar — one finger instead of two.",
+        "i1": "A dog with a dense undercoat: use the longer contact points from the kit or part the fur under the receiver.",
+        "i2": "Wear the receiver on the side of the neck, not over the windpipe. Switch sides every few hours.",
+        "i3": "Do not leave an e-collar on a dog for more than 8 hours a day. Constant pressure from the contact points causes sores.",
+        "i4": "An e-collar does not replace an everyday collar with an ID panel. It is separate gear for a specific job.",
+        "i5": "The strap's adjustment range is given on each module's page. Check it before ordering."
+      },
+      "sizeFail": {
+        "title": "The size doesn't fit",
+        "note": "We ship the first size exchange within the same model at our expense. Report and procedure: <link>returns and complaints</link>. You have 60 days from receiving the parcel."
+      }
+    }
+  }
+}

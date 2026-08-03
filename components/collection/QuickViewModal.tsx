@@ -5,6 +5,7 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import {
   VariantPicker,
   availabilityMailHref,
@@ -45,6 +46,7 @@ export function useQuickView(): QuickViewContextValue {
 }
 
 export function QuickViewProvider({ children }: { children: React.ReactNode }) {
+  const t = useTranslations("catalog");
   // product is kept after close so the Dialog exit animation has content
   const [product, setProduct] = useState<Product | null>(null);
   const [open, setOpen] = useState(false);
@@ -64,7 +66,7 @@ export function QuickViewProvider({ children }: { children: React.ReactNode }) {
       <Dialog
         open={open && product !== null}
         onClose={close}
-        title={product?.name ?? "Szybki podgląd"}
+        title={product?.name ?? t("quickView.titleFallback")}
         hideTitle
         maxWidthClassName="max-w-3xl"
       >
@@ -78,6 +80,8 @@ export function QuickViewProvider({ children }: { children: React.ReactNode }) {
 }
 
 function QuickViewContent({ product, onClose }: { product: Product; onClose: () => void }) {
+  const t = useTranslations("catalog");
+  const tc = useTranslations("common");
   const { addLine, openCart } = useCart();
   const [imageIndex, setImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState<ProductColor | undefined>(product.colors[0]);
@@ -114,7 +118,7 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
             <button
               key={`${src}-${i}`}
               type="button"
-              aria-label={`Zdjęcie ${i + 1}`}
+              aria-label={t("quickView.imageAria", { index: i + 1 })}
               aria-pressed={imageIndex === i}
               onClick={() => setImageIndex(i)}
               className={cn(
@@ -160,7 +164,7 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
         {product.colors.length > 0 && (
           <div>
             <div className="flex items-baseline justify-between">
-              <span className={label}>Kolor</span>
+              <span className={label}>{t("quickView.color")}</span>
               {selectedColor && <span className="text-sm text-nf-muted">{selectedColor.name}</span>}
             </div>
             <div className="mt-2 flex flex-wrap gap-1">
@@ -180,7 +184,7 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
 
         {/* szerokosc jest cecha modelu, nie wariantu: jedna wartosc renderuje sie jako pigulka */}
         <div>
-          <span className={label}>Szerokość</span>
+          <span className={label}>{t("quickView.width")}</span>
           <span className={PILL}>{WIDTH_LABEL[product.width]}</span>
         </div>
 
@@ -193,12 +197,12 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
         />
 
         <div>
-          <span className={label}>Ilość</span>
+          <span className={label}>{t("quickView.quantity")}</span>
           {/* nf-control: ramka steppera jest jedynym sygnalem kontrolki (WCAG 1.4.11) */}
           <div className="mt-2 inline-flex items-center rounded-[2px] border border-nf-control">
             <button
               type="button"
-              aria-label="Zmniejsz ilość"
+              aria-label={t("quickView.decrease")}
               onClick={() => setQty((q) => Math.max(1, q - 1))}
               disabled={qty <= 1}
               className="flex h-11 w-11 items-center justify-center text-nf-muted transition-colors duration-250 ease-nf hover:text-nf-white disabled:opacity-40"
@@ -210,7 +214,7 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
             </span>
             <button
               type="button"
-              aria-label="Zwiększ ilość"
+              aria-label={t("quickView.increase")}
               onClick={() => setQty((q) => q + 1)}
               className="flex h-11 w-11 items-center justify-center text-nf-muted transition-colors duration-250 ease-nf hover:text-nf-white"
             >
@@ -222,7 +226,7 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
         <div className="mt-auto flex flex-col gap-3">
           {variant.inStock ? (
             <Button variant="danger" size="lg" className="w-full" onClick={handleAddToCart}>
-              Dodaj do koszyka
+              {tc("addToCart")}
             </Button>
           ) : (
             // brak stanu na wybranym rozmiarze zamyka koszyk, ale nie zamyka rozmowy:
@@ -230,8 +234,8 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
             <>
               <Button variant="danger" size="lg" className="w-full" disabled>
                 {modelSoldOut
-                  ? "Chwilowo niedostępna"
-                  : `Rozmiar ${SIZE_SHORT[variant.size]} niedostępny`}
+                  ? t("quickView.soldOut")
+                  : t("quickView.sizeUnavailable", { size: SIZE_SHORT[variant.size] })}
               </Button>
               <Button
                 href={availabilityMailHref(product, variant, selectedColor)}
@@ -239,7 +243,7 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
                 size="md"
                 className="h-11 w-full"
               >
-                Napisz w sprawie dostępności
+                {t("quickView.askAvailability")}
               </Button>
             </>
           )}
@@ -248,7 +252,7 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
             onClick={onClose}
             className="self-center text-sm text-nf-muted underline underline-offset-2 transition-colors duration-250 ease-nf hover:text-nf-white"
           >
-            Zobacz pełny opis
+            {t("quickView.viewFull")}
           </Link>
         </div>
       </div>

@@ -1,1 +1,66 @@
-{}
+{
+  "home": {
+    "hero": {
+      "title": "Sprzęt dla psów, które pracują",
+      "lead": "Obroże nylonowe i łańcuszkowe, szyte w Polsce i testowane przez przewodników — zanim trafią do sprzedaży.",
+      "ctaShop": "Przejdź do sklepu",
+      "ctaPro": "Dog Store Pro",
+      "imageAlt": "Owczarek belgijski malinois w czerwonej obroży"
+    },
+    "series": {
+      "kicker": "Dwa sklepy, jedna robota",
+      "heading": "Sklep dla każdego psa. Sekcja Pro dla tych, które pracują w służbie.",
+      "shop": {
+        "title": "Sklep Dog Store",
+        "lead": "Obroże nylonowe i łańcuszkowe dla każdego psa. Filtry po szerokości, obwodzie i kolorze, wysyłka w 24 h."
+      },
+      "pro": {
+        "eyebrow": "Sprzęt służbowy",
+        "title": "Patrol, węch, szkolenie",
+        "lead": "Uchwyty kontrolne, prowadnice pod moduł, stalowe okucia. Katalog i zapytania ofertowe dla jednostek."
+      },
+      "tileCta": "Zobacz",
+      "shortcuts": {
+        "working": {
+          "title": "Robocze",
+          "lead": "Szerokie taśmy, uchwyt, panel ID."
+        },
+        "nonWorking": {
+          "title": "Codzienne",
+          "lead": "Lżejsze obroże na spacer i dom."
+        },
+        "eCollar": {
+          "title": "Pod e-obrożę",
+          "lead": "Prowadnice i paski pod moduł."
+        }
+      }
+    },
+    "bestsellers": {
+      "kicker": "Bestsellery",
+      "heading": "Najczęściej wybierane",
+      "viewAll": "Zobacz wszystkie obroże"
+    },
+    "manifest": {
+      "kicker": "Nasza robota",
+      "quote": "Te same szwy i okucia trafiają do psa służbowego i do psa, który wychodzi na spacer.",
+      "link": "Jak testujemy sprzęt"
+    },
+    "intro": {
+      "kicker": "Jak pracujemy",
+      "points": {
+        "params": {
+          "title": "Parametry, nie hasła",
+          "body": "Przy każdej obroży podajemy szerokość taśmy, obwód szyi i wagę. Wytrzymałość podajemy z testu, a nie z ulotki."
+        },
+        "field": {
+          "title": "Najpierw teren",
+          "body": "Nowy model trafia do przewodników na kilka miesięcy pracy. Do sprzedaży wchodzi wtedy, gdy wraca bez uwag."
+        },
+        "repair": {
+          "title": "Naprawiamy",
+          "body": "Rozprute szwy i zużyte okucia wymieniamy u siebie. Nie odsyłamy do producenta, bo producentem jesteśmy my."
+        }
+      }
+    }
+  }
+}

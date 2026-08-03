@@ -1,1 +1,66 @@
-{}
+{
+  "home": {
+    "hero": {
+      "title": "Gear for dogs that work",
+      "lead": "Nylon and chain collars, sewn in Poland and tested by handlers — before they ever go on sale.",
+      "ctaShop": "Enter the shop",
+      "ctaPro": "Dog Store Pro",
+      "imageAlt": "Belgian Malinois shepherd in a red collar"
+    },
+    "series": {
+      "kicker": "Two shops, one craft",
+      "heading": "A shop for every dog. The Pro section for those that work in service.",
+      "shop": {
+        "title": "Dog Store shop",
+        "lead": "Nylon and chain collars for every dog. Filter by width, neck circumference and colour, shipped within 24 h."
+      },
+      "pro": {
+        "eyebrow": "Service gear",
+        "title": "Patrol, scent, training",
+        "lead": "Control handles, module rails, steel hardware. Catalogue and requests for quotation for units."
+      },
+      "tileCta": "View",
+      "shortcuts": {
+        "working": {
+          "title": "Working",
+          "lead": "Wide webbing, handle, ID panel."
+        },
+        "nonWorking": {
+          "title": "Everyday",
+          "lead": "Lighter collars for walks and home."
+        },
+        "eCollar": {
+          "title": "For e-collars",
+          "lead": "Rails and straps for the module."
+        }
+      }
+    },
+    "bestsellers": {
+      "kicker": "Bestsellers",
+      "heading": "Most chosen",
+      "viewAll": "View all collars"
+    },
+    "manifest": {
+      "kicker": "Our work",
+      "quote": "The same stitching and hardware go into a service dog and into a dog heading out for a walk.",
+      "link": "How we test our gear"
+    },
+    "intro": {
+      "kicker": "How we work",
+      "points": {
+        "params": {
+          "title": "Specs, not slogans",
+          "body": "For every collar we state the webbing width, neck circumference and weight. Strength comes from a test, not from a brochure."
+        },
+        "field": {
+          "title": "Field first",
+          "body": "A new model goes to handlers for several months of work. It reaches the shop only once it comes back without a single remark."
+        },
+        "repair": {
+          "title": "We repair",
+          "body": "Torn seams and worn hardware we replace in-house. We don't send you back to the manufacturer, because the manufacturer is us."
+        }
+      }
+    }
+  }
+}

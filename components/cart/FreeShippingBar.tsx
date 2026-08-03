@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { FREE_SHIPPING_THRESHOLD } from "@/lib/nav";
 import { cn, formatPrice } from "@/lib/utils";
 
@@ -10,6 +11,7 @@ export function FreeShippingBar({
   subtotal: number;
   className?: string;
 }) {
+  const t = useTranslations("cart");
   const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
   const reached = remaining === 0;
   const progress = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
@@ -18,22 +20,24 @@ export function FreeShippingBar({
     <div className={className}>
       <p className={cn("text-xs", reached ? "text-nf-text" : "text-nf-muted")}>
         {reached ? (
-          "Dostawa gratis"
+          t("freeShipping.reached")
         ) : (
-          <>
-            Do darmowej dostawy brakuje{" "}
-            <span className="font-medium text-nf-white">{formatPrice(remaining)}</span>
-          </>
+          t.rich("freeShipping.remaining", {
+            amount: formatPrice(remaining),
+            b: (c) => <span className="font-medium text-nf-white">{c}</span>,
+          })
         )}
       </p>
       <div
         role="progressbar"
-        aria-label="Postęp do darmowej dostawy"
+        aria-label={t("freeShipping.progressAria")}
         aria-valuemin={0}
         aria-valuemax={FREE_SHIPPING_THRESHOLD}
         aria-valuenow={Math.min(subtotal, FREE_SHIPPING_THRESHOLD)}
         aria-valuetext={
-          reached ? "Dostawa gratis" : `Brakuje ${formatPrice(remaining)} do darmowej dostawy`
+          reached
+            ? t("freeShipping.reached")
+            : t("freeShipping.remainingAria", { amount: formatPrice(remaining) })
         }
         // Tor na nf-elevated-2 daje na jasnym tle karty 1.11:1, czyli paska po prostu nie
         // widac, dopoki nie ma postepu. Obwodka na nf-control (3:1) rysuje jego pelna dlugosc,

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { ProductRow } from "@/components/collection/ProductRow";
 import { pushRecent } from "@/lib/recent";
@@ -26,6 +27,7 @@ export function RecentlyViewed({
   currentSlug: string;
   variant?: "shop" | "pro";
 }) {
+  const t = useTranslations("product");
   const [recent, setRecent] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -51,7 +53,7 @@ export function RecentlyViewed({
     <div className="border-t border-nf-border pb-20 pt-14">
       {/* rzad w sekcji sluzbowej jedzie kartami katalogowymi Dog Store Pro - historia nie jest powodem,
           zeby sprzet dostal kafel sklepu */}
-      <ProductRow title="Ostatnio oglądane" products={recent} variant={variant} />
+      <ProductRow title={t("recentlyViewed")} products={recent} variant={variant} />
     </div>
   );
 }

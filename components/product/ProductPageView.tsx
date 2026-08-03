@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { ProductRow } from "@/components/collection/ProductRow";
 import { QuickViewProvider } from "@/components/collection/QuickViewModal";
 import { Breadcrumbs, type BreadcrumbItem } from "@/components/product/Breadcrumbs";
@@ -22,7 +23,7 @@ export const PRO_BRAND = "Dog Store Pro";
  * uklad karty, galeria, warianty i sekcje opisowe sa te same. Roznice (okruszki, siatka
  * techniczna, marka w tytule) sterowane sa linia produktu, nie osobna kopia pliku.
  */
-export function productJsonLd(product: Product): string {
+export function productJsonLd(product: Product, sizeLabel: string): string {
   // Oferta per WARIANT: wczesniej byla jedna oferta z cena OD i SKU modelu, czyli numerem,
   // ktorego nie da sie zamowic. Wyszukiwarka dostawala cene jednego rozmiaru jako cene calosci.
   const url = productHref(product);
@@ -30,7 +31,7 @@ export function productJsonLd(product: Product): string {
     "@type": "Offer",
     url,
     sku: variant.sku,
-    name: `${product.name}, rozmiar ${SIZE_SHORT[variant.size]} (${variant.neck})`,
+    name: `${product.name}, ${sizeLabel} ${SIZE_SHORT[variant.size]} (${variant.neck})`,
     price: variant.price,
     priceCurrency: product.currency,
     availability: variant.inStock
@@ -64,6 +65,7 @@ export function productJsonLd(product: Product): string {
 
 export async function ProductPageView({ product }: { product: Product }) {
   const pro = product.line === "pro";
+  const t = await getTranslations("product");
 
   // Okruszki w sekcji Pro prowadzily do /collections/collars, gdzie sprzetu z tej linii fizycznie nie ma
   // (seam wpuszcza do sklepu wylacznie line === "shop"). Sciezka musi wracac do katalogu,
@@ -89,8 +91,8 @@ export async function ProductPageView({ product }: { product: Product }) {
         { label: product.name },
       ]
     : [
-        { label: "Strona główna", href: "/" },
-        { label: "Obroże", href: COLLECTION_HREF },
+        { label: t("breadcrumbs.home"), href: "/" },
+        { label: t("breadcrumbs.collars"), href: COLLECTION_HREF },
         { label: product.name },
       ];
 
@@ -98,7 +100,7 @@ export async function ProductPageView({ product }: { product: Product }) {
     <QuickViewProvider>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: productJsonLd(product) }}
+        dangerouslySetInnerHTML={{ __html: productJsonLd(product, t("jsonLd.size")) }}
       />
 
       {/* Bez siatki technicznej pod kadrem: PRO_IDENTITY nie zna tego wzoru, a §6 zakazuje
@@ -139,7 +141,7 @@ export async function ProductPageView({ product }: { product: Product }) {
           {/* variant, nie linia produktu w srodku rzedu: rzad ma jedna linie (getRelatedProducts
               nie miesza sklepu z linia Pro), wiec o ubraniu kafla decyduje trasa, na ktorej stoi */}
           <ProductRow
-            title={pro ? "Z tej samej linii" : "Podobne produkty"}
+            title={pro ? t("related.sameLine") : t("related.similar")}
             products={related}
             exploreHref={backHref}
             variant={pro ? "pro" : "shop"}

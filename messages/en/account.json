@@ -1,1 +1,40 @@
-{}
+{
+  "account": {
+    "meta": {
+      "account": "Account",
+      "orders": "Orders",
+      "login": "Sign in"
+    },
+    "accountTitle": "Account",
+    "kicker": "Account",
+    "signIn": "Sign in",
+    "notConfigured": {
+      "body": "Account sign-in is coming soon. Guest checkout works without an account.",
+      "cta": "Go to the shop"
+    },
+    "login": {
+      "title": "Sign in",
+      "alreadyTitle": "You're signed in",
+      "goToAccount": "Go to your account",
+      "error": "We couldn't send the link. Check the address and try again.",
+      "hint": "Enter your email — we'll send a passwordless sign-in link.",
+      "sent": "We've sent a sign-in link to <b>{email}</b>. Click it to sign in.",
+      "emailPlaceholder": "you@email.com",
+      "sending": "Sending…",
+      "submit": "Send link"
+    },
+    "overview": {
+      "title": "Your account",
+      "signOut": "Sign out",
+      "recentOrders": "Recent orders",
+      "allOrders": "All orders",
+      "signInPrompt": "Sign in to see your orders and addresses."
+    },
+    "orders": {
+      "title": "Orders",
+      "back": "← Account",
+      "empty": "No orders yet.",
+      "signInPrompt": "Sign in to see your orders."
+    }
+  }
+}

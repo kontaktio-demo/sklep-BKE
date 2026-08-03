@@ -1,1 +1,67 @@
-{}
+{
+  "checkout": {
+    "meta": {
+      "title": "Kasa",
+      "paymentTitle": "Płatność",
+      "thankYouTitle": "Dziękujemy"
+    },
+    "heading": {
+      "kicker": "Zamówienie",
+      "title": "Kasa"
+    },
+    "empty": {
+      "title": "Koszyk jest pusty",
+      "text": "Dodaj produkty, aby przejść do kasy.",
+      "cta": "Przejdź do sklepu"
+    },
+    "contact": {
+      "title": "Dane kontaktowe",
+      "email": "E-mail",
+      "phone": "Telefon"
+    },
+    "shipping": {
+      "title": "Dostawa",
+      "free": "gratis",
+      "lockerLabel": "Kod paczkomatu",
+      "lockerPlaceholder": "np. KRA010",
+      "methods": {
+        "inpost_locker": "Paczkomat InPost",
+        "inpost_courier": "Kurier InPost"
+      }
+    },
+    "address": {
+      "firstName": "Imię",
+      "lastName": "Nazwisko",
+      "street": "Ulica",
+      "building": "Nr domu / mieszkania",
+      "postalCode": "Kod pocztowy",
+      "city": "Miasto"
+    },
+    "promo": {
+      "title": "Kod rabatowy",
+      "placeholder": "Kod",
+      "apply": "Zastosuj",
+      "applied": "Kod zastosowany: -{amount}",
+      "invalid": "Nieprawidłowy kod."
+    },
+    "summary": {
+      "title": "Podsumowanie",
+      "value": "Wartość",
+      "discount": "Rabat",
+      "shipping": "Dostawa",
+      "total": "Razem"
+    },
+    "submit": {
+      "processing": "Przetwarzanie…",
+      "pay": "Zamawiam i płacę · {amount}",
+      "note": "Płatność: karta, BLIK, Przelewy24 (Stripe)."
+    },
+    "errors": {
+      "OUT_OF_STOCK": "Któregoś rozmiaru zabrakło w magazynie.",
+      "STORE_CLOSED": "Sklep jest chwilowo zamknięty.",
+      "ADDRESS_REQUIRED": "Uzupełnij adres dostawy.",
+      "LOCKER_REQUIRED": "Wybierz paczkomat.",
+      "generic": "Nie udało się złożyć zamówienia. Spróbuj ponownie."
+    }
+  }
+}

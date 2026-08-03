@@ -1,8 +1,8 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Drawer } from "@/components/ui/Drawer";
-import { plural } from "@/lib/utils";
 import { FilterControls, type FilterControlsProps } from "./FilterControls";
 
 export function FilterDrawer({
@@ -17,12 +17,13 @@ export function FilterDrawer({
   onClearAll: () => void;
   resultCount: number;
 }) {
+  const t = useTranslations("catalog");
   return (
     <Drawer
       open={open}
       onClose={onClose}
       side="left"
-      title="Filtry"
+      title={t("filters.heading")}
       widthClassName="max-w-sm"
       footer={
         // one red CTA; clearing is a quiet text action, not a competing button
@@ -32,10 +33,10 @@ export function FilterDrawer({
             onClick={onClearAll}
             className="type-label inline-flex min-h-11 shrink-0 items-center px-1 text-nf-dim transition-colors duration-250 ease-nf hover:text-nf-white"
           >
-            Wyczyść wszystko
+            {t("filters.clearAll")}
           </button>
           <Button variant="primary" className="min-h-11 flex-1" onClick={onClose}>
-            Pokaż {resultCount} {plural(resultCount, "wynik", "wyniki", "wyników")}
+            {t("filters.show", { count: resultCount })}
           </Button>
         </div>
       }

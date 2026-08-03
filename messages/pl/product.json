@@ -1,1 +1,120 @@
-{}
+{
+  "product": {
+    "meta": {
+      "unavailableTitle": "Produkt niedostępny",
+      "unavailableDescription": "Ten produkt zmienił adres lub został wycofany ze sprzedaży.",
+      "proUnavailableTitle": "Pozycja niedostępna",
+      "proUnavailableDescription": "Ta pozycja zmieniła adres lub została wycofana z katalogu."
+    },
+    "breadcrumbs": {
+      "aria": "Ścieżka nawigacji",
+      "home": "Strona główna",
+      "collars": "Obroże"
+    },
+    "related": {
+      "sameLine": "Z tej samej linii",
+      "similar": "Podobne produkty"
+    },
+    "recentlyViewed": "Ostatnio oglądane",
+    "jsonLd": {
+      "size": "rozmiar"
+    },
+    "gallery": {
+      "thumbnails": "Miniatury zdjęć produktu",
+      "thumb": "Zdjęcie {index} z {count}"
+    },
+    "sectionNav": {
+      "aria": "Sekcje produktu"
+    },
+    "buyBox": {
+      "fromPrice": "cena zależy od rozmiaru",
+      "inStock": "Dostępna, wysyłka w 24 h",
+      "soldOut": "Chwilowo niedostępna",
+      "sizeSoldOut": "Rozmiar {size} chwilowo niedostępny",
+      "dims": "Obwód {neck}, waga {weight} g",
+      "color": "Kolor",
+      "sizeTable": "Tabela rozmiarów",
+      "width": "Szerokość",
+      "quantity": "Ilość",
+      "decrease": "Zmniejsz ilość",
+      "increase": "Zwiększ ilość",
+      "sizeUnavailable": "Rozmiar {size} niedostępny",
+      "proInquiry": "Zapytanie dla jednostki",
+      "notify": "Napisz w sprawie dostępności",
+      "waitlistModel": "Listę oczekujących prowadzimy mailem. Napisz na {email}, a odpiszemy, gdy model wróci do sprzedaży.",
+      "waitlistSize": "Pozostałe rozmiary tego modelu są dostępne. Listę oczekujących na rozmiar {size} prowadzimy mailem: napisz na {email}, a odpiszemy, gdy wróci do sprzedaży."
+    },
+    "variant": {
+      "size": "Rozmiar",
+      "unavailableTitle": "Rozmiar niedostępny",
+      "srUnavailable": ", chwilowo niedostępny"
+    },
+    "availability": {
+      "mailSubject": "Dostępność: {name} ({sku})",
+      "mailGreeting": "Dzień dobry,",
+      "mailBody": "proszę o wiadomość, gdy {name} w rozmiarze {size} ({neck}), SKU {sku}, wróci do sprzedaży.",
+      "mailColor": "Kolor: {color}"
+    },
+    "sections": {
+      "description": {
+        "label": "Opis",
+        "heading": "Opis"
+      },
+      "specs": {
+        "label": "Specyfikacja",
+        "heading": "Specyfikacja",
+        "note": "Obwód szyi i waga zależą od rozmiaru. <link>Sprawdź je w tabeli rozmiarów</link>."
+      },
+      "sizes": {
+        "label": "Rozmiary",
+        "heading": "Rozmiary",
+        "intro": "Zmierz obwód szyi w najszerszym miejscu i dodaj 2-3 cm luzu. Waga psa jest tylko orientacyjna, decyduje pomiar.",
+        "tableAria": "Tabela rozmiarów",
+        "colSize": "Rozmiar",
+        "colNeck": "Obwód szyi",
+        "colWeight": "Waga psa (orientacyjnie)",
+        "colCollarWeight": "Waga obroży",
+        "variantSoldOut": "chwilowo niedostępny",
+        "notOffered": "brak w tym modelu",
+        "notOfferedSr": " (brak w tym modelu)",
+        "footnote": "Wyróżnione wiersze to rozmiary, które ma ten model. Waga obroży dotyczy wersji w danym rozmiarze."
+      },
+      "shipping": {
+        "label": "Dostawa i zwroty",
+        "heading": "Dostawa i zwroty",
+        "shippingTitle": "Wysyłka",
+        "shippingBody": "Wysyłka w 24 h w dni robocze. Do wyboru kurier lub paczkomat, sposób dostawy wskazujesz w koszyku.",
+        "costTitle": "Koszt dostawy",
+        "costBody": "Darmowa dostawa od {amount}. Poniżej tej kwoty koszt zależy od przewoźnika i widać go w koszyku.",
+        "returnsTitle": "Zwroty i gwarancja",
+        "returnsBody": "60 dni na zwrot lub wymianę rozmiaru. Na szwy i okucia udzielamy 2 lat gwarancji."
+      },
+      "compatibility": {
+        "label": "Zgodność",
+        "heading": "Zgodność",
+        "intro": "Zmierz obudowę modułu w miejscu, w którym przechodzi przez pas. Marka nadajnika nie ma znaczenia, liczy się szerokość obudowy.",
+        "tableAria": "Tabela zgodności z modułami e-obroży",
+        "colWidth": "Szerokość obudowy modułu",
+        "colFits": "Pasuje",
+        "yes": "Tak",
+        "no": "Nie",
+        "widthUpTo": "do 35 mm",
+        "widthMid": "36-45 mm",
+        "widthOver": "powyżej 45 mm",
+        "footnote": "Moduł montujemy na prowadnicach, elektrody muszą mieć stały kontakt ze skórą."
+      },
+      "care": {
+        "label": "Pielęgnacja",
+        "heading": "Pielęgnacja",
+        "step1": "Pranie ręczne w letniej wodzie, bez wybielaczy i bez płynów zmiękczających.",
+        "step2": "Suszenie z dala od grzejnika. Wysoka temperatura usztywnia taśmę i rozkleja rzep.",
+        "step3": "Okucia przemywaj czystą wodą po pracy w błocie i w soli, potem wytrzyj do sucha.",
+        "step4": "Kontrola szwów przy klamrze co kilka tygodni. Rozprute obszycie oznacza wymianę, nie naprawę."
+      },
+      "faq": {
+        "label": "Pytania",
+        "heading": "Pytania"
+      }
+    }
+  }
+}

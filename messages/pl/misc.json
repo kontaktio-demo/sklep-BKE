@@ -1,1 +1,25 @@
-{}
+{
+  "misc": {
+    "comingSoon": {
+      "meta": {
+        "title": "Wkrótce otwieramy"
+      },
+      "title": "Wkrótce otwieramy",
+      "body": "Sklep jest chwilowo niedostępny. Zapisz się do newslettera — poinformujemy o otwarciu.",
+      "cta": "Poznaj Dog Store"
+    },
+    "priceTag": {
+      "from": "od"
+    },
+    "badge": {
+      "sold-out": "Wyprzedane",
+      "last-chance": "Ostatnia szansa",
+      "bestseller": "Bestseller",
+      "new": "Nowość"
+    },
+    "rangeSlider": {
+      "priceMin": "Cena minimalna",
+      "priceMax": "Cena maksymalna"
+    }
+  }
+}

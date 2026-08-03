@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type { ProductBadge } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -5,28 +6,26 @@ import { cn } from "@/lib/utils";
 // Plakietki sa rzeczowe, nie krzykliwe: wspolna, spokojna plytka na tle kadru.
 // Czerwone wypelnienie na kazdej karcie robilo z siatki choinke - czerwien zostaje dla CTA,
 // jedyny czerwony akcent to "ostatnia szansa".
-const BADGE_CONFIG: Record<ProductBadge, { label: string; className: string }> = {
+const BADGE_CONFIG: Record<ProductBadge, { className: string }> = {
   "sold-out": {
-    label: "Wyprzedane",
     className: "border-nf-border text-nf-muted",
   },
   "last-chance": {
-    label: "Ostatnia szansa",
     // red-bright: nf-red small text fails AA over photos (§10)
     className: "border-nf-red text-nf-red-bright",
   },
   bestseller: {
-    label: "Bestseller",
     className: "border-nf-border-strong text-nf-text",
   },
   new: {
-    label: "Nowość",
     className: "border-nf-border-strong text-nf-white",
   },
 };
 
 export function Badge({ badge }: { badge: ProductBadge }) {
-  const { label, className } = BADGE_CONFIG[badge];
+  const t = useTranslations("misc");
+  const { className } = BADGE_CONFIG[badge];
+  const label = t(`badge.${badge}`);
   return (
     <span
       className={cn(

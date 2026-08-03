@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 export interface BreadcrumbItem {
@@ -17,8 +18,9 @@ export function Breadcrumbs({
   items: BreadcrumbItem[];
   mono?: boolean;
 }) {
+  const t = useTranslations("product");
   return (
-    <nav aria-label="Ścieżka nawigacji">
+    <nav aria-label={t("breadcrumbs.aria")}>
       {/* focus-visible bierze się z globalnego :focus-visible w globals.css */}
       <ol
         className={cn(

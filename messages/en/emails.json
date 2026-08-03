@@ -1,1 +1,35 @@
-{}
+{
+  "emails": {
+    "shell": {
+      "footer": "Dog Store — gear for working dogs and their handlers",
+      "link": "dogstore.pl"
+    },
+    "order": {
+      "subject": "Order {number} — Dog Store",
+      "heading": "Order received",
+      "intro": "Thank you for order {number}. We've started processing it.",
+      "shipping": "Shipping",
+      "discount": "Discount",
+      "total": "Total",
+      "view": "View order"
+    },
+    "newsletter": {
+      "subject": "Confirm your subscription — Dog Store",
+      "heading": "One more step",
+      "body": "Confirm your Dog Store newsletter subscription and get code {code} (-10%) on your first order.",
+      "cta": "Confirm subscription"
+    },
+    "welcome": {
+      "subject": "Your code {code} — Dog Store",
+      "heading": "Welcome to Dog Store",
+      "body": "Thanks for confirming your subscription. Your code {code} gives you -10% on your first order.",
+      "cta": "Go to the shop"
+    },
+    "review": {
+      "subject": "How is your gear holding up? — Dog Store",
+      "heading": "Share your feedback",
+      "body": "Your order {number} has been delivered. If the gear proved itself in the field, let us know — your review helps other handlers.",
+      "cta": "Write a review"
+    }
+  }
+}

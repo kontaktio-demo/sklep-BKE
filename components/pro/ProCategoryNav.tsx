@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import type { ProCategory, ProCategoryInfo } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -25,10 +26,11 @@ export function ProCategoryNav({
   active?: ProCategory;
   className?: string;
 }) {
+  const t = useTranslations("pro");
   const allActive = active === undefined;
 
   return (
-    <nav aria-label="Kategorie Dog Store Pro" className={className}>
+    <nav aria-label={t("nav.aria")} className={className}>
       {/* Tor przewija sie w poziomie, a overflow-x: auto wymusza tez overflow-y: auto -
           czyli przycina rowniez gore i dol. Obwodka fokusu to 2px linii + 2px odstepu
           + 4px czarnej otoczki, razem 8px poza zakladka, wiec bez zapasu ginela w calosci.
@@ -42,7 +44,7 @@ export function ProCategoryNav({
             aria-current={allActive ? "page" : undefined}
             className={cn(ITEM_BASE, allActive ? ITEM_ACTIVE : ITEM_IDLE)}
           >
-            Wszystkie
+            {t("nav.all")}
           </Link>
         </li>
 

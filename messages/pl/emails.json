@@ -1,1 +1,35 @@
-{}
+{
+  "emails": {
+    "shell": {
+      "footer": "Dog Store — sprzęt dla psów pracujących i ich przewodników",
+      "link": "dogstore.pl"
+    },
+    "order": {
+      "subject": "Zamówienie {number} — Dog Store",
+      "heading": "Zamówienie przyjęte",
+      "intro": "Dziękujemy za zamówienie {number}. Przyjęliśmy je do realizacji.",
+      "shipping": "Wysyłka",
+      "discount": "Rabat",
+      "total": "Razem",
+      "view": "Podgląd zamówienia"
+    },
+    "newsletter": {
+      "subject": "Potwierdź zapis — Dog Store",
+      "heading": "Jeszcze jeden krok",
+      "body": "Potwierdź zapis do newslettera Dog Store i odbierz kod {code} (-10%) na pierwsze zakupy.",
+      "cta": "Potwierdzam zapis"
+    },
+    "welcome": {
+      "subject": "Twój kod {code} — Dog Store",
+      "heading": "Witaj w Dog Store",
+      "body": "Dziękujemy za potwierdzenie zapisu. Twój kod {code} daje -10% na pierwsze zakupy.",
+      "cta": "Przejdź do sklepu"
+    },
+    "review": {
+      "subject": "Jak sprawdza się Twój sprzęt? — Dog Store",
+      "heading": "Podziel się opinią",
+      "body": "Twoje zamówienie {number} zostało dostarczone. Jeśli sprzęt zdał egzamin w terenie, daj znać — Twoja opinia pomaga innym przewodnikom.",
+      "cta": "Wystaw opinię"
+    }
+  }
+}

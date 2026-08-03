@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { ProductCard } from "@/components/collection/ProductCard";
 import { QuickViewProvider } from "@/components/collection/QuickViewModal";
 import { Button } from "@/components/ui/Button";
@@ -19,6 +20,7 @@ const CARD_SIZES =
   "(min-width:1600px) 380px, (min-width:1024px) calc((100vw - 96px) / 4), calc((100vw - 48px) / 2)";
 
 export async function HomeBestsellers() {
+  const t = await getTranslations("home");
   const products = await getProducts("collars");
 
   // bestsellerRank to kolejnosc redakcyjna sklepu; pozycje bez rangi nie wchodza na strone glowna
@@ -39,11 +41,11 @@ export async function HomeBestsellers() {
         <div className="mx-auto max-w-[1600px] px-4 py-16 md:px-6 md:py-24">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <p className="type-kicker text-nf-dim">Bestsellery</p>
-              <h2 className="type-h2 mt-4 text-nf-white">Najczęściej wybierane</h2>
+              <p className="type-kicker text-nf-dim">{t("bestsellers.kicker")}</p>
+              <h2 className="type-h2 mt-4 text-nf-white">{t("bestsellers.heading")}</h2>
             </div>
             <Button href={COLLECTION_HREF} variant="ghost" size="md">
-              Zobacz wszystkie obroże
+              {t("bestsellers.viewAll")}
             </Button>
           </div>
 

@@ -45,6 +45,7 @@ const PRO_INQUIRY_HREF = "/pro/zapytanie";
 export function BuyBox({ product }: { product: Product }) {
   const { addLine, openCart } = useCart();
   const tTrust = useTranslations("common");
+  const t = useTranslations("product");
   const [color, setColor] = useState<ProductColor | undefined>(product.colors[0]);
   // Cena, SKU i stan magazynowy naleza do WARIANTU, nie do produktu: naglowek karty
   // pokazuje to, co faktycznie trafi do koszyka, a nie cene "od".
@@ -59,7 +60,17 @@ export function BuyBox({ product }: { product: Product }) {
   // Zapytanie o dostepnosc idzie na skrzynke, ktora obsluguje dana linie, i dotyczy
   // wybranego rozmiaru - inaczej odpowiedz nie mowilaby o tym, o co pytal klient
   const notifyEmail = availabilityEmail(product);
-  const notifyHref = availabilityMailHref(product, variant, color);
+  const notifyHref = availabilityMailHref(product, variant, color, {
+    subject: t("availability.mailSubject", { name: product.name, sku: variant.sku }),
+    greeting: t("availability.mailGreeting"),
+    request: t("availability.mailBody", {
+      name: product.name,
+      size: SIZE_SHORT[variant.size],
+      neck: variant.neck,
+      sku: variant.sku,
+    }),
+    colorLine: color ? t("availability.mailColor", { color: color.name }) : "",
+  });
 
   // caly model wyprzedany to inna sytuacja niz jeden rozmiar bez stanu - komunikat rozroznia
   const modelSoldOut = !product.inStock;
@@ -92,7 +103,7 @@ export function BuyBox({ product }: { product: Product }) {
             className="text-2xl font-semibold"
           />
           {product.fromPrice && (
-            <span className="text-xs text-nf-dim">cena zależy od rozmiaru</span>
+            <span className="text-xs text-nf-dim">{t("buyBox.fromPrice")}</span>
           )}
         </div>
 
@@ -106,10 +117,10 @@ export function BuyBox({ product }: { product: Product }) {
             )}
           />
           {variant.inStock
-            ? "Dostępna, wysyłka w 24 h"
+            ? t("buyBox.inStock")
             : modelSoldOut
-              ? "Chwilowo niedostępna"
-              : `Rozmiar ${SIZE_SHORT[variant.size]} chwilowo niedostępny`}
+              ? t("buyBox.soldOut")
+              : t("buyBox.sizeSoldOut", { size: SIZE_SHORT[variant.size] })}
         </p>
 
         {/* dane wybranego rozmiaru: po zmianie wariantu zmienia sie cena i SKU, wiec obwod
@@ -120,7 +131,7 @@ export function BuyBox({ product }: { product: Product }) {
           aria-live="polite"
           className={cn("text-nf-dim", pro ? "type-meta" : "text-xs")}
         >
-          Obwód {variant.neck}, waga {variant.weightGrams} g
+          {t("buyBox.dims", { neck: variant.neck, weight: variant.weightGrams })}
         </p>
       </div>
 
@@ -129,7 +140,7 @@ export function BuyBox({ product }: { product: Product }) {
           <div>
             <div className="flex items-baseline gap-3">
               <span id={colorLabelId} className={label}>
-                Kolor
+                {t("buyBox.color")}
               </span>
               <span className="text-sm text-nf-text">{color?.name}</span>
             </div>
@@ -162,23 +173,23 @@ export function BuyBox({ product }: { product: Product }) {
             href="#rozmiary"
             className="mt-3 inline-flex min-h-11 items-center text-xs text-nf-muted underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
           >
-            Tabela rozmiarów
+            {t("buyBox.sizeTable")}
           </a>
         </div>
 
         <div>
-          <span className={cn("block", label)}>Szerokość</span>
+          <span className={cn("block", label)}>{t("buyBox.width")}</span>
           <span className={cn("mt-2", PILL)}>{WIDTH_LABEL[product.width]}</span>
         </div>
 
         <div>
-          <span className={cn("block", label)}>Ilość</span>
+          <span className={cn("block", label)}>{t("buyBox.quantity")}</span>
           {/* nf-control, nie nf-border-strong: ta ramka jest JEDYNYM sygnalem, ze stepper
               jest kontrolka, wiec musi miec 3:1 (WCAG 1.4.11). Linie dekoracyjne zostaja ciche */}
           <div className="mt-2 inline-flex items-center rounded-[2px] border border-nf-control">
             <button
               type="button"
-              aria-label="Zmniejsz ilość"
+              aria-label={t("buyBox.decrease")}
               onClick={() => setQty((n) => Math.max(1, n - 1))}
               disabled={qty <= 1}
               className="flex size-11 items-center justify-center text-nf-text transition-colors duration-250 ease-nf hover:text-nf-white disabled:opacity-40 motion-reduce:transition-none"
@@ -193,7 +204,7 @@ export function BuyBox({ product }: { product: Product }) {
             </span>
             <button
               type="button"
-              aria-label="Zwiększ ilość"
+              aria-label={t("buyBox.increase")}
               onClick={() => setQty((n) => Math.min(MAX_QTY, n + 1))}
               disabled={qty >= MAX_QTY}
               className="flex size-11 items-center justify-center text-nf-text transition-colors duration-250 ease-nf hover:text-nf-white disabled:opacity-40 motion-reduce:transition-none"
@@ -209,7 +220,7 @@ export function BuyBox({ product }: { product: Product }) {
           // danger, nie primary: czerwien jest akcentem marki i zostaje na jednym
           // przycisku pieniedzy w calym widoku
           <Button variant="danger" size="lg" className="w-full" onClick={handleAdd}>
-            Dodaj do koszyka
+            {tTrust("addToCart")}
           </Button>
         ) : (
           // Listy oczekujacych nie ma gdzie trzymac - serwis nie ma backendu ani wysylki.
@@ -218,14 +229,14 @@ export function BuyBox({ product }: { product: Product }) {
           <div className="space-y-4">
             <Button variant="danger" size="lg" className="w-full" disabled>
               {modelSoldOut
-                ? "Chwilowo niedostępna"
-                : `Rozmiar ${SIZE_SHORT[variant.size]} niedostępny`}
+                ? t("buyBox.soldOut")
+                : t("buyBox.sizeUnavailable", { size: SIZE_SHORT[variant.size] })}
             </Button>
             <div className="space-y-2">
               <p className="text-xs leading-relaxed text-nf-muted">
                 {modelSoldOut
-                  ? `Listę oczekujących prowadzimy mailem. Napisz na ${notifyEmail}, a odpiszemy, gdy model wróci do sprzedaży.`
-                  : `Pozostałe rozmiary tego modelu są dostępne. Listę oczekujących na rozmiar ${SIZE_SHORT[variant.size]} prowadzimy mailem: napisz na ${notifyEmail}, a odpiszemy, gdy wróci do sprzedaży.`}
+                  ? t("buyBox.waitlistModel", { email: notifyEmail })
+                  : t("buyBox.waitlistSize", { size: SIZE_SHORT[variant.size], email: notifyEmail })}
               </p>
               <Button
                 href={notifyHref}
@@ -233,7 +244,7 @@ export function BuyBox({ product }: { product: Product }) {
                 size="md"
                 className="h-11 w-full sm:w-auto"
               >
-                Napisz w sprawie dostępności
+                {t("buyBox.notify")}
               </Button>
             </div>
           </div>
@@ -247,7 +258,7 @@ export function BuyBox({ product }: { product: Product }) {
             href={PRO_INQUIRY_HREF}
             className="type-meta mt-3 flex min-h-11 items-center justify-center rounded-[2px] text-nf-muted underline decoration-nf-border-strong underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white hover:decoration-nf-text motion-reduce:transition-none"
           >
-            Zapytanie dla jednostki
+            {t("buyBox.proInquiry")}
           </Link>
         )}
       </div>

@@ -1,0 +1,293 @@
+{
+  "infoLegal": {
+    "regulamin": {
+      "meta": {
+        "title": "Terms and conditions",
+        "description": "Dog Store terms and conditions: parties to the contract, placing orders, prices, payments, delivery, withdrawal from the contract, complaints, personal data."
+      },
+      "header": {
+        "title": "Terms and conditions",
+        "lead": "Terms and conditions of the dogstore.pl online store. They set out the rules for sales, delivery, withdrawal from the contract and complaints.",
+        "updated": "In effect from 1 July 2026."
+      },
+      "seller": {
+        "title": "1. Seller",
+        "labelSeller": "Seller",
+        "labelOffice": "Registered office",
+        "labelNip": "NIP",
+        "labelRegon": "REGON",
+        "labelKrs": "KRS",
+        "labelShareCapital": "Share capital",
+        "labelContact": "Contact",
+        "labelPhone": "Phone",
+        "shareCapital": "{value}, paid in full"
+      },
+      "definitions": {
+        "title": "2. Definitions",
+        "shop": "Store — the dogstore.pl online service operated by the Seller.",
+        "client": "Customer — a natural person, legal person or organizational unit placing an order.",
+        "consumer": "Consumer — a natural person making a purchase for a purpose not directly related to their business or professional activity.",
+        "consumerEntrepreneur": "Entrepreneur with consumer rights — a natural person conducting business activity for whom the purchase is not of a professional nature. They are entitled to the same rights as a Consumer with regard to withdrawal from the contract and the statutory warranty.",
+        "order": "Order — a declaration of intent by the Customer aimed at concluding a contract of sale."
+      },
+      "orders": {
+        "title": "3. Orders",
+        "intro": "An order is placed through the cart in the Store. The Customer selects products, the delivery and payment method, provides shipping details and confirms the order with an obligation to pay.",
+        "b1": "After placing an order, the Customer receives an email confirming acceptance together with a summary. This email constitutes the conclusion of the contract of sale.",
+        "b2": "The contract is concluded in Polish.",
+        "b3": "The Seller may refuse to fulfill an order if the details are incomplete or incorrect and the Customer cannot be reached. In that case the Seller refunds the amount paid in full.",
+        "b4": "Product information in the Store is an invitation to conclude a contract, not an offer within the meaning of the Civil Code."
+      },
+      "prices": {
+        "title": "4. Prices",
+        "b1": "Prices are given in Polish zloty and include VAT at the rate of 23 percent.",
+        "b2": "The price does not include the cost of delivery. The Customer sees the delivery cost before confirming the order.",
+        "freeShipping": "Orders worth {amount} zł or more qualify for free delivery under the terms described in <link>delivery and payment</link>.",
+        "b4": "The binding price is the one in effect at the moment the order is placed. A later change to the price list does not affect orders already accepted.",
+        "b5": "A proof of sale is included with every order. An invoice issued to a company requires the NIP to be provided when placing the order."
+      },
+      "payments": {
+        "title": "5. Payments",
+        "b1": "Available methods: BLIK, Przelewy24 instant transfer, payment card, PayPal, standard bank transfer, cash on delivery.",
+        "b2": "Electronic payments are handled by an external operator. The Seller does not store payment card details.",
+        "b3": "With a standard bank transfer the Customer has 7 days to pay. After this period the order is cancelled with no consequences for the Customer.",
+        "b4": "We fulfill the order once the payment is credited and, for cash on delivery — once the order is confirmed."
+      },
+      "delivery": {
+        "title": "6. Delivery",
+        "b1": "We ship within Poland and to European Union countries.",
+        "b2": "Orders paid by 2:00 p.m. on business days are dispatched the same day; the rest on the next business day.",
+        "b3": "Delivery time depends on the carrier. Timeframes and costs are given in the delivery section.",
+        "b4": "The risk of accidental loss of the goods passes to the Consumer when the carrier hands the parcel over to them."
+      },
+      "withdrawal": {
+        "title": "7. Withdrawal from the contract",
+        "intro": "A Consumer and an entrepreneur with consumer rights may withdraw from the contract within 14 days of receiving the goods, without giving a reason. The Seller contractually extends this period to 60 days from receipt.",
+        "b1": "It is enough to send the statement of withdrawal by email to the store address before the deadline.",
+        "b2": "The goods must be returned within 14 days of submitting the statement. The Customer covers the cost of return.",
+        "b3": "The Seller refunds the price of the goods and the cost of the cheapest delivery offered within 14 days of receiving the return, using the same payment method.",
+        "b4": "The right of withdrawal does not apply to goods made to individual order, including those marked to measure (Article 38 of the Consumer Rights Act).",
+        "b5": "The Customer is liable for any diminished value of the goods resulting from handling them beyond what is necessary to check their characteristics and functioning."
+      },
+      "complaints": {
+        "title": "8. Complaints",
+        "b1": "The Seller is liable for the conformity of the goods with the contract under the statutory warranty for 2 years from the release of the item.",
+        "b2": "Independently of the statutory warranty, the Seller grants a 24-month guarantee on stitching and hardware.",
+        "b3": "A complaint is submitted by email: order number, description of the defect and photos. The Seller reviews it within 14 days.",
+        "b4": "Failure to respond within 14 days means the complaint is deemed justified.",
+        "b5": "The Seller covers the cost of delivering the goods under complaint and returning them after repair, provided the complaint is justified.",
+        "outro": "We describe the procedure step by step in <link1>returns and complaints</link1>, and the scope of the guarantee in <link2>warranty and service</link2>."
+      },
+      "data": {
+        "title": "9. Personal data",
+        "body": "The controller of personal data is {company}. We process data to the extent necessary to fulfill the order and meet legal obligations. The scope, purposes, legal bases and rights of the data subject are described in the <link>privacy policy</link>."
+      },
+      "final": {
+        "title": "10. Final provisions",
+        "b1": "In matters not regulated herein, Polish law applies, in particular the Civil Code and the Consumer Rights Act.",
+        "b2": "A Consumer may use out-of-court dispute resolution methods: the district consumer ombudsman, the provincial Trade Inspectorate, the European Commission ODR platform. Participation in them is voluntary for both parties.",
+        "b3": "The Seller may amend these terms and conditions for important reasons, including changes in regulations or the scope of services. Orders placed before the change are fulfilled under the terms in effect at the time they were placed.",
+        "b4": "To use the Store, all you need is a device with internet access, an up-to-date browser and an active email account."
+      }
+    },
+    "polityka": {
+      "meta": {
+        "title": "Privacy policy",
+        "description": "Who the data controller is, what data we collect, why, on what legal basis, how long we keep it and what rights you have. Cookies and GDPR contact."
+      },
+      "header": {
+        "title": "Privacy policy",
+        "lead": "We collect only as much data as we need to send your parcel, issue a document and reply to your message. Below, plainly: what, why and for how long.",
+        "updated": "In effect from 1 July 2026."
+      },
+      "admin": {
+        "title": "Data controller",
+        "labelAdmin": "Controller",
+        "labelAddress": "Address",
+        "labelNip": "NIP",
+        "labelContact": "Contact regarding data",
+        "note": "We have not appointed a data protection officer — we are not required to. We handle all personal data matters at {email}."
+      },
+      "collect": {
+        "title": "What data we collect",
+        "b1": "Order: first and last name, delivery address, email, phone, order contents. For an invoice, also the company name and NIP.",
+        "b2": "Contact: name, email address and the content of the message you send us by email. The forms on the site do not send data to our server; they only prepare the message on your side.",
+        "b3": "Newsletter: email address.",
+        "b4": "Technical: IP address, browser type, store events recorded in the server logs.",
+        "b5": "Payments: we neither see nor store your card number. It is handled by the payment operator; we only receive the transaction status."
+      },
+      "purposes": {
+        "title": "Purposes and legal bases",
+        "orderLabel": "Order fulfillment",
+        "orderValue": "Article 6(1)(b) GDPR — performance of the contract of sale.",
+        "invoiceLabel": "Invoices and accounting",
+        "invoiceValue": "Article 6(1)(c) GDPR — legal obligation arising from tax regulations.",
+        "returnsLabel": "Returns and complaints",
+        "returnsValue": "Article 6(1)(c) GDPR — obligations arising from the Consumer Rights Act.",
+        "newsletterLabel": "Newsletter",
+        "newsletterValue": "Article 6(1)(a) GDPR — consent, which can be withdrawn at any time.",
+        "replyLabel": "Reply to a message",
+        "replyValue": "Article 6(1)(a) and (f) GDPR — consent and our legitimate interest: handling the inquiry.",
+        "claimsLabel": "Pursuit of claims",
+        "claimsValue": "Article 6(1)(f) GDPR — legitimate interest of the controller."
+      },
+      "recipients": {
+        "title": "Who we share data with",
+        "b1": "Carriers: InPost and courier companies handling delivery.",
+        "b2": "Payment operator: handling BLIK, online transfers, cards and PayPal.",
+        "b3": "Accounting office: recording sales and archiving documents.",
+        "b4": "Hosting and email provider: storing store data and correspondence.",
+        "b5": "Public authorities, where required by law.",
+        "outro": "We do not sell data and do not share it for the marketing purposes of other companies. We do not transfer data outside the European Economic Area."
+      },
+      "retention": {
+        "title": "How long we keep data",
+        "b1": "Order data and accounting documents: 5 years counted from the end of the year in which the tax payment deadline fell.",
+        "b2": "Data needed to defend against claims: until the limitation period expires, usually 6 years.",
+        "b3": "Newsletter: until consent is withdrawn.",
+        "b4": "Correspondence: 12 months from the closure of the matter.",
+        "b5": "Server logs: 12 months."
+      },
+      "rights": {
+        "title": "Your rights",
+        "b1": "Access to your data and receiving a copy of it.",
+        "b2": "Rectification of incorrect data and completion of incomplete data.",
+        "b3": "Erasure of data, unless a legal obligation stands in the way (for example, keeping invoices).",
+        "b4": "Restriction of processing.",
+        "b5": "Transfer of data to another controller.",
+        "b6": "Objection to processing based on legitimate interest.",
+        "b7": "Withdrawal of consent at any time, without affecting the lawfulness of processing carried out before withdrawal.",
+        "outro": "You submit your request to <mail>{email}</mail>. We respond within one month. You also have the right to lodge a complaint with the President of the Personal Data Protection Office, ul. Stawki 2, 00-193 Warszawa."
+      },
+      "cookies": {
+        "title": "Cookies and browser storage",
+        "b1": "Essential: maintaining the session and running the store. They do not require consent.",
+        "b2": "Analytics: visit statistics, collected only with consent and only in aggregate form.",
+        "b3": "Marketing: we do not use them.",
+        "note": "We keep the contents of your cart in your browser's storage (localStorage, key dogstore-cart-v1). This data does not reach our server and is not shared with anyone. You can remove it by clearing the site data in your browser settings.",
+        "outro": "You can change your consent to analytics cookies in your browser settings. Blocking essential files may make it impossible to place an order."
+      },
+      "profiling": {
+        "title": "Profiling",
+        "body": "We do not make automated decisions and do not profile customers. We do not build behavioral profiles or target ads based on your purchases."
+      },
+      "changes": {
+        "title": "Policy changes",
+        "body": "We update the policy when the scope of services or the regulations change. The effective date is given at the top of the page. The rules for ordering are described in the <link>terms and conditions</link>."
+      }
+    },
+    "zwroty": {
+      "meta": {
+        "title": "Returns and complaints",
+        "description": "60 days to return instead of the statutory 14. First size exchange at our expense. Return procedure, complaints under the statutory warranty and the guarantee, timeframes."
+      },
+      "header": {
+        "title": "Returns and complaints",
+        "lead": "The law gives consumers 14 days to withdraw from the contract. We give you 60 days, because getting a dog collar's fit right rarely works on the first try."
+      },
+      "return60": {
+        "title": "60-day returns",
+        "intro": "You have 60 days from receiving the parcel to send the goods back without giving a reason. The statutory period is 14 days — the remaining 46 days are our policy, and you can use them on the same terms.",
+        "b1": "You can try the collar on and check the fit on your dog at home.",
+        "b2": "We do not accept returns of gear worn in the field: with dirt, fur worked into the webbing, chew marks or odor.",
+        "b3": "Return e-collars and electronic gear complete: transmitter, receiver, charger, contact points, packaging.",
+        "b4": "Products sewn to measure or with individual marking are not eligible for return (Article 38 of the Consumer Rights Act)."
+      },
+      "howto": {
+        "title": "How to return",
+        "s1": "Write to <mail>{email}</mail> with the subject: Return. In the message, provide the order number, product name and the bank account number for the transfer.",
+        "s2": "We will send confirmation that we have received your request along with the shipping address. Reporting by email is at the same time your statement of withdrawal from the contract.",
+        "s3": "Put a note with the order number in the parcel. Without it we do not know whose shipment it is and the return drags on.",
+        "s4": "Send the parcel to the returns address. Do not send it cash on delivery; we do not accept such shipments.",
+        "s5": "We refund the money within 14 days of receiving the parcel, using the same method you paid with. We also refund the cost of the cheapest delivery to you.",
+        "labelAddress": "Returns address",
+        "labelCost": "Return cost",
+        "costValue": "Covered by the buyer",
+        "labelRefund": "Refund",
+        "refundValue": "Within 14 days of receiving the parcel"
+      },
+      "exchange": {
+        "title": "Size exchange",
+        "p1": "The wrong collar length is the most common reason for returns, so we treat it separately. We ship the first size exchange in the same model at our expense: you receive a return label by email, send back the old piece, and we dispatch the new one once we receive it.",
+        "p2": "Before you order an exchange, measure your dog again using the <link>size chart</link>. If the circumference falls on the border between two sizes, take the larger one — the adjustment is there to take up the slack."
+      },
+      "complaint": {
+        "title": "Complaint",
+        "intro": "You file a complaint under the statutory warranty (2 years from the release of the goods, the seller is liable) or under the Dog Store guarantee (2 years on stitching and hardware). The choice is yours, and one does not exclude the other.",
+        "s1": "Send your report to <mail>{email}</mail>: order number, description of the defect, close-up photos of the damage and of the whole product.",
+        "s2": "We respond within 14 days. No response within this period means the complaint is accepted.",
+        "s3": "If the complaint is justified, we send a return label. We replace the product, repair it or refund the money.",
+        "s4": "We cover the cost of shipping the product under complaint and returning it after repair.",
+        "note": "What the guarantee does not cover: chew-throughs, webbing worn from work, corrosion after a saltwater soak without rinsing, cutting and modifications. Details on the <link>warranty and service</link> page."
+      },
+      "disputes": {
+        "title": "Disputes",
+        "body": "If we do not reach an agreement directly, a consumer may use out-of-court dispute resolution: the district consumer ombudsman, the provincial Trade Inspectorate or the European Commission ODR platform. Using these routes is voluntary for both parties."
+      }
+    },
+    "gwarancja": {
+      "meta": {
+        "title": "Warranty and service",
+        "description": "2-year guarantee on stitching and hardware. What it covers, what it does not, service price list: buckle replacement, snap hook, restitching. Repairs within 10 business days."
+      },
+      "header": {
+        "title": "Warranty and service",
+        "lead": "Two years of guarantee on stitching and hardware. After the guarantee we keep repairing, just for a fee — a collar with a broken buckle is not for the bin."
+      },
+      "scope": {
+        "title": "Scope of the guarantee",
+        "intro": "The guarantee covers 24 months from the date of purchase and applies to workmanship: stitching, hardware, welds and joints. The basis is proof of purchase; the order number is enough.",
+        "b1": "A cracked or broken buckle under normal use.",
+        "b2": "Seam separation, thread pulling out, webbing delamination.",
+        "b3": "A torn-off D-ring, snap hook, rivet or connector.",
+        "b4": "Corrosion of steel hardware within 24 months with care in line with the recommendations.",
+        "b5": "E-collars: 24 months on the electronics and waterproofing, 6 months on the battery."
+      },
+      "exclusions": {
+        "title": "What the guarantee does not cover",
+        "b1": "Operational wear: webbing abrasion, scratches on hardware, color faded after a season in the sun.",
+        "b2": "Chew-throughs and damage caused by a dog, your own or someone else's.",
+        "b3": "Cutting, drilling, sewing in your own parts and other modifications.",
+        "b4": "Contact with solvents, bleach, acid or diesel fuel.",
+        "b5": "Corrosion after a soak in seawater without rinsing in fresh water.",
+        "b6": "A battery that holds a charge for less time after a year of use. Loss of cell capacity is normal and not a defect.",
+        "b7": "Electronics damage after opening the housing yourself.",
+        "note": "The guarantee does not exclude the statutory warranty. If the product has a defect, instead of the guarantee you can use the statutory warranty with the seller — we describe this in <link>returns and complaints</link>."
+      },
+      "serwis": {
+        "title": "Service and repairs",
+        "intro": "We repair Dog Store gear even after the guarantee and regardless of whether the damage is a defect or the result of the dog's work. Replacing a buckle is cheaper than a new collar.",
+        "caption": "Post-guarantee repair price list",
+        "thJob": "Repair",
+        "thCost": "Cost",
+        "thScope": "Scope",
+        "repairs": {
+          "buckle": { "job": "Buckle replacement", "note": "Buckle from the same series, fitting and restitching" },
+          "snap": { "job": "Snap hook or ring replacement", "note": "Steel or aluminum hardware" },
+          "seam": { "job": "Restitching a separated seam", "note": "Polyester thread 40, cross stitch" },
+          "idPanel": { "job": "ID panel replacement", "note": "Hook-and-loop panel, no interference with the webbing" },
+          "shorten": { "job": "Shortening the webbing", "note": "Cutting, edge searing, new stitching" }
+        },
+        "s1": "Send photos of the damage to <mail>{email}</mail> with the order number. We reply with a quote and a decision on whether the case goes under the guarantee or from the price list.",
+        "s2": "Send the gear to the service address. The owner pays for shipping to us; we cover the return after repair.",
+        "s3": "The repair takes up to 10 business days from delivery of the parcel. If parts are missing, we inform you of the timeframe before starting work.",
+        "s4": "A guarantee repair is free, together with shipping both ways.",
+        "labelAddress": "Service address",
+        "labelTime": "Repair time",
+        "timeValue": "Up to 10 business days from delivery",
+        "labelContact": "Reporting"
+      },
+      "care": {
+        "title": "Care",
+        "intro": "A 1000D nylon collar will last years if you don't leave it dirty and wet. A few rules that extend the life of the gear and protect the guarantee.",
+        "b1": "Wash by hand: lukewarm water, laundry soap, a medium-stiff brush. Rinse and dry in the shade.",
+        "b2": "Do not machine wash. The hardware batters the drum, and high temperature softens the glue under the lining.",
+        "b3": "Do not dry on a radiator or with a hair dryer. Nylon shrinks and the webbing loses its dimension.",
+        "b4": "After working in salt water, rinse the collar with fresh water. Salt eats steel and leaves a mark in the stitching.",
+        "b5": "Wipe the chain dry and once a season wipe it with a cloth and a little machine oil.",
+        "b6": "Do not use bleach, acetone or solvents. Nylon will turn white and lose strength.",
+        "b7": "Once a month check the hardware: play on a rivet, a scratch on the buckle and a bent ring are signals to replace it before it fails in the field."
+      }
+    }
+  }
+}

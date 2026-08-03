@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Fragment } from "react";
 import { Button } from "@/components/ui/Button";
 import { PriceTag } from "@/components/ui/PriceTag";
@@ -48,6 +49,7 @@ export function ProProductCard({
   product: Product;
   className?: string;
 }) {
+  const t = useTranslations("pro");
   const specs = catalogSpecs(product.specs);
   const isNew = product.badges.includes("new");
   const href = productHref(product);
@@ -92,12 +94,12 @@ export function ProProductCard({
                 TYLKO ta, ktora niesie stan wart uwagi - reszta zostaje konturowa */}
             {!product.inStock && (
               <span className="type-pro-spec border border-pro-border-hi bg-pro-bg/90 px-2 py-1 text-pro-text">
-                Brak
+                {t("card.badgeOut")}
               </span>
             )}
             {isNew && (
               <span className="type-pro-spec bg-pro-red px-2 py-1 text-pro-white">
-                Nowość
+                {t("card.badgeNew")}
               </span>
             )}
           </div>
@@ -133,7 +135,7 @@ export function ProProductCard({
         {product.variants.length > 0 && (
           <div className="flex items-baseline justify-between gap-4 border-t border-pro-border py-2">
             <dt className="type-pro-spec shrink-0 text-pro-muted">
-              Rozmiary
+              {t("card.sizes")}
             </dt>
             {/* Wartosc jest tekstem plynacym, nie flexem: przy trzech wariantach lamie sie
                 na dwa wiersze, a przecinki zostaja przy poprzednim rozmiarze. Przecinek stoi
@@ -158,7 +160,7 @@ export function ProProductCard({
                   </span>
                   <span className="sr-only">
                     {SIZE_NAME[variant.size]}, {variant.neck}:{" "}
-                    {variant.inStock ? "dostępny" : "brak"}.{" "}
+                    {variant.inStock ? t("card.available") : t("card.unavailable")}.{" "}
                   </span>
                 </Fragment>
               ))}
@@ -178,7 +180,7 @@ export function ProProductCard({
         {/* ghost, nie czerwony: 12 czerwonych przyciskow w siatce zrobiloby z katalogu
             choinke, a czerwien ma byc uzywana OSZCZEDNIE (§1) */}
         <Button size="sm" variant="ghost" href={href} className="min-h-11">
-          Karta produktu
+          {t("card.cta")}
           {/* Button z href nie przekazuje aria-label do Linka, wiec nazwa dostepna
               rozroznia sie trescia: bez tego lista linkow to 12x "Karta produktu" */}
           <span className="sr-only">: {product.name}</span>

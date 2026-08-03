@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { getCollection, getFilters, getProducts } from "@/lib/data";
 import { CollectionHero } from "@/components/collection/CollectionHero";
 import { CollectionView } from "@/components/collection/CollectionView";
@@ -19,10 +20,10 @@ const SKELETON_CARDS = 8;
 // CollectionView czyta filtry z URL (useSearchParams), a strona jest prerenderowana -
 // bez granicy Suspense build by tego nie przepuscil. Szkielet powtarza uklad siatki
 // (kolumna filtrow + pasek + kafle), zeby wejscie na liste nie skakalo.
-function CollectionSkeleton() {
+function CollectionSkeleton({ loadingLabel }: { loadingLabel: string }) {
   return (
     <div role="status" className="flex items-start gap-8 xl:gap-10">
-      <span className="sr-only">Wczytywanie listy produktów</span>
+      <span className="sr-only">{loadingLabel}</span>
 
       <div className="hidden w-64 shrink-0 lg:block xl:w-72">
         <Skeleton className="h-11 w-full motion-reduce:animate-none" />
@@ -58,13 +59,14 @@ export async function generateMetadata({
   params: Promise<{ handle: string }>;
 }): Promise<Metadata> {
   const { handle } = await params;
+  const t = await getTranslations("catalog");
   // nieznany handle: strona renderuje notFound(), metadane nie moga rzucic bledem
   const collection = await getCollection(handle).catch(() => null);
 
   if (!collection) {
     return {
-      title: "Kolekcja niedostępna",
-      description: "Ta kolekcja zmieniła adres lub została wycofana.",
+      title: t("meta.unavailableTitle"),
+      description: t("meta.unavailableDescription"),
     };
   }
 
@@ -90,6 +92,7 @@ export default async function CollectionPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { handle } = await params;
+  const t = await getTranslations("catalog");
   // Odczyt searchParams przelacza trase na render dynamiczny. Bez tego strona byla
   // prerenderowana, useSearchParams w CollectionView wymuszal fallback Suspense i w HTML
   // nie bylo ANI JEDNEGO produktu: bez JS pusta lista, a roboty nie widzialy 26 kart.
@@ -111,29 +114,29 @@ export default async function CollectionPage({
       <CollectionHero collection={collection} />
 
       <div className="mx-auto max-w-[1600px] px-4 py-10 md:px-6 lg:py-14">
-        <Suspense fallback={<CollectionSkeleton />}>
+        <Suspense fallback={<CollectionSkeleton loadingLabel={t("skeleton.loading")} />}>
           <CollectionView products={products} groups={groups} />
         </Suspense>
       </div>
 
       {/* Rzedy produktow - wtorna sciezka odkrywania pod glowna siatka (§8-H) */}
       <div className="space-y-12 pb-20 pt-4">
-        <BestsellerRow products={products} title="Top 10 bestsellerów" />
+        <BestsellerRow products={products} title={t("rows.bestsellers")} />
         <ProductRow
           id="row-working"
-          title="Obroże robocze"
+          title={t("rows.working")}
           products={working}
           exploreHref="/collections/collars"
         />
         <ProductRow
           id="row-everyday"
-          title="Na co dzień"
+          title={t("rows.everyday")}
           products={everyday}
           exploreHref="/collections/collars"
         />
         <ProductRow
           id="row-e-collar"
-          title="Kompatybilne z e-obrożą"
+          title={t("rows.eCollar")}
           products={eCollar}
           exploreHref="/collections/collars"
         />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useId } from "react";
+import { useTranslations } from "next-intl";
 import { COMPANY } from "@/lib/nav";
 import { SIZE_NAME, SIZE_SHORT } from "@/lib/sizes";
 import type { Product, ProductColor, ProductVariant } from "@/lib/types";
@@ -26,24 +27,36 @@ export function availabilityEmail(product: Product): string {
   return product.line === "pro" ? COMPANY.proEmail : COMPANY.shopEmail;
 }
 
+/** Zlokalizowane teksty maila o dostepnosci. Skladane w komponencie (BuyBox), gdzie
+ *  dostepne sa tlumaczenia - funkcja tylko sciela je w gotowy adres mailto. Gdy pominiete,
+ *  zostaje polski domyslny, wiec starsi wywolujacy dzialaja bez zmian. */
+export interface AvailabilityMailCopy {
+  subject: string;
+  greeting: string;
+  request: string;
+  colorLine?: string;
+}
+
 /** Zapytanie o dostepnosc dotyczy konkretnego rozmiaru, nie modelu: bez SKU wariantu
  *  odpowiedz "wrocilo do sprzedazy" nie mowi, czy wrocilo to, o co pytal klient. */
 export function availabilityMailHref(
   product: Product,
   variant: ProductVariant,
-  color?: ProductColor
+  color?: ProductColor,
+  copy?: AvailabilityMailCopy
 ): string {
-  const subject = `Dostępność: ${product.name} (${variant.sku})`;
-  const body = [
-    "Dzień dobry,",
-    `proszę o wiadomość, gdy ${product.name} w rozmiarze ${SIZE_SHORT[variant.size]} (${variant.neck}), SKU ${variant.sku}, wróci do sprzedaży.`,
-    color ? `Kolor: ${color.name}` : "",
-  ]
+  const c: AvailabilityMailCopy = copy ?? {
+    subject: `Dostępność: ${product.name} (${variant.sku})`,
+    greeting: "Dzień dobry,",
+    request: `proszę o wiadomość, gdy ${product.name} w rozmiarze ${SIZE_SHORT[variant.size]} (${variant.neck}), SKU ${variant.sku}, wróci do sprzedaży.`,
+    colorLine: color ? `Kolor: ${color.name}` : "",
+  };
+  const body = [c.greeting, c.request, c.colorLine ?? ""]
     .filter(Boolean)
     .join("\n");
 
   return `mailto:${availabilityEmail(product)}?subject=${encodeURIComponent(
-    subject
+    c.subject
   )}&body=${encodeURIComponent(body)}`;
 }
 
@@ -67,11 +80,12 @@ export function VariantPicker({
   // grupa radio potrzebuje wlasnej nazwy - dwie kontrolki na jednej stronie
   // (karta produktu i szybki podglad) nie moga sie o nia bic
   const name = useId();
+  const t = useTranslations("product");
 
   return (
     <fieldset className={cn("min-w-0", className)}>
       <legend className={cn("p-0 text-nf-dim", mono ? "type-meta" : "type-label")}>
-        Rozmiar
+        {t("variant.size")}
       </legend>
       <div className="mt-2 flex flex-wrap gap-2">
         {variants.map((variant) => {
@@ -79,7 +93,7 @@ export function VariantPicker({
           return (
             <label
               key={variant.sku}
-              title={variant.inStock ? undefined : "Rozmiar niedostępny"}
+              title={variant.inStock ? undefined : t("variant.unavailableTitle")}
               className={cn(
                 "relative flex flex-col items-center justify-center rounded-[2px] border text-center transition-colors duration-250 ease-nf motion-reduce:transition-none",
                 // 44px celu dotykowego bierze sie z min-h-11, nie z paddingu
@@ -136,7 +150,7 @@ export function VariantPicker({
               {/* czytnik ekranu dostaje pelna nazwe rozmiaru i stan - samo "S" i kreska nie wystarcza */}
               <span className="sr-only">
                 {SIZE_NAME[variant.size]}
-                {variant.inStock ? "" : ", chwilowo niedostępny"}
+                {variant.inStock ? "" : t("variant.srUnavailable")}
               </span>
             </label>
           );

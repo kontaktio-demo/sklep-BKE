@@ -1,1 +1,91 @@
-{}
+{
+  "catalog": {
+    "meta": {
+      "unavailableTitle": "Collection unavailable",
+      "unavailableDescription": "This collection has moved or been retired.",
+      "searchTitle": "Search",
+      "searchTitleQuery": "Search: {query}",
+      "searchDescriptionQuery": "Search results for {query} across the Dog Store shop and the Dog Store Pro catalog.",
+      "searchDescription": "Search collars from the Dog Store shop and duty gear from the Dog Store Pro line."
+    },
+    "breadcrumb": {
+      "home": "Home"
+    },
+    "hero": {
+      "breadcrumbAria": "Breadcrumb",
+      "eyebrow": "Collection",
+      "browse": "Browse",
+      "bestsellers": "Bestsellers"
+    },
+    "skeleton": {
+      "loading": "Loading product list"
+    },
+    "rows": {
+      "bestsellers": "Top 10 bestsellers",
+      "working": "Working collars",
+      "everyday": "Everyday",
+      "eCollar": "E-collar compatible",
+      "seeAll": "See all",
+      "rank": "Rank {rank}"
+    },
+    "scroller": {
+      "prev": "Scroll left",
+      "next": "Scroll right"
+    },
+    "filters": {
+      "heading": "Filters",
+      "clear": "Clear",
+      "clearAll": "Clear all",
+      "price": "Price",
+      "priceFrom": "From",
+      "priceTo": "To",
+      "show": "Show {count, plural, one {# result} other {# results}}"
+    },
+    "toolbar": {
+      "count": "{count, plural, one {# product} other {# products}}",
+      "filter": "Filter",
+      "activeFilters": "{count, plural, one {# active filter} other {# active filters}}",
+      "sort": "Sort"
+    },
+    "grid": {
+      "resultsHeading": "Results",
+      "emptyTitle": "Nothing matches the selected filters.",
+      "emptyBody": "Remove a filter or clear them all to see the full collection.",
+      "clearFilters": "Clear filters"
+    },
+    "card": {
+      "quickView": "Quick view",
+      "quickViewAria": "Quick view: {name}",
+      "sizes": "Sizes",
+      "sizeAvailable": "in stock",
+      "sizeUnavailable": "out of stock"
+    },
+    "quickView": {
+      "titleFallback": "Quick view",
+      "imageAria": "Image {index}",
+      "color": "Color",
+      "width": "Width",
+      "quantity": "Quantity",
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity",
+      "soldOut": "Currently unavailable",
+      "sizeUnavailable": "Size {size} unavailable",
+      "askAvailability": "Ask about availability",
+      "viewFull": "See full description"
+    },
+    "search": {
+      "title": "Search",
+      "resultsSummary": "{total, plural, one {# result} other {# results}} for {query}",
+      "noResultsSummary": "No results for {query}",
+      "emptyTitle": "Enter a phrase to search the shop and the Dog Store Pro catalog.",
+      "emptyBody": "We search by name, description, SKU, category, color and specifications.",
+      "noResultsTitle": "Nothing matches {query}",
+      "noResultsBody": "Check the spelling or shorten your query to a single word. The full range lives in the shop and the Dog Store Pro catalog.",
+      "goToShop": "Go to the shop",
+      "proCatalog": "Dog Store Pro catalog",
+      "shopSection": "Shop",
+      "allCollars": "All collars",
+      "resultCount": "{count, plural, one {# result} other {# results}}"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import {
   useCallback,
   useEffect,
@@ -87,6 +88,7 @@ export function RowScroller({
   children: ReactNode[];
   itemClassName?: string;
 }) {
+  const t = useTranslations("catalog");
   const trackRef = useRef<HTMLUListElement>(null);
   const reducedMotion = usePrefersReducedMotion();
   const reducedRef = useRef(reducedMotion);
@@ -279,7 +281,7 @@ export function RowScroller({
 
       <button
         type="button"
-        aria-label="Przewiń w lewo"
+        aria-label={t("scroller.prev")}
         disabled={!canLeft}
         onClick={() => scrollByAmount(-1)}
         className={arrowClass(canLeft, "left")}
@@ -288,7 +290,7 @@ export function RowScroller({
       </button>
       <button
         type="button"
-        aria-label="Przewiń w prawo"
+        aria-label={t("scroller.next")}
         disabled={!canRight}
         onClick={() => scrollByAmount(1)}
         className={arrowClass(canRight, "right")}
@@ -318,6 +320,7 @@ export function ProductRow({
   exploreHref?: string;
   variant?: "shop" | "pro";
 }) {
+  const t = useTranslations("catalog");
   const sectionRef = useRef<HTMLElement>(null);
   const mounted = useLazyMount(sectionRef);
   const pro = variant === "pro";
@@ -340,7 +343,7 @@ export function ProductRow({
                 pro ? "type-meta" : "type-label"
               )}
             >
-              Zobacz wszystkie
+              {t("rows.seeAll")}
             </Link>
           )}
         </div>

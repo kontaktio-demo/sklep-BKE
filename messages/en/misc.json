@@ -1,1 +1,25 @@
-{}
+{
+  "misc": {
+    "comingSoon": {
+      "meta": {
+        "title": "Opening soon"
+      },
+      "title": "Opening soon",
+      "body": "The store is temporarily unavailable. Sign up for the newsletter — we'll tell you the moment we open.",
+      "cta": "Discover Dog Store"
+    },
+    "priceTag": {
+      "from": "from"
+    },
+    "badge": {
+      "sold-out": "Sold out",
+      "last-chance": "Last chance",
+      "bestseller": "Bestseller",
+      "new": "New"
+    },
+    "rangeSlider": {
+      "priceMin": "Minimum price",
+      "priceMax": "Maximum price"
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 
 /**
  * Blackout: JEDYNE pelnoekranowe ciecie grafitu na trasie cywilnej. Rytm strony
@@ -11,20 +12,18 @@ import Link from "next/link";
  * (data-scrub-words w Reveals): ruch NIESIE czytanie, nie dekoruje. Podzial na
  * spany robi serwer - bez JS zdanie stoi w pelnej bieli.
  */
-const MANIFEST =
-  "Te same szwy i okucia trafiają do psa służbowego i do psa, który wychodzi na spacer.";
-const WORDS = MANIFEST.split(" ");
-
-export function HomeManifest() {
+export async function HomeManifest() {
+  const t = await getTranslations("home");
+  const words = t("manifest.quote").split(" ");
   return (
     <section data-shell="dark" className="bg-nf-bg">
       <div className="mx-auto max-w-[1600px] px-4 py-24 md:px-6 md:py-36">
         {/* jedyna czerwien wyspy */}
         <span aria-hidden="true" className="block h-0.5 w-14 bg-nf-red-bright" />
-        <p className="type-kicker mt-6 text-nf-dim">Nasza robota</p>
+        <p className="type-kicker mt-6 text-nf-dim">{t("manifest.kicker")}</p>
 
         <blockquote data-scrub-words className="type-display mt-10 max-w-5xl text-nf-white">
-          {WORDS.map((word, i) => (
+          {words.map((word, i) => (
             // spacja stoi POZA slowem: w inline-block koncowy odstep by sie zlozyl
             // i slowa sklejalyby sie w jedno
             <span key={i}>
@@ -42,7 +41,7 @@ export function HomeManifest() {
             href="/o-nas"
             className="type-label flex min-h-11 items-center text-nf-muted transition-colors duration-250 ease-nf hover:text-nf-white"
           >
-            Jak testujemy sprzęt&nbsp;&nbsp;→
+            {t("manifest.link")}&nbsp;&nbsp;→
           </Link>
         </div>
       </div>

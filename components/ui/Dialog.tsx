@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { CloseIcon } from "@/components/ui/icons";
 import { usePrefersReducedMotion } from "@/components/motion/useReducedMotion";
 import { cn } from "@/lib/utils";
@@ -101,6 +102,7 @@ export function Dialog({
   const panelRef = useRef<HTMLDivElement | null>(null);
   const titleId = useId();
   const surface = SURFACE[theme];
+  const tc = useTranslations("common");
   const { mounted, entered } = useOverlayTransition(open, EXIT_MS);
   useOverlayA11y(open, onClose, panelRef);
 
@@ -109,7 +111,7 @@ export function Dialog({
   const closeButton = (
     <button
       type="button"
-      aria-label="Zamknij"
+      aria-label={tc("close")}
       onClick={onClose}
       className={cn(
         "flex h-11 w-11 items-center justify-center transition-colors duration-250 ease-nf",

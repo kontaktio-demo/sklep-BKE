@@ -2,6 +2,7 @@
 
 import Script from "next/script";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 /**
  * Analityka za zgodą (GDPR): Google Analytics 4 + Meta Pixel ładują się DOPIERO po
@@ -15,6 +16,7 @@ const KEY = "dogstore-consent";
 type Consent = "unknown" | "granted" | "denied";
 
 export function SiteAnalytics() {
+  const t = useTranslations("cookies");
   const [consent, setConsent] = useState<Consent>("unknown");
 
   useEffect(() => {
@@ -47,12 +49,13 @@ export function SiteAnalytics() {
         <div className="fixed inset-x-0 bottom-0 z-40 border-t border-nf-border bg-nf-elevated px-4 py-4 shadow-[0_-8px_24px_rgba(0,0,0,0.08)]">
           <div className="mx-auto flex max-w-[1100px] flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm leading-relaxed text-nf-muted">
-              Używamy plików cookie do statystyk i marketingu. Możesz zaakceptować albo zostać
-              przy niezbędnych.{" "}
-              <a href="/polityka-prywatnosci" className="text-nf-text underline underline-offset-4">
-                Polityka prywatności
-              </a>
-              .
+              {t.rich("message", {
+                link: (chunks) => (
+                  <a href="/polityka-prywatnosci" className="text-nf-text underline underline-offset-4">
+                    {chunks}
+                  </a>
+                ),
+              })}
             </p>
             <div className="flex shrink-0 gap-2">
               <button
@@ -60,14 +63,14 @@ export function SiteAnalytics() {
                 onClick={() => decide("denied")}
                 className="h-10 rounded-[2px] border border-nf-control px-4 text-sm text-nf-text transition-colors hover:bg-nf-elevated-2"
               >
-                Tylko niezbędne
+                {t("acceptEssential")}
               </button>
               <button
                 type="button"
                 onClick={() => decide("granted")}
                 className="h-10 rounded-[2px] bg-nf-white px-4 text-sm font-semibold text-nf-bg transition-colors hover:bg-nf-text"
               >
-                Akceptuję
+                {t("accept")}
               </button>
             </div>
           </div>

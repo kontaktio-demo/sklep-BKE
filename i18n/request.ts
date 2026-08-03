@@ -16,6 +16,7 @@ const NAMESPACES = [
   "newsletter",
   "cookies",
   "infoPages",
+  "infoLegal",
   "pro",
   "misc",
   "emails",

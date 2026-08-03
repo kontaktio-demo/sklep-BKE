@@ -1,1 +1,120 @@
-{}
+{
+  "product": {
+    "meta": {
+      "unavailableTitle": "Product unavailable",
+      "unavailableDescription": "This product has moved or been withdrawn from sale.",
+      "proUnavailableTitle": "Item unavailable",
+      "proUnavailableDescription": "This item has moved or been withdrawn from the catalog."
+    },
+    "breadcrumbs": {
+      "aria": "Breadcrumb",
+      "home": "Home",
+      "collars": "Collars"
+    },
+    "related": {
+      "sameLine": "From the same line",
+      "similar": "Related products"
+    },
+    "recentlyViewed": "Recently viewed",
+    "jsonLd": {
+      "size": "size"
+    },
+    "gallery": {
+      "thumbnails": "Product thumbnails",
+      "thumb": "Image {index} of {count}"
+    },
+    "sectionNav": {
+      "aria": "Product sections"
+    },
+    "buyBox": {
+      "fromPrice": "price varies by size",
+      "inStock": "In stock, ships within 24 h",
+      "soldOut": "Currently unavailable",
+      "sizeSoldOut": "Size {size} currently unavailable",
+      "dims": "Neck {neck}, weight {weight} g",
+      "color": "Color",
+      "sizeTable": "Size chart",
+      "width": "Width",
+      "quantity": "Quantity",
+      "decrease": "Decrease quantity",
+      "increase": "Increase quantity",
+      "sizeUnavailable": "Size {size} unavailable",
+      "proInquiry": "Unit inquiry",
+      "notify": "Ask about availability",
+      "waitlistModel": "We run the waitlist by email. Write to {email} and we'll reply when the model is back on sale.",
+      "waitlistSize": "The other sizes of this model are in stock. We run the waitlist for size {size} by email — write to {email} and we'll reply when it's back on sale."
+    },
+    "variant": {
+      "size": "Size",
+      "unavailableTitle": "Size unavailable",
+      "srUnavailable": ", currently unavailable"
+    },
+    "availability": {
+      "mailSubject": "Availability: {name} ({sku})",
+      "mailGreeting": "Hello,",
+      "mailBody": "please let me know when {name} in size {size} ({neck}), SKU {sku}, is back on sale.",
+      "mailColor": "Color: {color}"
+    },
+    "sections": {
+      "description": {
+        "label": "Description",
+        "heading": "Description"
+      },
+      "specs": {
+        "label": "Specification",
+        "heading": "Specification",
+        "note": "Neck size and weight depend on the size. <link>Check them in the size chart</link>."
+      },
+      "sizes": {
+        "label": "Sizes",
+        "heading": "Sizes",
+        "intro": "Measure the neck at its widest point and add 2–3 cm of slack. The dog's weight is only a guide — the measurement decides.",
+        "tableAria": "Size chart",
+        "colSize": "Size",
+        "colNeck": "Neck size",
+        "colWeight": "Dog weight (approx.)",
+        "colCollarWeight": "Collar weight",
+        "variantSoldOut": "currently unavailable",
+        "notOffered": "not in this model",
+        "notOfferedSr": " (not in this model)",
+        "footnote": "Highlighted rows are the sizes this model comes in. Collar weight refers to the version in that size."
+      },
+      "shipping": {
+        "label": "Shipping and returns",
+        "heading": "Shipping and returns",
+        "shippingTitle": "Shipping",
+        "shippingBody": "Ships within 24 h on business days. Choose courier or parcel locker — you pick the delivery method in the cart.",
+        "costTitle": "Shipping cost",
+        "costBody": "Free shipping from {amount}. Below that, the cost depends on the carrier and is shown in the cart.",
+        "returnsTitle": "Returns and warranty",
+        "returnsBody": "60 days to return or exchange a size. Stitching and hardware carry a 2-year warranty."
+      },
+      "compatibility": {
+        "label": "Compatibility",
+        "heading": "Compatibility",
+        "intro": "Measure the module housing where it passes through the strap. The transmitter brand doesn't matter — housing width is what counts.",
+        "tableAria": "E-collar module compatibility table",
+        "colWidth": "Module housing width",
+        "colFits": "Fits",
+        "yes": "Yes",
+        "no": "No",
+        "widthUpTo": "up to 35 mm",
+        "widthMid": "36–45 mm",
+        "widthOver": "over 45 mm",
+        "footnote": "The module mounts on guide rails; the electrodes must stay in constant contact with the skin."
+      },
+      "care": {
+        "label": "Care",
+        "heading": "Care",
+        "step1": "Hand wash in lukewarm water, no bleach and no fabric softener.",
+        "step2": "Dry away from radiators. High heat stiffens the webbing and ruins the hook-and-loop.",
+        "step3": "Rinse the hardware with clean water after work in mud and salt, then wipe it dry.",
+        "step4": "Check the stitching at the buckle every few weeks. Frayed edging means replacement, not repair."
+      },
+      "faq": {
+        "label": "Questions",
+        "heading": "Questions"
+      }
+    }
+  }
+}

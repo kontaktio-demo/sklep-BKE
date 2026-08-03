@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useTranslations } from "next-intl";
 import type { FilterGroup } from "@/lib/types";
 import type { FilterState } from "@/lib/filtering";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
@@ -65,6 +66,7 @@ function Section({
 }) {
   const [open, setOpen] = useState(true);
   const bodyId = useId();
+  const t = useTranslations("catalog");
 
   return (
     <section className="border-b border-nf-border last:border-b-0">
@@ -109,7 +111,7 @@ function Section({
                   RING
                 )}
               >
-                Wyczyść
+                {t("filters.clear")}
               </button>
             )}
           </div>
@@ -253,6 +255,7 @@ function PriceSection({
 }) {
   const fromId = useId();
   const toId = useId();
+  const t = useTranslations("catalog");
   const [lo, hi] = value;
   // typed input is a local draft committed on blur/Enter - clamping per keystroke
   // made values like "150" untypeable (the "1" clamped to the lower bound instantly)
@@ -307,7 +310,7 @@ function PriceSection({
       <div className="mt-4 flex gap-3">
         <div className="flex-1">
           <label htmlFor={fromId} className="type-label mb-1.5 block text-nf-dim">
-            Od
+            {t("filters.priceFrom")}
           </label>
           <input
             id={fromId}
@@ -324,7 +327,7 @@ function PriceSection({
         </div>
         <div className="flex-1">
           <label htmlFor={toId} className="type-label mb-1.5 block text-nf-dim">
-            Do
+            {t("filters.priceTo")}
           </label>
           <input
             id={toId}
@@ -383,6 +386,7 @@ function ColorGrid({
 }
 
 export function FilterControls({ groups, state, onChange, bounds, colorHexes }: FilterControlsProps) {
+  const t = useTranslations("catalog");
   const price = state.price ?? bounds;
 
   const toggleArray = (key: ArrayKey, value: string) => {
@@ -414,7 +418,7 @@ export function FilterControls({ groups, state, onChange, bounds, colorHexes }: 
           return (
             <Section
               key="price"
-              label="Cena"
+              label={t("filters.price")}
               active={state.price !== null}
               onClear={() => onChange({ ...state, price: null })}
             >

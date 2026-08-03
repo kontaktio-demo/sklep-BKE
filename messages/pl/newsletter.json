@@ -1,1 +1,27 @@
-{}
+{
+  "newsletter": {
+    "shop": {
+      "eyebrow": "Newsletter",
+      "headingLine1": "Nowe modele trafiają",
+      "headingLine2": "najpierw do subskrybentów",
+      "note": "Potwierdzasz zapis linkiem z e-maila i odbierasz kod powitalny -10%. Wypiszesz się jednym kliknięciem."
+    },
+    "pro": {
+      "eyebrow": "Dog Store Pro",
+      "headingLine1": "Nowe pozycje",
+      "headingLine2": "w katalogu Pro",
+      "lead": "Wiadomość wychodzi, gdy do katalogu wchodzi nowa pozycja albo gdy zmieniamy konstrukcję istniejącej. Do tego wyniki testów: obciążenia statyczne, ścieranie taśmy, zachowanie okuć po sezonie pracy.",
+      "note": "Potwierdzasz zapis linkiem z e-maila i odbierasz kod powitalny -10%. Bez spamu ofertowego. Wypiszesz się jednym kliknięciem."
+    },
+    "form": {
+      "emailPlaceholder": "twój@email.pl",
+      "emailAria": "Adres e-mail",
+      "cta": "Zapisz się",
+      "busy": "Zapisywanie…",
+      "error": "Nie udało się zapisać. Spróbuj ponownie."
+    },
+    "success": {
+      "body": "Sprawdź skrzynkę — wysłaliśmy link potwierdzający zapis. Po potwierdzeniu odbierzesz kod powitalny."
+    }
+  }
+}

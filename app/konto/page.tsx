@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { AccountOverview } from "@/components/account/AccountPages";
 
-export const metadata: Metadata = { title: "Konto", robots: { index: false, follow: false } };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("account");
+  return { title: t("meta.account"), robots: { index: false, follow: false } };
+}
 
 export default function KontoPage() {
   return (

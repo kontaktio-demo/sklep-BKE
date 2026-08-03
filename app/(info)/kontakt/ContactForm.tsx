@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { COMPANY } from "@/lib/nav";
@@ -18,18 +19,11 @@ const BORDER_BAD = "border-nf-red-bright";
 const LABEL = "type-label block text-nf-dim";
 const ERROR = "mt-2 text-sm text-nf-red-bright";
 
-const OTHER_SUBJECT = "Inna sprawa";
-
-const SUBJECTS = [
-  "Zamówienie i wysyłka",
-  "Zwrot lub reklamacja",
-  "Dobór rozmiaru",
-  "Sprzęt Dog Store Pro",
-  OTHER_SUBJECT,
-];
-
 // wystarczajaco scisly, zeby zlapac literowke, dosc luzny, zeby nie odrzucic poprawnego adresu
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+// klucze tematow - kolejnosc w liscie rozwijanej. Etykiety tlumaczy slownik.
+const SUBJECT_KEYS = ["order", "return", "sizing", "pro", "other"] as const;
 
 interface Values {
   name: string;
@@ -42,7 +36,7 @@ interface Values {
 const EMPTY: Values = {
   name: "",
   email: "",
-  subject: SUBJECTS[0],
+  subject: "",
   message: "",
   consent: false,
 };
@@ -53,20 +47,26 @@ type Errors = Partial<Record<FieldName, string>>;
 /** Kolejnosc pol w ukladzie - po nieudanym submicie fokus idzie na pierwszy blad z tej listy. */
 const ORDER: FieldName[] = ["name", "email", "message", "consent"];
 
-function validate(v: Values): Errors {
-  const errors: Errors = {};
-  if (!v.name.trim()) errors.name = "Podaj imię i nazwisko.";
-  if (!v.email.trim()) errors.email = "Podaj adres e-mail.";
-  else if (!EMAIL_RE.test(v.email.trim())) errors.email = "Adres e-mail ma niepoprawny format.";
-  if (!v.message.trim()) errors.message = "Wpisz treść wiadomości.";
-  if (!v.consent) errors.consent = "Bez zgody nie mamy podstawy, żeby odpisać.";
-  return errors;
-}
-
 export function ContactForm() {
+  const t = useTranslations("infoPages");
+
+  // etykiety tematow z jednego zrodla (SUBJECT_KEYS): sam wybor idzie do backendu jako tekst,
+  // a lista rozwijana i wartosc poczatkowa czytaja to samo
+  const subjects = SUBJECT_KEYS.map((key) => t(`kontakt.form.subjects.${key}`));
+
+  const validate = (v: Values): Errors => {
+    const errors: Errors = {};
+    if (!v.name.trim()) errors.name = t("kontakt.form.errors.name");
+    if (!v.email.trim()) errors.email = t("kontakt.form.errors.emailRequired");
+    else if (!EMAIL_RE.test(v.email.trim())) errors.email = t("kontakt.form.errors.emailInvalid");
+    if (!v.message.trim()) errors.message = t("kontakt.form.errors.message");
+    if (!v.consent) errors.consent = t("kontakt.form.errors.consent");
+    return errors;
+  };
+
   // Pola trzymamy w stanie, nie w DOM: walidacja po submicie potrzebuje wartosci,
   // a powrot z panelu do formularza nie moze kasowac tego, co ktos wpisal.
-  const [values, setValues] = useState<Values>(EMPTY);
+  const [values, setValues] = useState<Values>(() => ({ ...EMPTY, subject: subjects[0] }));
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -130,7 +130,7 @@ export function ContactForm() {
       .catch(() => ({ ok: false }));
     setBusy(false);
     if (res.ok) setSent(true);
-    else setSendError("Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz na " + COMPANY.shopEmail + ".");
+    else setSendError(t("kontakt.form.sendError", { email: COMPANY.shopEmail }));
   };
 
   if (sent) {
@@ -138,11 +138,14 @@ export function ContactForm() {
       <div className="mt-6 border border-nf-border bg-nf-elevated p-6">
         <div role="status" aria-live="polite">
           <h3 ref={confirmRef} tabIndex={-1} className="type-h3 text-nf-white">
-            Wiadomość wysłana
+            {t("kontakt.form.sent.title")}
           </h3>
           <p className="mt-3 text-sm leading-relaxed text-nf-muted">
-            Dziękujemy — odpiszemy {COMPANY.responseTime} na {values.email.trim()}. W pilnej
-            sprawie zadzwoń: {COMPANY.phone}.
+            {t("kontakt.form.sent.body", {
+              responseTime: COMPANY.responseTime,
+              email: values.email.trim(),
+              phone: COMPANY.phone,
+            })}
           </p>
         </div>
         <div className="mt-5">
@@ -150,11 +153,11 @@ export function ContactForm() {
             type="button"
             onClick={() => {
               setSent(false);
-              setValues(EMPTY);
+              setValues({ ...EMPTY, subject: subjects[0] });
             }}
             className="flex min-h-11 items-center text-sm text-nf-muted underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
           >
-            Wyślij kolejną wiadomość
+            {t("kontakt.form.sent.again")}
           </button>
         </div>
       </div>
@@ -169,7 +172,7 @@ export function ContactForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor={nameId} className={LABEL}>
-            Imię i nazwisko
+            {t("kontakt.form.nameLabel")}
           </label>
           <input
             id={nameId}
@@ -191,7 +194,7 @@ export function ContactForm() {
         </div>
         <div>
           <label htmlFor={emailId} className={LABEL}>
-            Adres e-mail
+            {t("kontakt.form.emailLabel")}
           </label>
           <input
             id={emailId}
@@ -215,7 +218,7 @@ export function ContactForm() {
 
       <div>
         <label htmlFor={subjectId} className={LABEL}>
-          Temat
+          {t("kontakt.form.subjectLabel")}
         </label>
         <select
           id={subjectId}
@@ -224,7 +227,7 @@ export function ContactForm() {
           onChange={(e) => set("subject", e.target.value)}
           className={`${FIELD} ${LINE} ${BORDER_OK} mt-2`}
         >
-          {SUBJECTS.map((subject) => (
+          {subjects.map((subject) => (
             <option key={subject} value={subject}>
               {subject}
             </option>
@@ -234,7 +237,7 @@ export function ContactForm() {
 
       <div>
         <label htmlFor={messageId} className={LABEL}>
-          Wiadomość
+          {t("kontakt.form.messageLabel")}
         </label>
         <textarea
           id={messageId}
@@ -245,7 +248,7 @@ export function ContactForm() {
           onChange={(e) => set("message", e.target.value)}
           aria-invalid={errors.message ? true : undefined}
           aria-describedby={errors.message ? `${messageId}-error` : undefined}
-          placeholder="Numer zamówienia, model obroży, obwód szyi psa - im konkretniej, tym szybciej odpiszemy."
+          placeholder={t("kontakt.form.messagePlaceholder")}
           className={`${FIELD} ${
             errors.message ? BORDER_BAD : BORDER_OK
           } mt-2 px-3 py-3 leading-relaxed`}
@@ -274,15 +277,17 @@ export function ContactForm() {
             }`}
           />
           <label htmlFor={consentId} className="text-xs leading-relaxed text-nf-muted">
-            Zgadzam się na przetwarzanie moich danych w celu odpowiedzi na wiadomość.
-            Administratorem danych jest {COMPANY.legalName}. Szczegóły w{" "}
-            <Link
-              href="/polityka-prywatnosci"
-              className="text-nf-text underline underline-offset-4"
-            >
-              polityce prywatności
-            </Link>
-            .
+            {t.rich("kontakt.form.consent", {
+              legalName: COMPANY.legalName,
+              link: (chunks) => (
+                <Link
+                  href="/polityka-prywatnosci"
+                  className="text-nf-text underline underline-offset-4"
+                >
+                  {chunks}
+                </Link>
+              ),
+            })}
           </label>
         </div>
         {errors.consent && (
@@ -294,10 +299,13 @@ export function ContactForm() {
 
       {sendError && <p className={ERROR}>{sendError}</p>}
       <Button type="submit" size="lg" disabled={busy}>
-        {busy ? "Wysyłanie…" : "Wyślij wiadomość"}
+        {busy ? t("kontakt.form.sending") : t("kontakt.form.submit")}
       </Button>
       <p className="text-xs leading-relaxed text-nf-dim">
-        Odpisujemy {COMPANY.responseTime}. Możesz też napisać bezpośrednio na {COMPANY.shopEmail}.
+        {t("kontakt.form.footer", {
+          responseTime: COMPANY.responseTime,
+          email: COMPANY.shopEmail,
+        })}
       </p>
     </form>
   );

@@ -2,10 +2,11 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { CheckIcon, MinusIcon, PlusIcon } from "@/components/ui/icons";
 import type { ProCategoryInfo, Product } from "@/lib/types";
-import { cn, plural } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 interface ProInquiryFormProps {
   categories: ProCategoryInfo[];
@@ -50,20 +51,22 @@ type Errors = Partial<Record<FieldName, string>>;
 /** Kolejnosc pol w ukladzie - po nieudanym submicie fokus idzie na pierwszy blad z tej listy. */
 const ORDER: FieldName[] = ["unit", "person", "email", "consent"];
 
-function validate(v: Values): Errors {
-  const errors: Errors = {};
-  if (!v.unit.trim()) errors.unit = "Podaj nazwę jednostki lub firmy.";
-  if (!v.person.trim()) errors.person = "Podaj osobę do kontaktu.";
-  if (!v.email.trim()) errors.email = "Podaj adres e-mail.";
-  else if (!EMAIL_RE.test(v.email.trim())) errors.email = "Adres e-mail ma niepoprawny format.";
-  if (!v.consent) errors.consent = "Bez zgody nie mamy podstawy, żeby odpisać.";
-  return errors;
-}
-
 // Formularz zapytania ofertowego. Nie wysyla nic na serwer - serwis nie ma backendu -
 // wiec po zatwierdzeniu pokazuje uczciwe podsumowanie z gotowa trescia do skopiowania
 // i adresem, pod ktory mozna ja wyslac. Zadnej udawanej wysylki.
 export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
+  const t = useTranslations("pro");
+
+  const validate = (v: Values): Errors => {
+    const errors: Errors = {};
+    if (!v.unit.trim()) errors.unit = t("form.validation.unit");
+    if (!v.person.trim()) errors.person = t("form.validation.person");
+    if (!v.email.trim()) errors.email = t("form.validation.emailRequired");
+    else if (!EMAIL_RE.test(v.email.trim())) errors.email = t("form.validation.emailInvalid");
+    if (!v.consent) errors.consent = t("form.validation.consent");
+    return errors;
+  };
+
   // Wartosci pol w stanie, nie w DOM: walidacja po submicie ich potrzebuje, a powrot
   // z podsumowania nie moze kasowac tego, co ktos wpisal.
   const [values, setValues] = useState<Values>(EMPTY);
@@ -118,8 +121,8 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
     });
     setAnnouncement(
       next === 0
-        ? `${product.name}: bez wyboru`
-        : `${product.name}: ${next} ${plural(next, "sztuka", "sztuki", "sztuk")}`
+        ? t("form.qtyNone", { name: product.name })
+        : t("form.qtyAnnounce", { name: product.name, count: next })
     );
   };
 
@@ -136,20 +139,26 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
       return;
     }
 
-    const lines = chosen.map((p) => `- ${p.name} (${p.sku}), sztuk: ${items[p.slug]}`);
+    const lines = chosen.map((p) =>
+      t("form.summary.itemLine", { name: p.name, sku: p.sku, qty: items[p.slug] })
+    );
 
     setSummary(
       [
-        `Jednostka: ${values.unit.trim()}`,
-        `Osoba kontaktowa: ${values.person.trim()}`,
-        `E-mail: ${values.email.trim()}`,
-        `Telefon: ${values.phone.trim() || "nie podano"}`,
-        `Termin: ${values.deadline.trim() || "nie podano"}`,
+        t("form.summary.unit", { value: values.unit.trim() }),
+        t("form.summary.person", { value: values.person.trim() }),
+        t("form.summary.email", { value: values.email.trim() }),
+        t("form.summary.phone", {
+          value: values.phone.trim() || t("form.summary.notEntered"),
+        }),
+        t("form.summary.deadline", {
+          value: values.deadline.trim() || t("form.summary.notEntered"),
+        }),
         "",
-        "Pozycje:",
-        ...(lines.length > 0 ? lines : ["- nie wybrano pozycji z katalogu"]),
+        t("form.summary.itemsLabel"),
+        ...(lines.length > 0 ? lines : [t("form.summary.itemsNone")]),
         "",
-        `Uwagi: ${values.notes.trim() || "brak"}`,
+        t("form.summary.notes", { value: values.notes.trim() || t("form.summary.notesNone") }),
       ].join("\n")
     );
   };
@@ -166,17 +175,19 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
             className="type-h2 flex items-center gap-3 text-white"
           >
             <CheckIcon className="shrink-0 text-nf-text" />
-            Zapytanie przygotowane
+            {t("form.success.heading")}
           </h2>
           <p className="mt-4 leading-relaxed text-nf-muted">
-            Ten formularz nie wysyła wiadomości. Skopiuj treść poniżej i wyślij ją na{" "}
-            <a
-              href="mailto:pro@dogstore.pl"
-              className="text-white underline underline-offset-4 hover:text-nf-red-bright"
-            >
-              pro@dogstore.pl
-            </a>
-            . Odpowiadamy w ciągu dwóch dni roboczych.
+            {t.rich("form.success.body", {
+              email: (chunks) => (
+                <a
+                  href="mailto:pro@dogstore.pl"
+                  className="text-white underline underline-offset-4 hover:text-nf-red-bright"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
           </p>
         </div>
 
@@ -188,7 +199,7 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
           onClick={() => setSummary(null)}
           className="type-meta mt-6 inline-flex min-h-11 items-center text-nf-dim transition-colors hover:text-white"
         >
-          Wróć do formularza
+          {t("form.success.back")}
         </button>
       </div>
     );
@@ -200,11 +211,11 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
     // pola wymaganego dla czytnika ekranu.
     <form onSubmit={handleSubmit} noValidate className="grid gap-12 lg:grid-cols-12">
       <div className="lg:col-span-5">
-        <h2 className="type-h2 text-white">Dane</h2>
+        <h2 className="type-h2 text-white">{t("form.dataHeading")}</h2>
         <div className="mt-6 space-y-5">
           <div>
             <label htmlFor={unitId} className={LABEL}>
-              Jednostka lub firma
+              {t("form.unitLabel")}
             </label>
             <input
               id={unitId}
@@ -224,7 +235,7 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
           </div>
           <div>
             <label htmlFor={personId} className={LABEL}>
-              Osoba kontaktowa
+              {t("form.personLabel")}
             </label>
             <input
               id={personId}
@@ -246,7 +257,7 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
               <label htmlFor={emailId} className={LABEL}>
-                E-mail
+                {t("form.emailLabel")}
               </label>
               <input
                 id={emailId}
@@ -268,7 +279,7 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
             </div>
             <div>
               <label htmlFor={phoneId} className={LABEL}>
-                Telefon
+                {t("form.phoneLabel")}
               </label>
               <input
                 id={phoneId}
@@ -283,12 +294,12 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
           </div>
           <div>
             <label htmlFor={deadlineId} className={LABEL}>
-              Oczekiwany termin
+              {t("form.deadlineLabel")}
             </label>
             <input
               id={deadlineId}
               name="deadline"
-              placeholder="np. do końca kwartału"
+              placeholder={t("form.deadlinePlaceholder")}
               value={values.deadline}
               onChange={(e) => set("deadline", e.target.value)}
               className={cn(FIELD, LINE, BORDER_OK, "mt-2")}
@@ -296,7 +307,7 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
           </div>
           <div>
             <label htmlFor={notesId} className={LABEL}>
-              Uwagi, znakowanie, wymagania
+              {t("form.notesLabel")}
             </label>
             <textarea
               id={notesId}
@@ -311,10 +322,9 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
       </div>
 
       <div className="lg:col-span-7">
-        <h2 className="type-h2 text-white">Pozycje z katalogu</h2>
+        <h2 className="type-h2 text-white">{t("form.catalogHeading")}</h2>
         <p className="mt-2 text-sm text-nf-muted">
-          Wybierz sztuki przy pozycjach, które mają wejść do wyceny. Możesz zostawić
-          puste i opisać potrzeby w uwagach.
+          {t("form.catalogIntro")}
         </p>
 
         <div className="mt-6 space-y-8">
@@ -342,12 +352,12 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
                             bez informacji, czego dotyczy */}
                         <div
                           role="group"
-                          aria-label={`Liczba sztuk: ${product.name}`}
+                          aria-label={t("form.qtyGroup", { name: product.name })}
                           className="flex items-center rounded-[2px] border border-nf-border"
                         >
                           <button
                             type="button"
-                            aria-label={`Zmniejsz liczbę sztuk: ${product.name}`}
+                            aria-label={t("form.qtyMinus", { name: product.name })}
                             disabled={qty === 0}
                             onClick={() => setQty(product, qty - 1)}
                             className="flex h-11 w-11 items-center justify-center text-nf-dim transition-colors hover:text-white disabled:pointer-events-none disabled:opacity-40"
@@ -359,7 +369,7 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
                           </span>
                           <button
                             type="button"
-                            aria-label={`Zwiększ liczbę sztuk: ${product.name}`}
+                            aria-label={t("form.qtyPlus", { name: product.name })}
                             disabled={qty === MAX_QTY}
                             onClick={() => setQty(product, qty + 1)}
                             className="flex h-11 w-11 items-center justify-center text-nf-dim transition-colors hover:text-white disabled:pointer-events-none disabled:opacity-40"
@@ -397,15 +407,16 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
               )}
             />
             <label htmlFor={consentId} className="text-sm text-nf-muted">
-              Zgadzam się na kontakt w sprawie tego zapytania i na przetwarzanie danych
-              zgodnie z{" "}
-              <Link
-                href="/polityka-prywatnosci"
-                className="text-nf-text underline underline-offset-4 hover:text-white"
-              >
-                polityką prywatności
-              </Link>
-              .
+              {t.rich("form.consent", {
+                privacy: (chunks) => (
+                  <Link
+                    href="/polityka-prywatnosci"
+                    className="text-nf-text underline underline-offset-4 hover:text-white"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+              })}
             </label>
           </div>
           {errors.consent && (
@@ -415,12 +426,12 @@ export function ProInquiryForm({ categories, products }: ProInquiryFormProps) {
           )}
 
           <Button type="submit" size="lg" className="mt-6 w-full sm:w-auto">
-            Przygotuj zapytanie
+            {t("form.submit")}
           </Button>
           <p className="mt-3 text-xs text-nf-dim">
             {chosen.length > 0
-              ? `Wybrane pozycje: ${chosen.length}`
-              : "Nie wybrano pozycji z katalogu"}
+              ? t("form.chosenSome", { count: chosen.length })
+              : t("form.chosenNone")}
           </p>
         </div>
       </div>

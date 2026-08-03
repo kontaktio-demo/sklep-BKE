@@ -1,1 +1,133 @@
-{}
+{
+  "pro": {
+    "meta": {
+      "title": "Dog Store Pro",
+      "description": "Sprzęt służbowy dla psów pracujących. Patrol, praca węchowa, szkolenie."
+    },
+    "hero": {
+      "eyebrow": "Sprzęt służbowy",
+      "title": "Psy, które pracują pod <accent>obciążeniem</accent>",
+      "body": "Sprzęt do służby patrolowej, pracy węchowej i szkolenia. Pies służbowy obciąża obrożę inaczej niż pies rodzinny, więc taśma, okucia i przeszycia są tu dobierane pod inne wartości.",
+      "ctaCategories": "Zobacz kategorie",
+      "ctaInquiry": "Zapytanie dla jednostki"
+    },
+    "nav": {
+      "aria": "Kategorie Dog Store Pro",
+      "all": "Wszystkie"
+    },
+    "grid": {
+      "eyebrow": "Katalog",
+      "heading": "Kategorie",
+      "productCount": "{count, plural, one {# pozycja} few {# pozycje} many {# pozycji} other {# pozycji}}"
+    },
+    "standards": {
+      "eyebrow": "Standard",
+      "heading": "Sprzęt wraca<br></br>do służby",
+      "ctaPatrol": "Przejdź do patrolu",
+      "entries": {
+        "field": {
+          "label": "Test w terenie",
+          "body": "Nowa pozycja idzie najpierw do przewodników i pracuje z psami przez pełny sezon. Do sprzedaży wchodzi to, co wróciło bez pękniętego szwu i bez rozklepanego okucia."
+        },
+        "spec": {
+          "label": "Parametry",
+          "body": "Przy każdej pozycji podajemy wytrzymałość na zerwanie i wagę w gramach. Jeżeli obroża waży 168 g i puszcza przy 380 kg, to stoi w karcie, a nie za słowem wytrzymała."
+        },
+        "service": {
+          "label": "Serwis",
+          "body": "Naprawiamy szwy i wymieniamy okucia u siebie, bez odsyłania sprzętu do producenta. Obroża wraca do służby, a nie czeka w kolejce reklamacyjnej przez kwartał."
+        }
+      }
+    },
+    "categoryPage": {
+      "breadcrumbAria": "Ścieżka nawigacji",
+      "sectionLabel": "Sprzęt służbowy",
+      "metaUnavailable": "Kategoria niedostępna",
+      "emptyTitle": "Brak pozycji w tej kategorii",
+      "emptyBody": "Pozostały sprzęt z linii Dog Store Pro znajdziesz w kategoriach na pasku powyżej.",
+      "positionsHeading": "Pozycje w kategorii {title}",
+      "positionsCount": "Pozycji: {count}"
+    },
+    "card": {
+      "badgeOut": "Brak",
+      "badgeNew": "Nowość",
+      "sizes": "Rozmiary",
+      "available": "dostępny",
+      "unavailable": "brak",
+      "cta": "Karta produktu"
+    },
+    "inquiry": {
+      "meta": {
+        "title": "Zapytanie ofertowe",
+        "description": "Zapytanie ofertowe na sprzęt z linii Dog Store Pro dla jednostek, hodowli i szkół tresury. Wycena, terminy, znakowanie."
+      },
+      "breadcrumb": "Zapytanie ofertowe",
+      "heading": "Zapytanie ofertowe",
+      "intro": "Formularz dla jednostek, hodowli i szkół tresury, które zamawiają sprzęt w większej liczbie sztuk lub potrzebują znakowania. Pojedyncze pozycje z katalogu kupisz normalnie przez koszyk.",
+      "terms": {
+        "pricing": {
+          "title": "Wycena",
+          "body": "Odpowiadamy w ciągu dwóch dni roboczych. W wycenie podajemy cenę jednostkową, termin i koszt znakowania."
+        },
+        "marking": {
+          "title": "Znakowanie",
+          "body": "Naszywki jednostki, numery i panele identyfikacyjne szyjemy u siebie. Wzór ustalamy przed produkcją."
+        },
+        "leadTime": {
+          "title": "Terminy",
+          "body": "Pozycje z katalogu wysyłamy z magazynu. Zamówienia ze znakowaniem realizujemy w 10 do 15 dni roboczych."
+        },
+        "settlement": {
+          "title": "Rozliczenie",
+          "body": "Faktura z odroczonym terminem płatności dla jednostek i instytucji. Dla pozostałych przedpłata."
+        }
+      }
+    },
+    "form": {
+      "dataHeading": "Dane",
+      "unitLabel": "Jednostka lub firma",
+      "personLabel": "Osoba kontaktowa",
+      "emailLabel": "E-mail",
+      "phoneLabel": "Telefon",
+      "deadlineLabel": "Oczekiwany termin",
+      "deadlinePlaceholder": "np. do końca kwartału",
+      "notesLabel": "Uwagi, znakowanie, wymagania",
+      "catalogHeading": "Pozycje z katalogu",
+      "catalogIntro": "Wybierz sztuki przy pozycjach, które mają wejść do wyceny. Możesz zostawić puste i opisać potrzeby w uwagach.",
+      "qtyGroup": "Liczba sztuk: {name}",
+      "qtyMinus": "Zmniejsz liczbę sztuk: {name}",
+      "qtyPlus": "Zwiększ liczbę sztuk: {name}",
+      "qtyNone": "{name}: bez wyboru",
+      "qtyAnnounce": "{name}: {count, plural, one {# sztuka} few {# sztuki} many {# sztuk} other {# sztuk}}",
+      "consent": "Zgadzam się na kontakt w sprawie tego zapytania i na przetwarzanie danych zgodnie z <privacy>polityką prywatności</privacy>.",
+      "submit": "Przygotuj zapytanie",
+      "chosenSome": "Wybrane pozycje: {count}",
+      "chosenNone": "Nie wybrano pozycji z katalogu",
+      "validation": {
+        "unit": "Podaj nazwę jednostki lub firmy.",
+        "person": "Podaj osobę do kontaktu.",
+        "emailRequired": "Podaj adres e-mail.",
+        "emailInvalid": "Adres e-mail ma niepoprawny format.",
+        "consent": "Bez zgody nie mamy podstawy, żeby odpisać."
+      },
+      "success": {
+        "heading": "Zapytanie przygotowane",
+        "body": "Ten formularz nie wysyła wiadomości. Skopiuj treść poniżej i wyślij ją na <email>pro@dogstore.pl</email>. Odpowiadamy w ciągu dwóch dni roboczych.",
+        "back": "Wróć do formularza"
+      },
+      "summary": {
+        "unit": "Jednostka: {value}",
+        "person": "Osoba kontaktowa: {value}",
+        "email": "E-mail: {value}",
+        "phone": "Telefon: {value}",
+        "deadline": "Termin: {value}",
+        "notEntered": "nie podano",
+        "itemsLabel": "Pozycje:",
+        "itemLine": "- {name} ({sku}), sztuk: {qty}",
+        "itemsNone": "- nie wybrano pozycji z katalogu",
+        "notes": "Uwagi: {value}",
+        "notesNone": "brak"
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { photo } from "@/lib/photos";
 import { cn } from "@/lib/utils";
 
@@ -14,7 +15,8 @@ import { cn } from "@/lib/utils";
 const CTA_BASE =
   "inline-flex h-12 items-center rounded-[4px] px-7 text-[13px] font-semibold uppercase tracking-[0.04em] transition-colors duration-250 ease-nf motion-reduce:transition-none";
 
-export function HomeHero() {
+export async function HomeHero() {
+  const t = await getTranslations("home");
   const src = photo("hero.jpg");
 
   return (
@@ -23,7 +25,7 @@ export function HomeHero() {
         <div data-parallax="0.05" className="absolute inset-0 scale-[1.12]">
           <Image
             src={src}
-            alt="Owczarek belgijski malinois w czerwonej obroży"
+            alt={t("hero.imageAlt")}
             fill
             priority
             sizes="100vw"
@@ -39,24 +41,23 @@ export function HomeHero() {
 
       <div className="relative mx-auto w-full max-w-[1600px] px-4 pb-14 pt-40 md:px-6 lg:pb-20">
         <h1 className="type-display max-w-[14ch] text-white">
-          Sprzęt dla psów, które pracują
+          {t("hero.title")}
         </h1>
         <p className="mt-6 max-w-md text-base leading-relaxed text-white/85">
-          Obroże nylonowe i łańcuszkowe, szyte w Polsce i testowane przez
-          przewodników — zanim trafią do sprzedaży.
+          {t("hero.lead")}
         </p>
         <div className="mt-9 flex flex-wrap items-center gap-3">
           <Link
             href="/collections/collars"
             className={cn(CTA_BASE, "bg-white text-[#16161a] hover:bg-white/85")}
           >
-            Przejdź do sklepu
+            {t("hero.ctaShop")}
           </Link>
           <Link
             href="/pro"
             className={cn(CTA_BASE, "border border-white/60 text-white hover:bg-white/10")}
           >
-            Dog Store Pro
+            {t("hero.ctaPro")}
           </Link>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { PRO_BRAND, ProductPageView } from "@/components/product/ProductPageView";
 import { getProProducts, getProduct } from "@/lib/data";
@@ -20,9 +21,10 @@ export async function generateMetadata({
   const product = await getProduct(slug);
 
   if (!product || product.line !== "pro") {
+    const t = await getTranslations("product");
     return {
-      title: { absolute: `Pozycja niedostępna | ${PRO_BRAND}` },
-      description: "Ta pozycja zmieniła adres lub została wycofana z katalogu.",
+      title: { absolute: `${t("meta.proUnavailableTitle")} | ${PRO_BRAND}` },
+      description: t("meta.proUnavailableDescription"),
     };
   }
 

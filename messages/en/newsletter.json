@@ -1,1 +1,27 @@
-{}
+{
+  "newsletter": {
+    "shop": {
+      "eyebrow": "Newsletter",
+      "headingLine1": "New models reach",
+      "headingLine2": "subscribers first",
+      "note": "Confirm your subscription with the link we email you and claim a -10% welcome code. Unsubscribe in one click."
+    },
+    "pro": {
+      "eyebrow": "Dog Store Pro",
+      "headingLine1": "New entries",
+      "headingLine2": "in the Pro catalog",
+      "lead": "An email goes out when a new item enters the catalog, or when we revise the construction of an existing one. Plus test results — static load, webbing abrasion, hardware behavior after a working season.",
+      "note": "Confirm your subscription with the link we email you and claim a -10% welcome code. No promotional spam — only catalog changes and test results. Unsubscribe in one click."
+    },
+    "form": {
+      "emailPlaceholder": "you@email.com",
+      "emailAria": "Email address",
+      "cta": "Subscribe",
+      "busy": "Subscribing…",
+      "error": "We couldn't complete your subscription. Please try again."
+    },
+    "success": {
+      "body": "Check your inbox — we've sent a link to confirm your subscription. Once confirmed, you'll receive your welcome code."
+    }
+  }
+}

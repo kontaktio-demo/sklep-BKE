@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useRef } from "react";
+import { useTranslations } from "next-intl";
 import type { Product } from "@/lib/types";
 import { ProductCard } from "@/components/collection/ProductCard";
 import {
@@ -16,15 +17,17 @@ const MAX_ITEMS = 10;
 // §8-H - rzad bestsellerow z numeracja miejsc, sortowany po bestsellerRank.
 export function BestsellerRow({
   products,
-  title = "Top 10 bestsellerów",
+  title,
   id = "bestsellery",
 }: {
   products: Product[];
   title?: string;
   id?: string;
 }) {
+  const t = useTranslations("catalog");
   const sectionRef = useRef<HTMLElement>(null);
   const mounted = useLazyMount(sectionRef);
+  const heading = title ?? t("rows.bestsellers");
 
   const ranked = useMemo(
     () =>
@@ -41,7 +44,7 @@ export function BestsellerRow({
     <section ref={sectionRef} id={id} className="scroll-mt-24 space-y-3">
       <div className="mx-auto max-w-[1600px]">
         <div className="px-4 md:px-6">
-          <h2 className="type-h2 text-nf-white">{title}</h2>
+          <h2 className="type-h2 text-nf-white">{heading}</h2>
         </div>
 
         {mounted ? (
@@ -50,7 +53,7 @@ export function BestsellerRow({
               // z-0 scopes the card's hover:z-10 to this slot, so the rank chip can sit
               // above the hovered card without also painting over the row arrows
               <div key={p.id} className="relative z-0">
-                <span className="sr-only">Miejsce {i + 1}</span>
+                <span className="sr-only">{t("rows.rank", { rank: i + 1 })}</span>
                 {/* licznik miejsca w prawym gornym rogu: ProductCard trzyma plakietki
                     w lewej kolumnie, a miejsca 1-6 maja plakietke */}
                 <span
