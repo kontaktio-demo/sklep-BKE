@@ -232,6 +232,7 @@ const ORDER_STATUSES = ["pending", "paid", "packed", "shipped", "delivered", "ca
 function Orders() {
   const [rows, setRows] = useState<OrderRow[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [openId, setOpenId] = useState<string | null>(null);
   const load = useCallback(async () => {
     const r = await adminFetch<OrderRow[]>("/orders");
     setRows(r.ok ? r.data ?? [] : []);
@@ -240,6 +241,8 @@ function Orders() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  if (openId) return <OrderDetail id={openId} onBack={() => { setOpenId(null); void load(); }} />;
   const setStatus = async (id: string, status: string) => {
     await adminFetch(`/orders/${id}`, { method: "PATCH", body: JSON.stringify({ status }) });
     void load();
@@ -261,7 +264,11 @@ function Orders() {
         <tbody>
           {rows.map((o) => (
             <tr key={o.id} className="border-b border-nf-border last:border-0">
-              <Td className="font-mono text-nf-white">{o.number}</Td>
+              <Td className="font-mono text-nf-white">
+                <button type="button" onClick={() => setOpenId(o.id)} className="hover:text-nf-red-bright">
+                  {o.number}
+                </button>
+              </Td>
               <Td>{dt(o.created_at)}</Td>
               <Td>{o.email}</Td>
               <Td>{o.line === "pro" ? "Pro" : "Sklep"}</Td>
@@ -279,6 +286,130 @@ function Orders() {
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+// ---------- SZCZEGÓŁY ZAMÓWIENIA ----------
+interface OrderItemRow {
+  name: string;
+  variant_sku: string | null;
+  qty: number;
+  price_grosze: number;
+  config: Record<string, unknown> | null;
+}
+interface OrderFull {
+  number: string;
+  email: string;
+  phone: string | null;
+  status: string;
+  payment_status: string;
+  total_grosze: number;
+  shipping_grosze: number;
+  shipping_method: string | null;
+  parcel_locker: string | null;
+  shipping_address: Record<string, string> | null;
+  tracking_number: string | null;
+  shipments?: { id: string; tracking: string | null; status: string }[];
+  order_items: OrderItemRow[];
+}
+function OrderDetail({ id, onBack }: { id: string; onBack: () => void }) {
+  const [order, setOrder] = useState<OrderFull | null>(null);
+  const [msg, setMsg] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const load = useCallback(async () => {
+    const r = await adminFetch<OrderFull>(`/orders/${id}`);
+    setOrder(r.ok ? r.data ?? null : null);
+  }, [id]);
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  const createLabel = async () => {
+    setBusy(true);
+    setMsg(null);
+    const r = await adminFetch<unknown>(`/orders/${id}/label`, { method: "POST" });
+    setBusy(false);
+    setMsg(r.ok ? "Etykieta utworzona ✓" : r.error === "INPOST_NOT_CONFIGURED" ? "InPost nieskonfigurowany (uzupełnij ENV)." : `Błąd: ${r.error ?? ""}`);
+    void load();
+  };
+  const downloadLabel = async () => {
+    const res = await fetch(`/api/admin/orders/${id}/label-file`, { headers: { "x-admin-key": getKey() } });
+    if (!res.ok) {
+      setMsg("Etykieta jeszcze niegotowa.");
+      return;
+    }
+    const blob = await res.blob();
+    window.open(URL.createObjectURL(blob), "_blank");
+  };
+
+  if (!order) return <div className={CARD}>Wczytywanie…</div>;
+  const addr = order.shipping_address ?? {};
+  const hasShipment = (order.shipments?.length ?? 0) > 0;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <button type="button" onClick={onBack} className="type-label text-nf-dim hover:text-nf-white">
+          ← Zamówienia
+        </button>
+        <span className="font-mono text-nf-white">{order.number}</span>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className={`${CARD} space-y-2 text-sm`}>
+          <h3 className="type-h3 text-nf-white">Pozycje</h3>
+          {order.order_items.map((it, i) => (
+            <div key={i} className="flex justify-between text-nf-muted">
+              <span>
+                {it.name}
+                {it.variant_sku ? ` · ${it.variant_sku}` : ""} × {it.qty}
+              </span>
+              <span className="tabular-nums text-nf-text">{zl(it.price_grosze * it.qty)}</span>
+            </div>
+          ))}
+          <div className="flex justify-between border-t border-nf-border pt-2 font-semibold text-nf-white">
+            <span>Razem</span>
+            <span>{zl(order.total_grosze)}</span>
+          </div>
+        </div>
+
+        <div className={`${CARD} space-y-3 text-sm`}>
+          <h3 className="type-h3 text-nf-white">Dostawa i płatność</h3>
+          <p className="text-nf-muted">
+            {order.email}
+            {order.phone ? ` · ${order.phone}` : ""}
+          </p>
+          <p className="text-nf-muted">
+            Płatność: {order.payment_status} · Status: {order.status}
+          </p>
+          <p className="text-nf-muted">
+            {order.shipping_method === "inpost_locker"
+              ? `Paczkomat: ${order.parcel_locker ?? "—"}`
+              : order.shipping_method === "inpost_courier"
+                ? `Kurier InPost — ${addr.first_name ?? ""} ${addr.last_name ?? ""}, ${addr.street ?? ""} ${addr.building ?? ""}, ${addr.postal_code ?? ""} ${addr.city ?? ""}`
+                : order.shipping_method ?? "—"}
+          </p>
+          {order.tracking_number && <p className="text-nf-muted">Nr śledzenia: {order.tracking_number}</p>}
+
+          <div className="flex flex-wrap gap-2 pt-2">
+            <button
+              type="button"
+              onClick={createLabel}
+              disabled={busy || hasShipment}
+              className="h-9 rounded-[2px] bg-nf-red px-4 text-sm font-semibold text-white disabled:opacity-50"
+            >
+              {hasShipment ? "Etykieta utworzona" : busy ? "Tworzenie…" : "Utwórz etykietę InPost"}
+            </button>
+            {hasShipment && (
+              <button type="button" onClick={downloadLabel} className="h-9 rounded-[2px] border border-nf-control px-4 text-sm text-nf-white">
+                Pobierz etykietę PDF
+              </button>
+            )}
+          </div>
+          {msg && <p className="text-xs text-nf-muted">{msg}</p>}
+        </div>
+      </div>
     </div>
   );
 }

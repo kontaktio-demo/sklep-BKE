@@ -2,6 +2,7 @@ import "server-only";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { products as mockProducts } from "@/lib/data/products.mock";
 import { proProducts } from "@/lib/data/pro.mock";
+import { createShipment, fetchLabel, inpostConfigured } from "./inpost";
 
 /**
  * Dane dla panelu. Zapisy wymagają bazy; ODCZYTY mają fallback demo (mock),
@@ -299,6 +300,63 @@ export async function updateOrder(id: string, patch: Record<string, unknown>) {
   for (const k of allowed) if (k in patch) clean[k] = patch[k];
   const { error } = await db().from("orders").update(clean).eq("id", id);
   if (error) throw error;
+}
+
+// ---------- WYSYŁKA (InPost ShipX) ----------
+interface ShipmentEntry {
+  id: string;
+  tracking: string | null;
+  status: string;
+}
+
+export function inpostReady(): boolean {
+  return inpostConfigured();
+}
+
+/** Tworzy przesyłkę InPost dla zamówienia i zapisuje ją (shipments/shipping_ref/tracking, status=packed). */
+export async function createOrderLabel(orderId: string): Promise<{ created: number; shipments: ShipmentEntry[] }> {
+  if (!inpostConfigured()) throw new Error("INPOST_NOT_CONFIGURED");
+  const c = db();
+  const { data: o } = await c
+    .from("orders")
+    .select("id,number,email,phone,shipping_method,parcel_locker,shipping_address,shipping_ref,shipments")
+    .eq("id", orderId)
+    .maybeSingle();
+  if (!o) throw new Error("ORDER_NOT_FOUND");
+
+  const existing: ShipmentEntry[] = Array.isArray(o.shipments) ? (o.shipments as ShipmentEntry[]) : [];
+  if (existing.length) return { created: 0, shipments: existing }; // już utworzona — nie dubluj
+
+  const addr = (o.shipping_address ?? {}) as Record<string, string>;
+  const method = o.shipping_method === "inpost_courier" ? "courier" : "locker";
+  const shipment = await createShipment({
+    method,
+    reference: o.number as string,
+    lockerCode: (o.parcel_locker as string) ?? null,
+    receiver: {
+      first_name: addr.first_name ?? "",
+      last_name: addr.last_name ?? "",
+      email: o.email as string,
+      phone: (o.phone as string) ?? null,
+      address: { street: addr.street, building_number: addr.building, city: addr.city, post_code: addr.postal_code },
+    },
+  });
+  const next: ShipmentEntry[] = [{ id: shipment.id, tracking: shipment.tracking_number, status: shipment.status }];
+  await c
+    .from("orders")
+    .update({ shipments: next, shipping_ref: shipment.id, tracking_number: shipment.tracking_number, status: "packed" })
+    .eq("id", orderId);
+  return { created: 1, shipments: next };
+}
+
+/** Pobiera etykietę PDF przesyłki zamówienia. */
+export async function getOrderLabelPdf(orderId: string): Promise<Buffer | null> {
+  const c = db();
+  const { data: o } = await c.from("orders").select("shipping_ref,shipments").eq("id", orderId).maybeSingle();
+  const list: ShipmentEntry[] = Array.isArray(o?.shipments) ? (o!.shipments as ShipmentEntry[]) : [];
+  const sid = list[0]?.id ?? (o?.shipping_ref as string) ?? "";
+  if (!sid) return null;
+  return fetchLabel(String(sid));
 }
 
 // ---------- USTAWIENIA ----------
