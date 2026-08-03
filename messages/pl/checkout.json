@@ -62,6 +62,23 @@
       "ADDRESS_REQUIRED": "Uzupełnij adres dostawy.",
       "LOCKER_REQUIRED": "Wybierz paczkomat.",
       "generic": "Nie udało się złożyć zamówienia. Spróbuj ponownie."
+    },
+    "payment": {
+      "title": "Płatność",
+      "orderNumber": "Zamówienie {number}",
+      "noActive": "Brak aktywnej płatności.",
+      "backToCart": "Wróć do koszyka",
+      "notConfigured": "Płatności online nie są jeszcze skonfigurowane. Zamówienie zostało zapisane — dokończymy płatność po podpięciu Stripe. Skontaktujemy się mailowo.",
+      "next": "Dalej",
+      "failed": "Płatność nie powiodła się.",
+      "pay": "Zapłać"
+    },
+    "thankYou": {
+      "title": "Dziękujemy za zamówienie",
+      "orderLabel": "Numer zamówienia:",
+      "body": "Potwierdzenie trafi na Twój adres e-mail. Zamówienie jest już w realizacji — poinformujemy o nadaniu przesyłki.",
+      "backToShop": "Wróć do sklepu",
+      "myOrders": "Moje zamówienia"
     }
   }
 }

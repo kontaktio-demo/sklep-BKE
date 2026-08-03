@@ -82,6 +82,7 @@ export function QuickViewProvider({ children }: { children: React.ReactNode }) {
 function QuickViewContent({ product, onClose }: { product: Product; onClose: () => void }) {
   const t = useTranslations("catalog");
   const tc = useTranslations("common");
+  const tp = useTranslations("product");
   const { addLine, openCart } = useCart();
   const [imageIndex, setImageIndex] = useState(0);
   const [selectedColor, setSelectedColor] = useState<ProductColor | undefined>(product.colors[0]);
@@ -238,7 +239,17 @@ function QuickViewContent({ product, onClose }: { product: Product; onClose: () 
                   : t("quickView.sizeUnavailable", { size: SIZE_SHORT[variant.size] })}
               </Button>
               <Button
-                href={availabilityMailHref(product, variant, selectedColor)}
+                href={availabilityMailHref(product, variant, selectedColor, {
+                  subject: tp("availability.mailSubject", { name: product.name, sku: variant.sku }),
+                  greeting: tp("availability.mailGreeting"),
+                  request: tp("availability.mailBody", {
+                    name: product.name,
+                    size: SIZE_SHORT[variant.size],
+                    neck: variant.neck,
+                    sku: variant.sku,
+                  }),
+                  colorLine: selectedColor ? tp("availability.mailColor", { color: selectedColor.name }) : "",
+                })}
                 variant="ghost"
                 size="md"
                 className="h-11 w-full"

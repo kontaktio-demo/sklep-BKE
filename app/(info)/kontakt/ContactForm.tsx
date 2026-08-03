@@ -49,6 +49,7 @@ const ORDER: FieldName[] = ["name", "email", "message", "consent"];
 
 export function ContactForm() {
   const t = useTranslations("infoPages");
+  const tc = useTranslations("common");
 
   // etykiety tematow z jednego zrodla (SUBJECT_KEYS): sam wybor idzie do backendu jako tekst,
   // a lista rozwijana i wartosc poczatkowa czytaja to samo
@@ -142,7 +143,7 @@ export function ContactForm() {
           </h3>
           <p className="mt-3 text-sm leading-relaxed text-nf-muted">
             {t("kontakt.form.sent.body", {
-              responseTime: COMPANY.responseTime,
+              responseTime: tc("company.responseTime"),
               email: values.email.trim(),
               phone: COMPANY.phone,
             })}
@@ -303,7 +304,7 @@ export function ContactForm() {
       </Button>
       <p className="text-xs leading-relaxed text-nf-dim">
         {t("kontakt.form.footer", {
-          responseTime: COMPANY.responseTime,
+          responseTime: tc("company.responseTime"),
           email: COMPANY.shopEmail,
         })}
       </p>

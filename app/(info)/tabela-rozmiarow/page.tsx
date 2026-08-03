@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { SIZE_NAME, SIZE_NECK, SIZE_ORDER, SIZE_WEIGHT } from "@/lib/sizes";
+import { SIZE_NECK, SIZE_ORDER, SIZE_WEIGHT } from "@/lib/sizes";
 import type { CollarSize } from "@/lib/types";
 import { Bullets, InfoHeader, InfoLink, Note, P, Section, Steps } from "../_ui";
 
@@ -20,6 +20,7 @@ const TD = "px-4 py-3 text-sm text-nf-text";
 
 export default async function SizingPage() {
   const t = await getTranslations("infoPages");
+  const tc = await getTranslations("common");
 
   // Zakresy ida z lib/sizes (tego samego slownika, co karta produktu i filtry). Wczesniej
   // ta strona trzymala wlasna kopie i podawala inna wage psa: pies 18 kg byl tu "Maly",
@@ -31,9 +32,9 @@ export default async function SizingPage() {
   };
 
   const sizes = SIZE_ORDER.map((size) => ({
-    name: SIZE_NAME[size],
+    name: tc(`size.${size}`),
     neck: SIZE_NECK[size],
-    weight: SIZE_WEIGHT[size],
+    weight: size === "large" ? tc("size.weightLarge") : SIZE_WEIGHT[size],
     dogs: dogs[size],
   }));
 

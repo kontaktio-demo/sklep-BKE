@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/Badge";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
 import { PriceTag } from "@/components/ui/PriceTag";
 import { productHref } from "@/lib/routes";
-import { SIZE_NAME, SIZE_SHORT } from "@/lib/sizes";
+import { SIZE_SHORT } from "@/lib/sizes";
 import type { Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -50,6 +50,7 @@ export function ProductCard({
 }) {
   const { openQuickView } = useQuickView();
   const t = useTranslations("catalog");
+  const tc = useTranslations("common");
 
   // Druga warstwa zdjecia montuje sie DOPIERO, gdy kursor wejdzie na TE karte (albo gdy
   // karta dostanie fokus z klawiatury). Wczesniej wystarczylo, ze urzadzenie ma kursor,
@@ -172,7 +173,7 @@ export function ProductCard({
               >
                 <span aria-hidden="true">{SIZE_SHORT[variant.size]}</span>
                 <span className="sr-only">
-                  {SIZE_NAME[variant.size]}:{" "}
+                  {tc(`size.${variant.size}`)}:{" "}
                   {variant.inStock ? t("card.sizeAvailable") : t("card.sizeUnavailable")}
                 </span>
               </li>

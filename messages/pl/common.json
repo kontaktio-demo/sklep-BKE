@@ -21,6 +21,7 @@
     "menu": "Menu",
     "openMenu": "Otwórz menu",
     "close": "Zamknij",
+    "home": "Strona główna",
     "mainNav": "Nawigacja główna",
     "openCart": "Otwórz koszyk",
     "openCartCount": "Otwórz koszyk, {count} szt.",
@@ -32,6 +33,23 @@
     "send": "Wyślij",
     "save": "Zapisz",
     "currency": "zł"
+  },
+  "size": {
+    "small": "Mały",
+    "medium": "Średni",
+    "large": "Duży",
+    "weightLarge": "30 kg i więcej"
+  },
+  "company": {
+    "officeHours": "poniedziałek – piątek, 9:00–17:00",
+    "responseTime": "do 24 godzin w dni robocze",
+    "country": "Polska",
+    "returnsRecipient": "Dog Store sp. z o.o. — zwroty"
+  },
+  "shipping": {
+    "locker": "Paczkomat InPost",
+    "courier": "Kurier InPost",
+    "time": "1–2 dni robocze"
   },
   "trust": {
     "warranty": "2 lata gwarancji",

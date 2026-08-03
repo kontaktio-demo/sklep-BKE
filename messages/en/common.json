@@ -21,6 +21,7 @@
     "menu": "Menu",
     "openMenu": "Open menu",
     "close": "Close",
+    "home": "Home",
     "mainNav": "Main navigation",
     "openCart": "Open cart",
     "openCartCount": "Open cart, {count} item(s)",
@@ -32,6 +33,23 @@
     "send": "Send",
     "save": "Save",
     "currency": "zł"
+  },
+  "size": {
+    "small": "Small",
+    "medium": "Medium",
+    "large": "Large",
+    "weightLarge": "30 kg and over"
+  },
+  "company": {
+    "officeHours": "Monday–Friday, 9:00–17:00",
+    "responseTime": "within 24 hours on business days",
+    "country": "Poland",
+    "returnsRecipient": "Dog Store sp. z o.o. — returns"
+  },
+  "shipping": {
+    "locker": "InPost Parcel Locker",
+    "courier": "InPost Courier",
+    "time": "1–2 business days"
   },
   "trust": {
     "warranty": "2-year warranty",

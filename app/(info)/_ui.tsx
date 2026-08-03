@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { getTranslations } from "next-intl/server";
 import { Breadcrumbs } from "@/components/product/Breadcrumbs";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +18,7 @@ import { cn } from "@/lib/utils";
 export const INFO_LINK =
   "text-nf-text underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none";
 
-export function InfoHeader({
+export async function InfoHeader({
   title,
   lead,
   updated,
@@ -26,9 +27,10 @@ export function InfoHeader({
   lead?: string;
   updated?: string;
 }) {
+  const t = await getTranslations("common");
   return (
     <header className="border-b border-nf-border pb-8">
-      <Breadcrumbs items={[{ label: "Strona główna", href: "/" }, { label: title }]} />
+      <Breadcrumbs items={[{ label: t("home"), href: "/" }, { label: title }]} />
 
       <h1 className="type-h1 mt-6 text-nf-white">{title}</h1>
 

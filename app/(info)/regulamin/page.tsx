@@ -16,6 +16,7 @@ const ADDRESS = `${COMPANY.street}, ${COMPANY.postalCode} ${COMPANY.city}`;
 
 export default async function TermsPage() {
   const t = await getTranslations("infoLegal.regulamin");
+  const tc = await getTranslations("common");
 
   return (
     <>
@@ -29,7 +30,7 @@ export default async function TermsPage() {
         <Facts
           rows={[
             { label: t("seller.labelSeller"), value: COMPANY.legalName },
-            { label: t("seller.labelOffice"), value: `${ADDRESS}, ${COMPANY.country}` },
+            { label: t("seller.labelOffice"), value: `${ADDRESS}, ${tc("company.country")}` },
             { label: t("seller.labelNip"), value: COMPANY.nip },
             { label: t("seller.labelRegon"), value: COMPANY.regon },
             { label: t("seller.labelKrs"), value: `${COMPANY.krs}, ${COMPANY.court}` },

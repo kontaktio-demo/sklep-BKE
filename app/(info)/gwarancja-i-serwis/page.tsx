@@ -27,6 +27,7 @@ const TD = "px-4 py-3 text-sm text-nf-text";
 
 export default async function WarrantyPage() {
   const t = await getTranslations("infoLegal.gwarancja");
+  const tc = await getTranslations("common");
 
   return (
     <>
@@ -112,7 +113,7 @@ export default async function WarrantyPage() {
               label: t("serwis.labelAddress"),
               value: (
                 <>
-                  {COMPANY.returnsRecipient}
+                  {tc("company.returnsRecipient")}
                   <br />
                   {`${COMPANY.street}, ${COMPANY.postalCode} ${COMPANY.city}`}
                 </>

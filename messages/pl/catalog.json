@@ -86,6 +86,42 @@
       "shopSection": "Sklep",
       "allCollars": "Wszystkie obroże",
       "resultCount": "{count, plural, one {# wynik} few {# wyniki} many {# wyników} other {# wyników}}"
+    },
+    "sort": {
+      "featured": "Polecane",
+      "best-selling": "Bestsellery",
+      "az": "Nazwa: A-Z",
+      "za": "Nazwa: Z-A",
+      "price-asc": "Cena: rosnąco",
+      "price-desc": "Cena: malejąco",
+      "date-desc": "Najnowsze",
+      "date-asc": "Najstarsze"
+    },
+    "popular": {
+      "workingCollar": "Obroża robocza",
+      "idPanel": "Panel ID",
+      "chain": "Łańcuszkowa",
+      "eCollar": "E-obroża",
+      "handle": "Uchwyt"
+    },
+    "filterGroups": {
+      "category": "Kategoria",
+      "type": "Rodzaj",
+      "width": "Szerokość",
+      "size": "Rozmiar",
+      "idPanel": "Panel ID",
+      "availability": "Dostępność",
+      "color": "Kolor"
+    },
+    "filterOpts": {
+      "working": "Robocze",
+      "non-working": "Codzienne",
+      "e-collar": "Kompatybilne z e-obrożą",
+      "nylon": "Nylonowe",
+      "chain": "Łańcuszkowe",
+      "panel-true": "Z miejscem na panel ID",
+      "in-stock": "Dostępne",
+      "out-of-stock": "Wyprzedane"
     }
   }
 }

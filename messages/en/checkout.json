@@ -62,6 +62,23 @@
       "ADDRESS_REQUIRED": "Please complete your delivery address.",
       "LOCKER_REQUIRED": "Please select a parcel locker.",
       "generic": "We couldn't place your order. Please try again."
+    },
+    "payment": {
+      "title": "Payment",
+      "orderNumber": "Order {number}",
+      "noActive": "No active payment.",
+      "backToCart": "Back to cart",
+      "notConfigured": "Online payments aren't configured yet. Your order has been saved — we'll complete the payment once Stripe is connected. We'll be in touch by email.",
+      "next": "Continue",
+      "failed": "Payment failed.",
+      "pay": "Pay"
+    },
+    "thankYou": {
+      "title": "Thank you for your order",
+      "orderLabel": "Order number:",
+      "body": "A confirmation will be sent to your email. Your order is already being processed — we'll let you know when it ships.",
+      "backToShop": "Back to the shop",
+      "myOrders": "My orders"
     }
   }
 }

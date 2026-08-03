@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useCart } from "@/lib/cart";
 import { Button } from "@/components/ui/Button";
 
 export function ThankYou() {
+  const t = useTranslations("checkout");
   const { clearCart } = useCart();
   const [order, setOrder] = useState<string | null>(null);
 
@@ -22,19 +24,19 @@ export function ThankYou() {
   return (
     <div className="mx-auto max-w-xl px-4 py-20 text-center">
       <span aria-hidden="true" className="mx-auto block h-0.5 w-14 bg-nf-red" />
-      <h1 className="type-h1 mt-6 text-nf-white">Dziękujemy za zamówienie</h1>
+      <h1 className="type-h1 mt-6 text-nf-white">{t("thankYou.title")}</h1>
       {order && (
         <p className="mt-3 text-nf-muted">
-          Numer zamówienia: <span className="font-mono text-nf-text">{order}</span>
+          {t("thankYou.orderLabel")} <span className="font-mono text-nf-text">{order}</span>
         </p>
       )}
       <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-nf-muted">
-        Potwierdzenie trafi na Twój adres e-mail. Zamówienie jest już w realizacji — poinformujemy o nadaniu przesyłki.
+        {t("thankYou.body")}
       </p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
-        <Button href="/collections/collars">Wróć do sklepu</Button>
+        <Button href="/collections/collars">{t("thankYou.backToShop")}</Button>
         <Button href="/konto/zamowienia" variant="ghost">
-          Moje zamówienia
+          {t("thankYou.myOrders")}
         </Button>
       </div>
     </div>

@@ -17,6 +17,7 @@ const ADDRESS = `${COMPANY.street}, ${COMPANY.postalCode} ${COMPANY.city}`;
 
 export default async function ContactPage() {
   const t = await getTranslations("infoPages");
+  const tc = await getTranslations("common");
 
   return (
     <>
@@ -38,8 +39,8 @@ export default async function ContactPage() {
                 </a>
               ),
             },
-            { label: t("kontakt.shop.hoursLabel"), value: COMPANY.officeHours },
-            { label: t("kontakt.shop.responseLabel"), value: COMPANY.responseTime },
+            { label: t("kontakt.shop.hoursLabel"), value: tc("company.officeHours") },
+            { label: t("kontakt.shop.responseLabel"), value: tc("company.responseTime") },
           ]}
         />
       </Section>
@@ -64,7 +65,7 @@ export default async function ContactPage() {
               label: t("kontakt.returns.addressLabel"),
               value: (
                 <>
-                  {COMPANY.returnsRecipient}
+                  {tc("company.returnsRecipient")}
                   <br />
                   {ADDRESS}
                 </>
@@ -79,7 +80,7 @@ export default async function ContactPage() {
         <Facts
           rows={[
             { label: t("kontakt.company.nameLabel"), value: COMPANY.legalName },
-            { label: t("kontakt.company.addressLabel"), value: `${ADDRESS}, ${COMPANY.country}` },
+            { label: t("kontakt.company.addressLabel"), value: `${ADDRESS}, ${tc("company.country")}` },
             { label: t("kontakt.company.nipLabel"), value: COMPANY.nip },
             { label: t("kontakt.company.regonLabel"), value: COMPANY.regon },
             { label: t("kontakt.company.krsLabel"), value: COMPANY.krs },

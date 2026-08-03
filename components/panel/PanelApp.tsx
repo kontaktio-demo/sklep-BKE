@@ -55,7 +55,7 @@ export function PanelApp() {
   const [booted, setBooted] = useState(false);
   const [pushMsg, setPushMsg] = useState<string | null>(null);
   const [needKey, setNeedKey] = useState(false);
-  const [access, setAccess] = useState<"ok" | "demo" | null>(null);
+  const [, setAccess] = useState<"ok" | "demo" | null>(null);
   const [hasDb, setHasDb] = useState(false);
   const [keyInput, setKeyInput] = useState("");
   const [tab, setTab] = useState<Tab>("pulpit");

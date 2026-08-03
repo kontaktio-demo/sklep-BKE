@@ -16,6 +16,7 @@ const ADDRESS = `${COMPANY.street}, ${COMPANY.postalCode} ${COMPANY.city}`;
 
 export default async function PrivacyPage() {
   const t = await getTranslations("infoLegal.polityka");
+  const tc = await getTranslations("common");
 
   return (
     <>
@@ -29,7 +30,7 @@ export default async function PrivacyPage() {
         <Facts
           rows={[
             { label: t("admin.labelAdmin"), value: COMPANY.legalName },
-            { label: t("admin.labelAddress"), value: `${ADDRESS}, ${COMPANY.country}` },
+            { label: t("admin.labelAddress"), value: `${ADDRESS}, ${tc("company.country")}` },
             { label: t("admin.labelNip"), value: COMPANY.nip },
             { label: t("admin.labelContact"), value: <Mail address={COMPANY.privacyEmail} /> },
           ]}

@@ -16,6 +16,7 @@ const ADDRESS = `${COMPANY.street}, ${COMPANY.postalCode} ${COMPANY.city}`;
 
 export default async function ReturnsPage() {
   const t = await getTranslations("infoLegal.zwroty");
+  const tc = await getTranslations("common");
 
   return (
     <>
@@ -52,7 +53,7 @@ export default async function ReturnsPage() {
               label: t("howto.labelAddress"),
               value: (
                 <>
-                  {COMPANY.returnsRecipient}
+                  {tc("company.returnsRecipient")}
                   <br />
                   {ADDRESS}
                 </>

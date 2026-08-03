@@ -37,6 +37,7 @@ const PANEL_HEADING = "type-label";
 function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) {
   const t = SHELL[theme];
   const tc = useTranslations("common");
+  const tcat = useTranslations("catalog");
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const inputId = useId();
@@ -87,16 +88,16 @@ function SearchPanel({ theme, onClose }: { theme: Theme; onClose: () => void }) 
         <h3 className={cn(PANEL_HEADING, t.meta)}>{tc("popularSearches")}</h3>
         <ul className="mt-2 flex flex-wrap gap-2">
           {POPULAR_SEARCHES.map((term) => (
-            <li key={term}>
+            <li key={term.key}>
               <Link
-                href={searchHref(term)}
+                href={searchHref(term.query)}
                 onClick={onClose}
                 className={cn(
                   "inline-flex h-11 items-center rounded-[2px] border px-3 text-sm transition-colors duration-250 ease-nf",
                   t.chip
                 )}
               >
-                {term}
+                {tcat(`popular.${term.key}`)}
               </Link>
             </li>
           ))}

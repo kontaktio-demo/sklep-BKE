@@ -26,6 +26,7 @@ const TD = "px-4 py-3 text-sm text-nf-text";
 
 export default async function ShippingPage() {
   const t = await getTranslations("infoPages");
+  const tc = await getTranslations("common");
 
   return (
     <>
@@ -65,10 +66,10 @@ export default async function ShippingPage() {
               {SHIPPING_OPTIONS.map((option) => (
                 <tr key={option.carrier} className="border-b border-nf-border last:border-b-0">
                   <th scope="row" className={`${TD} font-medium`}>
-                    {option.carrier}
+                    {option.carrier.includes("Paczkomat") ? tc("shipping.locker") : tc("shipping.courier")}
                   </th>
                   <td className={TD}>{formatPrice(option.price)}</td>
-                  <td className={TD}>{option.time}</td>
+                  <td className={TD}>{tc("shipping.time")}</td>
                   <td className={TD}>
                     {option.freeAboveThreshold ? (
                       <span className="text-nf-white">{t("dostawa.table.free")}</span>

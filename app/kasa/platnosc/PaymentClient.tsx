@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { loadStripe, type Stripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { Button } from "@/components/ui/Button";
@@ -27,6 +28,8 @@ interface Pending {
 
 export function PaymentClient() {
   const router = useRouter();
+  const t = useTranslations("checkout");
+  const locale = useLocale();
   const [pending, setPending] = useState<Pending | null>(null);
   const [ready, setReady] = useState(false);
 
@@ -45,9 +48,9 @@ export function PaymentClient() {
   if (!pending) {
     return (
       <Wrap>
-        <p className="text-nf-muted">Brak aktywnej płatności.</p>
+        <p className="text-nf-muted">{t("payment.noActive")}</p>
         <Button href="/koszyk" className="mt-4">
-          Wróć do koszyka
+          {t("payment.backToCart")}
         </Button>
       </Wrap>
     );
@@ -57,11 +60,8 @@ export function PaymentClient() {
   if (!stripe) {
     return (
       <Wrap>
-        <h1 className="type-h2 text-nf-white">Zamówienie {pending.number}</h1>
-        <p className="mt-3 text-nf-muted">
-          Płatności online nie są jeszcze skonfigurowane. Zamówienie zostało zapisane — dokończymy
-          płatność po podpięciu Stripe. Skontaktujemy się mailowo.
-        </p>
+        <h1 className="type-h2 text-nf-white">{t("payment.orderNumber", { number: pending.number })}</h1>
+        <p className="mt-3 text-nf-muted">{t("payment.notConfigured")}</p>
         <Button
           className="mt-6"
           onClick={() => {
@@ -69,7 +69,7 @@ export function PaymentClient() {
             router.push(`/kasa/dziekujemy?order=${encodeURIComponent(pending.number)}`);
           }}
         >
-          Dalej
+          {t("payment.next")}
         </Button>
       </Wrap>
     );
@@ -77,10 +77,14 @@ export function PaymentClient() {
 
   return (
     <Wrap>
-      <h1 className="type-h2 text-nf-white">Płatność</h1>
-      <p className="mt-1 text-sm text-nf-muted">Zamówienie {pending.number}</p>
+      <h1 className="type-h2 text-nf-white">{t("payment.title")}</h1>
+      <p className="mt-1 text-sm text-nf-muted">{t("payment.orderNumber", { number: pending.number })}</p>
       <div className="mt-6">
-        <Elements stripe={stripe} options={{ clientSecret: pending.clientSecret, locale: "pl" }}>
+        {/* Stripe PaymentElement w języku klienta (pl/en) */}
+        <Elements
+          stripe={stripe}
+          options={{ clientSecret: pending.clientSecret, locale: locale === "en" ? "en" : "pl" }}
+        >
           <PayInner number={pending.number} />
         </Elements>
       </div>
@@ -89,6 +93,7 @@ export function PaymentClient() {
 }
 
 function PayInner({ number }: { number: string }) {
+  const t = useTranslations("checkout");
   const stripe = useStripe();
   const elements = useElements();
   const [busy, setBusy] = useState(false);
@@ -103,7 +108,7 @@ function PayInner({ number }: { number: string }) {
       confirmParams: { return_url: `${window.location.origin}/kasa/dziekujemy?order=${encodeURIComponent(number)}` },
     });
     if (err) {
-      setError(err.message ?? "Płatność nie powiodła się.");
+      setError(err.message ?? t("payment.failed"));
       setBusy(false);
     }
   };
@@ -113,7 +118,7 @@ function PayInner({ number }: { number: string }) {
       <PaymentElement />
       {error && <p className="mt-3 text-sm text-nf-red-bright">{error}</p>}
       <Button className="mt-6 w-full" onClick={pay} disabled={busy}>
-        {busy ? "Przetwarzanie…" : "Zapłać"}
+        {busy ? t("submit.processing") : t("payment.pay")}
       </Button>
     </div>
   );

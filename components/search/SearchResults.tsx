@@ -24,6 +24,7 @@ const CHIP =
 
 function PopularSearches({ className }: { className?: string }) {
   const tc = useTranslations("common");
+  const tcat = useTranslations("catalog");
   return (
     <div className={className}>
       {/* /szukaj to trasa sklepu cywilnego (takze sekcja z wynikami z linii Pro na niej lezy),
@@ -31,9 +32,9 @@ function PopularSearches({ className }: { className?: string }) {
       <h2 className="type-label text-nf-dim">{tc("popularSearches")}</h2>
       <ul className="mt-3 flex flex-wrap justify-center gap-2">
         {POPULAR_SEARCHES.map((term) => (
-          <li key={term}>
-            <Link href={searchHref(term)} className={CHIP}>
-              {term}
+          <li key={term.key}>
+            <Link href={searchHref(term.query)} className={CHIP}>
+              {tcat(`popular.${term.key}`)}
             </Link>
           </li>
         ))}

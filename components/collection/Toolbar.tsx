@@ -63,7 +63,7 @@ export function Toolbar({
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label}
+                {t(`sort.${o.value}`)}
               </option>
             ))}
           </select>

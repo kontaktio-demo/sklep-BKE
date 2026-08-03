@@ -3,7 +3,7 @@
 import { useId } from "react";
 import { useTranslations } from "next-intl";
 import { COMPANY } from "@/lib/nav";
-import { SIZE_NAME, SIZE_SHORT } from "@/lib/sizes";
+import { SIZE_SHORT } from "@/lib/sizes";
 import type { Product, ProductColor, ProductVariant } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -81,6 +81,7 @@ export function VariantPicker({
   // (karta produktu i szybki podglad) nie moga sie o nia bic
   const name = useId();
   const t = useTranslations("product");
+  const tc = useTranslations("common");
 
   return (
     <fieldset className={cn("min-w-0", className)}>
@@ -149,7 +150,7 @@ export function VariantPicker({
               </span>
               {/* czytnik ekranu dostaje pelna nazwe rozmiaru i stan - samo "S" i kreska nie wystarcza */}
               <span className="sr-only">
-                {SIZE_NAME[variant.size]}
+                {tc(`size.${variant.size}`)}
                 {variant.inStock ? "" : t("variant.srUnavailable")}
               </span>
             </label>

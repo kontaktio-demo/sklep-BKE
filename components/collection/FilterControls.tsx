@@ -7,7 +7,9 @@ import type { FilterState } from "@/lib/filtering";
 import { ColorSwatch } from "@/components/ui/ColorSwatch";
 import { RangeSlider } from "@/components/ui/RangeSlider";
 import { CheckIcon, ChevronDownIcon } from "@/components/ui/icons";
+import { SIZE_NECK } from "@/lib/sizes";
 import { cn, formatPrice } from "@/lib/utils";
+import type { CollarSize } from "@/lib/types";
 
 // §8-F fixed order; "price" has no FilterGroup and is rendered from bounds
 const GROUP_ORDER = [
@@ -387,7 +389,22 @@ function ColorGrid({
 
 export function FilterControls({ groups, state, onChange, bounds, colorHexes }: FilterControlsProps) {
   const t = useTranslations("catalog");
+  const tc = useTranslations("common");
   const price = state.price ?? bounds;
+
+  // Lokalizacja etykiet filtrow bez ruszania struktury: budujemy kopie grup z etykietami
+  // ze slownika. Szerokosc (miara) i kolory (dane produktu) zostaja bez zmian.
+  const optLabel = (id: string, value: string, fallback: string): string => {
+    if (id === "width" || id === "color") return fallback;
+    if (id === "size") return `${tc(`size.${value}`)} (${SIZE_NECK[value as CollarSize]})`;
+    if (id === "idPanel") return t("filterOpts.panel-true");
+    return t(`filterOpts.${value}`);
+  };
+  const localizedGroups: FilterGroup[] = groups.map((g) => ({
+    ...g,
+    label: t(`filterGroups.${g.id}`),
+    options: g.options.map((o) => ({ ...o, label: optLabel(g.id, o.value, o.label) })),
+  }));
 
   const toggleArray = (key: ArrayKey, value: string) => {
     const current = state[key];
@@ -427,7 +444,7 @@ export function FilterControls({ groups, state, onChange, bounds, colorHexes }: 
           );
         }
 
-        const group = groups.find((g) => g.id === id);
+        const group = localizedGroups.find((g) => g.id === id);
         if (!group) return null;
 
         if (id === "idPanel") {

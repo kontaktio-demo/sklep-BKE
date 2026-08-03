@@ -3,7 +3,7 @@ import { SectionNav } from "@/components/product/SectionNav";
 import { CheckIcon } from "@/components/ui/icons";
 import { getProductFaq } from "@/lib/data/faq";
 import { FREE_SHIPPING_THRESHOLD } from "@/lib/nav";
-import { SIZE_NAME, SIZE_NECK, SIZE_ORDER, SIZE_SHORT, SIZE_WEIGHT } from "@/lib/sizes";
+import { SIZE_NECK, SIZE_ORDER, SIZE_SHORT, SIZE_WEIGHT } from "@/lib/sizes";
 import type { Product } from "@/lib/types";
 import { cn, formatPrice } from "@/lib/utils";
 
@@ -21,6 +21,7 @@ const MODULE_FIT: { widthKey: string; fits: boolean }[] = [
 
 export function ProductSections({ product }: { product: Product }) {
   const t = useTranslations("product");
+  const tc = useTranslations("common");
   // pas pod modul e-obrozy: jedyna karta, na ktorej tabela zgodnosci cokolwiek znaczy.
   // Sekcja Pro trzyma te sama kategorie (lib/data/pro.mock), wiec drugi warunek jest zabezpieczeniem
   // na wypadek rozejscia sie obu slownikow
@@ -153,7 +154,7 @@ export function ProductSections({ product }: { product: Product }) {
                           offered ? "border-l-2 border-nf-red text-nf-white" : "text-nf-muted"
                         )}
                       >
-                        {SIZE_NAME[size]}
+                        {tc(`size.${size}`)}
                         <span className={cn(META, "ml-2 text-nf-dim")}>{SIZE_SHORT[size]}</span>
                         {variant && !variant.inStock && (
                           <span className="mt-1 block text-xs font-normal text-nf-muted">
@@ -168,7 +169,7 @@ export function ProductSections({ product }: { product: Product }) {
                         {variant?.neck ?? SIZE_NECK[size]}
                       </td>
                       <td className={cn(CELL, offered ? "text-nf-white" : "text-nf-muted")}>
-                        {SIZE_WEIGHT[size]}
+                        {size === "large" ? tc("size.weightLarge") : SIZE_WEIGHT[size]}
                       </td>
                       <td className={cn(CELL, offered ? "text-nf-white" : "text-nf-dim")}>
                         {variant ? `${variant.weightGrams} g` : t("sections.sizes.notOffered")}

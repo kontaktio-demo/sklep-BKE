@@ -5,13 +5,17 @@ import type { CollarCategory, CollarType, ProCategory, Product } from "./types";
 // wyjscie, wiec wynik liczy sie na serwerze (/szukaj) i nie wymaga zadnego stanu.
 // Dopasowanie idzie po nazwie, tagline, SKU, kategorii, kolorach i wartosciach specyfikacji.
 
-/** Popularne frazy: jedno zrodlo dla panelu w naglowku i dla pustego wyniku na /szukaj. */
+/**
+ * Popularne frazy: jedno zrodlo dla panelu w naglowku i dla pustego wyniku na /szukaj.
+ * `query` zostaje po polsku (wyszukiwarka dopasowuje polskie dane produktow), a etykieta
+ * jest tlumaczona przez klucz `key` (catalog.popular.<key>).
+ */
 export const POPULAR_SEARCHES = [
-  "Obroża robocza",
-  "Panel ID",
-  "Łańcuszkowa",
-  "E-obroża",
-  "Uchwyt",
+  { key: "workingCollar", query: "Obroża robocza" },
+  { key: "idPanel", query: "Panel ID" },
+  { key: "chain", query: "Łańcuszkowa" },
+  { key: "eCollar", query: "E-obroża" },
+  { key: "handle", query: "Uchwyt" },
 ] as const;
 
 /** Adres wynikow. Fraza idzie do query, nigdy do sciezki. */

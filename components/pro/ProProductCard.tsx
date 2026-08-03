@@ -5,7 +5,7 @@ import { Fragment } from "react";
 import { Button } from "@/components/ui/Button";
 import { PriceTag } from "@/components/ui/PriceTag";
 import { productHref } from "@/lib/routes";
-import { SIZE_NAME, SIZE_SHORT } from "@/lib/sizes";
+import { SIZE_SHORT } from "@/lib/sizes";
 import type { Product, ProductSpec } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -50,6 +50,7 @@ export function ProProductCard({
   className?: string;
 }) {
   const t = useTranslations("pro");
+  const tc = useTranslations("common");
   const specs = catalogSpecs(product.specs);
   const isNew = product.badges.includes("new");
   const href = productHref(product);
@@ -159,7 +160,7 @@ export function ProProductCard({
                     {SIZE_SHORT[variant.size]} ({variant.neck})
                   </span>
                   <span className="sr-only">
-                    {SIZE_NAME[variant.size]}, {variant.neck}:{" "}
+                    {tc(`size.${variant.size}`)}, {variant.neck}:{" "}
                     {variant.inStock ? t("card.available") : t("card.unavailable")}.{" "}
                   </span>
                 </Fragment>
