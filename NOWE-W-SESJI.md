@@ -38,8 +38,14 @@ Dodane kolumny (ALTER-y są idempotentne, bezpieczne na istniejącej bazie):
 - **Recenzje na karcie produktu** + średnia + `aggregateRating` (gwiazdki w Google) + strona
   **`/opinie?t=…`** (formularz z maila „prośba o opinię").
 - **Panel — nowe zakładki**: Kategorie (CRUD), Opinie (moderacja), Wiadomości, Klienci, Newsletter.
+- **Panel — pulpit**: statystyki 30-dniowe (wykres przychodu, top produkty, nowi klienci).
+- **Newsletter — kampania**: w panelu (Newsletter) wysyłka wiadomości do potwierdzonych subskrybentów
+  (szablon w ich języku + link wypisu).
+- **Śledzenie zamówienia gościa**: strona **`/sledzenie`** (numer + e-mail), link w stopce.
+- **InPost multi-paczka**: dodawanie kolejnych przesyłek do zamówienia, usuwanie błędnej, PDF per paczka.
 - **SEO**: `sitemap.xml` z wersjami PL/EN, `robots.txt` z wykluczeniami, JSON-LD Organization/WebSite.
-- **Bezpieczeństwo**: rate-limiting API, escapowanie maili (XSS), whitelist uploadu zdjęć.
+- **Bezpieczeństwo**: rate-limiting API, escapowanie maili (XSS), whitelist uploadu zdjęć, exact-match
+  kodów promo, walidacja PATCH adresu, parametryzacja filtra zamówień.
 - **Sweeper** porzuconych rezerwacji (jak wyżej).
 
 ## 6. Audyt
