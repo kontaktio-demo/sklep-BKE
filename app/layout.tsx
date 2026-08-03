@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
+import { headers } from "next/headers";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
 import "./globals.css";
 import { SITE_URL } from "@/lib/site";
 import { ViewTransitions } from "next-view-transitions";
@@ -66,25 +69,46 @@ const archivo = Archivo({
   weight: ["800", "900"],
 });
 
-const DESCRIPTION =
-  "Obroże klasy roboczej z nylonu i łańcuszka. Miejsce na panel ID, kompatybilność z e-obrożą, testy w terenie. Wysyłka w 24 h, 60 dni na zwrot.";
+// Ścieżka bez prefiksu /en — do budowy adresów PL/EN dla canonical + hreflang.
+function stripLocale(path: string): string {
+  if (path === "/en") return "/";
+  if (path.startsWith("/en/")) return path.slice(3);
+  return path;
+}
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: "Dog Store | Obroże i sprzęt dla psów pracujących",
-    template: "%s | Dog Store",
-  },
-  description: DESCRIPTION,
-  openGraph: {
-    type: "website",
-    locale: "pl_PL",
-    siteName: "Dog Store",
-    title: "Dog Store | Obroże i sprzęt dla psów pracujących",
-    description: DESCRIPTION,
-    images: [{ url: "/brand/og.png", width: 1200, height: 630, alt: "Dog Store" }],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const h = await headers();
+  const publicPath = h.get("x-dogstore-path") || "/";
+  const locale = h.get("x-dogstore-locale") === "en" ? "en" : "pl";
+  const bare = stripLocale(publicPath);
+  const suffix = bare === "/" ? "" : bare;
+  const plUrl = `${SITE_URL}${suffix}`;
+  const enUrl = `${SITE_URL}/en${suffix}`;
+
+  const t = await getTranslations({ locale, namespace: "meta" });
+  const title = t("title");
+  const description = t("description");
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: { default: title, template: t("titleTemplate") },
+    description,
+    alternates: {
+      canonical: locale === "en" ? enUrl : plUrl,
+      languages: { pl: plUrl, en: enUrl, "x-default": plUrl },
+    },
+    openGraph: {
+      type: "website",
+      locale: locale === "en" ? "en_US" : "pl_PL",
+      alternateLocale: locale === "en" ? "pl_PL" : "en_US",
+      url: locale === "en" ? enUrl : plUrl,
+      siteName: "Dog Store",
+      title,
+      description,
+      images: [{ url: "/brand/og.png", width: 1200, height: 630, alt: t("ogAlt") }],
+    },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#f0f0ee",
@@ -101,6 +125,11 @@ export default async function RootLayout({
     .sort((a, b) => (a.bestsellerRank ?? 99) - (b.bestsellerRank ?? 99))
     .slice(0, 6);
 
+  // Język + słowniki dla całego drzewa (klient dostaje je przez NextIntlClientProvider).
+  const locale = await getLocale();
+  const messages = await getMessages();
+  const t = await getTranslations("a11y");
+
   return (
     // ViewTransitions (next-view-transitions): owija nawigacje routera w
     // document.startViewTransition. Morf wspolnego elementu robi para
@@ -110,28 +139,31 @@ export default async function RootLayout({
       {/* suppressHydrationWarning: skrypt ponizej dopisuje data-theme do <html> PRZED
           hydracja (inaczej sekcja Pro mignelaby biela sklepu). Serwer tego atrybutu nie
           zna, wiec React zglaszal rozjazd. Tlumimy go na tym jednym wezle - i tylko tu. */}
-      <html lang="pl" suppressHydrationWarning>
+      <html lang={locale} suppressHydrationWarning>
       <head>
         {/* motyw ustawiany przed pierwszym malowaniem: inaczej sekcja Dog Store Pro
             mignie jasnym tlem sklepu cywilnego, zanim React zdazy sie uruchomic.
-            Wzorzec musi zgadzac sie z isDarkRoute() z components/layout/ThemeSync.tsx */}
+            Obejmuje tez wersje z prefiksem /en (np. /en/pro). Wzorzec musi zgadzac
+            sie z isDarkRoute() z components/layout/ThemeSync.tsx */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "if(/^\\/pro(\\/|$)/.test(location.pathname)){document.documentElement.dataset.theme='dark'}",
+              "if(/^\\/(en\\/)?pro(\\/|$)/.test(location.pathname)){document.documentElement.dataset.theme='dark'}",
           }}
         />
       </head>
       <body
         className={`${display.variable} ${sans.variable} ${mono.variable} ${archivo.variable} antialiased`}
       >
+        {/* NextIntlClientProvider udostepnia slownik komponentom klienckim (useTranslations). */}
+        <NextIntlClientProvider messages={messages}>
         <a
           href="#tresc"
           // kolory z tokenow kontrastu, nie literalne: ten sam link laduje i na jasnym
           // sklepie, i na graficie Dog Store Pro
           className="sr-only z-50 focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-[2px] focus:bg-nf-white focus:px-4 focus:py-3 focus:text-sm focus:text-nf-bg"
         >
-          Przejdź do treści
+          {t("skipToContent")}
         </a>
         <ThemeSync />
         {/* Lenis wraca, ale W RYZACH (components/motion/MotionProvider): jeden zegar
@@ -156,6 +188,7 @@ export default async function RootLayout({
             </CartProvider>
           </AuthProvider>
         </MotionProvider>
+        </NextIntlClientProvider>
       </body>
       </html>
     </ViewTransitions>

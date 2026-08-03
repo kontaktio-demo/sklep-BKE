@@ -9,7 +9,9 @@ import { useEffect } from "react";
  * sklepu, nie dwa warianty tego samego.
  */
 export function isDarkRoute(pathname: string): boolean {
-  return pathname === "/pro" || pathname.startsWith("/pro/");
+  // Obejmuje tez wersje angielska z prefiksem: /en/pro, /en/pro/...
+  const p = pathname === "/en" ? "/" : pathname.startsWith("/en/") ? pathname.slice(3) : pathname;
+  return p === "/pro" || p.startsWith("/pro/");
 }
 
 // Ustawia data-theme na <html>, zeby tlo POZA trescia (overscroll, obszar pod stopka)
