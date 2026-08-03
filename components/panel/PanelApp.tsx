@@ -12,12 +12,27 @@ import { ProductEditor } from "@/components/panel/ProductEditor";
  * DogStore / DogStore Pro w widoku produktów. Dostęp: x-admin-key (localStorage).
  */
 
-type Tab = "pulpit" | "zamowienia" | "produkty" | "promocje" | "ustawienia";
+type Tab =
+  | "pulpit"
+  | "zamowienia"
+  | "produkty"
+  | "promocje"
+  | "recenzje"
+  | "wiadomosci"
+  | "klienci"
+  | "kategorie"
+  | "subskrybenci"
+  | "ustawienia";
 const TABS: { id: Tab; label: string }[] = [
   { id: "pulpit", label: "Pulpit" },
   { id: "zamowienia", label: "Zamówienia" },
   { id: "produkty", label: "Produkty" },
+  { id: "kategorie", label: "Kategorie" },
   { id: "promocje", label: "Promocje" },
+  { id: "recenzje", label: "Opinie" },
+  { id: "wiadomosci", label: "Wiadomości" },
+  { id: "klienci", label: "Klienci" },
+  { id: "subskrybenci", label: "Newsletter" },
   { id: "ustawienia", label: "Ustawienia" },
 ];
 
@@ -175,7 +190,12 @@ export function PanelApp() {
         {tab === "pulpit" && <Dashboard />}
         {tab === "zamowienia" && <Orders />}
         {tab === "produkty" && <Products writable={hasDb} />}
+        {tab === "kategorie" && <Categories writable={hasDb} />}
         {tab === "promocje" && <Promotions writable={hasDb} />}
+        {tab === "recenzje" && <Reviews writable={hasDb} />}
+        {tab === "wiadomosci" && <Messages writable={hasDb} />}
+        {tab === "klienci" && <Customers />}
+        {tab === "subskrybenci" && <Subscribers writable={hasDb} />}
         {tab === "ustawienia" && <Settings writable={hasDb} />}
       </main>
     </div>
@@ -669,6 +689,340 @@ function Settings({ writable }: { writable: boolean }) {
 }
 
 // ---------- drobne ----------
+// ---------- KATEGORIE ----------
+interface CategoryRow {
+  id: string;
+  slug: string;
+  name: string;
+  tagline: string | null;
+  line: string;
+  sort_order: number;
+}
+function Categories({ writable }: { writable: boolean }) {
+  const [rows, setRows] = useState<CategoryRow[]>([]);
+  const [name, setName] = useState("");
+  const [slug, setSlug] = useState("");
+  const [line, setLine] = useState<"shop" | "pro">("shop");
+  const load = useCallback(async () => {
+    const r = await adminFetch<CategoryRow[]>("/categories");
+    setRows(r.ok ? r.data ?? [] : []);
+  }, []);
+  useEffect(() => {
+    void load();
+  }, [load]);
+  const create = async () => {
+    if (!name.trim() || !slug.trim()) return;
+    await adminFetch("/categories", {
+      method: "POST",
+      body: JSON.stringify({ name: name.trim(), slug: slug.trim(), line }),
+    });
+    setName("");
+    setSlug("");
+    void load();
+  };
+  const del = async (id: string) => {
+    await adminFetch(`/categories/${id}`, { method: "DELETE" });
+    void load();
+  };
+  return (
+    <div className="space-y-4">
+      {writable && (
+        <div className={`${CARD} flex flex-wrap items-end gap-3 p-4`}>
+          <div>
+            <label className={LABEL}>Nazwa</label>
+            <input value={name} onChange={(e) => setName(e.target.value)} className={`${INPUT} mt-1 block w-44`} />
+          </div>
+          <div>
+            <label className={LABEL}>Slug</label>
+            <input value={slug} onChange={(e) => setSlug(e.target.value)} className={`${INPUT} mt-1 block w-40`} placeholder="np. patrol" />
+          </div>
+          <div>
+            <label className={LABEL}>Sklep</label>
+            <select value={line} onChange={(e) => setLine(e.target.value as "shop" | "pro")} className={`${INPUT} mt-1 block`}>
+              <option value="shop">DogStore</option>
+              <option value="pro">Dog Store Pro</option>
+            </select>
+          </div>
+          <Button onClick={create}>Dodaj kategorię</Button>
+        </div>
+      )}
+      <div className={`${CARD} overflow-x-auto`}>
+        <table className="w-full min-w-[560px] text-sm">
+          <thead>
+            <tr className="border-b border-nf-border text-left text-nf-dim">
+              <Th>Nazwa</Th>
+              <Th>Slug</Th>
+              <Th>Sklep</Th>
+              <Th></Th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((c) => (
+              <tr key={c.id} className="border-b border-nf-border last:border-0">
+                <Td className="text-nf-white">{c.name}</Td>
+                <Td className="font-mono">{c.slug}</Td>
+                <Td>{c.line === "pro" ? "Pro" : "DogStore"}</Td>
+                <Td>
+                  {writable && (
+                    <button type="button" onClick={() => del(c.id)} className="text-nf-red hover:underline">
+                      Usuń
+                    </button>
+                  )}
+                </Td>
+              </tr>
+            ))}
+            {rows.length === 0 && (
+              <tr>
+                <Td className="text-nf-dim">Brak kategorii.</Td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+// ---------- OPINIE (moderacja) ----------
+interface ReviewRow {
+  id: string;
+  author_name: string | null;
+  rating: number;
+  content: string | null;
+  status: string;
+  verified: boolean;
+  created_at: string;
+  products: { name: string; slug: string } | null;
+}
+function Reviews({ writable }: { writable: boolean }) {
+  const [rows, setRows] = useState<ReviewRow[]>([]);
+  const load = useCallback(async () => {
+    const r = await adminFetch<ReviewRow[]>("/reviews");
+    setRows(r.ok ? r.data ?? [] : []);
+  }, []);
+  useEffect(() => {
+    void load();
+  }, [load]);
+  const moderate = async (id: string, status: string) => {
+    await adminFetch(`/reviews/${id}`, { method: "PATCH", body: JSON.stringify({ status }) });
+    void load();
+  };
+  const del = async (id: string) => {
+    await adminFetch(`/reviews/${id}`, { method: "DELETE" });
+    void load();
+  };
+  return (
+    <div className={`${CARD} overflow-x-auto`}>
+      <table className="w-full min-w-[760px] text-sm">
+        <thead>
+          <tr className="border-b border-nf-border text-left text-nf-dim">
+            <Th>Produkt</Th>
+            <Th>Ocena</Th>
+            <Th>Opinia</Th>
+            <Th>Status</Th>
+            <Th>Data</Th>
+            <Th></Th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.id} className="border-b border-nf-border align-top last:border-0">
+              <Td className="text-nf-white">{r.products?.name ?? "—"}</Td>
+              <Td>{r.rating}/5</Td>
+              <Td className="max-w-[300px]">
+                <div className="text-nf-muted">{r.author_name || "—"}</div>
+                {r.content && <div className="text-nf-dim">{r.content}</div>}
+              </Td>
+              <Td>{r.status}</Td>
+              <Td>{dt(r.created_at)}</Td>
+              <Td>
+                {writable && (
+                  <div className="flex flex-wrap gap-2">
+                    {r.status !== "published" && (
+                      <button type="button" onClick={() => moderate(r.id, "published")} className="text-nf-white hover:underline">
+                        Publikuj
+                      </button>
+                    )}
+                    {r.status !== "rejected" && (
+                      <button type="button" onClick={() => moderate(r.id, "rejected")} className="text-nf-dim hover:underline">
+                        Odrzuć
+                      </button>
+                    )}
+                    <button type="button" onClick={() => del(r.id)} className="text-nf-red hover:underline">
+                      Usuń
+                    </button>
+                  </div>
+                )}
+              </Td>
+            </tr>
+          ))}
+          {rows.length === 0 && (
+            <tr>
+              <Td className="text-nf-dim">Brak opinii.</Td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// ---------- WIADOMOŚCI (formularz kontaktowy) ----------
+interface MessageRow {
+  id: string;
+  name: string | null;
+  email: string | null;
+  subject: string | null;
+  message: string;
+  created_at: string;
+}
+function Messages({ writable }: { writable: boolean }) {
+  const [rows, setRows] = useState<MessageRow[]>([]);
+  const load = useCallback(async () => {
+    const r = await adminFetch<MessageRow[]>("/messages");
+    setRows(r.ok ? r.data ?? [] : []);
+  }, []);
+  useEffect(() => {
+    void load();
+  }, [load]);
+  const del = async (id: string) => {
+    await adminFetch(`/messages/${id}`, { method: "DELETE" });
+    void load();
+  };
+  return (
+    <div className="space-y-3">
+      {rows.map((m) => (
+        <div key={m.id} className={`${CARD} p-4`}>
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <div className="text-sm text-nf-white">
+              {m.name || "—"} <span className="text-nf-dim">· {m.email || "—"}</span>
+            </div>
+            <div className="text-xs text-nf-dim">{dt(m.created_at)}</div>
+          </div>
+          {m.subject && <div className="mt-1 text-sm font-medium text-nf-muted">{m.subject}</div>}
+          <p className="mt-2 whitespace-pre-wrap text-sm text-nf-text">{m.message}</p>
+          {writable && (
+            <button type="button" onClick={() => del(m.id)} className="mt-3 text-xs text-nf-red hover:underline">
+              Usuń
+            </button>
+          )}
+        </div>
+      ))}
+      {rows.length === 0 && <p className="text-sm text-nf-dim">Brak wiadomości.</p>}
+    </div>
+  );
+}
+
+// ---------- KLIENCI ----------
+interface CustomerRow {
+  id: string;
+  email: string;
+  name: string | null;
+  phone: string | null;
+  created_at: string;
+}
+function Customers() {
+  const [rows, setRows] = useState<CustomerRow[]>([]);
+  useEffect(() => {
+    void adminFetch<CustomerRow[]>("/customers").then((r) => setRows(r.ok ? r.data ?? [] : []));
+  }, []);
+  return (
+    <div className={`${CARD} overflow-x-auto`}>
+      <table className="w-full min-w-[560px] text-sm">
+        <thead>
+          <tr className="border-b border-nf-border text-left text-nf-dim">
+            <Th>E-mail</Th>
+            <Th>Imię</Th>
+            <Th>Telefon</Th>
+            <Th>Od</Th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((c) => (
+            <tr key={c.id} className="border-b border-nf-border last:border-0">
+              <Td className="text-nf-white">{c.email}</Td>
+              <Td>{c.name || "—"}</Td>
+              <Td>{c.phone || "—"}</Td>
+              <Td>{dt(c.created_at)}</Td>
+            </tr>
+          ))}
+          {rows.length === 0 && (
+            <tr>
+              <Td className="text-nf-dim">Brak klientów.</Td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// ---------- NEWSLETTER (subskrybenci) ----------
+interface SubRow {
+  id: string;
+  email: string;
+  confirmed: boolean;
+  source: string | null;
+  created_at: string;
+}
+function Subscribers({ writable }: { writable: boolean }) {
+  const [rows, setRows] = useState<SubRow[]>([]);
+  const load = useCallback(async () => {
+    const r = await adminFetch<SubRow[]>("/subscribers");
+    setRows(r.ok ? r.data ?? [] : []);
+  }, []);
+  useEffect(() => {
+    void load();
+  }, [load]);
+  const del = async (id: string) => {
+    await adminFetch(`/subscribers/${id}`, { method: "DELETE" });
+    void load();
+  };
+  const confirmedCount = rows.filter((r) => r.confirmed).length;
+  return (
+    <div className="space-y-3">
+      <p className="text-sm text-nf-dim">
+        Potwierdzeni: <span className="text-nf-white">{confirmedCount}</span> / {rows.length}
+      </p>
+      <div className={`${CARD} overflow-x-auto`}>
+        <table className="w-full min-w-[560px] text-sm">
+          <thead>
+            <tr className="border-b border-nf-border text-left text-nf-dim">
+              <Th>E-mail</Th>
+              <Th>Potwierdzony</Th>
+              <Th>Źródło</Th>
+              <Th>Od</Th>
+              <Th></Th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((s) => (
+              <tr key={s.id} className="border-b border-nf-border last:border-0">
+                <Td className="text-nf-white">{s.email}</Td>
+                <Td>{s.confirmed ? "tak" : "nie"}</Td>
+                <Td>{s.source || "—"}</Td>
+                <Td>{dt(s.created_at)}</Td>
+                <Td>
+                  {writable && (
+                    <button type="button" onClick={() => del(s.id)} className="text-nf-red hover:underline">
+                      Usuń
+                    </button>
+                  )}
+                </Td>
+              </tr>
+            ))}
+            {rows.length === 0 && (
+              <tr>
+                <Td className="text-nf-dim">Brak subskrybentów.</Td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 function Th({ children }: { children?: React.ReactNode }) {
   return <th className="px-3 py-2 font-normal">{children}</th>;
 }
