@@ -147,10 +147,9 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
   },
 ];
 
-// Badge z metoda platnosci to deklaracja, nie ozdoba: pasek pokazuje wylacznie to, czym da
-// sie u nas zaplacic. Kasy online nie ma, zamowienie idzie mailem, wiec zostaja dwie metody,
-// ktore dzialaja: przelew i pobranie. Karty i BLIK wchodza tu razem z kasa online.
-export const PAYMENT_METHODS = ["Przelew bankowy", "Za pobraniem"];
+// Badge z metoda platnosci: pasek pokazuje, czym da sie u nas zaplacic. Platnosc online
+// przez Stripe (karta / BLIK / Przelewy24).
+export const PAYMENT_METHODS = ["Karta", "BLIK", "Przelewy24"];
 
 // REGIONS usuniete razem z selektorem regionu w stopce: wszystkie ceny sa w zlotowkach,
 // a wysylka idzie tylko do Polski i Unii (SHIPPING_OPTIONS). Lista walut obiecywala
@@ -165,10 +164,10 @@ export const LEGAL_LINKS: NavLink[] = [
 // ---- handel: progi i koszty ----
 
 /** Prog darmowej dostawy w zl. Jedno zrodlo dla koszyka, paska ogloszen i strony dostawy. */
-export const FREE_SHIPPING_THRESHOLD = 299;
+export const FREE_SHIPPING_THRESHOLD = 149;
 
 /** Najtansza dostawa (paczkomat). Koszyk pokazuje "od tyle", kase wybiera klient przy zamowieniu. */
-export const SHIPPING_FROM = 12.99;
+export const SHIPPING_FROM = 16.99;
 
 export interface ShippingOption {
   carrier: string;
@@ -178,10 +177,8 @@ export interface ShippingOption {
 }
 
 export const SHIPPING_OPTIONS: ShippingOption[] = [
-  { carrier: "Paczkomat InPost", price: 12.99, time: "1-2 dni robocze", freeAboveThreshold: true },
-  { carrier: "Kurier InPost", price: 15.99, time: "1-2 dni robocze", freeAboveThreshold: true },
-  { carrier: "Kurier za pobraniem", price: 19.99, time: "1-2 dni robocze", freeAboveThreshold: false },
-  { carrier: "Kurier, Unia Europejska", price: 39.99, time: "3-6 dni roboczych", freeAboveThreshold: false },
+  { carrier: "Paczkomat InPost", price: 16.99, time: "1-2 dni robocze", freeAboveThreshold: true },
+  { carrier: "Kurier InPost", price: 29.99, time: "1-2 dni robocze", freeAboveThreshold: true },
 ];
 
 // ---- dane firmy ----

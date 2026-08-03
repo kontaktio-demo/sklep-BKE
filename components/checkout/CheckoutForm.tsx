@@ -6,12 +6,10 @@ import { useCart } from "@/lib/cart";
 import { Button } from "@/components/ui/Button";
 import { cn, formatPrice } from "@/lib/utils";
 
-type Method = "inpost_locker" | "inpost_courier" | "cod" | "eu";
+type Method = "inpost_locker" | "inpost_courier";
 const METHODS: { id: Method; label: string; grosze: number; freeAbove: boolean; needsAddress: boolean; needsLocker: boolean }[] = [
-  { id: "inpost_locker", label: "Paczkomat InPost", grosze: 1299, freeAbove: true, needsAddress: false, needsLocker: true },
-  { id: "inpost_courier", label: "Kurier InPost", grosze: 1599, freeAbove: true, needsAddress: true, needsLocker: false },
-  { id: "cod", label: "Kurier za pobraniem", grosze: 1999, freeAbove: false, needsAddress: true, needsLocker: false },
-  { id: "eu", label: "Kurier, Unia Europejska", grosze: 3999, freeAbove: false, needsAddress: true, needsLocker: false },
+  { id: "inpost_locker", label: "Paczkomat InPost", grosze: 1699, freeAbove: true, needsAddress: false, needsLocker: true },
+  { id: "inpost_courier", label: "Kurier InPost", grosze: 2999, freeAbove: true, needsAddress: true, needsLocker: false },
 ];
 const INPUT = "h-11 w-full rounded-[2px] border border-nf-control bg-nf-elevated px-3 text-sm text-nf-text";
 const LABEL = "type-label mb-1.5 block text-nf-dim";
@@ -27,7 +25,7 @@ export function CheckoutForm() {
   const [promo, setPromo] = useState("");
   const [discount, setDiscount] = useState(0);
   const [promoMsg, setPromoMsg] = useState<string | null>(null);
-  const [freeThreshold, setFreeThreshold] = useState(29900);
+  const [freeThreshold, setFreeThreshold] = useState(14900);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

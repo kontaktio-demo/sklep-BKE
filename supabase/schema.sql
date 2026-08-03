@@ -239,7 +239,7 @@ create table if not exists settings (
   updated_at timestamptz not null default now()
 );
 insert into settings (key, value) values
-  ('store', '{"free_shipping_grosze": 29900, "currency": "PLN", "open": true}')
+  ('store', '{"free_shipping_grosze": 14900, "currency": "PLN", "open": true}')
   on conflict (key) do nothing;
 
 -- ── Idempotencja webhooków Stripe ────────────────────────────

@@ -6,7 +6,8 @@ import "server-only";
  * nie wartości ze źródła. Próg darmowej dostawy z ustawień sklepu (settings.store).
  */
 
-export type ShippingMethod = "inpost_locker" | "inpost_courier" | "cod" | "eu";
+// Metody i stawki jak w działającym sklepie (InPost, przedpłata): paczkomat + kurier.
+export type ShippingMethod = "inpost_locker" | "inpost_courier";
 
 export interface ShippingOptionDef {
   label: string;
@@ -17,13 +18,11 @@ export interface ShippingOptionDef {
 }
 
 export const SHIPPING: Record<ShippingMethod, ShippingOptionDef> = {
-  inpost_locker: { label: "Paczkomat InPost", grosze: 1299, freeAbove: true, needsAddress: false, needsLocker: true },
-  inpost_courier: { label: "Kurier InPost", grosze: 1599, freeAbove: true, needsAddress: true, needsLocker: false },
-  cod: { label: "Kurier za pobraniem", grosze: 1999, freeAbove: false, needsAddress: true, needsLocker: false },
-  eu: { label: "Kurier, Unia Europejska", grosze: 3999, freeAbove: false, needsAddress: true, needsLocker: false },
+  inpost_locker: { label: "Paczkomat InPost", grosze: 1699, freeAbove: true, needsAddress: false, needsLocker: true },
+  inpost_courier: { label: "Kurier InPost", grosze: 2999, freeAbove: true, needsAddress: true, needsLocker: false },
 };
 
-export const DEFAULT_FREE_SHIPPING_GROSZE = 29900; // 299 zł (spójne z frontem)
+export const DEFAULT_FREE_SHIPPING_GROSZE = 14900; // 149 zł
 
 export function isShippingMethod(v: unknown): v is ShippingMethod {
   return typeof v === "string" && v in SHIPPING;

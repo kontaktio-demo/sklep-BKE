@@ -183,9 +183,9 @@ export async function updateOrder(id: string, patch: Record<string, unknown>) {
 
 // ---------- USTAWIENIA ----------
 export async function getSettingsStore() {
-  if (!hasDb()) return { free_shipping_grosze: 29900, currency: "PLN", open: true };
+  if (!hasDb()) return { free_shipping_grosze: 14900, currency: "PLN", open: true };
   const { data } = await db().from("settings").select("value").eq("key", "store").maybeSingle();
-  return (data?.value as Record<string, unknown>) ?? { free_shipping_grosze: 29900, currency: "PLN", open: true };
+  return (data?.value as Record<string, unknown>) ?? { free_shipping_grosze: 14900, currency: "PLN", open: true };
 }
 export async function putSettingsStore(value: Record<string, unknown>) {
   const { error } = await db().from("settings").upsert({ key: "store", value }).eq("key", "store");

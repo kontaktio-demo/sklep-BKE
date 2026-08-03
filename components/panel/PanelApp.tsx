@@ -473,13 +473,13 @@ function Promotions({ writable }: { writable: boolean }) {
 
 // ---------- USTAWIENIA ----------
 function Settings({ writable }: { writable: boolean }) {
-  const [free, setFree] = useState("299");
+  const [free, setFree] = useState("149");
   const [open, setOpen] = useState(true);
   const [saved, setSaved] = useState(false);
   useEffect(() => {
     void adminFetch<{ free_shipping_grosze?: number; open?: boolean }>("/settings").then((r) => {
       if (r.ok && r.data) {
-        setFree(String((r.data.free_shipping_grosze ?? 29900) / 100));
+        setFree(String((r.data.free_shipping_grosze ?? 14900) / 100));
         setOpen(r.data.open ?? true);
       }
     });
