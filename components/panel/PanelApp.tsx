@@ -385,16 +385,22 @@ function OrderDetail({ id, onBack }: { id: string; onBack: () => void }) {
     void load();
   }, [load]);
 
-  const createLabel = async () => {
+  const createLabel = async (append = false) => {
     setBusy(true);
     setMsg(null);
-    const r = await adminFetch<unknown>(`/orders/${id}/label`, { method: "POST" });
+    const r = await adminFetch<unknown>(`/orders/${id}/label${append ? "?append=1" : ""}`, { method: "POST" });
     setBusy(false);
     setMsg(r.ok ? "Etykieta utworzona" : r.error === "INPOST_NOT_CONFIGURED" ? "InPost nieskonfigurowany (uzupełnij ENV)." : `Błąd: ${r.error ?? ""}`);
     void load();
   };
-  const downloadLabel = async () => {
-    const res = await fetch(`/api/admin/orders/${id}/label-file`, { headers: { "x-admin-key": getKey() } });
+  const deleteShipment = async (sid: string) => {
+    await adminFetch(`/orders/${id}/shipments/${sid}`, { method: "DELETE" });
+    void load();
+  };
+  const downloadLabel = async (sid?: string) => {
+    const res = await fetch(`/api/admin/orders/${id}/label-file${sid ? `?sid=${encodeURIComponent(sid)}` : ""}`, {
+      headers: { "x-admin-key": getKey() },
+    });
     if (!res.ok) {
       setMsg("Etykieta jeszcze niegotowa.");
       return;
@@ -464,20 +470,44 @@ function OrderDetail({ id, onBack }: { id: string; onBack: () => void }) {
                 ? `Kurier InPost — ${addr.first_name ?? ""} ${addr.last_name ?? ""}, ${addr.street ?? ""} ${addr.building ?? ""}, ${addr.postal_code ?? ""} ${addr.city ?? ""}`
                 : order.shipping_method ?? "—"}
           </p>
-          {order.tracking_number && <p className="text-nf-muted">Nr śledzenia: {order.tracking_number}</p>}
+          {/* Lista paczek (multi-paczka): tracking + pobranie etykiety + usunięcie błędnej. */}
+          {hasShipment && (
+            <ul className="space-y-1 pt-1">
+              {order.shipments!.map((s, i) => (
+                <li key={s.id} className="flex flex-wrap items-center gap-3 text-nf-muted">
+                  <span className="font-mono text-nf-text">
+                    #{i + 1} {s.tracking ?? s.id}
+                  </span>
+                  <button type="button" onClick={() => downloadLabel(s.id)} className="text-nf-white hover:underline">
+                    PDF
+                  </button>
+                  <button type="button" onClick={() => deleteShipment(s.id)} className="text-nf-red hover:underline">
+                    Usuń
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
 
           <div className="flex flex-wrap gap-2 pt-2">
-            <button
-              type="button"
-              onClick={createLabel}
-              disabled={busy || hasShipment}
-              className="h-9 rounded-[2px] bg-nf-red px-4 text-sm font-semibold text-white disabled:opacity-50"
-            >
-              {hasShipment ? "Etykieta utworzona" : busy ? "Tworzenie…" : "Utwórz etykietę InPost"}
-            </button>
+            {!hasShipment && (
+              <button
+                type="button"
+                onClick={() => createLabel(false)}
+                disabled={busy}
+                className="h-9 rounded-[2px] bg-nf-red px-4 text-sm font-semibold text-white disabled:opacity-50"
+              >
+                {busy ? "Tworzenie…" : "Utwórz etykietę InPost"}
+              </button>
+            )}
             {hasShipment && (
-              <button type="button" onClick={downloadLabel} className="h-9 rounded-[2px] border border-nf-control px-4 text-sm text-nf-white">
-                Pobierz etykietę PDF
+              <button
+                type="button"
+                onClick={() => createLabel(true)}
+                disabled={busy}
+                className="h-9 rounded-[2px] border border-nf-control px-4 text-sm text-nf-white disabled:opacity-50"
+              >
+                {busy ? "Tworzenie…" : "Dodaj paczkę"}
               </button>
             )}
           </div>

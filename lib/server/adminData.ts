@@ -337,8 +337,11 @@ export function inpostReady(): boolean {
   return inpostConfigured();
 }
 
-/** Tworzy przesyłkę InPost dla zamówienia i zapisuje ją (shipments/shipping_ref/tracking, status=packed). */
-export async function createOrderLabel(orderId: string): Promise<{ created: number; shipments: ShipmentEntry[] }> {
+/**
+ * Tworzy przesyłkę InPost dla zamówienia i zapisuje ją. Domyślnie NIE dubluje (jedna paczka),
+ * `append=true` dodaje kolejną paczkę do tego samego zamówienia (multi-paczka).
+ */
+export async function createOrderLabel(orderId: string, append = false): Promise<{ created: number; shipments: ShipmentEntry[] }> {
   if (!inpostConfigured()) throw new Error("INPOST_NOT_CONFIGURED");
   const c = db();
   const { data: o } = await c
@@ -349,7 +352,7 @@ export async function createOrderLabel(orderId: string): Promise<{ created: numb
   if (!o) throw new Error("ORDER_NOT_FOUND");
 
   const existing: ShipmentEntry[] = Array.isArray(o.shipments) ? (o.shipments as ShipmentEntry[]) : [];
-  if (existing.length) return { created: 0, shipments: existing }; // już utworzona — nie dubluj
+  if (existing.length && !append) return { created: 0, shipments: existing }; // już utworzona — nie dubluj
 
   const addr = (o.shipping_address ?? {}) as Record<string, string>;
   const method = o.shipping_method === "inpost_courier" ? "courier" : "locker";
@@ -365,20 +368,45 @@ export async function createOrderLabel(orderId: string): Promise<{ created: numb
       address: { street: addr.street, building_number: addr.building, city: addr.city, post_code: addr.postal_code },
     },
   });
-  const next: ShipmentEntry[] = [{ id: shipment.id, tracking: shipment.tracking_number, status: shipment.status }];
+  const next: ShipmentEntry[] = [
+    ...existing,
+    { id: shipment.id, tracking: shipment.tracking_number, status: shipment.status },
+  ];
+  // Numer śledzenia/ref wskazuje pierwszą (główną) paczkę.
   await c
     .from("orders")
-    .update({ shipments: next, shipping_ref: shipment.id, tracking_number: shipment.tracking_number, status: "packed" })
+    .update({ shipments: next, shipping_ref: next[0].id, tracking_number: next[0].tracking, status: "packed" })
     .eq("id", orderId);
   return { created: 1, shipments: next };
 }
 
-/** Pobiera etykietę PDF przesyłki zamówienia. */
-export async function getOrderLabelPdf(orderId: string): Promise<Buffer | null> {
+/** Usuwa przesyłkę z zamówienia (wpis z shipments). Aktualizuje ref/tracking do pozostałych. */
+export async function deleteOrderShipment(orderId: string, shipmentId: string): Promise<{ shipments: ShipmentEntry[] }> {
+  const c = db();
+  const { data: o } = await c.from("orders").select("shipments").eq("id", orderId).maybeSingle();
+  const list: ShipmentEntry[] = Array.isArray(o?.shipments) ? (o!.shipments as ShipmentEntry[]) : [];
+  const next = list.filter((s) => s.id !== shipmentId);
+  await c
+    .from("orders")
+    .update({
+      shipments: next,
+      shipping_ref: next[0]?.id ?? null,
+      tracking_number: next[0]?.tracking ?? null,
+      status: next.length ? "packed" : "paid",
+    })
+    .eq("id", orderId);
+  return { shipments: next };
+}
+
+/** Pobiera etykietę PDF przesyłki zamówienia (konkretnej po `shipmentId` albo głównej). */
+export async function getOrderLabelPdf(orderId: string, shipmentId?: string): Promise<Buffer | null> {
   const c = db();
   const { data: o } = await c.from("orders").select("shipping_ref,shipments").eq("id", orderId).maybeSingle();
   const list: ShipmentEntry[] = Array.isArray(o?.shipments) ? (o!.shipments as ShipmentEntry[]) : [];
-  const sid = list[0]?.id ?? (o?.shipping_ref as string) ?? "";
+  // Bezpieczeństwo: pobieramy tylko przesyłkę należącą do TEGO zamówienia.
+  const sid = shipmentId
+    ? (list.find((s) => s.id === shipmentId)?.id ?? "")
+    : (list[0]?.id ?? (o?.shipping_ref as string) ?? "");
   if (!sid) return null;
   return fetchLabel(String(sid));
 }
