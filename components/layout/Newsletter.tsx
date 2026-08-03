@@ -4,7 +4,7 @@
 // domykajacy strone, i to samo dzieje sie w obu sklepach.
 
 import { usePathname } from "next/navigation";
-import { useId } from "react";
+import { useId, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { COMPANY, isProRoute } from "@/lib/nav";
 
@@ -49,6 +49,22 @@ export function Newsletter() {
   const pro = isProRoute(pathname);
   const copy = pro ? PRO_COPY : SHOP_COPY;
   const headingId = useId();
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState<"idle" | "busy" | "sent" | "error">("idle");
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setState("busy");
+    const res = await fetch("/api/newsletter", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email: email.trim(), source: pro ? "pro" : "web" }),
+    })
+      .then((r) => r.json())
+      .catch(() => ({ ok: false }));
+    setState(res.ok ? "sent" : "error");
+  };
 
   return (
     // data-shell="dark" odwraca tokeny w calym poddrzewie: te same klasy nf-* stoja
@@ -76,12 +92,35 @@ export function Newsletter() {
         </div>
 
         <div className="lg:col-span-7">
-          <div className="flex flex-col items-start gap-4 border-t border-nf-border pt-6 sm:flex-row sm:items-center">
-            <Button href={copy.mailto} className="h-12">
-              {copy.cta}
-            </Button>
-            <p className="text-sm text-nf-muted">{copy.email}</p>
-          </div>
+          {state === "sent" ? (
+            <div className="border-t border-nf-border pt-6" role="status" aria-live="polite">
+              <p className="text-sm text-nf-white">
+                Sprawdź skrzynkę — wysłaliśmy link potwierdzający zapis. Po potwierdzeniu
+                odbierzesz kod powitalny.
+              </p>
+            </div>
+          ) : (
+            <form
+              onSubmit={submit}
+              className="flex flex-col items-start gap-3 border-t border-nf-border pt-6 sm:flex-row sm:items-center"
+            >
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="twój@email.pl"
+                aria-label="Adres e-mail"
+                className="h-12 w-full max-w-xs rounded-[2px] border border-nf-control bg-nf-elevated px-3 text-sm text-nf-text sm:w-auto"
+              />
+              <Button type="submit" className="h-12" disabled={state === "busy"}>
+                {state === "busy" ? "Zapisywanie…" : copy.cta}
+              </Button>
+            </form>
+          )}
+          {state === "error" && (
+            <p className="mt-2 text-xs text-nf-red-bright">Nie udało się zapisać. Spróbuj ponownie.</p>
+          )}
           <p className="mt-3 text-xs text-nf-dim">{copy.note}</p>
         </div>
       </div>

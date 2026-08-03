@@ -63,22 +63,14 @@ function validate(v: Values): Errors {
   return errors;
 }
 
-function compose(v: Values): string {
-  return [
-    `Temat: ${v.subject}`,
-    `Imię i nazwisko: ${v.name.trim()}`,
-    `Adres e-mail: ${v.email.trim()}`,
-    "",
-    v.message.trim(),
-  ].join("\n");
-}
-
 export function ContactForm() {
   // Pola trzymamy w stanie, nie w DOM: walidacja po submicie potrzebuje wartosci,
   // a powrot z panelu do formularza nie moze kasowac tego, co ktos wpisal.
   const [values, setValues] = useState<Values>(EMPTY);
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
 
   const nameId = useId();
   const emailId = useId();
@@ -112,7 +104,7 @@ export function ContactForm() {
     });
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const found = validate(values);
     setErrors(found);
@@ -122,57 +114,47 @@ export function ContactForm() {
       document.getElementById(ids[first])?.focus();
       return;
     }
-    setSent(true);
+    setBusy(true);
+    setSendError(null);
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        name: values.name.trim(),
+        email: values.email.trim(),
+        subject: values.subject,
+        message: values.message.trim(),
+      }),
+    })
+      .then((r) => r.json())
+      .catch(() => ({ ok: false }));
+    setBusy(false);
+    if (res.ok) setSent(true);
+    else setSendError("Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz na " + COMPANY.shopEmail + ".");
   };
 
   if (sent) {
-    const body = compose(values);
-    const href = `mailto:${COMPANY.shopEmail}?subject=${encodeURIComponent(
-      `Kontakt: ${values.subject}`
-    )}&body=${encodeURIComponent(body)}`;
-
     return (
       <div className="mt-6 border border-nf-border bg-nf-elevated p-6">
-        {/* Region status obejmuje naglowek i akapit, ale NIE blok <pre>: czytnik ma oglosic
-            zmiane stanu, a nie recytowac cala przygotowana tresc. */}
         <div role="status" aria-live="polite">
           <h3 ref={confirmRef} tabIndex={-1} className="type-h3 text-nf-white">
-            Wiadomość przygotowana
+            Wiadomość wysłana
           </h3>
           <p className="mt-3 text-sm leading-relaxed text-nf-muted">
-            Ten formularz nie wysyła wiadomości. Skopiuj treść poniżej i wyślij ją na{" "}
-            <a
-              href={`mailto:${COMPANY.shopEmail}`}
-              className="text-nf-text underline underline-offset-4"
-            >
-              {COMPANY.shopEmail}
-            </a>{" "}
-            albo otwórz ją w swoim programie pocztowym. Odpisujemy {COMPANY.responseTime}.
-            Telefon: {COMPANY.phone}.
+            Dziękujemy — odpiszemy {COMPANY.responseTime} na {values.email.trim()}. W pilnej
+            sprawie zadzwoń: {COMPANY.phone}.
           </p>
         </div>
-
-        {/* tresc do skopiowania siedzi w polu wglebionym (nf-elevated-2), nie na czerni:
-            karta panelu jest juz jasna, wiec czarny blok gubilby tekst w obu swiatach.
-
-            Monospace zostaje TYLKO tutaj: to podglad gotowego maila, wiec staly krok znaku
-            pokazuje dokladnie ten tekst, ktory trafi do skrzynki. Reszta stron informacyjnych
-            nie ma prawa uzywac kroju maszynowego - on nalezy do sekcji Dog Store Pro. */}
-        <pre className="mt-5 overflow-x-auto whitespace-pre-wrap rounded-[2px] border border-nf-border bg-nf-elevated-2 p-4 font-mono text-xs leading-relaxed text-nf-text">
-          {body}
-        </pre>
-
-        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
-          {/* promien przycisku nalezy do Button (4 px), nie do wywolania */}
-          <Button href={href} size="md">
-            Otwórz w programie pocztowym
-          </Button>
+        <div className="mt-5">
           <button
             type="button"
-            onClick={() => setSent(false)}
+            onClick={() => {
+              setSent(false);
+              setValues(EMPTY);
+            }}
             className="flex min-h-11 items-center text-sm text-nf-muted underline underline-offset-4 transition-colors duration-250 ease-nf hover:text-nf-white motion-reduce:transition-none"
           >
-            Wróć do formularza
+            Wyślij kolejną wiadomość
           </button>
         </div>
       </div>
@@ -310,12 +292,12 @@ export function ContactForm() {
         )}
       </div>
 
-      <Button type="submit" size="lg">
-        Przygotuj wiadomość
+      {sendError && <p className={ERROR}>{sendError}</p>}
+      <Button type="submit" size="lg" disabled={busy}>
+        {busy ? "Wysyłanie…" : "Wyślij wiadomość"}
       </Button>
       <p className="text-xs leading-relaxed text-nf-dim">
-        Z pól złożymy treść wiadomości do skopiowania. Wysyłasz ją ze swojej skrzynki na{" "}
-        {COMPANY.shopEmail}.
+        Odpisujemy {COMPANY.responseTime}. Możesz też napisać bezpośrednio na {COMPANY.shopEmail}.
       </p>
     </form>
   );
