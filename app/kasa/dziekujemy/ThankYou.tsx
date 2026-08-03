@@ -29,7 +29,7 @@ export function ThankYou() {
         </p>
       )}
       <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-nf-muted">
-        Potwierdzenie wyślemy na Twój e-mail. Kompletujemy sprzęt i przygotowujemy przesyłkę. 🐾
+        Potwierdzenie trafi na Twój adres e-mail. Zamówienie jest już w realizacji — poinformujemy o nadaniu przesyłki.
       </p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Button href="/collections/collars">Wróć do sklepu</Button>

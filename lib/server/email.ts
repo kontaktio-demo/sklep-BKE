@@ -22,13 +22,18 @@ async function send(to: string, subject: string, html: string): Promise<void> {
 }
 
 function shell(title: string, body: string): string {
-  return `<!doctype html><html><body style="margin:0;background:#f0f0ee;font-family:Arial,Helvetica,sans-serif;color:#16161a">
+  return `<!doctype html><html lang="pl"><body style="margin:0;background:#f0f0ee;font-family:Arial,Helvetica,sans-serif;color:#16161a">
   <div style="max-width:560px;margin:0 auto;padding:32px 24px">
-    <div style="font-weight:800;letter-spacing:.02em;font-size:20px;margin-bottom:24px">DOG STORE</div>
-    <h1 style="font-size:22px;margin:0 0 16px">${title}</h1>
+    <a href="${PUBLIC.siteUrl}" style="text-decoration:none;display:inline-block;margin-bottom:24px">
+      <img src="${PUBLIC.siteUrl}/brand/ds-logo.png" alt="Dog Store" width="150" style="display:block;height:auto;border:0" />
+    </a>
+    <h1 style="font-size:22px;line-height:1.25;margin:0 0 16px;font-weight:700">${title}</h1>
     ${body}
     <hr style="border:none;border-top:1px solid #dcdcd8;margin:28px 0" />
-    <p style="font-size:12px;color:#63636a">Dog Store — sprzęt dla psów pracujących i ich przewodników · dogstore.pl</p>
+    <p style="font-size:12px;line-height:1.6;color:#63636a">
+      Dog Store — sprzęt dla psów pracujących i ich przewodników<br />
+      <a href="${PUBLIC.siteUrl}" style="color:#63636a">dogstore.pl</a>
+    </p>
   </div></body></html>`;
 }
 
@@ -56,7 +61,7 @@ export async function sendOrderConfirmation(params: {
     )
     .join("");
   const body = `
-    <p>Dziękujemy za zamówienie <strong>${params.number}</strong>. Zabieramy się za kompletowanie. 🐾</p>
+    <p>Dziękujemy za zamówienie <strong>${params.number}</strong>. Przyjęliśmy je do realizacji.</p>
     <table style="width:100%;border-collapse:collapse;font-size:14px;margin:16px 0">
       ${rows}
       <tr><td style="padding:6px 0;border-top:1px solid #dcdcd8">Wysyłka</td><td style="padding:6px 0;border-top:1px solid #dcdcd8;text-align:right">${zl(

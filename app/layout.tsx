@@ -15,6 +15,7 @@ import { Newsletter } from "@/components/layout/Newsletter";
 import { Footer } from "@/components/layout/Footer";
 import { StoreChrome } from "@/components/layout/StoreChrome";
 import { AuthProvider } from "@/components/account/AuthProvider";
+import { SiteAnalytics } from "@/components/analytics/SiteAnalytics";
 import { getProducts } from "@/lib/data";
 
 // DWA SKLEPY = DWA GLOSY TYPOGRAFICZNE, jeden korpus.
@@ -150,6 +151,7 @@ export default async function RootLayout({
                 <Newsletter />
                 <Footer />
                 <CartDrawer crossSell={crossSell} />
+                <SiteAnalytics />
               </StoreChrome>
             </CartProvider>
           </AuthProvider>
