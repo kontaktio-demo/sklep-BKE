@@ -116,6 +116,7 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
     title: "footer.helpContact",
     links: [
       { label: "footer.contact", href: "/kontakt" },
+      { label: "footer.tracking", href: "/sledzenie" },
       { label: "footer.shippingPayments", href: "/dostawa-i-platnosci" },
       { label: "footer.returns", href: "/zwroty-i-reklamacje" },
       { label: "footer.sizeChart", href: "/tabela-rozmiarow" },

@@ -1,0 +1,36 @@
+{
+  "tracking": {
+    "metaTitle": "Śledzenie zamówienia",
+    "title": "Śledzenie zamówienia",
+    "lead": "Podaj numer zamówienia i e-mail, na który je złożono.",
+    "numberLabel": "Numer zamówienia",
+    "numberPlaceholder": "np. DS-ABC123",
+    "emailLabel": "E-mail",
+    "submit": "Sprawdź status",
+    "submitting": "Sprawdzam…",
+    "notFound": "Nie znaleziono zamówienia dla podanych danych.",
+    "error": "Coś poszło nie tak. Spróbuj ponownie.",
+    "statusLabel": "Status",
+    "paymentLabel": "Płatność",
+    "trackingLabel": "Nr przesyłki",
+    "totalLabel": "Wartość",
+    "dateLabel": "Złożono",
+    "status": {
+      "pending": "Przyjęte",
+      "paid": "Opłacone",
+      "packed": "Pakowanie",
+      "shipped": "Wysłane",
+      "delivered": "Dostarczone",
+      "cancelled": "Anulowane",
+      "failed": "Nieudane",
+      "refunded": "Zwrócone"
+    },
+    "payment": {
+      "unpaid": "Nieopłacone",
+      "paid": "Opłacone",
+      "failed": "Nieudane",
+      "refunded": "Zwrócone",
+      "review": "W weryfikacji"
+    }
+  }
+}

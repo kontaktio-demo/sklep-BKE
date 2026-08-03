@@ -1,0 +1,36 @@
+{
+  "tracking": {
+    "metaTitle": "Order tracking",
+    "title": "Track your order",
+    "lead": "Enter your order number and the email it was placed with.",
+    "numberLabel": "Order number",
+    "numberPlaceholder": "e.g. DS-ABC123",
+    "emailLabel": "Email",
+    "submit": "Check status",
+    "submitting": "Checking…",
+    "notFound": "No order found for the details provided.",
+    "error": "Something went wrong. Please try again.",
+    "statusLabel": "Status",
+    "paymentLabel": "Payment",
+    "trackingLabel": "Tracking no.",
+    "totalLabel": "Total",
+    "dateLabel": "Placed",
+    "status": {
+      "pending": "Received",
+      "paid": "Paid",
+      "packed": "Packing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "failed": "Failed",
+      "refunded": "Refunded"
+    },
+    "payment": {
+      "unpaid": "Unpaid",
+      "paid": "Paid",
+      "failed": "Failed",
+      "refunded": "Refunded",
+      "review": "Under review"
+    }
+  }
+}

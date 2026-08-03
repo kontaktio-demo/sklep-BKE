@@ -15,6 +15,7 @@ export default function robots(): MetadataRoute.Robots {
         "/konto",
         "/logowanie",
         "/opinie",
+        "/sledzenie",
         "/wkrotce",
         "/en/kasa",
         "/en/konto",

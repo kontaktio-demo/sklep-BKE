@@ -21,6 +21,7 @@ const NAMESPACES = [
   "misc",
   "emails",
   "reviews",
+  "tracking",
 ] as const;
 
 export default getRequestConfig(async () => {
