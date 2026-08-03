@@ -94,6 +94,42 @@ export async function releaseOrder(orderId: string): Promise<void> {
   await db.rpc("release_order", { p_order: orderId });
 }
 
+/**
+ * Sprzątanie porzuconych rezerwacji: zamówienia pending/unpaid starsze niż `hours` zwalniają
+ * zarezerwowany stan (release_order → status=cancelled), a stare zdarzenia Stripe są przycinane.
+ * Bez tego porzucony checkout trzymałby stan magazynowy w nieskończoność.
+ */
+export async function sweepStaleOrders(hours = 2): Promise<{ released: number; pruned: number }> {
+  const db = requireSupabaseAdmin();
+  const cutoff = new Date(Date.now() - hours * 3_600_000).toISOString();
+  const { data: stale } = await db
+    .from("orders")
+    .select("id")
+    .eq("status", "pending")
+    .eq("payment_status", "unpaid")
+    .lt("created_at", cutoff)
+    .limit(500);
+
+  let released = 0;
+  for (const o of stale ?? []) {
+    try {
+      await db.rpc("release_order", { p_order: (o as { id: string }).id });
+      released += 1;
+    } catch {
+      // pojedyncze niepowodzenie nie przerywa sprzątania reszty
+    }
+  }
+
+  // Przytnij zdarzenia Stripe starsze niż 30 dni (tabela idempotencji nie musi rosnąć bez końca).
+  const eventsCutoff = new Date(Date.now() - 30 * 24 * 3_600_000).toISOString();
+  const { count } = await db
+    .from("stripe_events")
+    .delete({ count: "exact" })
+    .lt("created_at", eventsCutoff);
+
+  return { released, pruned: count ?? 0 };
+}
+
 export async function refundOrder(orderId: string): Promise<void> {
   const db = requireSupabaseAdmin();
   await db.rpc("refund_order", { p_order: orderId });
