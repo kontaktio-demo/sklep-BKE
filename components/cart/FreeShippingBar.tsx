@@ -1,9 +1,12 @@
+"use client";
+
 import { useTranslations } from "next-intl";
-import { FREE_SHIPPING_THRESHOLD } from "@/lib/nav";
+import { useFreeShippingThreshold } from "@/lib/settings-client";
 import { cn, formatPrice } from "@/lib/utils";
 
 /** Pasek postepu do darmowej dostawy. Ten sam w szufladzie i na stronie koszyka -
- *  prog i tekst musza brzmiec identycznie w obu miejscach, wiec zyja w jednym pliku. */
+ *  prog i tekst musza brzmiec identycznie w obu miejscach, wiec zyja w jednym pliku.
+ *  Prog czytamy z ustawien sklepu (jak kasa), z fallbackiem na stala. */
 export function FreeShippingBar({
   subtotal,
   className,
@@ -12,9 +15,10 @@ export function FreeShippingBar({
   className?: string;
 }) {
   const t = useTranslations("cart");
-  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+  const threshold = useFreeShippingThreshold();
+  const remaining = Math.max(0, threshold - subtotal);
   const reached = remaining === 0;
-  const progress = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
+  const progress = Math.min(100, (subtotal / threshold) * 100);
 
   return (
     <div className={className}>
@@ -32,8 +36,8 @@ export function FreeShippingBar({
         role="progressbar"
         aria-label={t("freeShipping.progressAria")}
         aria-valuemin={0}
-        aria-valuemax={FREE_SHIPPING_THRESHOLD}
-        aria-valuenow={Math.min(subtotal, FREE_SHIPPING_THRESHOLD)}
+        aria-valuemax={threshold}
+        aria-valuenow={Math.min(subtotal, threshold)}
         aria-valuetext={
           reached
             ? t("freeShipping.reached")

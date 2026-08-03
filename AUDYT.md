@@ -25,7 +25,17 @@ Data: 2026-08-03. 33 znaleziska, 12 poważnych POTWIERDZONYCH. `[ ]` = do zrobie
 - [ ] admin key w localStorage — świadomy kompromis (docelowo httpOnly cookie). (NISKI, notatka)
 - middleware fail-open — OK (nie jest kontrolą bezpieczeństwa). (potwierdzone jako bezpieczne)
 
-## KOMPLETNOŚĆ (parytet Kotecki)
+## ZROBIONE w sesji autonomicznej (poza copy/bezpieczeństwem wyżej)
+- [x] **Recenzje na PDP**: wyświetlanie + średnia + `aggregateRating` JSON-LD (rich snippet Google).
+- [x] **Strona /opinie** + `sendReviewRequest` (mail „prośba o opinię" po dostarczeniu) — pętla domknięta.
+- [x] **Panel — widoki UI**: Kategorie (CRUD), Opinie (moderacja), Wiadomości, Klienci, Newsletter.
+- [x] **Sweeper** (Vercel Cron `/api/admin/sweep`): zwalnia porzucone rezerwacje + przycina stripe_events.
+- [x] **FreeShippingBar/CartView**: próg dostawy z ustawień sklepu (spójny z kasą; hook + cache).
+- [~] **Koszyk shop/pro — separacja linii**: ŚWIADOMIE POMINIĘTE — sprzeczne z decyzją o WSPÓLNYM
+      koszyku (DogStore + Dog Store Pro, rozróżnienie po `line`). Mieszane zamówienie dostaje jeden
+      prefiks (z pierwszej pozycji) i to jest akceptowalne przy wspólnym koszyku.
+
+## KOMPLETNOŚĆ (parytet Kotecki) — POZOSTAŁE
 - [ ] **Recenzje na PDP**: lista+średnia (GET /api/reviews/product/[slug]) + formularz (POST /api/reviews,
       token) + JSON-LD aggregateRating. Backend gotowy. (WYSOKI)
 - [ ] **sendReviewRequest**: mail „prośba o opinię" z linkiem `?t=review_token` przy statusie delivered. (WYSOKI)

@@ -12,7 +12,8 @@ import { Button } from "@/components/ui/Button";
 import { CartIcon, MinusIcon, PlusIcon, TrashIcon } from "@/components/ui/icons";
 import type { CartLine } from "@/lib/cart";
 import { useCart } from "@/lib/cart";
-import { FREE_SHIPPING_THRESHOLD, SHIPPING_FROM } from "@/lib/nav";
+import { SHIPPING_FROM } from "@/lib/nav";
+import { useFreeShippingThreshold } from "@/lib/settings-client";
 import { productHref } from "@/lib/routes";
 import { SIZE_SHORT } from "@/lib/sizes";
 import { formatPrice } from "@/lib/utils";
@@ -55,10 +56,11 @@ export function CartView() {
   const t = useTranslations("cart");
   const tn = useTranslations("nav");
   const { lines, count, subtotal, removeLine, setQty } = useCart();
+  const freeThreshold = useFreeShippingThreshold();
 
   if (lines.length === 0) return <EmptyCart />;
 
-  const freeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
+  const freeShipping = subtotal >= freeThreshold;
   const total = freeShipping ? subtotal : subtotal + SHIPPING_FROM;
 
   return (
