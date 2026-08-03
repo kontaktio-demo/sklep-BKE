@@ -30,6 +30,9 @@
       "heading": "Podziel się opinią",
       "body": "Twoje zamówienie {number} zostało dostarczone. Jeśli sprzęt zdał egzamin w terenie, daj znać — Twoja opinia pomaga innym przewodnikom.",
       "cta": "Wystaw opinię"
+    },
+    "campaign": {
+      "unsubscribe": "Wypisz się z newslettera"
     }
   }
 }

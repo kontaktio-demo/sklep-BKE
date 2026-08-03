@@ -450,6 +450,20 @@ export async function deleteSubscriber(id: string) {
   const { error } = await db().from("newsletter_subscribers").delete().eq("id", id);
   if (error) throw error;
 }
+// Kampania newsletterowa do POTWIERDZONYCH subskrybentów (temat + treść tekstowa).
+export async function sendCampaign(subject: string, body: string): Promise<{ sent: number }> {
+  if (!subject.trim() || !body.trim()) throw new Error("EMPTY_CAMPAIGN");
+  const { data } = await db()
+    .from("newsletter_subscribers")
+    .select("email,unsub_token,locale")
+    .eq("confirmed", true);
+  const recipients = (data ?? []).map((s) => {
+    const r = s as { email: string; unsub_token: string | null; locale: string | null };
+    return { email: r.email, unsubToken: r.unsub_token, locale: (r.locale === "en" ? "en" : "pl") as "pl" | "en" };
+  });
+  const { sendNewsletterCampaign } = await import("./email");
+  return sendNewsletterCampaign(subject.trim(), body, recipients);
+}
 
 // ---------- RECENZJE (moderacja) ----------
 export async function listReviews() {

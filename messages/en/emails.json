@@ -30,6 +30,9 @@
       "heading": "Share your feedback",
       "body": "Your order {number} has been delivered. If the gear proved itself in the field, let us know — your review helps other handlers.",
       "cta": "Write a review"
+    },
+    "campaign": {
+      "unsubscribe": "Unsubscribe from the newsletter"
     }
   }
 }

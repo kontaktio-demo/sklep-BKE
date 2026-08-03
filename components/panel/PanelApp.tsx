@@ -967,6 +967,10 @@ interface SubRow {
 }
 function Subscribers({ writable }: { writable: boolean }) {
   const [rows, setRows] = useState<SubRow[]>([]);
+  const [subject, setSubject] = useState("");
+  const [body, setBody] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sentMsg, setSentMsg] = useState<string | null>(null);
   const load = useCallback(async () => {
     const r = await adminFetch<SubRow[]>("/subscribers");
     setRows(r.ok ? r.data ?? [] : []);
@@ -978,12 +982,53 @@ function Subscribers({ writable }: { writable: boolean }) {
     await adminFetch(`/subscribers/${id}`, { method: "DELETE" });
     void load();
   };
+  const sendCampaign = async () => {
+    if (!subject.trim() || !body.trim()) return;
+    setSending(true);
+    setSentMsg(null);
+    const r = await adminFetch<{ sent: number }>("/subscribers/send", {
+      method: "POST",
+      body: JSON.stringify({ subject, body }),
+    });
+    setSending(false);
+    if (r.ok) {
+      setSentMsg(`Wysłano do ${r.data?.sent ?? 0} subskrybentów.`);
+      setSubject("");
+      setBody("");
+    } else {
+      setSentMsg("Nie udało się wysłać (sprawdź konfigurację Resend).");
+    }
+  };
   const confirmedCount = rows.filter((r) => r.confirmed).length;
   return (
     <div className="space-y-3">
       <p className="text-sm text-nf-dim">
         Potwierdzeni: <span className="text-nf-white">{confirmedCount}</span> / {rows.length}
       </p>
+      {writable && (
+        <div className={`${CARD} space-y-2 p-4`}>
+          <div className="type-label text-nf-dim">Wyślij newsletter (do potwierdzonych)</div>
+          <input
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            placeholder="Temat"
+            className={`${INPUT} block w-full`}
+          />
+          <textarea
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            placeholder="Treść wiadomości…"
+            rows={5}
+            className={`${INPUT} block h-auto w-full py-2`}
+          />
+          <div className="flex items-center gap-3">
+            <Button onClick={sendCampaign} disabled={sending || !subject.trim() || !body.trim()}>
+              {sending ? "Wysyłam…" : `Wyślij do ${confirmedCount}`}
+            </Button>
+            {sentMsg && <span className="text-sm text-nf-muted">{sentMsg}</span>}
+          </div>
+        </div>
+      )}
       <div className={`${CARD} overflow-x-auto`}>
         <table className="w-full min-w-[560px] text-sm">
           <thead>

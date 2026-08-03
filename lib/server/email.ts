@@ -130,6 +130,33 @@ export async function sendWelcomeCode(to: string, locale: Locale = defaultLocale
   await send(to, t("welcome.subject", { code: SERVER.newsletterWelcomeCode }), await shell(locale, esc(t("welcome.heading")), body));
 }
 
+// Kampania newsletterowa: właściciel pisze temat + treść (zwykły tekst). Każdy odbiorca dostaje
+// wiadomość w brandowym szablonie w swoim języku + link wypisu z własnym tokenem.
+function nl2br(text: string): string {
+  return esc(text).replace(/\n/g, "<br>");
+}
+export async function sendNewsletterCampaign(
+  subject: string,
+  bodyText: string,
+  recipients: { email: string; unsubToken: string | null; locale?: Locale }[],
+): Promise<{ sent: number }> {
+  const htmlBody = `<div style="font-size:14px;line-height:1.7">${nl2br(bodyText)}</div>`;
+  let sent = 0;
+  for (const r of recipients) {
+    const locale = r.locale ?? defaultLocale;
+    const t = await emailT(locale);
+    const unsubUrl = r.unsubToken
+      ? `${PUBLIC.siteUrl}/api/newsletter/unsubscribe?token=${encodeURIComponent(r.unsubToken)}`
+      : PUBLIC.siteUrl;
+    const body = `${htmlBody}
+      <hr style="border:none;border-top:1px solid #dcdcd8;margin:24px 0" />
+      <p style="font-size:12px"><a href="${unsubUrl}" style="color:#63636a">${esc(t("campaign.unsubscribe"))}</a></p>`;
+    await send(r.email, subject, await shell(locale, esc(subject), body));
+    sent += 1;
+  }
+  return { sent };
+}
+
 // Prośba o opinię po dostarczeniu zamówienia (link z tokenem recenzji).
 export async function sendReviewRequest(params: {
   to: string;
