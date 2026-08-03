@@ -69,6 +69,32 @@ const archivo = Archivo({
   weight: ["800", "900"],
 });
 
+// JSON-LD encji marki: Organization + WebSite (z SearchAction dla sitelinks searchbox w Google).
+const ORG_JSONLD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#org`,
+      name: "Dog Store",
+      url: SITE_URL,
+      logo: `${SITE_URL}/brand/ds-logo.png`,
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "Dog Store",
+      publisher: { "@id": `${SITE_URL}/#org` },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: { "@type": "EntryPoint", urlTemplate: `${SITE_URL}/szukaj?q={search_term_string}` },
+        "query-input": "required name=search_term_string",
+      },
+    },
+  ],
+}).replace(/</g, "\\u003c");
+
 // Ścieżka bez prefiksu /en — do budowy adresów PL/EN dla canonical + hreflang.
 function stripLocale(path: string): string {
   if (path === "/en") return "/";
@@ -151,6 +177,8 @@ export default async function RootLayout({
               "if(/^\\/(en\\/)?pro(\\/|$)/.test(location.pathname)){document.documentElement.dataset.theme='dark'}",
           }}
         />
+        {/* Encja marki dla Google (Organization + WebSite z sitelinks searchbox). */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ORG_JSONLD }} />
       </head>
       <body
         className={`${display.variable} ${sans.variable} ${mono.variable} ${archivo.variable} antialiased`}
