@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { adminFetch, clearKey, dt, getKey, setKey, zl } from "@/lib/panel/api";
+import { ProductEditor } from "@/components/panel/ProductEditor";
 
 /**
  * Panel administracyjny DogStore — jedna aplikacja z resztą sklepu (trasy /panel).
@@ -299,6 +300,7 @@ interface ProductRow {
 function Products({ writable }: { writable: boolean }) {
   const [line, setLine] = useState<"shop" | "pro">("shop");
   const [rows, setRows] = useState<ProductRow[]>([]);
+  const [editing, setEditing] = useState<string | "new" | null>(null);
   const load = useCallback(async () => {
     const r = await adminFetch<ProductRow[]>(`/products?sklep=${line}`);
     setRows(r.ok ? r.data ?? [] : []);
@@ -310,19 +312,42 @@ function Products({ writable }: { writable: boolean }) {
     await adminFetch(`/products/${id}`, { method: "PATCH", body: JSON.stringify(body) });
     void load();
   };
+
+  if (editing) {
+    return (
+      <ProductEditor
+        productId={editing === "new" ? null : editing}
+        defaultLine={line}
+        onClose={() => {
+          setEditing(null);
+          void load();
+        }}
+      />
+    );
+  }
+
   return (
     <div>
-      <div className="mb-4 inline-flex rounded-[2px] border border-nf-border p-1">
-        {(["shop", "pro"] as const).map((l) => (
-          <button
-            key={l}
-            type="button"
-            onClick={() => setLine(l)}
-            className={`px-4 py-1.5 text-sm ${line === l ? "bg-nf-red text-white" : "text-nf-dim"}`}
-          >
-            {l === "shop" ? "Dog Store" : "Dog Store Pro"}
-          </button>
-        ))}
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="inline-flex rounded-[2px] border border-nf-border p-1">
+          {(["shop", "pro"] as const).map((l) => (
+            <button
+              key={l}
+              type="button"
+              onClick={() => setLine(l)}
+              className={`px-4 py-1.5 text-sm ${line === l ? "bg-nf-red text-white" : "text-nf-dim"}`}
+            >
+              {l === "shop" ? "Dog Store" : "Dog Store Pro"}
+            </button>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => setEditing("new")}
+          className="h-9 rounded-[2px] bg-nf-red px-4 text-sm font-semibold text-white hover:opacity-90"
+        >
+          + Dodaj produkt
+        </button>
       </div>
       <div className={`${CARD} overflow-x-auto`}>
         <table className="w-full min-w-[640px] text-sm">
@@ -341,7 +366,11 @@ function Products({ writable }: { writable: boolean }) {
               const variants = p.product_variants?.length ?? p.variants ?? 0;
               return (
                 <tr key={p.id} className="border-b border-nf-border last:border-0">
-                  <Td className="text-nf-white">{p.name}</Td>
+                  <Td className="text-nf-white">
+                    <button type="button" onClick={() => setEditing(p.id)} className="text-left hover:text-nf-red-bright">
+                      {p.name}
+                    </button>
+                  </Td>
                   <Td>{cat}</Td>
                   <Td>
                     {writable ? (

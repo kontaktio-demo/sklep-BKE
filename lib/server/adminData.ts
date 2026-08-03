@@ -53,6 +53,126 @@ export async function listProducts(line?: "shop" | "pro") {
   return data;
 }
 
+// Pełny produkt (do edytora w panelu): pola + warianty + zdjęcia + kategoria.
+export async function getProductFull(id: string) {
+  const { data, error } = await db()
+    .from("products")
+    .select("*,product_variants(*),product_images(*),categories(slug,name)")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}
+
+export interface VariantInput {
+  size?: string | null;
+  sku: string;
+  price_grosze: number;
+  stock_qty?: number | null;
+  in_stock?: boolean;
+  neck?: string | null;
+  weight_grams?: number | null;
+}
+
+const PRODUCT_FIELDS = [
+  "name",
+  "slug",
+  "line",
+  "pro_category",
+  "category_id",
+  "price_grosze",
+  "sale_price_grosze",
+  "currency",
+  "tagline",
+  "short_description",
+  "description",
+  "details",
+  "highlights",
+  "badges",
+  "colors",
+  "width",
+  "collar_type",
+  "id_panel_compatible",
+  "pro_standard",
+  "bestseller",
+  "bestseller_rank",
+  "in_stock",
+  "stock_qty",
+  "active",
+  "sort_order",
+  "bundle_config",
+];
+
+/** Zapis produktu z panelu: pola + warianty (upsert po SKU, kasowanie usuniętych). */
+export async function saveProductFull(id: string | null, input: Record<string, unknown>) {
+  const c = db();
+  const fields: Record<string, unknown> = {};
+  for (const k of PRODUCT_FIELDS) if (k in input) fields[k] = input[k];
+
+  let productId = id;
+  if (!productId) {
+    if (!fields.slug || !fields.name) throw new Error("SLUG_NAME_REQUIRED");
+    const { data, error } = await c.from("products").insert(fields).select("id").single();
+    if (error) throw error;
+    productId = data.id as string;
+  } else if (Object.keys(fields).length) {
+    const { error } = await c.from("products").update(fields).eq("id", productId);
+    if (error) throw error;
+  }
+
+  const variants = input.variants as VariantInput[] | undefined;
+  if (variants) {
+    const skus = variants.map((v) => v.sku);
+    const { data: existing } = await c.from("product_variants").select("id,sku").eq("product_id", productId);
+    const toDelete = (existing ?? []).filter((v) => !skus.includes((v as { sku: string }).sku)).map((v) => (v as { id: string }).id);
+    if (toDelete.length) await c.from("product_variants").delete().in("id", toDelete);
+    for (let i = 0; i < variants.length; i++) {
+      const v = variants[i];
+      const { error } = await c.from("product_variants").upsert(
+        {
+          product_id: productId,
+          size: v.size ?? null,
+          sku: v.sku,
+          price_grosze: v.price_grosze,
+          stock_qty: v.stock_qty ?? null,
+          in_stock: v.in_stock ?? true,
+          neck: v.neck ?? null,
+          weight_grams: v.weight_grams ?? null,
+          sort_order: i,
+        },
+        { onConflict: "sku" }
+      );
+      if (error) throw error;
+    }
+  }
+  return { id: productId };
+}
+
+// Zdjęcia produktu (Supabase Storage: bucket product-images).
+const BUCKET = "product-images";
+
+export async function addProductImage(productId: string, file: ArrayBuffer, contentType: string, name: string) {
+  const c = db();
+  const ext = (contentType.split("/")[1] || "jpg").replace("jpeg", "jpg");
+  const path = `${productId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const up = await c.storage.from(BUCKET).upload(path, Buffer.from(file), { contentType, upsert: false });
+  if (up.error) throw up.error;
+  const { data: pub } = c.storage.from(BUCKET).getPublicUrl(path);
+  const { count } = await c.from("product_images").select("id", { count: "exact", head: true }).eq("product_id", productId);
+  const { error } = await c
+    .from("product_images")
+    .insert({ product_id: productId, url: pub.publicUrl, storage_path: path, alt: name, sort_order: count ?? 0 });
+  if (error) throw error;
+  return { url: pub.publicUrl, path };
+}
+
+export async function deleteProductImage(imageId: string) {
+  const c = db();
+  const { data } = await c.from("product_images").select("storage_path").eq("id", imageId).maybeSingle();
+  if (data?.storage_path) await c.storage.from(BUCKET).remove([data.storage_path as string]);
+  await c.from("product_images").delete().eq("id", imageId);
+}
+
 export async function updateProduct(id: string, patch: Record<string, unknown>) {
   const allowed = [
     "name",

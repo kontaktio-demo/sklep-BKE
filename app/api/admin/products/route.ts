@@ -1,5 +1,5 @@
 import { withAdmin, readJson } from "@/lib/server/adminRoute";
-import { createProduct, listProducts } from "@/lib/server/adminData";
+import { listProducts, saveProductFull } from "@/lib/server/adminData";
 
 export async function GET(req: Request) {
   const sklep = new URL(req.url).searchParams.get("sklep");
@@ -7,7 +7,8 @@ export async function GET(req: Request) {
   return withAdmin(req, () => listProducts(line));
 }
 
+// Utworzenie produktu (pełne: pola + warianty + kolory).
 export async function POST(req: Request) {
   const body = await readJson(req);
-  return withAdmin(req, () => createProduct(body));
+  return withAdmin(req, () => saveProductFull(null, body));
 }
