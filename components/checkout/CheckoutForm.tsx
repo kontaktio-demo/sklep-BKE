@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useCart } from "@/lib/cart";
 import { Button } from "@/components/ui/Button";
+import { LockerPicker } from "./LockerPicker";
 import { cn, formatPrice } from "@/lib/utils";
 
 type Method = "inpost_locker" | "inpost_courier";
@@ -18,6 +19,7 @@ const LABEL = "type-label mb-1.5 block text-nf-dim";
 export function CheckoutForm() {
   const router = useRouter();
   const t = useTranslations("checkout");
+  const locale = useLocale();
   const { lines, subtotal, clearCart } = useCart();
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -188,7 +190,14 @@ export function CheckoutForm() {
           {chosen.needsLocker && (
             <div className="mt-4">
               <label className={LABEL}>{t("shipping.lockerLabel")}</label>
-              <input value={locker} onChange={(e) => setLocker(e.target.value)} placeholder={t("shipping.lockerPlaceholder")} required className={INPUT} />
+              <LockerPicker
+                value={locker}
+                onChange={setLocker}
+                locale={locale}
+                inputClass={INPUT}
+                placeholder={t("shipping.lockerPlaceholder")}
+                chosenLabel={t("shipping.lockerChosen")}
+              />
             </div>
           )}
           {chosen.needsAddress && (

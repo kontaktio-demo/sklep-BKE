@@ -22,8 +22,9 @@
     "shipping": {
       "title": "Dostawa",
       "free": "gratis",
-      "lockerLabel": "Kod paczkomatu",
+      "lockerLabel": "Paczkomat",
       "lockerPlaceholder": "np. KRA010",
+      "lockerChosen": "Wybrany paczkomat:",
       "methods": {
         "inpost_locker": "Paczkomat InPost",
         "inpost_courier": "Kurier InPost"

@@ -22,8 +22,9 @@
     "shipping": {
       "title": "Delivery",
       "free": "free",
-      "lockerLabel": "Parcel locker code",
+      "lockerLabel": "Parcel locker",
       "lockerPlaceholder": "e.g. KRA010",
+      "lockerChosen": "Selected locker:",
       "methods": {
         "inpost_locker": "InPost Parcel Locker",
         "inpost_courier": "InPost Courier"
