@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
+import { checkRate } from "@/lib/server/rateLimit";
 
 const Body = z.object({
   order_token: z.string().uuid(),
@@ -12,6 +13,9 @@ const Body = z.object({
 
 // Dodanie recenzji — TYLKO zweryfikowanej: token pochodzi z zamówienia (orders.review_token).
 export async function POST(req: Request) {
+  const limited = checkRate(req, "reviews", 10, 3600); // maks. 10 recenzji / godz / IP
+  if (limited) return limited;
+
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ ok: false, error: "BAD_REQUEST" }, { status: 400 });
   const b = parsed.data;

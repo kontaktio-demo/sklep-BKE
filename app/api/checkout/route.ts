@@ -7,6 +7,7 @@ import { SHIPPING, evaluatePromo, isShippingMethod, shippingGrosze, type PromoRo
 import { createOrder, genOrderNumber, upsertCustomer } from "@/lib/server/order";
 import { createPaymentIntent } from "@/lib/server/stripe";
 import { getCustomerFromRequest } from "@/lib/server/customerAuth";
+import { checkRate } from "@/lib/server/rateLimit";
 
 const Item = z.object({
   slug: z.string().min(1),
@@ -37,6 +38,9 @@ const Body = z.object({
 });
 
 export async function POST(req: Request) {
+  const limited = checkRate(req, "checkout", 12, 60); // maks. 12 zamówień / min / IP (anty-flood)
+  if (limited) return limited;
+
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ ok: false, error: "BAD_REQUEST" }, { status: 400 });
   const body = parsed.data;

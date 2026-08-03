@@ -3,12 +3,16 @@ import { randomBytes } from "node:crypto";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendNewsletterConfirm } from "@/lib/server/email";
+import { checkRate } from "@/lib/server/rateLimit";
 import { PUBLIC } from "@/lib/env";
 
 const Body = z.object({ email: z.string().email(), source: z.string().max(60).optional() });
 
 // Zapis do newslettera z DOUBLE OPT-IN: rekord niepotwierdzony + mail z linkiem potwierdzenia.
 export async function POST(req: Request) {
+  const limited = checkRate(req, "newsletter", 5, 3600); // maks. 5 zapisów / godz / IP
+  if (limited) return limited;
+
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ ok: false, error: "BAD_EMAIL" }, { status: 400 });
   const email = parsed.data.email.toLowerCase();

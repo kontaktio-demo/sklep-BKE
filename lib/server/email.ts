@@ -8,6 +8,17 @@ import { SERVER, PUBLIC } from "@/lib/env";
 const RESEND_URL = "https://api.resend.com/emails";
 const zl = (grosze: number) => (grosze / 100).toFixed(2).replace(".", ",") + " zł";
 
+// Escapowanie danych użytkownika wstawianych do HTML maila (ochrona przed HTML/JS injection
+// w skrzynce właściciela — pola z formularza kontaktu i nazwy pozycji są kontrolowane z zewnątrz).
+function esc(v: string | null | undefined): string {
+  return String(v ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 async function send(to: string, subject: string, html: string): Promise<void> {
   if (!SERVER.resendApiKey) return;
   try {
@@ -55,7 +66,7 @@ export async function sendOrderConfirmation(params: {
   const rows = params.items
     .map(
       (i) =>
-        `<tr><td style="padding:6px 0">${i.name} × ${i.qty}</td><td style="padding:6px 0;text-align:right">${zl(
+        `<tr><td style="padding:6px 0">${esc(i.name)} × ${i.qty}</td><td style="padding:6px 0;text-align:right">${zl(
           i.price_grosze * i.qty
         )}</td></tr>`
     )
@@ -82,9 +93,9 @@ export async function sendContactNotify(params: {
   subject: string | null;
   message: string;
 }): Promise<void> {
-  const body = `<p><strong>Od:</strong> ${params.name ?? "—"} (${params.email ?? "—"})</p>
-    <p><strong>Temat:</strong> ${params.subject ?? "—"}</p>
-    <p style="white-space:pre-wrap">${params.message.replace(/</g, "&lt;")}</p>`;
+  const body = `<p><strong>Od:</strong> ${esc(params.name) || "—"} (${esc(params.email) || "—"})</p>
+    <p><strong>Temat:</strong> ${esc(params.subject) || "—"}</p>
+    <p style="white-space:pre-wrap">${esc(params.message)}</p>`;
   await send(SERVER.contactNotifyEmail, `Wiadomość ze strony — Dog Store`, shell("Nowa wiadomość", body));
 }
 
