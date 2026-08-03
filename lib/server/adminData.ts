@@ -5,8 +5,8 @@ import { proProducts } from "@/lib/data/pro.mock";
 import { createShipment, fetchLabel, inpostConfigured } from "./inpost";
 
 /**
- * Dane dla panelu. Zapisy wymagają bazy; ODCZYTY mają fallback demo (mock),
- * żeby panel dało się obejrzeć przed konfiguracją Supabase. „Demo" = read-only.
+ * Dane dla panelu. Zapisy wymagają bazy; część odczytów ma fallback na katalog wbudowany,
+ * żeby panel działał także przed połączeniem bazy (tryb podglądu, tylko do odczytu).
  */
 export class NeedsDb extends Error {
   constructor() {
@@ -384,4 +384,64 @@ export async function stats() {
   const pending = orders.filter((o) => (o as { status: string }).status === "pending").length;
   const { count: products } = await c.from("products").select("id", { count: "exact", head: true });
   return { orders: ordersRes.count ?? orders.length, revenueGrosze, paid, pending, products: products ?? 0 };
+}
+
+// ---------- KLIENCI ----------
+export async function listCustomers() {
+  if (!hasDb()) return [];
+  const { data } = await db()
+    .from("customers")
+    .select("id,email,name,phone,created_at")
+    .order("created_at", { ascending: false })
+    .limit(500);
+  return data ?? [];
+}
+
+// ---------- WIADOMOŚCI (formularz kontaktowy) ----------
+export async function listMessages() {
+  if (!hasDb()) return [];
+  const { data } = await db()
+    .from("contact_messages")
+    .select("id,name,email,subject,message,created_at")
+    .order("created_at", { ascending: false })
+    .limit(300);
+  return data ?? [];
+}
+export async function deleteMessage(id: string) {
+  const { error } = await db().from("contact_messages").delete().eq("id", id);
+  if (error) throw error;
+}
+
+// ---------- NEWSLETTER (subskrybenci) ----------
+export async function listSubscribers() {
+  if (!hasDb()) return [];
+  const { data } = await db()
+    .from("newsletter_subscribers")
+    .select("id,email,confirmed,consent_at,source,created_at")
+    .order("created_at", { ascending: false })
+    .limit(1000);
+  return data ?? [];
+}
+export async function deleteSubscriber(id: string) {
+  const { error } = await db().from("newsletter_subscribers").delete().eq("id", id);
+  if (error) throw error;
+}
+
+// ---------- RECENZJE (moderacja) ----------
+export async function listReviews() {
+  if (!hasDb()) return [];
+  const { data } = await db()
+    .from("reviews")
+    .select("id,author_name,rating,content,status,verified,created_at,products(name,slug)")
+    .order("created_at", { ascending: false })
+    .limit(500);
+  return data ?? [];
+}
+export async function moderateReview(id: string, status: string) {
+  const { error } = await db().from("reviews").update({ status }).eq("id", id);
+  if (error) throw error;
+}
+export async function deleteReview(id: string) {
+  const { error } = await db().from("reviews").delete().eq("id", id);
+  if (error) throw error;
 }
