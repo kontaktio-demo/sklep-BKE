@@ -43,7 +43,8 @@
       "placeholder": "Code",
       "apply": "Apply",
       "applied": "Code applied: -{amount}",
-      "invalid": "Invalid code."
+      "invalid": "Invalid code.",
+      "rejected": "The discount code expired — we've updated the amount. Please confirm your order again."
     },
     "summary": {
       "title": "Summary",

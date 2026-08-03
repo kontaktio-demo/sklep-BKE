@@ -146,9 +146,9 @@ export async function POST(req: Request) {
   );
   if (pay) {
     await db.from("orders").update({ payment_provider: "stripe", payment_ref: pay.paymentRef }).eq("id", orderId);
-    return NextResponse.json({ ok: true, number, total_grosze: total, clientSecret: pay.clientSecret });
+    return NextResponse.json({ ok: true, number, total_grosze: total, discount_grosze: discount, clientSecret: pay.clientSecret });
   }
 
   // Baza jest, ale brak Stripe — zamówienie czeka na konfigurację płatności.
-  return NextResponse.json({ ok: true, number, total_grosze: total, payment: "unconfigured" });
+  return NextResponse.json({ ok: true, number, total_grosze: total, discount_grosze: discount, payment: "unconfigured" });
 }

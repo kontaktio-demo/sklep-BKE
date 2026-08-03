@@ -97,6 +97,14 @@ export function CheckoutForm() {
       setError(map[res.error as string] ?? t("errors.generic"));
       return;
     }
+    // Rabat mógł stracić ważność między walidacją a złożeniem — pokaż zaktualizowaną kwotę,
+    // zanim przejdziemy do płatności (klient nie zapłaci więcej „po cichu").
+    const applied = typeof res.discount_grosze === "number" ? res.discount_grosze : discount;
+    if (discount > 0 && applied < discount) {
+      setDiscount(applied);
+      setPromoMsg(t("promo.rejected"));
+      return;
+    }
     if (res.clientSecret) {
       sessionStorage.setItem("dogstore-pay", JSON.stringify({ clientSecret: res.clientSecret, number: res.number, total: res.total_grosze }));
       router.push("/kasa/platnosc");

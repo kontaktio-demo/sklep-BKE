@@ -43,7 +43,8 @@
       "placeholder": "Kod",
       "apply": "Zastosuj",
       "applied": "Kod zastosowany: -{amount}",
-      "invalid": "Nieprawidłowy kod."
+      "invalid": "Nieprawidłowy kod.",
+      "rejected": "Kod rabatowy stracił ważność — zaktualizowaliśmy kwotę. Potwierdź zamówienie ponownie."
     },
     "summary": {
       "title": "Podsumowanie",
