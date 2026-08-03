@@ -1,0 +1,31 @@
+{
+  "reviews": {
+    "heading": "Reviews",
+    "count": "{count, plural, one {# review} other {# reviews}}",
+    "empty": "This product has no reviews yet.",
+    "verified": "Verified purchase",
+    "anonymous": "Dog Store customer",
+    "ratingAria": "Rating: {rating} out of 5",
+    "page": {
+      "title": "Write a review",
+      "lead": "Share how the gear performed — your review helps other handlers.",
+      "invalidToken": "This link is invalid or has expired. You can leave a review from your order confirmation.",
+      "orderLabel": "Order",
+      "thanks": "Thank you for your review!",
+      "thanksBody": "It will appear on the product page after moderation.",
+      "backToShop": "Back to the shop"
+    },
+    "form": {
+      "ratingLabel": "Rating",
+      "nameLabel": "Signature (optional)",
+      "namePlaceholder": "e.g. Mark K.",
+      "contentLabel": "Review (optional)",
+      "contentPlaceholder": "How does it hold up in the field?",
+      "submit": "Submit review",
+      "submitting": "Submitting…",
+      "sent": "Thank you!",
+      "error": "We couldn't submit your review. Please try again.",
+      "ratingRequired": "Please select a rating."
+    }
+  }
+}

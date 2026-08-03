@@ -5,9 +5,11 @@ import { Breadcrumbs, type BreadcrumbItem } from "@/components/product/Breadcrum
 import { BuyBox } from "@/components/product/BuyBox";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { ProductSections } from "@/components/product/ProductSections";
+import { ProductReviews } from "@/components/reviews/ProductReviews";
 import { RecentlyViewed } from "@/components/product/RecentlyViewed";
 import { Badge } from "@/components/ui/Badge";
 import { getProCategory, getProProducts, getProducts, getRelatedProducts } from "@/lib/data";
+import { getProductReviews } from "@/lib/server/reviews";
 import { BRAND, PRO_ROOT } from "@/lib/nav";
 import { productHref } from "@/lib/routes";
 import { SIZE_SHORT } from "@/lib/sizes";
@@ -23,7 +25,11 @@ export const PRO_BRAND = "Dog Store Pro";
  * uklad karty, galeria, warianty i sekcje opisowe sa te same. Roznice (okruszki, siatka
  * techniczna, marka w tytule) sterowane sa linia produktu, nie osobna kopia pliku.
  */
-export function productJsonLd(product: Product, sizeLabel: string): string {
+export function productJsonLd(
+  product: Product,
+  sizeLabel: string,
+  reviews?: { average: number; count: number },
+): string {
   // Oferta per WARIANT: wczesniej byla jedna oferta z cena OD i SKU modelu, czyli numerem,
   // ktorego nie da sie zamowic. Wyszukiwarka dostawala cene jednego rozmiaru jako cene calosci.
   const url = productHref(product);
@@ -57,6 +63,16 @@ export function productJsonLd(product: Product, sizeLabel: string): string {
       offerCount: offers.length,
       offers,
     },
+    // Rich snippet z gwiazdkami w Google — tylko gdy są opublikowane opinie.
+    ...(reviews && reviews.count > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: reviews.average,
+            reviewCount: reviews.count,
+          },
+        }
+      : {}),
   };
 
   // "<" uciekamy, zeby nazwa produktu nigdy nie zamknela elementu script przedwczesnie
@@ -76,10 +92,11 @@ export async function ProductPageView({ product }: { product: Product }) {
   // szedl tu sklep sklejony z linia Pro i na cywilnej karcie produktu ladowal kafel sprzetu
   // sluzbowego - z szybkim podgladem i dodawaniem do koszyka. Historia moze zawierac slugi
   // z obu swiatow, ale kazdy swiat rozwiazuje wylacznie swoje.
-  const [related, proCategory, catalog] = await Promise.all([
+  const [related, proCategory, catalog, reviews] = await Promise.all([
     getRelatedProducts(product.slug, 8),
     pro && product.proCategory ? getProCategory(product.proCategory) : null,
     pro ? getProProducts() : getProducts(COLLECTION_HANDLE),
+    getProductReviews(product.slug),
   ]);
 
   const backHref = proCategory ? `${PRO_ROOT}/${proCategory.slug}` : COLLECTION_HREF;
@@ -100,7 +117,7 @@ export async function ProductPageView({ product }: { product: Product }) {
     <QuickViewProvider>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: productJsonLd(product, t("jsonLd.size")) }}
+        dangerouslySetInnerHTML={{ __html: productJsonLd(product, t("jsonLd.size"), reviews) }}
       />
 
       {/* Bez siatki technicznej pod kadrem: PRO_IDENTITY nie zna tego wzoru, a §6 zakazuje
@@ -133,6 +150,8 @@ export async function ProductPageView({ product }: { product: Product }) {
           </div>
 
           <ProductSections product={product} />
+
+          <ProductReviews data={reviews} />
         </div>
       </div>
 

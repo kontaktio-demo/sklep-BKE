@@ -1,0 +1,31 @@
+{
+  "reviews": {
+    "heading": "Opinie",
+    "count": "{count, plural, one {# opinia} few {# opinie} many {# opinii} other {# opinii}}",
+    "empty": "Ten produkt nie ma jeszcze opinii.",
+    "verified": "Zakup potwierdzony",
+    "anonymous": "Klient Dog Store",
+    "ratingAria": "Ocena: {rating} na 5",
+    "page": {
+      "title": "Wystaw opinię",
+      "lead": "Podziel się wrażeniami z zakupu — Twoja opinia pomaga innym przewodnikom.",
+      "invalidToken": "Link jest nieprawidłowy lub wygasł. Opinię wystawisz z poziomu potwierdzenia zamówienia.",
+      "orderLabel": "Zamówienie",
+      "thanks": "Dziękujemy za opinię!",
+      "thanksBody": "Po moderacji pojawi się przy produkcie.",
+      "backToShop": "Wróć do sklepu"
+    },
+    "form": {
+      "ratingLabel": "Ocena",
+      "nameLabel": "Podpis (opcjonalnie)",
+      "namePlaceholder": "np. Marek K.",
+      "contentLabel": "Opinia (opcjonalnie)",
+      "contentPlaceholder": "Jak sprawdza się w terenie?",
+      "submit": "Wyślij opinię",
+      "submitting": "Wysyłam…",
+      "sent": "Dziękujemy!",
+      "error": "Nie udało się wysłać opinii. Spróbuj ponownie.",
+      "ratingRequired": "Wybierz ocenę."
+    }
+  }
+}
