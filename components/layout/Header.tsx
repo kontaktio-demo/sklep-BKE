@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "./Logo";
 import { MegaMenu } from "./MegaMenu";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { SHELL, type Theme } from "./theme";
 import { isDarkRoute } from "./ThemeSync";
 
@@ -199,6 +200,9 @@ function MobileNav({
           })}
         </ul>
       </nav>
+      <div className={cn("mt-2 border-t px-5 pt-4", t.line)}>
+        <LanguageSwitcher tone="auto" />
+      </div>
     </Drawer>
   );
 }
@@ -344,6 +348,8 @@ export function Header() {
             <MegaMenu theme={theme} />
           </div>
           <div className="ml-auto flex items-center gap-1 lg:ml-0">
+            {/* Wybór języka PL/EN — widoczny w powłoce na każdej stronie (także na głównej). */}
+            <LanguageSwitcher tone="auto" className="mr-1 hidden sm:flex" />
             <button
               type="button"
               aria-label="Szukaj"
