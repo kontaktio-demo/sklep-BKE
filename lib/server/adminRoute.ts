@@ -17,8 +17,11 @@ export async function withAdmin(req: Request, fn: () => Promise<unknown>): Promi
         { status: 400 }
       );
     }
+    // Tresc wyjatku zostaje na serwerze. Bledy Postgresa niosa nazwy tabel, kolumn
+    // i tresc ograniczen - to gotowa mapa bazy dla kogos, kto zdobedzie klucz panelu.
+    console.error("[panel] blad trasy:", e instanceof Error ? e.message : e);
     return NextResponse.json(
-      { ok: false, error: "SERVER_ERROR", message: e instanceof Error ? e.message : "błąd" },
+      { ok: false, error: "SERVER_ERROR", message: "Wystąpił błąd. Spróbuj ponownie." },
       { status: 500 }
     );
   }
