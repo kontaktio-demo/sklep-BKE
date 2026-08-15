@@ -85,7 +85,7 @@
       "final": {
         "title": "10. Postanowienia końcowe",
         "b1": "W sprawach nieuregulowanych stosuje się prawo polskie, w szczególności Kodeks cywilny i ustawę o prawach konsumenta.",
-        "b2": "Konsument może skorzystać z pozasądowych sposobów rozpatrywania sporów: powiatowy rzecznik konsumentów, wojewódzki inspektorat Inspekcji Handlowej, platforma ODR Komisji Europejskiej. Udział w nich jest dobrowolny dla obu stron.",
+        "b2": "Konsument może skorzystać z pozasądowych sposobów rozpatrywania sporów: powiatowy rzecznik konsumentów, wojewódzki inspektorat Inspekcji Handlowej oraz Urząd Ochrony Konkurencji i Konsumentów (uokik.gov.pl). Udział w nich jest dobrowolny dla obu stron.",
         "b3": "Sprzedawca może zmienić regulamin z ważnych przyczyn, w tym zmiany przepisów lub zakresu usług. Zamówienia złożone przed zmianą realizujemy według regulaminu obowiązującego w chwili ich złożenia.",
         "b4": "Do korzystania ze Sklepu wystarczy urządzenie z dostępem do internetu, aktualna przeglądarka i czynne konto e-mail."
       }
@@ -222,7 +222,7 @@
       },
       "disputes": {
         "title": "Spory",
-        "body": "Jeśli nie dogadamy się bezpośrednio, konsument może skorzystać z pozasądowego rozwiązywania sporów: powiatowy rzecznik konsumentów, wojewódzki inspektorat Inspekcji Handlowej albo platforma ODR Komisji Europejskiej. Skorzystanie z tych dróg jest dobrowolne dla obu stron."
+        "body": "Jeśli nie dogadamy się bezpośrednio, konsument może skorzystać z pozasądowego rozwiązywania sporów: powiatowy rzecznik konsumentów, wojewódzki inspektorat Inspekcji Handlowej albo Urząd Ochrony Konkurencji i Konsumentów (uokik.gov.pl). Skorzystanie z tych dróg jest dobrowolne dla obu stron."
       }
     },
     "gwarancja": {
